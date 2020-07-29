@@ -23,8 +23,9 @@ admin/application/logs/*
 !admin/application/*/.htaccess
 admin/vendor/
 
-admin/application/config/config.php
-admin/application/config/database.php
+admin/resources/assets
+
+admin/application/config/
 
 # App Application :P
 # ------------------------------
@@ -36,8 +37,9 @@ app/application/logs/*
 
 !app/application/*/.htaccess
 
-app/application/config/config.php
-app/application/config/database.php
+app/vendor
+app/resources/assets
+app/application
 
 # operating system related files
 # ------------------------------
