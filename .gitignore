@@ -1,0 +1,58 @@
+# General
+# ------------------------------
+*/config/development
+*/logs/log-*.php
+!*/logs/index.html
+*/cache/*
+!*/cache/index.html
+!*/cache/.htaccess
+
+system/
+system/sessions/
+content/
+.vscode/
+
+# Admin Application
+# ------------------------------
+admin/application/cache/*
+!admin/application/cache/index.html
+
+admin/application/logs/*
+!admin/application/logs/index.html
+
+!admin/application/*/.htaccess
+admin/vendor/
+
+admin/application/config/config.php
+admin/application/config/database.php
+
+# App Application :P
+# ------------------------------
+app/application/cache/*
+!app/application/cache/index.html
+
+app/application/logs/*
+!app/application/logs/index.html
+
+!app/application/*/.htaccess
+
+app/application/config/config.php
+app/application/config/database.php
+
+# operating system related files
+# ------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Sublime Text cache files
+# ------------------------------
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
+*.sublime-workspace
+*.sublime-project
