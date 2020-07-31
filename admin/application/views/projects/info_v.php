@@ -13,6 +13,10 @@
                 <td>Description</td>
                 <td><?php echo $row->excerpt ?></td>
             </tr>
+            <tr>
+                <td>Price</td>
+                <td><?php echo $this->pml->money($row->excerpt) ?></td>
+            </tr>
             
             <tr>
                 <td>Descriptors</td>

@@ -1,3 +1,11 @@
+<?php
+    $current_styles = $this->pml->query_to_array($styles, 'related_1', 'meta_id');
+    $current_descriptors = $this->pml->query_to_array($descriptors, 'related_1', 'meta_id');
+    $current_feelings = $this->pml->query_to_array($feelings, 'related_1', 'meta_id');
+?>
+
+<?php $this->load->view('assets/bs4_chosen') ?>
+
 <div id="edit_project" class="center_box_750">
     <div class="card">
         <div class="card-body">
@@ -18,28 +26,67 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="excerpt" class="col-md-4 col-form-label text-right">Description</label>
-                    <div class="col-md-8">
-                        <textarea
-                            id="field-excerpt"
-                            name="excerpt"
-                            class="form-control"
-                            title="Description"
-                            rows="3"
-                            ><?= $row->excerpt ?></textarea>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="related_1" class="col-md-4 col-form-label text-right">Professional ID</label>
+                    <label for="integer_1" class="col-md-4 col-form-label text-right">Project price in US</label>
                     <div class="col-md-8">
                         <input
-                            name="related_1" id="field-related_1" type="text" class="form-control"
+                            id="field-integer_1"
+                            type="text"
                             required
-                            title="ID user or companty" placeholder="ID user or companty"
-                            value="<?= $row->related_1 ?>"
-                        >
+                            name="integer_1"
+                            class="form-control"
+                            title="Price"
+                            value="<?= $row->integer_1 ?>"
+                            >
                     </div>
                 </div>
+
+                <div class="form-group row">
+                    <label for="descriptors" class="col-md-4 col-form-label text-right">Descriptors</label>
+                    <div class="col-md-8">
+                        <select name="descriptors[]" id="field-descriptors" multiple class="form-control form-control-chosen">
+                            <?php foreach ( $options_descriptors as $descriptor_key => $descriptor_name ) { ?>
+                                <?php
+                                    $selected = '';
+                                    if ( in_array($descriptor_key, $current_descriptors) ) { $selected = 'selected'; }
+                                ?>
+                                <option value="0<?= $descriptor_key ?>" <?= $selected ?>><?= $descriptor_name ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="styles" class="col-md-4 col-form-label text-right">Styles</label>
+                    <div class="col-md-8">
+                        <select name="styles[]" id="field-styles" multiple class="form-control form-control-chosen">
+                            <?php foreach ( $options_styles as $style_key => $style_name ) { ?>
+                                <?php
+                                    $selected = '';
+                                    if ( in_array($style_key, $current_styles) ) { $selected = 'selected'; }
+                                ?>
+                                <option value="0<?= $style_key ?>" <?= $selected ?>><?= $style_name ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="feelings" class="col-md-4 col-form-label text-right">Feelings</label>
+                    <div class="col-md-8">
+                        <select name="feelings[]" id="field-feelings" multiple class="form-control form-control-chosen">
+                            <?php foreach ( $options_feelings as $feeling_key => $feeling_name ) { ?>
+                                <?php
+                                    $selected = '';
+                                    if ( in_array($feeling_key, $current_feelings) ) { $selected = 'selected'; }
+                                ?>
+                                <option value="0<?= $feeling_key ?>" <?= $selected ?>><?= $feeling_name ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                </div>
+
+                
+
                 <div class="form-group row">
                     <div class="col-md-8 offset-md-4">
                         <button class="btn btn-success w120p" type="submit">
@@ -63,7 +110,7 @@
         },
         methods: {
             send_form: function(){
-                axios.post(app_url + 'projects/update/' + this.row_id, $('#project_form').serialize())
+                axios.post(url_api + 'projects/update_full/' + this.row_id, $('#project_form').serialize())
                 .then(response => {
                     if (response.data.status == 1) {
                         toastr['success']('Saved');

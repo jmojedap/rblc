@@ -123,7 +123,7 @@ class Ideabooks extends CI_Controller{
         //Array data espefícicas
             $data['nav_2'] = 'ideabooks/menu_v';
             $data['head_subtitle'] = 'Edit';
-            $data['view_a'] = $this->edit_view($data['row']);
+            $data['view_a'] = 'ideabooks/edit_v';
         
         $this->App_model->view(TPL_ADMIN, $data);
     }

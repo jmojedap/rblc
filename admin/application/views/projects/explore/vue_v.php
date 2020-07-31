@@ -6,12 +6,17 @@
 
 // Filters
 //-----------------------------------------------------------------------------
-
     Vue.filter('type_name', function (value) {
         if (!value) return '-';
         new_value = type_names[value];
         return new_value;
-    })
+    });
+
+    Vue.filter('currency', function (value) {
+        if (!value) return '';
+        value = '$ ' + new Intl.NumberFormat().format(value);
+        return value;
+    });
 
 // App
 //-----------------------------------------------------------------------------

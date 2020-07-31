@@ -1,9 +1,6 @@
 <?php
     //Clases columnas
-        $cl_col['id'] = 'd-none d-md-table-cell d-lg-table-cell';
-        $cl_col['title'] = '';
-        $cl_col['type'] = 'd-none d-md-table-cell d-lg-table-cell';
-        $cl_col['excerpt'] = 'd-none d-md-table-cell d-lg-table-cell';
+        $cl_col = array('id' => '','title' => '','price' => 'only-lg text-right');
 ?>
 
 <div class="table-responsive">
@@ -13,6 +10,8 @@
                 <input type="checkbox" id="checkbox_all_selected" @change="select_all" v-model="all_selected">
             </th>
             <th class="<?php echo $cl_col['title'] ?>">Project</th>
+
+            <th class="<?php echo $cl_col['price'] ?>">Price</th>
             
             <th width="50px"></th>
         </thead>
@@ -27,6 +26,10 @@
                         {{ element.name }}
                     </a>
                     <p>{{ element.excerpt }}</p>
+                </td>
+
+                <td class="<?php echo $cl_col['price'] ?>">
+                    {{ element.price | currency }}
                 </td>
                 
                 <td>

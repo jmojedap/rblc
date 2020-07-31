@@ -39,7 +39,7 @@ app/application/logs/*
 
 app/vendor
 app/resources/assets
-app/application
+app/application/config
 
 # operating system related files
 # ------------------------------
@@ -50,11 +50,3 @@ app/application
 .Trashes
 ehthumbs.db
 Thumbs.db
-
-# Sublime Text cache files
-# ------------------------------
-*.tmlanguage.cache
-*.tmPreferences.cache
-*.stTheme.cache
-*.sublime-workspace
-*.sublime-project

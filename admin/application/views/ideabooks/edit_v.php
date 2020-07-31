@@ -1,7 +1,7 @@
-<div id="edit_project" class="center_box_750">
+<div id="edit_ideabook" class="center_box_750">
     <div class="card">
         <div class="card-body">
-            <form accept-charset="utf-8" method="POST" id="project_form" @submit.prevent="send_form">
+            <form accept-charset="utf-8" method="POST" id="ideabook_form" @submit.prevent="send_form">
                 <div class="form-group row">
                     <label for="post_name" class="col-md-4 col-form-label text-right">Project name</label>
                     <div class="col-md-8">
@@ -43,7 +43,7 @@
 
 <script>
     new Vue({
-        el: '#edit_project',
+        el: '#edit_ideabook',
         created: function(){
             //this.get_list();
         },
@@ -52,7 +52,7 @@
         },
         methods: {
             send_form: function(){
-                axios.post(app_url + 'ideabooks/update/' + this.row_id, $('#project_form').serialize())
+                axios.post(app_url + 'ideabooks/update/' + this.row_id, $('#ideabook_form').serialize())
                 .then(response => {
                     if (response.data.status == 1) {
                         toastr['success']('Saved');

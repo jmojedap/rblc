@@ -1,18 +1,5 @@
 
 <script>
-// Variables
-//-----------------------------------------------------------------------------
-    var type_names = <?php echo json_encode($arr_types); ?>;
-
-// Filters
-//-----------------------------------------------------------------------------
-
-    Vue.filter('type_name', function (value) {
-        if (!value) return '-';
-        new_value = type_names[value];
-        return new_value;
-    })
-
 // App
 //-----------------------------------------------------------------------------
 

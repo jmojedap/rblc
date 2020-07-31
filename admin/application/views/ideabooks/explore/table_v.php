@@ -1,17 +1,10 @@
-<?php
-    //Clases columnas
-        $cl_col['id'] = '';
-        $cl_col['title'] = '';
-?>
-
 <div class="table-responsive">
     <table class="table table-hover bg-white">
         <thead>
-            <th>
+            <th width="10px">
                 <input type="checkbox" id="checkbox_all_selected" @change="select_all" v-model="all_selected">
             </th>
-            <th class="<?php echo $cl_col['title'] ?>">Name</th>
-            
+            <th>Name</th>
             <th width="50px"></th>
         </thead>
         <tbody>
@@ -20,10 +13,12 @@
                     <input type="checkbox" v-bind:id="`check_` + element.id" v-model="selected" v-bind:value="element.id">
                 </td>
                     
-                <td class="<?php echo $cl_col['title'] ?>">
+                <td>
                     <a v-bind:href="`<?php echo base_url("ideabooks/info/") ?>` + element.id">
-                        {{ element.post_name }}
+                        {{ element.name }}
                     </a>
+                    <br>
+                    <p>{{ element.description }}</p>
                 </td>
                 
                 <td>

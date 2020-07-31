@@ -157,7 +157,7 @@ class Project_model extends CI_Model{
     function search($filters, $per_page = NULL, $offset = NULL)
     {
         //Construir consulta
-            $this->db->select('id, post_name AS name, related_1 AS professional_id, slug, url_image, url_image, url_thumbnail');
+            $this->db->select('id, post_name AS name, related_1 AS professional_id, integer_1 AS price, slug, url_image, url_image, url_thumbnail');
             
         //Orden
             if ( $filters['o'] != '' )

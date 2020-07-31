@@ -128,14 +128,21 @@ class Projects extends CI_Controller{
         //Datos básicos
         $data = $this->Project_model->basic($project_id);
 
-        $data['options_type'] = $this->Item_model->options('category_id = 33', 'Todos');
+        //Opciones para agregar
+        $data['options_descriptors'] = $this->Item_model->options('category_id = 710');
+        $data['options_styles'] = $this->Item_model->options('category_id = 712');
+        $data['options_feelings'] = $this->Item_model->options('category_id = 714');
+
+        //Datos actuales
+        $data['descriptors'] = $this->Project_model->metadata($project_id, 710);
+        $data['styles'] = $this->Project_model->metadata($project_id, 712);
+        $data['feelings'] = $this->Project_model->metadata($project_id, 714);
         
         //Array data espefícicas
             $data['nav_2'] = 'projects/menu_v';
-            $data['head_subtitle'] = 'Editar';
-            $data['view_a'] = $this->edit_view($data['row']);
+            $data['view_a'] = 'projects/edit_v';
         
-        $this->App_model->view(TPL_ADMIN, $data);
+        $this->App_model->view(TPL_FRONT, $data);
     }
 
     /**

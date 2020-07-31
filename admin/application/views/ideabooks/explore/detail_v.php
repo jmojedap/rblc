@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="detail_modal_label">{{ element.post_name }}</h5>
+                <h5 class="modal-title" id="detail_modal_label">{{ element.name }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -17,12 +17,12 @@
                     <tr>
                         <td>Name</td>
                         <td>
-                            {{ element.post_name }}
+                            {{ element.name }}
                         </td>
                     </tr>
                 </table>
                 <p>
-                    {{ element.excerpt }}
+                    {{ element.description }}
                 </p>
             </div>
             <div class="modal-footer">
