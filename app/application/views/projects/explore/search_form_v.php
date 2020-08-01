@@ -7,7 +7,7 @@
         <div class="col-md-9">
             <div class="input-group mb-2">
                 <input
-                    place="text"
+                    type="text"
                     name="q"
                     class="form-control"
                     placeholder="Search"

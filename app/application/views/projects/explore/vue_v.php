@@ -3,14 +3,15 @@
 // Variables
 //-----------------------------------------------------------------------------
     var menu_elements = [
-        { slug: 'furniture', text: 'Furniture' },
-        { slug: 'plants', text: 'Plants' },
-        { slug: 'illumination', text: 'Illumination' },
-        { slug: 'beds', text: 'Beds' },
-        { slug: 'chairs', text: 'Chairs' },
-        { slug: 'home-appliances', text: 'Home appliances' },
-        { slug: 'upholstery', text: 'Upholstery' },
-        { slug: 'doors', text: 'Doors' }
+        { id: '', slug: '', text: 'All' },
+        { id: '', slug: 'furniture', text: 'Furniture' },
+        { id: '', slug: 'plants', text: 'Plants' },
+        { id: '', slug: 'illumination', text: 'Illumination' },
+        { id: '', slug: 'beds', text: 'Beds' },
+        { id: '', slug: 'chairs', text: 'Chairs' },
+        { id: '', slug: 'home-appliances', text: 'Home appliances' },
+        { id: '', slug: 'upholstery', text: 'Upholstery' },
+        { id: '', slug: 'doors', text: 'Doors' }
     ];
 
 // Filters
@@ -35,11 +36,14 @@
             filters: {},
             showing_filters: false,
             menu_elements: menu_elements,
-            tag: menu_elements[0]
+            category: menu_elements[0]
         },
         methods: {
             get_list: function(){
-                axios.post(url_api + this.controller + '/get/' + this.num_page, $('#search_form').serialize())
+                var params = new URLSearchParams();
+                params.append('q', app_q);
+                params.append('cat', this.category.slug);
+                axios.post(url_api + this.controller + '/get/' + this.num_page, params)
                 .then(response => {
                     this.list = response.data.list;
                     this.max_page = response.data.max_page;
@@ -59,8 +63,9 @@
             set_current: function(key){
                 this.element = this.list[key];
             },
-            set_tag: function(menu_key){
-                this.tag = this.menu_elements[menu_key];
+            set_category: function(menu_key){
+                console.log(this.category);
+                this.category = this.menu_elements[menu_key];
                 this.num_page = 1;
                 this.get_list();
             },

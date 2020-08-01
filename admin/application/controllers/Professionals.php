@@ -39,10 +39,14 @@ class Professionals extends CI_Controller{
 
     function get($num_page = 1)
     {
-        $data = $this->Professional_model->get($num_page);
+        $this->load->model('Search_model');
+        $filters = $this->Search_model->filters();
+
+        $data = $this->Professional_model->get($filters, $num_page);
 
         //Salida JSON
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
+        //$this->output->enable_profiler(TRUE);
     }
 
     /**

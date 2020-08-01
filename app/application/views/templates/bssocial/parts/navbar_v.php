@@ -8,7 +8,11 @@
 
     if ( $cf == 'pictures/explore' ) { $cl_menu['pictures'] .= ' active'; }
     if ( $cf == 'professionals/explore' ) { $cl_menu['professionals'] .= ' active'; }
+    if ( $cf == 'professionals/profile' ) { $cl_menu['professionals'] .= ' active'; }
     if ( $cf == 'projects/explore' ) { $cl_menu['projects'] .= ' active'; }
+    if ( $cf == 'projects/info' ) { $cl_menu['projects'] .= ' active'; }
+    if ( $cf == 'projects/edit' ) { $cl_menu['projects'] .= ' active'; }
+    if ( $cf == 'projects/images' ) { $cl_menu['projects'] .= ' active'; }
 ?>
 
 <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #F37062;">

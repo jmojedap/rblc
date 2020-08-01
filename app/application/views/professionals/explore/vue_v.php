@@ -3,44 +3,16 @@
 // Variables
 //-----------------------------------------------------------------------------
     var menu_elements = [
-        {
-            slug: 'artist-artisan',
-            text: 'Artist and artisan'
-        },
-        {
-            slug: 'marketing-resources',
-            text: 'Marketing resources'
-        },
-        {
-            slug: 'materials-spaces',
-            text: 'Materials and spaces'
-        },
-        {
-            slug: 'special-services',
-            text: 'Special services'
-        },
-        {
-            slug: 'woodwork',
-            text: 'Woodwork'
-        },
-        {
-            slug: 'electronic-services',
-            text: 'Electronic services'
-        },
-        {
-            slug: 'builders-remodelators',
-            text: 'Builders and remodelators'
-        },
-        {
-            slug: 'professional',
-            text: 'Professional'
-        }
+        { id: '', slug: '', text: 'All'},
+        { id: '5', slug: 'artist-artisan', text: 'Artist and artisan' },
+        { id: '6', slug: 'marketing-resources', text: 'Marketing resources'},
+        { id: '7', slug: 'materials-spaces', text: 'Materials and spaces' },
+        { id: '9', slug: 'special-services', text: 'Special services' },
+        { id: '2', slug: 'woodwork', text: 'Woodwork' },
+        { id: '3', slug: 'electronic-services', text: 'Electronic services' },
+        { id: '4', slug: 'builders-remodelators', text: 'Builders and remodelators' },
+        { id: '8', slug: 'professional', text: 'Professional' }
     ];
-
-// Filters
-//-----------------------------------------------------------------------------
-
-    
 
 // App
 //-----------------------------------------------------------------------------
@@ -62,11 +34,14 @@
             str_filters: '<?= $str_filters ?>',
             showing_filters: false,
             menu_elements: menu_elements,
-            tag: menu_elements[0]
+            category: menu_elements[0]
         },
         methods: {
             get_list: function(){
-                axios.post(url_api + this.controller + '/get/' + this.num_page + '/?' + this.str_filters)
+                var params = new URLSearchParams();
+                params.append('q', app_q);
+                params.append('cat', this.category.id);
+                axios.post(url_api + this.controller + '/get/' + this.num_page, params)
                 .then(response => {
                     this.list = response.data.list;
                     this.max_page = response.data.max_page;
@@ -97,6 +72,17 @@
             },
             set_current: function(key){
                 this.element = this.list[key];
+            },
+            set_category: function(menu_key){
+                this.category = this.menu_elements[menu_key];
+                this.num_page = 1;
+                this.get_list();
+            },
+            set_app_q: function(){
+                app_q = this.filters.q;
+                this.num_page = 1;
+                $('#app_q').val(this.filters.q);
+                this.get_list();  
             },
         }
     });

@@ -41,21 +41,23 @@ class Professional_model extends CI_Model{
         return $data;
     }
 
-    function get($num_page)
+    /**
+     * Conjunto de variables de una búsqueda, incluido el listado de resultados
+     */
+    function get($filters, $num_page, $per_page = 8)
     {
         //Referencia
-            $per_page = 10;                             //Cantidad de registros por página
             $offset = ($num_page - 1) * $per_page;      //Número de la página de datos que se está consultado
 
-        //Búsqueda y Resultados
-            $this->load->model('Search_model');
-            $data['filters'] = $this->Search_model->filters();
-            $elements = $this->search($data['filters'], $per_page, $offset);    //Resultados para página
+        //Query resultados página
+            //$query = $this->search($filters, $per_page, $offset);    //Resultados para página
+            $list = $this->list($filters, $per_page, $offset);
         
         //Cargar datos
-            $data['list'] = $this->list($data['filters'], $per_page, $offset);    //Resultados para página
-            $data['str_filters'] = $this->Search_model->str_filters();
-            $data['search_num_rows'] = $this->search_num_rows($data['filters']);
+            $data['filters'] = $filters;
+            $data['list'] = $list;
+            $data['str_filters'] = $this->Search_model->str_filters($filters);      //String de filtros tipo GET
+            $data['search_num_rows'] = $this->search_num_rows($filters);            //Total resultados
             $data['max_page'] = ceil($this->pml->if_zero($data['search_num_rows'],1) / $per_page);   //Cantidad de páginas
 
         return $data;
@@ -63,40 +65,35 @@ class Professional_model extends CI_Model{
     
     /**
      * String con condición WHERE SQL para filtrar user
-     * 
-     * @param type $filters
-     * @return type
      */
     function search_condition($filters)
     {
-        $condition = NULL;
-        
-        //Rol de user
-        if ( $filters['role'] != '' ) { $condition .= "role = {$filters['role']} AND "; }
-        
-        if ( strlen($condition) > 0 )
+        $condition = 'role = 13 AND ';   //Es professional
+
+        //q words condition
+        $words_condition = $this->Search_model->words_condition($filters['q'], array('first_name', 'last_name', 'display_name', 'email', 'about'));
+        if ( $words_condition )
         {
-            $condition = substr($condition, 0, -5);
+            $condition .= $words_condition . ' AND ';
         }
+        
+        //Filtros
+        if ( strlen($filters['cat']) > 0 )
+        {
+            $sql_categories = "SELECT cod FROM item WHERE category_id = 716 AND ancestry LIKE '%-{$filters['cat']}-%'";
+            $condition .= "user.id IN (SELECT user_id FROM user_meta WHERE type_id = 716 AND related_1 IN ({$sql_categories})) AND ";
+        }
+        
+        //Quitar cadena final de ' AND '
+        if ( strlen($condition) > 0 ) { $condition = substr($condition, 0, -5);}
         
         return $condition;
     }
     
     function search($filters, $per_page = NULL, $offset = NULL)
     {
-        
-        //$role_filter = $this->role_filter($this->session->userdata('user_id'));
-
         //Construir consulta
             $this->db->select('user.id, username, display_name, email, image_id, url_image, url_thumbnail, user.type_id, country, state_province, city, about');
-            //$this->db->join('place', 'place.id = user.city_id', 'left');
-        
-        //Crear array con términos de búsqueda
-            $words_condition = $this->Search_model->words_condition($filters['q'], array('first_name', 'last_name', 'display_name', 'email'));
-            if ( $words_condition )
-            {
-                $this->db->where($words_condition);
-            }
             
         //Orden
             if ( $filters['o'] != '' )
@@ -108,18 +105,11 @@ class Professional_model extends CI_Model{
             }
             
         //Filtros
-            //$this->db->where($role_filter); //Filtro según el rol de user en sesión
-            $this->db->where('role', 13);
             $search_condition = $this->search_condition($filters);
             if ( $search_condition ) { $this->db->where($search_condition);}
             
         //Obtener resultados
-        if ( is_null($per_page) )
-        {
-            $query = $this->db->get('user'); //Resultados totales
-        } else {
             $query = $this->db->get('user', $per_page, $offset); //Resultados por página
-        }
         
         return $query;
         
@@ -127,7 +117,7 @@ class Professional_model extends CI_Model{
 
     /**
      * Array Listado elemento resultado de la búsqueda (filtros).
-     * 2020-06-19
+     * 2020-07-31
      */
     function list($filters, $per_page = NULL, $offset = NULL)
     {
@@ -136,16 +126,12 @@ class Professional_model extends CI_Model{
 
         foreach ($query->result() as $row)
         {
-            /*$row->qty_students = $this->Db_model->num_rows('group_user', "group_id = {$row->id}");  //Cantidad de estudiantes*/
             if ( $row->image_id == 0 )
             {
                 $first_image = $this->first_image($row->id);
                 $row->url_image = $first_image['url'];
                 $row->url_thumbnail = $first_image['url_thumbnail'];
             }
-
-            $row->content = $this->row_content($row->id);
-            
 
             $list[] = $row;
         }
@@ -154,86 +140,31 @@ class Professional_model extends CI_Model{
     }
     
     /**
-     * Devuelve la cantidad de registros encontrados en la tabla con los filtros
+     * Cantidad total registros encontrados en la tabla con los filtros
      * establecidos en la búsqueda
      */
     function search_num_rows($filters)
     {
-        $query = $this->search($filters); //Para calcular el total de resultados
+        $this->db->select('id');
+        $search_condition = $this->search_condition($filters);
+        if ( $search_condition ) { $this->db->where($search_condition);}
+        $query = $this->db->get('user'); //Para calcular el total de resultados
+
         return $query->num_rows();
-    }
-    
-    /**
-     * Devuelve segmento SQL
-     */
-    function role_filter()
-    {
-        
-        $condition = 'id > 0';  //Valor por defecto, ningún user, se obtendrían cero user.
-        
-        /*$role = $this->session->userdata('role');
-        if ( $role <= 2 ) 
-        {   //Desarrollador, todos los user
-            $condition = 'user.id > 0';
-        }*/
-        
-        return $condition;
     }
     
     /**
      * Array con options para ordenar el listado de user en la vista de
      * exploración
-     * 
-     * @return string
      */
     function order_options()
     {
         $order_options = array(
             '' => '[ Ordenar por ]',
-            'id' => 'ID Usuario',
-            'last_name' => 'Apellidos',
-            'id_number' => 'No. documento',
+            'id' => 'Display name'
         );
         
         return $order_options;
-    }
-    
-    function editable()
-    {
-        return TRUE;
-    }
-
-    /**
-     * Opciones de usuario en campos de autollenado, como agregar usuarios a una conversación
-     * 2019-11-13
-     */
-    function autocomplete($filters, $limit = 15)
-    {
-        $role_filter = $this->role_filter();
-
-        //Construir búsqueda
-        //Crear array con términos de búsqueda
-            if ( strlen($filters['q']) > 2 )
-            {
-                $words = $this->Search_model->words($filters['q']);
-
-                foreach ($words as $word) {
-                    $this->db->like('CONCAT(first_name, last_name, username, code)', $word);
-                }
-            }
-        
-        //Especificaciones de consulta
-            //$this->db->select('id, CONCAT((display_name), " (",(username), ") Cod: ", IFNULL(code, 0)) AS value');
-            $this->db->select('id, CONCAT((display_name), " (",(username), ")") AS value');
-            $this->db->where($role_filter); //Filtro según el rol de usuario que se tenga
-            $this->db->order_by('last_name', 'ASC');
-            
-        //Otros filtros
-            if ( $filters['condition'] != '' ) { $this->db->where($filters['condition']); }    //Condición adicional
-            
-        $query = $this->db->get('user', $limit); //Resultados por página
-        
-        return $query;
     }
 
 // IMAGES
@@ -269,24 +200,5 @@ class Professional_model extends CI_Model{
         }
 
         return $first_image;
-    }
-
-// Metadatos
-//-----------------------------------------------------------------------------
-
-    function row_content($user_id)
-    {
-        $this->db->select('id AS post_id, content');
-        $this->db->where('type_id', 1020);
-        $this->db->where('related_1', $user_id);
-        $posts = $this->db->get('post');
-
-        $row_content = array('post_id' => 0, 'content' => 'Under construction');
-        if ( $posts->num_rows() > 0 )
-        {
-            $row_content = $posts->row();
-        }
-
-        return $row_content;   
     }
 }

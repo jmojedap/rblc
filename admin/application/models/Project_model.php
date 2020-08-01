@@ -180,6 +180,7 @@ class Project_model extends CI_Model{
     
     /**
      * String con condición WHERE SQL para filtrar post
+     * 2020-08-01
      */
     function search_condition($filters)
     {
@@ -198,8 +199,12 @@ class Project_model extends CI_Model{
         
         //Otros filtros
         if ( $filters['u'] != '' ) { $condition .= "related_1 = {$filters['u']} AND "; }
-        if ( $filters['like'] == 1 ) { $condition .= "post.id IN (SELECT post_id FROM post_meta WHERE type_id = 10 AND related_1 = '{$this->session->userdata('user_id')}') AND "; }
-
+        //if ( $filters['like'] == 1 ) { $condition .= "post.id IN (SELECT post_id FROM post_meta WHERE type_id = 10 AND related_1 = '{$this->session->userdata('user_id')}') AND "; }
+        if ( strlen($filters['cat']) > 0 )
+        {
+            $sql_categories = "SELECT cod FROM item WHERE category_id = 710 AND item_name LIKE '%{$filters['cat']}%'";
+            $condition .= "post.id IN (SELECT post_id FROM post_meta WHERE type_id = 710 AND related_1 IN ({$sql_categories})) AND ";
+        }
         
         //Quitar cadena final de ' AND '
         if ( strlen($condition) > 0 ) { $condition = substr($condition, 0, -5);}

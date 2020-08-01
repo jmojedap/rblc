@@ -50,8 +50,6 @@ class Pictures extends CI_Controller{
 
         $data = $this->Picture_model->get($filters, $num_page);
 
-        //$this->output->enable_profiler(TRUE);
-
         //Salida JSON
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
