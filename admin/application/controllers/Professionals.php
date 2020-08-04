@@ -127,33 +127,66 @@ class Professionals extends CI_Controller{
         $this->App_model->view(TPL_ADMIN, $data);
     }
 
-// ESPECIAL METADATA
+// GESTIÓN DE METADATOS, TAGS Y CATEGORÍAS
 //-----------------------------------------------------------------------------
 
     /**
-     * Content, information about user account
-     * 2020-05-14
+     * Formulario edición de categorías y tags de un usuario professional
+     * 2020-08-01
      */
-    function content($user_id)
+    function categories($user_id)
     {
-        $data = $this->Professional_model->basic($user_id);
+        //Datos básicos
+        $this->load->model('User_model');
+        $data = $this->User_model->basic($user_id);
 
-        $data['row_content'] = $this->Professional_model->row_content($user_id);
+        //Opciones para agregar
+        $data['options_services'] = $this->Item_model->options('category_id = 716');
+        $data['options_tag'] = $this->App_model->options_tag('category_id = 1');
 
-        $data['view_a'] = 'users/content_v';
-        $data['subtitle_head'] = 'Content';
+        //Datos actuales
+        $data['services'] = $this->Professional_model->metadata($user_id, 716);
+        $data['tags'] = $this->Professional_model->tags($user_id);
+        
+        //$data['nav_3'] = 'users/edit/menu_v';
+        $data['view_a'] = 'users/edit/categories_v';
+        
         $this->App_model->view(TPL_ADMIN, $data);
     }
 
     /**
+     * Guardar cambios en metadatos y categorías
+     * 2020-08-03
+     */
+    function update_categories($user_id)
+    {
+        //Save services
+        $services = ( is_null($this->input->post('services')) ) ? array() : $this->input->post('services');
+        $data['updated_services'] = $this->Professional_model->save_meta_array($user_id, 716, $services);
+
+        //Save tags
+        $tags = ( is_null($this->input->post('tags')) ) ? array() : $this->input->post('tags');
+        $data['updated_tags'] = $this->Professional_model->save_meta_array($user_id, 27, $tags);
+
+        //Result
+        $data['status'] = 1;
+
+        //Salida JSON
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
+
+// ESPECIAL METADATA
+//-----------------------------------------------------------------------------
+
+    /**
      * Detalles del usuario
      */
-    function details($user_id)
+    function details_ant($user_id)
     {
         $data = $this->Professional_model->basic($user_id);
 
         $data['tags'] = $this->Professional_model->tags($user_id);
-        $data['professional_services'] = $this->Professional_model->professional_services($user_id);
+        $data['professional_services'] = $this->Professional_model->metadata($user_id);
 
         $data['view_a'] = 'users/details_v';
         $data['subtitle_head'] = 'Details';
@@ -193,7 +226,6 @@ class Professionals extends CI_Controller{
     /**
      * Listado de imágenes de usuarios, filtradas por descriptores
      * 2020-06-23
-     * 
      */
     function inspiration_images($tag_slug, $num_page = 1)
     {

@@ -110,6 +110,31 @@ class Professionals extends CI_Controller{
         $this->App_model->view(TPL_ADMIN, $data);
     }
 
+    /**
+     * Formulario edición de categorías y tags de un usuario professional
+     * 2020-08-01
+     */
+    function categories()
+    {
+        //Datos básicos
+        $user_id = $this->session->userdata('user_id');
+        $this->load->model('User_model');
+        $data = $this->User_model->basic($user_id);
+
+        //Opciones para agregar
+        $data['options_services'] = $this->Item_model->options('category_id = 716');
+        $data['options_tag'] = $this->App_model->options_tag('category_id = 1');
+
+        //Datos actuales
+        $data['services'] = $this->Professional_model->metadata($user_id, 716);
+        $data['tags'] = $this->Professional_model->tags($user_id);
+        
+        $data['nav_2'] = 'accounts/edit/menu_v';
+        $data['view_a'] = 'users/edit/categories_v';
+        
+        $this->App_model->view(TPL_ADMIN, $data);
+    }
+
 // INSPIRATION
 //-----------------------------------------------------------------------------
 

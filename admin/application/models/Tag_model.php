@@ -111,10 +111,10 @@ class Tag_model extends CI_Model{
     /**
      * Array con los datos para la vista de exploración
      */
-    function explore_data($num_page)
+    function explore_data($filters, $num_page)
     {
         //Data inicial, de la tabla
-            $data = $this->get($num_page);
+            $data = $this->get($filters, $num_page);
         
         //Elemento de exploración
             $data['controller'] = 'tags';                      //Nombre del controlador
@@ -130,20 +130,24 @@ class Tag_model extends CI_Model{
         return $data;
     }
 
-    function get($num_page)
+    /**
+     * Array con listado de users, filtrados por búsqueda y num página, más datos adicionales sobre
+     * la búsqueda, filtros aplicados, total resultados, página máxima.
+     * 2020-08-01
+     */
+    function get($filters, $num_page, $per_page = 8)
     {
         //Referencia
-            $per_page = 10;                             //Cantidad de registros por página
             $offset = ($num_page - 1) * $per_page;      //Número de la página de datos que se está consultado
 
         //Búsqueda y Resultados
-            $this->load->model('Search_model');
-            $data['filters'] = $this->Search_model->filters();
-            $elements = $this->search($data['filters'], $per_page, $offset);    //Resultados para página
+            $elements = $this->search($filters, $per_page, $offset);    //Resultados para página
         
         //Cargar datos
+            $data['filters'] = $filters;
+            //$data['list'] = $this->list($filters, $per_page, $offset);    //Resultados para página
             $data['list'] = $elements->result();
-            $data['str_filters'] = $this->Search_model->str_filters();
+            $data['str_filters'] = $this->Search_model->str_filters();      //String con filtros en formato GET de URL
             $data['search_num_rows'] = $this->search_num_rows($data['filters']);
             $data['max_page'] = ceil($this->pml->if_zero($data['search_num_rows'],1) / $per_page);   //Cantidad de páginas
 
@@ -151,40 +155,13 @@ class Tag_model extends CI_Model{
     }
     
     /**
-     * String con condición WHERE SQL para filtrar post
-     * 
-     * @param type $filters
-     * @return type
+     * Query de users, filtrados según búsqueda, limitados por página
+     * 2020-08-01
      */
-    function search_condition($filters)
-    {
-        $condition = NULL;
-        
-        //Tipo de post
-        if ( $filters['cat'] != '' ) { $condition .= "category_id = {$filters['cat']} AND "; }
-        
-        if ( strlen($condition) > 0 )
-        {
-            $condition = substr($condition, 0, -5);
-        }
-        
-        return $condition;
-    }
-    
     function search($filters, $per_page = NULL, $offset = NULL)
     {
-        
-        $role_filter = $this->role_filter($this->session->userdata('tag_id'));
-
         //Construir consulta
-            //$this->db->select('id, post_name, except, ');
-        
-        //Crear array con términos de búsqueda
-            $words_condition = $this->Search_model->words_condition($filters['q'], array('name', 'slug'));
-            if ( $words_condition )
-            {
-                $this->db->where($words_condition);
-            }
+            $this->db->select('tag.id, name');
             
         //Orden
             if ( $filters['o'] != '' )
@@ -196,20 +173,39 @@ class Tag_model extends CI_Model{
             }
             
         //Filtros
-            $this->db->where($role_filter); //Filtro según el rol de usuario en sesión
             $search_condition = $this->search_condition($filters);
             if ( $search_condition ) { $this->db->where($search_condition);}
             
         //Obtener resultados
-        if ( is_null($per_page) )
-        {
-            $query = $this->db->get('tag'); //Resultados totales
-        } else {
             $query = $this->db->get('tag', $per_page, $offset); //Resultados por página
-        }
         
         return $query;
+    }
+
+    /**
+     * String con condición WHERE SQL para filtrar users
+     * 2020-08-01
+     */
+    function search_condition($filters)
+    {
+        $condition = NULL;
+
+        $condition .= $this->role_filter() . ' AND ';
+
+        //q words condition
+        $words_condition = $this->Search_model->words_condition($filters['q'], array('name', 'slug'));
+        if ( $words_condition )
+        {
+            $condition .= $words_condition . ' AND ';
+        }
         
+        //Otros filtros
+        if ( $filters['cat'] != '' ) { $condition .= "category_id = {$filters['cat']} AND "; }
+        
+        //Quitar cadena final de ' AND '
+        if ( strlen($condition) > 0 ) { $condition = substr($condition, 0, -5);}
+        
+        return $condition;
     }
     
     /**
@@ -218,44 +214,62 @@ class Tag_model extends CI_Model{
      */
     function search_num_rows($filters)
     {
-        $query = $this->search($filters); //Para calcular el total de resultados
+        $this->db->select('id');
+        $search_condition = $this->search_condition($filters);
+        if ( $search_condition ) { $this->db->where($search_condition);}
+        $query = $this->db->get('tag'); //Para calcular el total de resultados
+
         return $query->num_rows();
     }
     
     /**
-     * Devuelve segmento SQL, con filtro según el rol
+     * Devuelve segmento SQL, para filtrar listado de usuarios según el rol del usuario en sesión
+     * 2020-08-01
      */
     function role_filter()
     {
-        
         $role = $this->session->userdata('role');
-        $condition = 'id = 0';  //Valor por defecto, ningún post, se obtendrían cero tag.
+        $condition = 'id = 0';  //Valor por defecto, ningún user, se obtendrían cero tag.
         
         if ( $role <= 2 ) 
-        {   //Desarrollador, todos los post
-            $condition = 'id > 0';
+        {   //Desarrollador, todos los user
+            $condition = 'tag.id > 0';
         }
         
         return $condition;
     }
     
     /**
-     * Array con options para ordenar el listado de tag en la vista de
+     * Array con options para ordenar el listado de user en la vista de
      * exploración
+     * 
      */
     function order_options()
     {
         $order_options = array(
-            '' => '[ Ordenar por ]',
+            '' => '[ Order by ]',
             'id' => 'ID Tag',
-            'post_name' => 'Nombre'
+            'name' => 'Name'
         );
         
         return $order_options;
     }
-    
-    function editable()
+
+    /**
+     * Opciones de tag en campos de autollenado
+     * 2020-08-01
+     */
+    function autocomplete($filters, $limit = 50)
     {
-        return TRUE;
+        //Construir condición de búsqueda
+            $search_condition = $this->search_condition($filters);
+        
+        //Especificaciones de consulta
+            $this->db->select('id, name AS value');
+            if ( $search_condition ) { $this->db->where($search_condition);}
+            $this->db->order_by('name', 'ASC');
+            $query = $this->db->get('tag', $limit); //Resultados por página
+        
+        return $query;
     }
 }

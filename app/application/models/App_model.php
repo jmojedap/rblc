@@ -207,6 +207,23 @@ class App_model extends CI_Model{
         return $options_user;
     }
 
+    /**  Devuelve un array con las opciones de la tabla tag, limitadas por una condición definida
+    * en un format ($format) definido
+    * 2020-08-03
+    */
+    function options_tag($condition, $empty_text = 'tag', $value_field = 'name')
+    {
+        
+        $this->db->select("CONCAT('0', tag.id) AS tag_id, name", FALSE); 
+        $this->db->where($condition);
+        $this->db->order_by('tag.name', 'ASC');
+        $query = $this->db->get('tag');
+        
+        $options_tag = array_merge(array('' => '[ ' . $empty_text . ' ]'), $this->pml->query_to_array($query, $value_field, 'tag_id'));
+        
+        return $options_tag;
+    }
+
 // IMÁGENES
 //-----------------------------------------------------------------------------
 

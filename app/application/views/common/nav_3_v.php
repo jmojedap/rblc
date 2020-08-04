@@ -3,13 +3,11 @@
         <ul class="nav nav-pills" role="tablist">
             <li class="nav-item" v-for="(element, key) in nav_3">
                 <a
-                    class="nav-link"
-                    href="#"
+                    class="nav-link" href="#"
                     v-bind:class="element.class"
                     v-on:click="activate_menu(key)"
                 >
-                    <i v-bind:class="element.icon"></i>
-                    {{ element.text }}
+                    <i v-bind:class="element.icon"></i> {{ element.text }}
                 </a>
             </li>
         </ul>
@@ -43,15 +41,23 @@
             this.set_current();
         },
         data: {
-            nav_3: nav_3  //Elementos contenido del menú
+            nav_3: nav_3,  //Elementos contenido del menú
+            current: {
+                text: 'Menú'
+            }
         },
         methods: {
             activate_menu: function (key) {
+                this.current = this.nav_3[key];
                 for ( i in this.nav_3 ){
                     this.nav_3[i].class = '';
                 }
                 this.nav_3[key].class = 'active';   //Elemento actual
-                this.load_view_a(key);
+                if ( this.nav_3[key].anchor ) {
+                    window.location = app_url + this.nav_3[key].cf;
+                } else {
+                    this.load_view_a(key);
+                }
             },
             load_view_a: function(key){
                 app_cf = this.nav_3[key].cf;

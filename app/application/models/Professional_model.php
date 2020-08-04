@@ -229,6 +229,37 @@ class Professional_model extends CI_Model{
         return $follow_status;
     }
 
+// METADATA
+//-----------------------------------------------------------------------------
+
+    function metadata($user_id, $type_id)
+    {
+        $this->db->select('user_meta.id AS meta_id, item_name AS title, user_meta.related_1');
+        $this->db->where('user_meta.type_id', $type_id);
+        $this->db->where('item.category_id', $type_id);
+        $this->db->where('user_meta.user_id', $user_id);
+        $this->db->join('user_meta', 'item.cod = user_meta.related_1');
+        $elements = $this->db->get('item');
+
+        return $elements;
+    }
+
+    /**
+     * Query, tags asociados a un usuario
+     * 2020-08-03
+     */
+    function tags($user_id, $category_id = NULL)
+    {
+        $this->db->select('user_meta.id AS meta_id, tag.name, user_meta.related_1');
+        $this->db->where('user_meta.type_id', 27);  //Metadato, tag
+        if ( ! is_null($category_id) ) { $this->db->where('tag.category_id', $type_id); }
+        $this->db->where('user_meta.user_id', $user_id);
+        $this->db->join('user_meta', 'tag.id = user_meta.related_1');
+        $tags = $this->db->get('tag');
+
+        return $tags;
+    }
+
 // OTROS
 //-----------------------------------------------------------------------------
 

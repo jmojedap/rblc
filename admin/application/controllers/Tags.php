@@ -23,10 +23,14 @@ class Tags extends CI_Controller{
 //---------------------------------------------------------------------------------------------------
 
     /** Exploración de Tags */
-    function explore()
+    function explore($num_page = 1)
     {        
+        //Identificar filtros de búsqueda
+            $this->load->model('Search_model');
+            $filters = $this->Search_model->filters();
+
         //Datos básicos de la exploración
-            $data = $this->Tag_model->explore_data(1);
+            $data = $this->Tag_model->explore_data($filters, $num_page);
         
         //Opciones de filtros de búsqueda
             $data['options_category'] = $this->Item_model->options('category_id = 27', 'All');
@@ -43,7 +47,10 @@ class Tags extends CI_Controller{
      */
     function get($num_page = 1)
     {
-        $data = $this->Tag_model->get($num_page);
+        $this->load->model('Search_model');
+        $filters = $this->Search_model->filters();
+        $data = $this->Tag_model->get($filters, $num_page);
+
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
     

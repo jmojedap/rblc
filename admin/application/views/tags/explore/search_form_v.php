@@ -7,14 +7,10 @@
         <div class="col-md-9">
             <div class="input-group mb-2">
                 <input
-                    place="text"
                     name="q"
-                    class="form-control"
-                    placeholder="Search"
-                    autofocus
-                    title="Search"
-                    v-model="filters.q"
-                    v-on:change="get_list"
+                    type="text" class="form-control" autofocus
+                    title="Search" placeholder="Search"
+                    v-model="filters.q" v-on:change="get_list"
                     >
                 <div class="input-group-append" title="Buscar">
                     <button type="button" class="btn btn-light btn-block" v-on:click="toggle_filters" title="Advanced search">
@@ -31,7 +27,7 @@
     <div id="adv_filters" style="<?php echo $filters_style ?>">
         <div class="form-group row">
             <div class="col-md-9">
-                <?php echo form_dropdown('category_id', $options_category, $filters['cat'], 'class="form-control" title="Filter by category" v-model="filters.cat"'); ?>
+                <?php echo form_dropdown('cat', $options_category, $filters['cat'], 'class="form-control" title="Filter by category" v-model="filters.cat"'); ?>
             </div>
             <label for="type" class="col-md-3 col-form-label">Category</label>
         </div>

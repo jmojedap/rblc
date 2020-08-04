@@ -126,6 +126,10 @@ class App extends CI_Controller {
                 $this->load->model('User_model');
                 $elements = $this->User_model->autocomplete($filters);
                 break;
+            case 'tag':
+                $this->load->model('Tag_model');
+                $elements = $this->Tag_model->autocomplete($filters);
+                break;
 
             default:
                 break;
@@ -134,5 +138,6 @@ class App extends CI_Controller {
         $arr_elements = $elements->result_array();
         
         $this->output->set_content_type('application/json')->set_output(json_encode($arr_elements));
+        //$this->output->enable_profiler(TRUE);
     }
 }
