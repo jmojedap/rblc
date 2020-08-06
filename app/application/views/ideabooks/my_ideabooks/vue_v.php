@@ -22,6 +22,7 @@
             search_num_rows: 0,
             list: [],
             element: [],
+            element_key: 0,
             filters: [],
             su_id: su_id
         },
@@ -45,6 +46,7 @@
                 this.get_list();
             },
             set_current: function(key){
+                this.element_key = key;
                 this.element = this.list[key];
             },
             set_app_q: function(){
@@ -53,6 +55,21 @@
                 $('#app_q').val(this.filters.q);
                 this.get_list();  
             },
+            delete_element: function(){
+                axios.get(url_api + 'posts/delete/' + this.element.id)
+                .then(response => {
+                    console.log(response.data);
+                    if ( response.data.qty_deleted >= 0 )
+                    {
+                        toastr['info']('Ideabook deleted');
+                        $('#row_' + this.element.id).addClass('table-danger');
+                        $('#row_' + this.element.id).hide('slow');
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },  
         }
     });
 </script>

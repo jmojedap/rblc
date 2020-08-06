@@ -3,7 +3,7 @@
         <thead>
             <th width="100px"></th>
             <th>Ideabook</th>      
-            <th width="35px"></th>      
+            <th width="100px"></th>      
         </thead>
         <tbody>
             <tr v-for="(element, key) in list" v-bind:id="`row_` + element.id">    
@@ -25,7 +25,8 @@
                     <p>{{ element.description }}</p>
                 </td>
                 <td>
-                    <a v-bind:href="`<?= base_url("ideabooks/edit/") ?>` + element.id" class="">Edit</a>
+                    <a v-bind:href="`<?= base_url("ideabooks/edit/") ?>` + element.id" class="btn btn-sm btn-light"><i class="fa fa-pencil-alt"></i></a>
+                    <button class="btn btn-sm btn-light" data-toggle="modal" data-target="#delete_modal" v-on:click="set_current(key)"><i class="fa fa-trash"></i></button>
                 </td>
             </tr>
         </tbody>

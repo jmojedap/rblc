@@ -55,34 +55,47 @@ class Post_model extends CI_Model{
         return $data;
     }
     
-    function deletable()
+    /**
+     * Determina si el usuario en sesión tiene permiso para eliminar o no un registro
+     * en la tabla post
+     * 2020-08-05
+     */
+    function deleteable($post_id)
     {
-        $deletable = 0;
-        if ( $this->session->userdata('role') <= 1 ) { $deletable = 1; }
+        $row = $this->Db_model->row_id('post', $post_id);
 
-        return $deletable;
+        $deleteable = 0;
+
+        //Es administrador
+        if ( $this->session->userdata('role') <= 1 ) { $deleteable = 1; }
+
+        //Es el creador del post
+        if ( $row->creator_id = $this->session->userdata('user_id') ){ $deleteable = 1; }
+
+        return $deleteable;
     }
 
     /**
-     * Eliminar un usuario de la base de datos, se elimina también de
-     * las tablas relacionadas
+     * Eliminar un post de la base de datos, se eliminan registros en tablas
+     * relacionadas
+     * 2020-08-04
      */
     function delete($post_id)
     {
-        $quan_deleted = 0;
+        $qty_deleted = 0;
 
-        if ( $this->deletable($post_id) ) 
+        if ( $this->deleteable($post_id) ) 
         {
             //Tablas relacionadas
+                $this->db->query("DELETE FROM post_meta WHERE post_id = {$post_id}");
             
             //Tabla principal
-                $this->db->where('id', $post_id);
-                $this->db->delete('post');
+                $this->db->query("DELETE FROM post WHERE id = {$post_id}");
 
-            $quan_deleted = $this->db->affected_rows();
+            $qty_deleted = $this->db->affected_rows();
         }
 
-        return $quan_deleted;
+        return $qty_deleted;
     }
     
 // EXPLORE FUNCTIONS - posts/explore
