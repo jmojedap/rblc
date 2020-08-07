@@ -393,9 +393,9 @@ class Account_model extends CI_Model{
             $this->activation_key($user_id);
             
         //Asunto de mensaje
-            $subject = APP_NAME . ': Activar cuenta';
+            $subject = APP_NAME . ': Activate your account';
             if ( $activation_type == 'recovery' ) {
-                $subject = APP_NAME . ' Restaurar contraseña';
+                $subject = APP_NAME . ' Recover your account';
             }
         
         //Enviar Email

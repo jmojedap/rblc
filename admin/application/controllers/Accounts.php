@@ -136,7 +136,7 @@ class Accounts extends CI_Controller {
                 
             //Enviar email con código de activación
                 $this->Account_model->activation_key($data['saved_id']);
-                //$this->Account_model->email_activation($data['user_id']);
+                $this->Account_model->email_activation($data['saved_id']);
 
             //Respuesta validación recaptcha
                 $data['recaptcha_valid'] = TRUE; 
@@ -251,8 +251,36 @@ class Accounts extends CI_Controller {
         } else {
             $data['head_title'] = 'Accounts recovery';
             $data['view_a'] = 'accounts/recovery_v';
+            $data['recaptcha_sitekey'] = K_RCSK;    //config/constants.php
             $this->load->view(TPL_FRONT, $data);
         }
+    }
+
+    /**
+     * Recibe email por post, y si encuentra usuario, envía mensaje
+     * para restaurar contraseña
+     * 2020-08-06
+     */
+    function recovery_email()
+    {
+        $data = ['status' => 0, 'recaptcha_valid' => FALSE];
+
+        $this->load->model('Validation_model');
+        $recaptcha = $this->Validation_model->recaptcha(); //Validación Google ReCaptcha V3
+
+        //Identificar usuario
+        $row = $this->Db_model->row('user', "email = '{$this->input->post('email')}'");
+
+        if ( ! is_null($row) && $recaptcha->score > 0.5 ) 
+        {
+            //Usuario existe, se envía email para restaurar constraseña
+            $this->Account_model->activation_key($row->id);
+            $this->Account_model->email_activation($row->id, 'recovery');
+            $data = ['status' => 1, 'recaptcha_valid' => TRUE];
+        }
+
+        //Salida JSON
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 
     /**

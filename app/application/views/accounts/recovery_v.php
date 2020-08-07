@@ -1,26 +1,22 @@
-<script src='https://www.google.com/recaptcha/api.js'></script>
+<?php $this->load->view('assets/recaptcha') ?>
 
 <div id="recovery_app" class="text-center center_box_450">
 
     <div v-show="app_status == 'start'">
         <p>
             Write your email address.
-             We will send you a link to assign a new password.
-        </p>
-
-        
+            We will send you a link to assign a new password.
+        </p>        
 
         <form id="app_form" @submit.prevent="send_form" >
+            <!-- Campo para validación Google ReCaptcha V3 -->
+            <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
+
             <div class="form-group">
                 <label class="sr-only" for="email">E-mail</label>
                 <input
-                    name="email"
-                    type="email"
-                    class="form-control"
-                    placeholder="E-mail"
-                    required
-                    value=""
-                    title="E-mail"
+                    name="email" type="email" class="form-control" required
+                    placeholder="E-mail" title="E-mail" v-model="email"
                     >
             </div>
             
@@ -30,21 +26,25 @@
         </form>
     </div>
 
-    <div class="alert alert-warning" role="alert" v-show="no_user">
-        <i class="fa fa-user-slash"></i>
-        <br/>
-        There is no registered user with the written email.
+    <div v-show="app_status == 'no_user'">
+        <a href="<?= base_url("accounts/recovery") ?>" class="btn btn-light mb-2">
+            <i class="fa fa-arrow-left"></i> Back
+        </a>
+        <div class="alert alert-warning" role="alert">
+            <i class="fa fa-user-slash"></i>
+            <br/>
+            There is no registered any user with the email: <b>{{ email }}</b>.
+        </div>
     </div>
+
 
     <div class="card" style="margin-bottom: 10px;" v-show="app_status == 'sent'">
         <div class="card-body">
             <i class="fa fa-check fa-2x text-success"></i>
             <p>
-                We send a link to your email to reset your password.
+                We send a link to the e-mail address <strong class="text-success">{{ email }}</strong> for reset your password.
             <p>
-            <p>
-                Remember to also check your spam folder.
-            </p>
+            <p>Remember to also check the spam folder.</p>
         </div>
     </div>
 
@@ -52,29 +52,31 @@
 </div>
 
 <script>
-    var api_url = '<?php echo URL_API ?>';
     new Vue({
         el: '#recovery_app',
         data: {
-            app_status: 'start',
-            no_user: false
+            email: '',
+            app_status: 'start'
         },
         methods: {
             send_form: function(){
-                axios.post(api_url + 'accounts/recover/', $('#app_form').serialize())
+                axios.post(url_api + 'accounts/recovery_email/', $('#app_form').serialize())
                 .then(response => {
                     console.log(response.data.status);
                     if ( response.data.status == 1 ) {
                         this.no_user = false;
                         this.app_status = 'sent';
-                    } else if ( response.data.status == 2 ) {
-                        this.no_user = true;
+                    } else if ( response.data.status == 0 ) {
+                        this.app_status = 'no_user';
                     }
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
             }
+            /*set_status: function(status){
+                this.app_status = status;
+            },*/
         }
     });
 </script>

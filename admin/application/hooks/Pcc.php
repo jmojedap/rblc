@@ -83,6 +83,7 @@ class Pcc {
         $public_functions[] = 'accounts/activation';
         $public_functions[] = 'accounts/activate';
         $public_functions[] = 'accounts/recovery';
+        $public_functions[] = 'accounts/recovery_email';
         $public_functions[] = 'accounts/recover';
         $public_functions[] = 'accounts/reset_password';
 

@@ -1,4 +1,13 @@
 <?php
+    $styles['main'] = "font-family: 'Trebuchet MS', Helvetica, sans-serif; text-align: center; background-color: #FAFAFA; padding: 20px;";
+    $styles['h1'] = "color: #F37062; margin-top: 50px;";
+    $styles['h3'] = "";
+    $styles['p'] = "";
+    $styles['a'] = "";
+    $styles['button'] = "padding: 10px; background-color: #FDD327; color: #333; text-decoration: none; margin-top: 20px;";
+    $styles['footer'] = "margin-top: 50px; color: #AAAAAA; font-size: 0.7em";
+?>
+<?php
     $texts['title'] = 'Welcome to ' . APP_NAME;
     $texts['paragraph'] = 'To activate your account click on the following link:';
     $texts['button'] = 'Activate';
@@ -12,14 +21,12 @@
         $texts['link'] = "accounts/recover/{$row_user->activation_key}";
     }
 ?>
-<div style="font-family: 'Trebuchet MS', Helvetica, sans-serif; text-align: center; background-color: #FAFAFA; padding: 20px;">
-    <h1 style="color: #E2061D; margin-top: 50px;"><?php echo $texts['title'] ?></h1>
+<div style="<?= $styles['main'] ?>">
+    <h1 style="<?= $styles['h1'] ?>"><?php echo $texts['title'] ?></h1>
     <h3><?php echo $row_user->first_name . ' ' . $row_user->last_name ?></h3>
     <p><?php echo $texts['paragraph'] ?></p>
-    <a href="<?= base_url($texts['link']) ?>" target="_blank">
+    <a style="<?= $styles['button'] ?>" href="<?= URL_APP . $texts['link'] ?>" target="_blank">
         <?= $texts['button'] ?>
     </a>
-    <footer style="margin-top: 50px; color: #AAAAAA; font-size: 0.7em">
-        Creado por Colibri
-    </footer>
+    <footer style="<?= $styles['footer'] ?>">Created por Colibri House</footer>
 </div>
