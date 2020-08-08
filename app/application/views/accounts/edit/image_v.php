@@ -1,13 +1,8 @@
-<?php
-    $att_img = $this->App_model->att_img_user($row);
-?>
-
 <div id="user_image_app" class="center_box_450">
     <div class="card">
         <img
+            class="card-img-top" alt="User image"
             v-bind:src="user.url_image"
-            class="card-img-top"
-            alt="User image"
             onerror="this.src='<?php echo URL_IMG ?>users/user.png'"
         >
         <div class="card-body">
@@ -15,13 +10,11 @@
                 <?php $this->load->view('common/upload_file_form_v') ?>
             </div>
             <div v-show="user.image_id > 0">
-                <a class="btn btn-light w120p d-none" id="btn_crop" href="<?php echo base_url("accounts/edit/crop") ?>">
+                <a class="btn btn-light" id="btn_crop" href="<?php echo base_url("accounts/edit/crop") ?>">
                     <i class="fa fa-crop"></i>
-                    Crop
                 </a>
-                <button class="btn btn-warning w120p" v-on:click="remove_image">
-                    <i class="fa fa-times"></i>
-                    Remove
+                <button class="btn btn-warning" v-on:click="remove_image">
+                    <i class="fa fa-trash"></i>
                 </button>
             </div>
 
@@ -36,7 +29,10 @@
             //this.get_list();
         },
         data: {
-            user: <?= json_encode($row); ?>,
+            user: {
+                image_id: <?= $row->image_id ?>,
+                url_image: '<?= $row->url_image ?>'
+            },
             default_image: '<?= URL_IMG ?>users/user.png'
         },
         methods: {
@@ -51,6 +47,7 @@
                     { 
                         this.user.image_id = response.data.image_id;
                         this.user.url_image = response.data.url_image;
+                        window.location = app_url + 'accounts/edit/cropping';
                     }
                     //Mostrar respuesta html, si existe
                     if ( response.data.html ) { $('#upload_response').html(response.data.html); }

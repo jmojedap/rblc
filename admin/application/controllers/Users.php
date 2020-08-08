@@ -204,13 +204,11 @@ class Users extends CI_Controller{
         {
             $view_a = 'files/cropping_v';
             $data['image_id'] = $data['row']->image_id;
-            $data['url_image'] = URL_UPLOADS . $data['row']->url_image;
+            $data['url_image'] = $data['row']->url_image;
             $data['back_destination'] = "users/edit/{$user_id}/image";
         }
         
         //Array data espefícicas
-            //$data['valores_form'] = $this->Pcrn->valores_form($data['row'], 'user');
-            //$data['nav_2'] = 'users/menus/user_v';
             $data['nav_3'] = 'users/edit/menu_v';
             $data['view_a'] = $view_a;
         

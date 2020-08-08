@@ -313,6 +313,22 @@ class File_model extends CI_Model{
     }
 
     /**
+     * Actualiza campos de dimensiones de registro en la tabla file
+     * 2020-08-08
+     */
+    function update_dimensions($file_id)
+    {
+        $row = $this->Db_model->row_id('file', $file_id);
+
+        $arr_row = $this->arr_dimensions(PATH_UPLOADS . $row->folder . $row->file_name);
+
+        $this->db->where('id', $file_id);
+        $this->db->update('file', $arr_row);
+        
+        return $this->db->affected_rows();
+    }
+
+    /**
      * Modificar la imagen original con un tamaño específico máximo, tomando el 
      * row_file
      */
@@ -714,7 +730,8 @@ class File_model extends CI_Model{
         //Ejecutar recorte
             if ( $this->image_lib->crop() )
             {
-                $this->create_thumbnails($file_id);
+                $this->update_dimensions($file_id);
+                $this->create_thumbnails($row);
                 $data = array('status' => 1, 'message' => 'Imagen recortada');
             } else {
                 $data['html'] = $this->image_lib->display_errors();

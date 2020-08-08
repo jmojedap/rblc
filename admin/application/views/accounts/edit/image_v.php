@@ -1,128 +1,79 @@
-<script>
-// Variables
-//-----------------------------------------------------------------------------
-
-    var user_id = <?php echo $row->id ?>;
-    var src_default = '<?php echo URL_IMG ?>users/user.png';
-    
-// Document Ready
-//-----------------------------------------------------------------------------
-
-    $(document).ready(function()
-    {
-        $('#btn_remove_image').click(function(){
-            remove_image();
-        });
-
-        $('#file_form').submit(function()
-        {
-            set_image();
-            return false;
-        });
-    });
-    
-// Funciones
-//-----------------------------------------------------------------------------
-    
-    /* Función AJAX para envío de archivo JSON a plataforma */
-    function set_image()
-    {
-        var form = $('#file_form')[0];
-        var form_data = new FormData(form);
-
-        $.ajax({        
-            type: 'POST',
-            enctype: 'multipart/form-data', //Para incluir archivos en POST
-            processData: false,  // Important!
-            contentType: false,
-            cache: false,
-            url: url_api + 'accounts/set_image/',
-            data: form_data,
-            beforeSend: function(){
-                //$('#status_text').html('Enviando archivo');
-            },
-            success: function(response){
-                if ( response.status == 1 )
-                {
-                    window.location = app_url + 'accounts/edit/crop/';
-                }
-            }
-        });
-    }
-
-    //Ajax
-    function remove_image()
-    {
-       $.ajax({
-            type: 'POST',
-            url: url_api + 'accounts/remove_image/',
-            success: function (response) {
-                console.log(response.status);
-                if ( response.status == 1 )
-                {
-                    $('#user_image').attr('src', src_default);
-                    $('#btn_remove_image').hide();
-                    $('#btn_crop').hide();
-                    toastr['success']('Imagen de perfil eliminada');
-                }
-            }
-        });
-    }
-</script>
-
-<?php
-    $att_img = $this->App_model->att_img_user($row);
-?>
-
-<div class="row">
-    <div class="col-md-4">
+<div id="user_image_app" class="center_box_450">
+    <div class="card">
         <img
-            id="user_image"
-            class="img-rounded img-bordered img-bordered-primary"
-            src="<?php echo $att_img['src'] ?>"
-            alt=""
-            width="100%"
-            >
-    </div>
-    <div class="col-md-8">
-        <div class="card">
-            <div class="card-body">
-                <form accept-charset="utf-8" method="POST" id="file_form">
-
-                    <div class="form-group row">
-                        <label for="field_file" class="col-sm-2 control-label">Archivo *</label>
-                        <div class="col-sm-10">
-                            <input
-                                type="file"
-                                name="file_field"
-                                required
-                                class="form-control"
-                                placeholder="Archivo"
-                                title="Arcivo a cargar"
-                                accept="image/*"
-                                >
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <div class="col-sm-offset-2 col-sm-10">
-                            <button class="btn btn-success" type="submit">Cargar</button>
-                        </div>
-                    </div>
-                </form>
-                <hr/>
-                <?php if ( $row->image_id > 0 ) { ?>
-                    <a class="btn btn-secondary" id="btn_crop" href="<?php echo base_url("accounts/edit/crop") ?>">
-                        <i class="fa fa-crop"></i>
-                        Recortar
-                    </a>
-                    <button class="btn btn-warning" id="btn_remove_image">
-                        <i class="fa fa-times"></i>
-                        Quitar imagen
-                    </button>
-                <?php } ?>
+            v-bind:src="user.url_image"
+            class="card-img-top"
+            alt="User image"
+            onerror="this.src='<?php echo URL_IMG ?>users/user.png'"
+        >
+        <div class="card-body">
+            <div v-show="user.image_id == 0">
+                <?php $this->load->view('common/upload_file_form_v') ?>
             </div>
+            <div v-show="user.image_id > 0">
+                <a class="btn btn-light w120p" id="btn_crop" href="<?php echo base_url("accounts/edit/crop") ?>">
+                    <i class="fa fa-crop"></i> Crop
+                </a>
+                <button class="btn btn-warning w120p" v-on:click="remove_image">
+                    <i class="fa fa-times"></i> Remove
+                </button>
+            </div>
+
         </div>
-    
     </div>
 </div>
+
+<script>
+    new Vue({
+        el: '#user_image_app',
+        created: function(){
+            //this.get_list();
+        },
+        data: {
+            user: {
+                image_id: <?= $row->image_id ?>,
+                url_image: '<?= $row->url_image ?>'
+            },
+            default_image: '<?= URL_IMG ?>users/user.png'
+        },
+        methods: {
+            send_file_form: function(){
+                let form_data = new FormData();
+                form_data.append('file_field', this.file);
+
+                axios.post(url_api + 'accounts/set_image/', form_data, {headers: {'Content-Type': 'multipart/form-data'}})
+                .then(response => {
+                    //Cargar imagen
+                    if ( response.data.status == 1 )
+                    { 
+                        this.user.image_id = response.data.image_id;
+                        this.user.url_image = response.data.url_image;
+                        window.location = app_url + 'accounts/edit/crop';
+                    }
+                    //Mostrar respuesta html, si existe
+                    if ( response.data.html ) { $('#upload_response').html(response.data.html); }
+                    //Limpiar formulario
+                    $('#field-file').val(''); 
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
+            handle_file_upload(){
+                this.file = this.$refs.file_field.files[0];
+            },
+            remove_image: function(){
+                axios.get(url_api + 'accounts/remove_image/')
+                .then(response => {
+                    if ( response.data.status == 1 ) {
+                        this.user.image_id = 0;
+                        this.user.url_image = this.default_image;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
+        }
+    });
+</script>

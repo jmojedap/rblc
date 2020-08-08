@@ -259,7 +259,7 @@ class Accounts extends CI_Controller {
         if ( $data['row']->role == 13 && $section == 'basic' ) { redirect('accounts/edit/business_profile'); }
         
         $view_a = "accounts/edit/{$section}_v";
-        if ( $section == 'crop' )
+        if ( $section == 'cropping' )
         {
             $view_a = 'files/cropping_v';
             $data['image_id'] = $data['row']->image_id;
