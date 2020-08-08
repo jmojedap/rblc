@@ -71,6 +71,9 @@ class Projects extends CI_Controller{
         $this->load->model('Post_model');
         $data['like_status'] = $this->Post_model->like_status($project_id);
 
+        $this->load->model('User_model');
+        $data['my_ideabooks'] = $this->User_model->ideabooks($this->session->userdata('user_id'));
+
         $data['view_a'] = 'projects/info_v';
         $this->App_model->view(TPL_FRONT, $data);
     }

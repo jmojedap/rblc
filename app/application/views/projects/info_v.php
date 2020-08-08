@@ -1,7 +1,7 @@
 
 
 <?php
-    $options_ideabook = $this->session->userdata('ideabooks'); 
+    //$options_ideabook = $this->session->userdata('ideabooks'); 
     //$options_ideabook = $this->pml->query_to_array($ideabooks, 'title', 'id');
 
     $editable = false;
@@ -45,13 +45,17 @@
 
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <button class="dropdown-item" type="button"
-                                    v-for="(ideabook, ideabook_id) in ideabooks"
-                                    v-on:click="add_to_ideabook(ideabook_id)"
+                                    v-for="(ideabook, ideabook_key) in ideabooks"
+                                    v-on:click="add_to_ideabook(ideabook.id)"
                                     >
-                                    {{ ideabook }}
+                                    {{ ideabook.title }}
                                 </button>
                                 <div class="dropdown-divider"></div>
-                                <form accept-charset="utf-8" method="POST" id="new_ideabook_form" @submit.prevent="add_to_ideabook(0)" class="px-2">
+                                <a href="<?= base_url('ideabooks/add') ?>" class="dropdown-item">
+                                    <i class="fa fa-plus"></i> New
+                                </a>
+                                <!-- Formulario de creación oculto provisionalmente 2020-08-08 -->
+                                <form accept-charset="utf-8" method="POST" id="new_ideabook_form" @submit.prevent="add_to_ideabook(0)" class="px-2 d-none">
                                     <input type="text" required name="post_name" class="form-control" placeholder="New..." v-model="new_ideabook_name">
                                 </form>
                             </div>
@@ -116,7 +120,7 @@
                 url: '<?= URL_IMG ?>front/md_coming_soon.png'
             },
             descriptors: <?= json_encode($descriptors->result()) ?>,
-            ideabooks: <?= json_encode($this->session->userdata('ideabooks')) ?>,
+            ideabooks: <?= json_encode($my_ideabooks->result()) ?>,
             new_ideabook_name: '',
             like_status: <?= $like_status ?>,
             su_id: su_id,

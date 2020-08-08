@@ -60,9 +60,9 @@ class App_model extends CI_Model{
     function app_session_data($row_user)
     {
         //Ideabooks
-        $this->load->model('User_model');
+        /*$this->load->model('User_model');
         $ideabooks = $this->User_model->ideabooks($row_user->id); 
-        $data['ideabooks'] = $this->pml->query_to_array($ideabooks, 'title', 'id');
+        $data['ideabooks'] = $this->pml->query_to_array($ideabooks, 'title', 'id');*/
 
         //Cantidad de mensajes sin leer
         $this->load->model('Message_model');

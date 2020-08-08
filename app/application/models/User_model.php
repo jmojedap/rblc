@@ -736,6 +736,22 @@ class User_model extends CI_Model{
         return $data;
     }
 
+// DATOS Y FUNCIONES ESPECIALES
+//-----------------------------------------------------------------------------
+
+    /**
+     * Ideabooks creados por un usuario
+     */
+    function ideabooks($user_id)
+    {
+        $this->db->select('id, post_name AS title');
+        $this->db->where('creator_id', $user_id);
+        $this->db->where('type_id', 7120);
+        $ideabooks = $this->db->get('post', 50);
+
+        return $ideabooks;
+    }
+
 // GESTIÓN DE SEGUIDORES
 //-----------------------------------------------------------------------------
 
