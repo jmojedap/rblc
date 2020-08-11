@@ -11,7 +11,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger float-left" data-toggle="modal" data-target="#delete_modal"><i class="fa fa-trash"></i></button>
-                <a class="btn btn-main" v-bind:href="`<?php echo base_url('pictures/info/') ?>` + current.id">View more</a>
+                <a class="btn btn-main w120p" v-bind:href="`<?php echo base_url('pictures/edit/') ?>` + current.id">Edit</a>
                 <button type="button" class="btn btn-light w100p" data-dismiss="modal">Close</button>
             </div>
         </div>

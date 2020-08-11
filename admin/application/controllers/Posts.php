@@ -23,10 +23,14 @@ class Posts extends CI_Controller{
 //---------------------------------------------------------------------------------------------------
 
     /** Exploración de Posts */
-    function explore()
-    {        
+    function explore($num_page = 1)
+    {
+        //Identificar filtros de búsqueda
+        $this->load->model('Search_model');
+        $filters = $this->Search_model->filters();
+
         //Datos básicos de la exploración
-            $data = $this->Post_model->explore_data(1);
+            $data = $this->Post_model->explore_data($filters, $num_page);
         
         //Opciones de filtros de búsqueda
             $data['options_type'] = $this->Item_model->options('category_id = 33', 'Todos');
@@ -43,7 +47,10 @@ class Posts extends CI_Controller{
      */
     function get($num_page = 1)
     {
-        $data = $this->Post_model->get($num_page);
+        $this->load->model('Search_model');
+        $filters = $this->Search_model->filters();
+
+        $data = $this->Post_model->get($filters, $num_page);
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
     
@@ -72,23 +79,18 @@ class Posts extends CI_Controller{
      */
     function delete($post_id)
     {
-        $data['status'] = 0;
         $data['qty_deleted'] = $this->Post_model->delete($post_id);
-
-        if ( $data['qty_deleted'] > 0 ) {
-            $data['status'] = 1;
-        }
+        $data['status'] = ( $data['qty_deleted'] > 0 ) ? 1 : 0 ;
 
         //Salida JSON
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
-
     }
     
 // CRUD
 //-----------------------------------------------------------------------------
 
     /**
-     * Vista Formulario para la creación de un nuevo post
+     * Formulario para la creación de un nuevo post
      */
     function add()
     {
@@ -115,8 +117,7 @@ class Posts extends CI_Controller{
      * Información general del post
      */
     function info($post_id)
-    {        
-        //Datos básicos
+    {
         $data = $this->Post_model->basic($post_id);
         $data['view_a'] = 'posts/info_v';
         $this->App_model->view(TPL_ADMIN, $data);
@@ -139,7 +140,7 @@ class Posts extends CI_Controller{
         //Array data espefícicas
             $data['nav_2'] = 'posts/menu_v';
             $data['head_subtitle'] = 'Editar';
-            $data['view_a'] = $this->edit_view($data['row']);
+            $data['view_a'] = $this->Post_model->edit_view($data['row']);
         
         $this->App_model->view(TPL_ADMIN, $data);
     }
@@ -152,21 +153,6 @@ class Posts extends CI_Controller{
     {
         $data = $this->Post_model->update($post_id);
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
-    }
-
-    /**
-     * Nombre de la vista con el formulario para la edición del post. Puede cambiar dependiendo
-     * del tipo (type_id).
-     * 2020-02-23
-     */
-    function edit_view($row)
-    {
-        $edit_view = 'posts/edit_v';
-        if ( $row->type_id == 19) {
-            $edit_view = 'posts/types/glossary/edit_v';
-        }
-
-        return $edit_view;
     }
     
 // IMAGEN PRINCIPAL DEL POST
@@ -327,7 +313,4 @@ class Posts extends CI_Controller{
         //Salida JSON
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
-
-
-
 }

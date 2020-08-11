@@ -96,7 +96,7 @@ class Picture_model extends CI_Model{
     {
         $condition = NULL;
 
-        $condition .= 'album_id = 10 AND ';   //Colección general de imágenes públicas de un usuario
+        //$condition .= 'is_image = 1 AND ';   //Es imagen
 
         //$condition .= $this->role_filter() . ' AND ';
 
@@ -140,7 +140,7 @@ class Picture_model extends CI_Model{
     /**
      * Condición WHERE según lo buscado en el filtro q
      */
-    /*function words_condition($q)
+    function words_condition($q)
     {
         $words_condition = $this->Search_model->words_condition($q, array('file_name', 'title', 'description', 'keywords'));
         if ( $words_condition )
@@ -149,7 +149,7 @@ class Picture_model extends CI_Model{
         }
 
         return $words_condition;
-    }*/
+    }
     
     /**
      * Cantidad total registros encontrados en la tabla con los filtros
@@ -197,20 +197,5 @@ class Picture_model extends CI_Model{
         }
 
         return $list;
-    }
-
-// METADATOS
-//-----------------------------------------------------------------------------
-
-    /**
-     * Query, tags de un file
-     */
-    function tags($file_id)
-    {
-        $this->db->select('id, name, slug');
-        $this->db->where("id IN (SELECT related_1 FROM file_meta WHERE file_id = {$file_id} AND type_id = 27)");
-        $tags = $this->db->get('tag');
-
-        return $tags;
     }
 }

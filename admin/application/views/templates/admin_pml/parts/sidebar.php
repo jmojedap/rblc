@@ -2,7 +2,7 @@
     <section class="sidebar">
         <ul class="sidebar-menu">
             <li>
-                <a href="https://colibri.house/app/"><i class="fa fa-home"></i>Home</a>
+                <a href="<?= URL_APP ?>"><i class="fa fa-home"></i>Home</a>
             </li>
             <li v-for="(element, i) in elements" v-bind:class="{ treeview: element.subelements.length, 'active': element.active }">
                 <a href="#" v-on:click="nav_1_click(i)">

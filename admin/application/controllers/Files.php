@@ -280,5 +280,35 @@ class Files extends CI_Controller{
         //Salida JSON
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
-    
+
+// METADATOS
+//-----------------------------------------------------------------------------
+
+    /**
+     * Actualiza datos descriptivos de la tabla file, y metadatos (tags) para file_meta
+     * 2020-08-11
+     */
+    function update_full($file_id)
+    {
+        //Update row
+            $arr_row['file_name'] = $this->input->post('file_name');
+            $arr_row['description'] = $this->input->post('description');
+            $arr_row['keywords'] = $this->input->post('keywords');
+            $arr_row['updater_id'] = $this->session->userdata('user_id');
+
+            $data['saved_id'] = $this->Db_model->save('file', "id = {$file_id}", $arr_row);
+
+        //Guardar Tags
+            $tags = ( is_null($this->input->post('tags')) ) ? array() : $this->input->post('tags');
+            $data['updated_tags'] = $this->File_model->save_meta_array($file_id, 27, $tags);
+
+        //Actualizar campos dependientes
+            $this->File_model->update_searcher($file_id);
+
+        //Result
+            $data['status'] = 1;
+
+        //Salida JSON
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
 }

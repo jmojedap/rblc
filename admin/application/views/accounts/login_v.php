@@ -48,8 +48,7 @@
 </div>
 
 <script>
-    var app_url = '<?php echo base_url() ?>';
-    var form_destination = app_url + 'accounts/validate_login';
+    var form_destination = url_app + 'accounts/validate_login';
     new Vue({
         el: '#login_app',
         data: {
@@ -62,7 +61,7 @@
                    .then(response => {
                         if ( response.data.status == 1 )
                         {
-                           window.location = app_url + 'app/logged';
+                           window.location = url_app + 'app/logged';
                         } else {
                             this.messages = response.data.messages;
                             this.status = response.data.status;

@@ -7,11 +7,11 @@
                     <td><?php echo $row->id ?></td>
                 </tr>
                 <tr>
-                    <td>Type ID</td>
+                    <td>type_id</td>
                     <td><?php echo $row->type_id ?></td>
                 </tr>
                 <tr>
-                    <td>Post name</td>
+                    <td>post_name</td>
                     <td><?php echo $row->post_name ?></td>
                 </tr>
                 <tr>
@@ -23,7 +23,7 @@
                     <td><?php echo $row->slug ?></td>
                 </tr>
                 <tr>
-                    <td>Image ID</td>
+                    <td>image_id</td>
                     <td><?php echo $row->image_id ?></td>
                 </tr>
             </tbody>
@@ -40,27 +40,19 @@
                     <td><?php echo $row->published_at ?></td>
                 </tr>
                 <tr>
-                    <td>Updated by</td>
-                    <td>
-                        <a href="<?= base_url("users/profile/{$row->updater_id}") ?>">
-                            <?= $this->App_model->name_user($row->updater_id) ?>
-                        </a>
-                    </td>
+                    <td>updater_id</td>
+                    <td><?php echo $row->updater_id ?></td>
                 </tr>
                 <tr>
-                    <td>Updated at</td>
+                    <td>updated_at</td>
                     <td><?php echo $row->updated_at ?></td>
                 </tr>
                 <tr>
-                    <td>Created by</td>
-                    <td>
-                        <a href="<?= base_url("users/profile/{$row->creator_id}") ?>">
-                            <?= $this->App_model->name_user($row->creator_id) ?>
-                        </a>
-                    </td>
+                    <td>creator_id</td>
+                    <td><?php echo $row->creator_id ?></td>
                 </tr>
                 <tr>
-                    <td>Created at</td>
+                    <td>created_at</td>
                     <td><?php echo $row->created_at ?></td>
                 </tr>
             </tbody>

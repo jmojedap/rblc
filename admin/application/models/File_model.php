@@ -796,19 +796,125 @@ class File_model extends CI_Model{
         return $has_row;
     }
 
-// METADATOS
+// METADATOS tabla file_meta
 //-----------------------------------------------------------------------------
 
     /**
-     * Query, tags de un file
+     * Metadatos general, asociados a cualquier tabla
+     * 2020-08-11
+     */
+    function metadata_flat($file_id, $type_id)
+    {
+        $this->db->select('file_meta.id AS meta_id, file_meta.related_1');
+        $this->db->where('type_id', $type_id);
+        $this->db->where('file_id', $file_id);
+        $elements = $this->db->get('file_meta');
+
+        return $elements;
+    }
+
+    /**
+     * Metadatos de file, asociados con la tabla item
+     */
+    function metadata($file_id, $type_id)
+    {
+        $this->db->select('file_meta.id AS meta_id, item_name AS title, file_meta.related_1');
+        $this->db->where('file_meta.type_id', $type_id);
+        $this->db->where('item.category_id', $type_id);
+        $this->db->where('file_meta.file_id', $file_id);
+        $this->db->join('file_meta', 'item.cod = post_meta.related_1');
+        $elements = $this->db->get('item');
+
+        return $elements;
+    }
+
+    /**
+     * Query, tags de un file, tomados de la tabla file_meta
      */
     function tags($file_id)
     {
-        $this->db->select('id, name, slug');
-        $this->db->where("id IN (SELECT related_1 FROM file_meta WHERE file_id = {$file_id} AND type_id = 27)");
+        $this->db->select('tag.id, name, slug, file_meta.id AS meta_id');
+        $this->db->join('file_meta', 'file_meta.related_1 = tag.id');
+        $this->db->where('file_id', $file_id);
+        $this->db->where('file_meta.type_id', 27);
         $tags = $this->db->get('tag');
 
         return $tags;
+    }
+
+    /**
+     * Guarda un registro en la tabla file_meta
+     * 2020-07-16
+     */
+    function save_meta($arr_row, $fields = array('related_1'))
+    {
+        $condition = "file_id = {$arr_row['file_id']} AND type_id = {$arr_row['type_id']}";
+
+        foreach ($fields as $field)
+        {
+            $condition .= " AND {$field} = '{$arr_row[$field]}'";
+        }
+
+        $meta_id = $this->Db_model->save('file_meta', $condition, $arr_row);
+        
+        return $meta_id;
+    }
+
+    /**
+     * Elimina registro de la tabla file_meta, requiere post y meta id, para confirmar
+     * 2020-07-03
+     */
+    function delete_meta($file_id, $meta_id)
+    {
+        $this->db->where('id', $meta_id);
+        $this->db->where('file_id', $file_id);
+        $this->db->delete('file_meta');
+        
+        $data['qty_deleted'] = $this->db->affected_rows();
+
+        return $data;
+    }
+
+    /**
+     * Guarda múltiples registros en la tabla file_meta, con un array,
+     * y elimina los que no estén en el array enviado por post ($new_metas)
+     * 2020-08-10
+     */
+    function save_meta_array($file_id, $type_id, $new_metas)
+    {        
+        $saved = array();                   //Resultado por defecto
+
+        //Eliminar los que ya no están en $new_metas
+            $old_meta = $this->metadata_flat($file_id, $type_id);
+
+            foreach ( $old_meta->result() as $row_meta ) 
+            {
+                if ( ! in_array($row_meta->related_1, $new_metas) )
+                {
+                    $this->delete_meta($file_id, $row_meta->meta_id);
+                    $saved[] = 'Deleted related_1: ' . $row_meta->related_1;
+                }
+            }
+
+        //Guardar nuevos
+            //Array general
+                $arr_row['file_id'] = $file_id;
+                $arr_row['type_id'] = $type_id;
+                $arr_row['creator_id'] = $this->session->userdata('user_id');
+                $arr_row['updater_id'] = $this->session->userdata('user_id');
+        
+            //Recorrer array nuevo y guardar
+                if ( ! is_null($new_metas) )
+                {
+                    foreach ($new_metas as $related_1)
+                    {
+                        $arr_row['related_1'] = $related_1;
+                        $meta_id = $this->save_meta($arr_row);
+                        $saved[] = 'Saved related_1: ' . $related_1;
+                    }
+                }
+
+        return $saved;
     }
 
 // INTERACCIÓN DE USUARIOS

@@ -56,7 +56,6 @@
                     <textarea name="excerpt" id="field-excerpt" rows="3" class="form-control"><?php echo $row->excerpt ?></textarea>
                 </div>
 
-
                 <div class="form-group">
                     <label for="content" class="form-control-label">content</label>
                     <textarea name="content" id="field-content" class="form-control"><?php echo $row->content ?></textarea>
@@ -72,23 +71,18 @@
             <div class="col-md-5">
                 <div class="form-group row">
                     <div class="col-md-8 offset-md-4">
-                        <button class="btn btn-success btn-block" type="submit">
-                            <i class="fa fa-save"></i>
-                            Guardar
-                        </button>
+                        <button class="btn btn-success w120p" type="submit">Guardar</button>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label for="post_name" class="col-md-4 col-form-label text-right">Post Name</label>
+                    <label for="post_name" class="col-md-4 col-form-label text-right">Post name</label>
                     <div class="col-md-8">
                         <input
-                            type="text"
                             name="post_name"
+                            type="text"
                             required
                             class="form-control"
-                            placeholder="post name"
-                            title="post name"
                             value="<?php echo $row->post_name ?>"
                             >
                     </div>
@@ -122,10 +116,8 @@
                         <label for="<?php echo $field ?>" class="col-md-4 col-form-label text-right"><?php echo str_replace('_',' ',$field) ?></label>
                         <div class="col-md-8">
                             <input
-                                type="text"
                                 name="<?php echo $field ?>"
-                                class="form-control"
-                                title="<?php echo $field ?>"
+                                type="text" class="form-control"
                                 value="<?php echo $row->$field ?>"
                                 >
                         </div>

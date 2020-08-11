@@ -17,7 +17,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #F37062;">
     <div class="container">
-        <a class="navbar-brand" href="<?php echo base_url() ?>">
+        <a class="navbar-brand" href="<?php echo URL_APP ?>">
             <img class="d-block" src="<?php echo URL_IMG ?>app/logo_admin.png" alt="Main logo" srcset="">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"

@@ -34,7 +34,7 @@ var nav_1_elements = [
                 active: false,
                 icon: 'fa fa-newspaper',
                 cf: 'posts/explore',
-                sections: ['posts/explore', 'posts/add']
+                sections: ['posts/explore', 'posts/add', 'posts/info', 'posts/edit', 'posts/import', 'posts/comments', 'posts/image']
             },
             {
                 text: 'Files',

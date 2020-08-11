@@ -83,6 +83,14 @@ class App extends CI_Controller {
         $this->App_model->view(TPL_ADMIN, $data);
     }
 
+    function corpo($format = 'creator')
+    {
+        $data['row'] = $this->Db_model->row_id('post', '13541');
+        $data['view_a'] = ( $format == 'creator') ? 'app/corpo_creator' : 'app/corpo' ;
+        $data['head_title'] = 'CorpoTest';
+        $this->App_model->view(TPL_ADMIN, $data);
+    }
+
     /**
      * Guardar email para suscripción a newsletter
      * 2020-07-22

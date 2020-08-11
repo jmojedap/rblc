@@ -74,8 +74,6 @@
 
 
 <script>
-    var app_url = '<?php echo base_url() ?>';
-    var url_api = '<?php echo URL_API ?>';
     new Vue({
         el: '#signup_app',
         data: {

@@ -66,20 +66,9 @@ class Pictures extends CI_Controller{
         $this->App_model->view(TPL_ADMIN, $data);
     }
 
-    /**
-     * Formulario de edición de datos de una imagen, datos básicos y tags
-     * 2020-08-11
-     */
     function edit($file_id)
     {
         $data = $this->Picture_model->basic($file_id);
-
-        //Opciones para agregar
-        $data['options_tag'] = $this->App_model->options_tag('category_id = 1');
-
-        //Datos actuales
-        $data['tags'] = $this->Picture_model->tags($file_id);
-
         $data['view_a'] = 'pictures/edit_v';
         $this->App_model->view(TPL_ADMIN, $data);
     }

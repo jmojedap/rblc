@@ -38,6 +38,20 @@ class Post_model extends CI_Model{
     }
 
     /**
+     * Nombre de la vista con el formulario para la edición del post. Puede cambiar dependiendo
+     * del tipo (type_id).
+     * 2020-02-23
+     */
+    function edit_view($row)
+    {
+        $edit_view = 'posts/edit_v';
+        if ( $row->type_id == 19) { $edit_view = 'posts/types/glossary/edit_v'; }
+        if ( $row->type_id == 7110 ) { $edit_view = 'posts/types/project/edit_v'; }
+
+        return $edit_view;
+    }
+
+    /**
      * Actualiza un registro en la tabla post
      * 2020-02-22
      */
@@ -56,28 +70,25 @@ class Post_model extends CI_Model{
     }
     
     /**
-     * Determina si el usuario en sesión tiene permiso para eliminar o no un registro
-     * en la tabla post
+     * Determina si el usuario en sesión tiene permiso para eliminar un registro en la tabla post
      * 2020-08-05
      */
     function deleteable($post_id)
     {
+        $deleteable = 0;    //Valor por defecto
         $row = $this->Db_model->row_id('post', $post_id);
 
-        $deleteable = 0;
-
         //Es administrador
-        if ( $this->session->userdata('role') <= 1 ) { $deleteable = 1; }
+        if ( $this->session->userdata('role') <= 1 ) $deleteable = 1;
 
         //Es el creador del post
-        if ( $row->creator_id = $this->session->userdata('user_id') ){ $deleteable = 1; }
+        if ( $row->creator_id = $this->session->userdata('user_id') ) $deleteable = 1;
 
         return $deleteable;
     }
 
     /**
-     * Eliminar un post de la base de datos, se eliminan registros en tablas
-     * relacionadas
+     * Eliminar un post de la base de datos, se eliminan registros en tablas relacionadas
      * 2020-08-04
      */
     function delete($post_id)
@@ -86,13 +97,11 @@ class Post_model extends CI_Model{
 
         if ( $this->deleteable($post_id) ) 
         {
-            //Tablas relacionadas
+            //Tablas y relacionadas principal
                 $this->db->query("DELETE FROM post_meta WHERE post_id = {$post_id}");
-            
-            //Tabla principal
                 $this->db->query("DELETE FROM post WHERE id = {$post_id}");
 
-            $qty_deleted = $this->db->affected_rows();
+            $qty_deleted = $this->db->affected_rows();  //De la última consulta
         }
 
         return $qty_deleted;
@@ -104,10 +113,10 @@ class Post_model extends CI_Model{
     /**
      * Array con los datos para la vista de exploración
      */
-    function explore_data($num_page)
+    function explore_data($filters, $num_page)
     {
         //Data inicial, de la tabla
-            $data = $this->get($num_page);
+            $data = $this->get($filters, $num_page);
         
         //Elemento de exploración
             $data['controller'] = 'posts';                      //Nombre del controlador
@@ -123,7 +132,7 @@ class Post_model extends CI_Model{
         return $data;
     }
 
-    function get($num_page)
+    function get($filters, $num_page)
     {
         //Referencia
             $per_page = 10;                             //Cantidad de registros por página
@@ -145,11 +154,8 @@ class Post_model extends CI_Model{
     
     /**
      * String con condición WHERE SQL para filtrar post
-     * 
-     * @param type $filters
-     * @return type
      */
-    function search_condition($filters)
+    function search_condition_org($filters)
     {
         $condition = NULL;
         
@@ -164,21 +170,15 @@ class Post_model extends CI_Model{
         return $condition;
     }
     
+    /**
+     * Query con resultados de posts filtrados, por página y offset
+     * 2020-07-15
+     */
     function search($filters, $per_page = NULL, $offset = NULL)
     {
-        
-        $role_filter = $this->role_filter($this->session->userdata('post_id'));
-
         //Construir consulta
-            //$this->db->select('id, post_name, except, ');
+            $this->db->select('id, post_name, excerpt, type_id');
         
-        //Crear array con términos de búsqueda
-            $words_condition = $this->Search_model->words_condition($filters['q'], array('post_name', 'content', 'excerpt', 'keywords'));
-            if ( $words_condition )
-            {
-                $this->db->where($words_condition);
-            }
-            
         //Orden
             if ( $filters['o'] != '' )
             {
@@ -189,40 +189,58 @@ class Post_model extends CI_Model{
             }
             
         //Filtros
-            $this->db->where($role_filter); //Filtro según el rol de post en sesión
             $search_condition = $this->search_condition($filters);
             if ( $search_condition ) { $this->db->where($search_condition);}
             
         //Obtener resultados
-        if ( is_null($per_page) )
-        {
-            $query = $this->db->get('post'); //Resultados totales
-        } else {
             $query = $this->db->get('post', $per_page, $offset); //Resultados por página
-        }
         
         return $query;
         
+    }
+
+    /**
+     * String con condición WHERE SQL para filtrar post
+     * 2020-08-01
+     */
+    function search_condition($filters)
+    {
+        $condition = NULL;
+
+        $condition .= $this->role_filter() . ' AND ';
+
+        //q words condition
+        $words_condition = $this->Search_model->words_condition($filters['q'], array('post_name', 'content', 'excerpt', 'keywords'));
+        if ( $words_condition )
+        {
+            $condition .= $words_condition . ' AND ';
+        }
+        
+        //Otros filtros
+        if ( $filters['type'] != '' ) { $condition .= "type_id = {$filters['type']} AND "; }
+        
+        //Quitar cadena final de ' AND '
+        if ( strlen($condition) > 0 ) { $condition = substr($condition, 0, -5);}
+        
+        return $condition;
     }
     
     /**
      * Devuelve la cantidad de registros encontrados en la tabla con los filtros
      * establecidos en la búsqueda
-     * 
-     * @param type $filters
-     * @return type
      */
     function search_num_rows($filters)
     {
-        $query = $this->search($filters); //Para calcular el total de resultados
+        $this->db->select('id');
+        $search_condition = $this->search_condition($filters);
+        if ( $search_condition ) { $this->db->where($search_condition);}
+        $query = $this->db->get('post'); //Para calcular el total de resultados
+
         return $query->num_rows();
     }
     
     /**
      * Devuelve segmento SQL
-     * 
-     * @param type $post_id
-     * @return type 
      */
     function role_filter()
     {
@@ -241,8 +259,6 @@ class Post_model extends CI_Model{
     /**
      * Array con options para ordenar el listado de post en la vista de
      * exploración
-     * 
-     * @return string
      */
     function order_options()
     {
@@ -253,11 +269,6 @@ class Post_model extends CI_Model{
         );
         
         return $order_options;
-    }
-    
-    function editable()
-    {
-        return TRUE;
     }
 
 // VALIDATION
@@ -277,7 +288,7 @@ class Post_model extends CI_Model{
         return $arr_row;
     }
 
-// GESTIÓN DE IMAGEN
+// IMAGEN PRINCIPAL DEL POST
 //-----------------------------------------------------------------------------
 
     function att_img($row)
@@ -321,11 +332,8 @@ class Post_model extends CI_Model{
     }
 
     /**
-     * Le quita la imagen asignada a un post, eliminado el archivo
-     * correspondiente
-     * 
-     * @param type $post_id
-     * @return int
+     * Le quita la imagen asignada a un post, eliminado el archivo correspondiente
+     * 2020-08-08
      */
     function remove_image($post_id)
     {

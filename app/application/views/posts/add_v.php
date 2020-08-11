@@ -10,9 +10,8 @@
                     <label for="post_name" class="col-md-4 col-form-label text-right">Nombre post</label>
                     <div class="col-md-8">
                         <input
-                            id="field-post_name" class="form-control"
                             name="post_name"
-                            placeholder="Nombre post" title="Nombre del post"
+                            class="form-control"
                             required autofocus
                             v-model="form_values.post_name">
                     </div>
