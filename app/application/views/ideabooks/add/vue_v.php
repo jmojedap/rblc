@@ -1,7 +1,9 @@
 <script>
     var form_values = {
         post_name: '',
-        excerpt: ''
+        excerpt: '',
+        text_1: 'ideabook-01',
+        integer_1: 1
     };
             
     new Vue({
@@ -32,7 +34,13 @@
                 }
             },
             go_created: function() {
-                window.location = app_url + 'ideabooks/edit/' + this.row_id;
+                window.location = app_url + 'ideabooks/info/' + this.row_id;
+            },
+            //Seleccionar clase fondo y código fondo
+            select_background: function(bg_number){
+                var bg_code = '0' + bg_number;
+                this.form_values.integer_1 = bg_number;
+                this.form_values.text_1 = 'ideabook-' + bg_code.substring(bg_code.length - 2, bg_code.length);
             }
         }
     });

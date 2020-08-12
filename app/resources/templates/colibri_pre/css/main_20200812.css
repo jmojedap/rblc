@@ -293,15 +293,6 @@ a.small-title{
     font-size: 1.2em;
 }
 
-.ideabook-09 {
-    color: white;
-    background: rgb(61,36,20);
-    background: -moz-linear-gradient(90deg, rgba(61,36,20,1) 0%, rgba(139,94,60,1) 100%);
-    background: -webkit-linear-gradient(90deg, rgba(61,36,20,1) 0%, rgba(139,94,60,1) 100%);
-    background: linear-gradient(90deg, rgba(61,36,20,1) 0%, rgba(139,94,60,1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#3d2414",endColorstr="#8b5e3c",GradientType=1);
-}
-
 /* MESSAGES */
 /*-----------------------------------------------------------------------------*/
 

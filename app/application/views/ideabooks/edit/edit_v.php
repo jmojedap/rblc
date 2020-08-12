@@ -1,7 +1,9 @@
 <div id="edit_ideabook">
     <div class="card center_box_750">
         <div class="card-body">
-            <form id="edit_form" accept-charset="utf-8" @submit.prevent="send_form">
+            <form id="edit_form" accept-charset="utf-8" @submit.prevent="send_form">    
+                <input class="d-none" name="text_1" type="text" v-model="form_values.text_1">
+                <input class="d-none" name="integer_1" type="text" v-model="form_values.integer_1">
                 <div class="form-group row">
                     <label for="post_name" class="col-md-4 col-form-label text-right">Ideabook name</label>
                     <div class="col-md-8">
@@ -29,6 +31,23 @@
                             maxlength="50"
                             v-model="form_values.excerpt"
                             >
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="color" class="col-md-4 col-form-label text-right">Chose color</label>
+                    <div class="col-md-8 d-flex flex-wrap">
+                        <?php for ( $i = 1; $i <= 16; $i++ ) { ?>
+                            <?php
+                                $cl_selector = 'ideabook-' . substr('0'.$i, -2);
+                            ?>
+                            <div
+                                class="ideabook-selector mr-1 mb-1 <?= $cl_selector ?>"
+                                v-on:click="select_background(<?= $i ?>)"
+                                v-bind:class="{'ideabook-selector-active': form_values.integer_1 == <?= $i ?>}"
+                                >
+                            </div>
+                        <?php } ?>
                     </div>
                 </div>
 

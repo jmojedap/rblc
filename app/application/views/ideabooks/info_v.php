@@ -1,5 +1,5 @@
 <div id="ideabook_app">
-    <div class="ideabook ideabook-09">
+    <div class="ideabook <?= $row->text_1 ?>">
         <div class="d-flex">
             <div class="mr-3">
                 <img src="<?= URL_IMG ?>front/md_icon_ideabook_white.png" alt="Icon ideabook">
@@ -28,7 +28,7 @@
                         <img
                             v-bind:src="image.url_thumbnail"
                             class="picture"
-                            v-bind:alt="alt"
+                            alt="alt"
                             onerror="this.src='<?php echo URL_IMG ?>front/md_coming_soon.png'"
                         >
                     </div>
