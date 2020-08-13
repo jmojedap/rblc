@@ -181,7 +181,19 @@ class Ideabooks extends CI_Controller{
     }
 
     /**
-     * Agrega un projecto a un ideabook
+     * Listado de projects incluidos en un ideabook
+     */
+    function get_projects($ideabook_id)
+    {
+        $projects = $this->Ideabook_model->projects($ideabook_id);
+        $data['list'] = $projects->result();
+        
+        //Salida JSON
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
+
+    /**
+     * Agrega un project a un ideabook
      * 2020-07-03
      */
     function add_project($ideabook_id, $project_id)

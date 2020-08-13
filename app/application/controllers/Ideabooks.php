@@ -44,6 +44,18 @@ class Ideabooks extends CI_Controller{
         $data['nav_2'] = 'ideabooks/menu_v';
         $this->App_model->view(TPL_ADMIN, $data);
     }
+
+    /**
+     * Vista lista de projects incluidos en un ideabook.
+     * 2020-08-13
+     */
+    function projects($ideabook_id)
+    {
+        $data = $this->Ideabook_model->basic($ideabook_id);
+        $data['view_a'] = 'ideabooks/projects_v';
+        $data['nav_2'] = 'ideabooks/menu_v';
+        $this->App_model->view(TPL_ADMIN, $data);
+    }
     
     /**
      * Administración de ideabookos creados por el usuario en sesión

@@ -10,7 +10,7 @@
 
         <?php $this->load->view('assets/bootstrap'); ?>
         
-        <link rel="stylesheet" href="<?php echo base_url('resources/templates/colibri_pre/css/main_20200812.css') ?>">
+        <link rel="stylesheet" href="<?php echo base_url('resources/templates/colibri_pre/css/main_20200813.css') ?>">
         <link rel="stylesheet" href="<?php echo base_url('resources/css/style_pml.css') ?>">
         <link rel="stylesheet" href="<?php echo base_url('resources/css/ideabook_colors.css') ?>">
 

@@ -306,7 +306,7 @@ class Ideabook_model extends CI_Model{
      */
     function projects($ideabook_id)
     {
-        $this->db->select('post.id, post_name AS title, post_meta.id AS meta_id');
+        $this->db->select('post.id, post_name AS title, post_meta.id AS meta_id, post.url_image, post.url_thumbnail');
         $this->db->where('post.type_id', 7110); //Post tipo project
         $this->db->join('post_meta', 'post.id = post_meta.related_1');
         $this->db->where('post_meta.type_id', 722);   //Asignación de project

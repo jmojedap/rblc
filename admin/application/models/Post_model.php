@@ -374,15 +374,29 @@ class Post_model extends CI_Model{
 
     /**
      * Elimina registro de la tabla post_meta, requiere post y meta id, para confirmar
-     * 2020-07-03
+     * 2020-08-13
      */
     function delete_meta($post_id, $meta_id)
     {
-        $this->db->where('id', $meta_id);
-        $this->db->where('post_id', $post_id);
-        $this->db->delete('post_meta');
-        
-        $data['qty_deleted'] = $this->db->affected_rows();
+        //Valores iniciales
+        $data = array('status' => 0, 'qty_deleted' => 0);
+        $conditions = 0;
+        $row = $this->Db_model->row_id('post', $post_id);
+
+        //Comprobar permiso para eliminar
+        if ( $this->session->userdata('role') <= 2 ) $conditions++;                      //Es administrador
+        if ( $row->creator_id == $this->session->userdata('user_id') ) $conditions++;    //Es el creador del post
+
+        //Si cumple al menos una de las condiciones
+        if ( $conditions >= 1 )
+        {
+            $this->db->where('id', $meta_id);
+            $this->db->where('post_id', $post_id);
+            $this->db->delete('post_meta');
+            
+            $data['qty_deleted'] = $this->db->affected_rows();
+            $data['status'] = 1;
+        }
 
         return $data;
     }
