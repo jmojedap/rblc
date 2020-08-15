@@ -43,8 +43,8 @@ class App extends CI_Controller {
             $arr_destination = array(
                 0 => 'pictures/explore/',  //Developer
                 1 => 'pictures/explore/',  //Administrador
-                13 => 'accounts/profile/', //Professional
-                23 => 'accounts/profile/',  //Homeowner
+                13 => 'accounts/edit/', //Professional
+                23 => 'accounts/edit/',  //Homeowner
             );
                 
             $destination = $arr_destination[$this->session->userdata('role')];

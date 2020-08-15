@@ -37,7 +37,7 @@
     {
         if ( response.status == 1 )
         {
-            window.location = app_url + back_destination;
+            window.location = url_app + back_destination;
         } else {
             toastr['error'](response.message);
         }

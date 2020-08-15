@@ -32,7 +32,7 @@
                 }
             },
             go_created: function() {
-                window.location = app_url + 'projects/edit/' + this.row_id;
+                window.location = url_app + 'projects/edit/' + this.row_id;
             }
         }
     });

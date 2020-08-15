@@ -59,7 +59,7 @@
                     this.hide_message = response.data.status;
                     if ( response.data.status == 1 ) {
                         toastr['success']('Your password was successfully changed');
-                        setTimeout(function(){ window.location = app_url + 'app/logged'; }, 3000);
+                        setTimeout(function(){ window.location = url_app + 'app/logged'; }, 3000);
                         
                     }
                 })

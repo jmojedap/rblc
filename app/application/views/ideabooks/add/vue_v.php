@@ -34,7 +34,7 @@
                 }
             },
             go_created: function() {
-                window.location = app_url + 'ideabooks/info/' + this.row_id;
+                window.location = url_app + 'ideabooks/info/' + this.row_id;
             },
             //Seleccionar clase fondo y código fondo
             select_background: function(bg_number){

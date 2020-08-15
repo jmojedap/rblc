@@ -136,7 +136,9 @@ class Accounts extends CI_Controller {
                 
             //Enviar email con código de activación
                 $this->Account_model->activation_key($data['saved_id']);
-                $this->Account_model->email_activation($data['saved_id']);
+                if ( ENV == 'production' ) {
+                    $this->Account_model->email_activation($data['saved_id']);
+                }
 
             //Respuesta validación recaptcha
                 $data['recaptcha_valid'] = TRUE; 
@@ -557,11 +559,36 @@ class Accounts extends CI_Controller {
         redirect('accounts/login');
     }
 
-// LOGIN WITH FACEBOOK
+// LOGIN CON CUENTA DE FACEBOOK
 //-----------------------------------------------------------------------------
 
-    function fb_login()
+    //Test
+    function facebook_login()
     {
-        $this->load->view('accounts/fb_login_v');
+        if ( $this->session->userdata('user_id') ) {
+            redirect('app/logged');
+        } else {
+            $this->load->view('accounts/page_facebook_login_v');
+        }
+    }
+
+    /**
+     * Recibe por POST Access Token de usuario de facebook, se valida.
+     * También recibe por POST datos del usuario de facebook para crear usuario en la base de datos
+     * o iniciar sesión si ya existe.
+     * 2020-08-14
+     */
+    function validate_facebook_login()
+    {
+        $data = array('status' => 0, 'message' => 'Authentication failed');
+        $token_validation = $this->Account_model->facebook_validate_token($this->input->post('input_token'));
+
+        if ( $token_validation->is_valid )
+        {
+            $data = $this->Account_model->facebook_set_login();
+        }
+
+        //Salida JSON
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 }

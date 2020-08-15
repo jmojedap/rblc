@@ -109,7 +109,7 @@
                 .then(response => {
                     console.log(response.data);
                     if ( response.data.conversation_id > 0 ) {
-                        window.location = app_url + 'messages/conversation/' + response.data.conversation_id;
+                        window.location = url_app + 'messages/conversation/' + response.data.conversation_id;
                     }
                 })
                 .catch(function (error) {

@@ -87,7 +87,7 @@ class Accounts extends CI_Controller {
     function signup($with_email = FALSE)
     {
         $data['head_title'] = 'Create an account in ' . APP_NAME ;
-        $data['view_a'] = 'accounts/signup_v';
+        $data['view_a'] = 'accounts/signup/signup_v';
         $data['with_email'] = $with_email;
         //$data['g_client'] = $this->Account_model->g_client(); //Para botón login con Google
         $data['recaptcha_sitekey'] = K_RCSK;    //config/constants.php

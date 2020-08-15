@@ -31,7 +31,7 @@
                 }
             },
             go_created: function() {
-                window.location = app_url + 'tags/edit/' + this.row_id;
+                window.location = url_app + 'tags/edit/' + this.row_id;
             }
         }
     });

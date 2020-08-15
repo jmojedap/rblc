@@ -39,6 +39,16 @@ footer a.social_link{
     cursor: pointer;
 }
 
+/* GENERAL */
+/*-----------------------------------------------------------------------------*/
+
+.bg-main {
+    background-color: #F37062;
+}
+
+.bg-main h1 { color:white; }
+.bg-main h2 { color:#666; }
+
 /* Texto */
 /*-----------------------------------------------------------------------------*/
 
@@ -166,6 +176,22 @@ a.small-title{
 /* Anchos */
 /*-----------------------------------------------------------------------------*/
 .w100pc { width: 100%; }
+
+/* REGISTRO DE USUARIOS */
+/*-----------------------------------------------------------------------------*/
+
+.role_type{
+    background-color: white;
+    padding: 30px;
+    margin: 30px;
+    height: 420px;
+    cursor: pointer;
+}
+
+.type_role_selector {
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
 
 /* Comentarios */
 /*-----------------------------------------------------------------------------*/

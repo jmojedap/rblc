@@ -90,6 +90,8 @@ class Pcc {
         $public_functions[] = 'accounts/g_callback';
         $public_functions[] = 'accounts/g_signup';
 
+        $public_functions[] = 'accounts/validate_facebook_login';
+
         $public_functions[] = 'app/logged';
         $public_functions[] = 'app/denied';
         $public_functions[] = 'app/test';

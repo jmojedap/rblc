@@ -47,7 +47,7 @@
                     { 
                         this.user.image_id = response.data.image_id;
                         this.user.url_image = response.data.url_image;
-                        window.location = app_url + 'accounts/edit/cropping';
+                        window.location = url_app + 'accounts/edit/cropping';
                     }
                     //Mostrar respuesta html, si existe
                     if ( response.data.html ) { $('#upload_response').html(response.data.html); }

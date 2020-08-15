@@ -114,7 +114,6 @@
                     <div class="col-md-8">
                         <input
                             name="address" id="field-address" type="text" class="form-control"
-                            required
                             title="Address" placeholder="Address"
                             v-model="form_values.address"
                         >
@@ -126,7 +125,6 @@
                     <div class="col-md-8">
                         <input
                             name="address_line_2" id="field-address_line_2" type="text" class="form-control"
-                            required
                             title="Address line 2" placeholder="Address line 2"
                             v-model="form_values.address_line_2"
                         >
@@ -138,7 +136,6 @@
                     <div class="col-md-8">
                         <input
                             name="city" id="field-city" type="text" class="form-control"
-                            required
                             title="City" placeholder="City"
                             v-model="form_values.city"
                         >
@@ -150,7 +147,6 @@
                     <div class="col-md-8">
                         <input
                             name="state_province" id="field-state_province" type="text" class="form-control"
-                            required
                             title="State" placeholder="State"
                             v-model="form_values.state_province"
                         >

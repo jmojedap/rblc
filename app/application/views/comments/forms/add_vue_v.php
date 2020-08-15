@@ -38,7 +38,7 @@
                 }
             },
             goto_created: function() {
-                window.location = app_url + 'comments/info/' + this.row_id;
+                window.location = url_app + 'comments/info/' + this.row_id;
             }
         }
     });
