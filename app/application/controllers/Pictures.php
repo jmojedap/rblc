@@ -15,7 +15,7 @@ class Pictures extends CI_Controller{
     
     function index()
     {
-        redirect("pictures/explore/");
+        $this->home();
     }
     
 //EXPLORE
@@ -83,4 +83,16 @@ class Pictures extends CI_Controller{
         $data['view_a'] = 'pictures/edit_v';
         $this->App_model->view(TPL_ADMIN, $data);
     }
+
+// INICIO
+//-----------------------------------------------------------------------------
+
+    function home()
+    {
+        $data['head_title'] = APP_NAME;
+        $data['view_a'] = 'info/home_v';
+        $this->App_model->view(TPL_ADMIN, $data);
+    }
+
+
 }

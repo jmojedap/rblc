@@ -74,9 +74,6 @@
                     console.log(error);
                 });
             }
-            /*set_status: function(status){
-                this.app_status = status;
-            },*/
         }
     });
 </script>

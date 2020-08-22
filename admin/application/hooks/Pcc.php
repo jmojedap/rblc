@@ -113,6 +113,9 @@ class Pcc {
 
         $public_functions[] = 'projects/get';   //Colibri
 
+        $public_functions[] = 'pictures/get';   //Colibri
+        $public_functions[] = 'pictures/get_random';   //Colibri
+
         $public_functions[] = 'ideabooks/get_images';   //Colibri
         
         return $public_functions;

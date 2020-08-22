@@ -6,6 +6,7 @@
     $cl_menu['professionals'] = 'nav-link';
     $cl_menu['projects'] = 'nav-link';
 
+    if ( $cf == 'home/' ) { $cl_menu['home'] .= ' active'; }
     if ( $cf == 'pictures/explore' ) { $cl_menu['pictures'] .= ' active'; }
     if ( $cf == 'professionals/explore' ) { $cl_menu['professionals'] .= ' active'; }
     if ( $cf == 'professionals/profile' ) { $cl_menu['professionals'] .= ' active'; }
@@ -30,7 +31,7 @@
 
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="<?= $cl_menu['home'] ?>" href="#">HOME <span class="sr-only">(current)</span></a>
+                    <a class="<?= $cl_menu['home'] ?>" href="<?= base_url('home') ?>">HOME <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="<?= $cl_menu['pictures'] ?>" href="<?= base_url('pictures/explore/') ?>">INSPIRATION</a>

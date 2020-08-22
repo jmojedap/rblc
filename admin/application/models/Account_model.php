@@ -272,12 +272,13 @@ class Account_model extends CI_Model{
     
     /**
      * Encripta y cambia la contraseña de un usuario, status 1 => Activo
-     * 2020-07-20
+     * 2020-08-21
      */
     function change_password($user_id, $password)
     {
         $arr_row = array(
-            'status' => 1,
+            'status' => 1,           //Activar usuario
+            'activation_key' => '',  //Quitar clave de activación reciente
             'password'  => $this->crypt_pw($password)
         );
         

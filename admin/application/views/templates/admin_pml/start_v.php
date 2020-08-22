@@ -7,14 +7,13 @@
 <html lang="es">
     <head>
         <?php $this->load->view('templates/admin_pml/parts/head') ?>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css" integrity="sha256-PHcOkPmOshsMBC+vtJdVr5Mwb7r0LkSVJPlPrp/IMpU=" crossorigin="anonymous" />
         <link rel="stylesheet" href="<?php echo URL_RESOURCES ?>css/start.css">
     </head>
 
     <body>
         <div style="height: 6%" class="d-none d-lg-block"></div>
         <div class="start_container text-center">
-            <img src="<?php echo URL_IMG . 'app/start_logo.png' ?>" alt="Logo App" class="animated fadeIn start_logo" style="margin-bottom: 10px;">
+            <img src="<?php echo URL_IMG . 'app/start_logo.png' ?>" alt="Logo App" class="mb-2">
             <?php $this->load->view($view_a); ?>
         </div>
         <div class="fixed-bottom text-center pb-2">

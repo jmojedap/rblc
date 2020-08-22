@@ -104,6 +104,8 @@ class Pcc {
         $public_functions[] = 'professionals/explore';
         $public_functions[] = 'professionals/profile';
 
+        $public_functions[] = 'home/';
+        $public_functions[] = 'pictures/home';
         $public_functions[] = 'pictures/explore';
         $public_functions[] = 'pictures/get';
 

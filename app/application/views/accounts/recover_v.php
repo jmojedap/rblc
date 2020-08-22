@@ -1,7 +1,7 @@
 <div id="recover_app" class="center_box_450">
-    <div class="text-center">
+    <div class="text-center" v-show="user_id > 0">
         <h2 class="white">Reset password</h2>
-        <h4 class="white"><?php echo $row->first_name . ' ' . $row->last_name ?></h4>
+        <h4 class="white"><?php echo $row->display_name ?></h4>
         <p class="text-muted">
             <i class="fa fa-user"></i>
             <?php echo $row->username ?>
@@ -9,7 +9,7 @@
         <p>Set your <strong>new password</strong> in <?php echo APP_NAME ?></p>
     </div>
 
-    <form id="recover_form" method="post" accept-charset="utf-8" @submit.prevent="send_form">
+    <form id="recover_form" method="post" accept-charset="utf-8" @submit.prevent="send_form" v-show="user_id > 0">
         <div class="form-group">
             <input
                 type="password"
@@ -37,9 +37,14 @@
         </div>
     </form>
 
-    <div class="alert alert-danger" v-show="!hide_message">
+    <div class="alert alert-danger" v-show="errors">
         <i class="fa fa-info-circle"></i>
-        Passwords do not match
+        {{ errors }}
+    </div>
+
+    <div class="alert alert-danger" v-show="user_id == 0">
+        <i class="fa fa-info-circle"></i>
+        Unidentified user with key: <strong>{{ activation_key }}</strong>
     </div>
 
 </div>
@@ -48,19 +53,19 @@
     new Vue({
         el: '#recover_app',
         data: {
-            activation_key: '<?php echo $activation_key ?>',
-            hide_message: true
+            user_id: <?= $user_id ?>,
+            activation_key: '<?= $activation_key ?>',
+            hide_message: true,
+            errors: 0,
         },
         methods: {
             send_form: function(){
-                
                 axios.post(url_api + 'accounts/reset_password/' + this.activation_key, $('#recover_form').serialize())
                 .then(response => {
-                    this.hide_message = response.data.status;
+                    this.errors = response.data.errors;
                     if ( response.data.status == 1 ) {
-                        toastr['success']('Your password was successfully changed');
+                        toastr['success']('Your password was changed successfully');
                         setTimeout(function(){ window.location = url_app + 'app/logged'; }, 3000);
-                        
                     }
                 })
                 .catch(function (error) {

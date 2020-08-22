@@ -54,6 +54,19 @@ class Pictures extends CI_Controller{
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 
+    /**
+     * JSON
+     * Listado de una cantidad aleatoria de imágenes
+     * 2020-08-22
+     */
+    function get_random($qty = 12)
+    {
+        $data = $this->Picture_model->get_random($qty);
+
+        //Salida JSON
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
+
 // Picture info
 //-----------------------------------------------------------------------------
 

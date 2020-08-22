@@ -1,35 +1,27 @@
 <div id="recover_app">
-    <div>
-        <h2 class="white">Establecer contraseña</h2>
-        <h4 class="white"><?php echo $row->first_name . ' ' . $row->last_name ?></h4>
+    <div class="mt-2" v-show="user_id > 0">
+        <h4 class="white"><?php echo $row->display_name ?></h4>
         <p class="text-muted">
             <i class="fa fa-user"></i>
             <?php echo $row->username ?>
         </p>
-        <p>Establece tu nueva contraseña para <?php echo APP_NAME ?></p>
+        <p>Establece tu nueva contraseña en <?php echo APP_NAME ?></p>
     </div>
 
-    <form id="activation_form" method="post" accept-charset="utf-8" @submit.prevent="send_form">
+    <form id="recover_form" method="post" accept-charset="utf-8" @submit.prevent="send_form" v-show="user_id > 0">
         <div class="form-group">
             <input
-                type="password"
-                name="password"
-                class="form-control"
-                placeholder="contrase&ntilde;a"
-                required
-                autofocus
-                title="Debe tener un número y una letra minúscula, y al menos 8 caractéres"
-                pattern="(?=.*\d)(?=.*[a-z]).{8,}"
+                name="password" type="password"
+                class="form-control" 
+                placeholder="contrase&ntilde;a" title="Debe tener un número y una letra minúscula, y al menos 8 caractéres"
+                required autofocus pattern="(?=.*\d)(?=.*[a-z]).{8,}"
                 >
         </div>
         <div class="form-group">
             <input
-                type="password"
-                name="passconf"
-                class="form-control"
-                placeholder="confirma tu contrase&ntilde;a"
+                name="passconf" type="password"
+                class="form-control" placeholder="confirma tu contrase&ntilde;a" title="passconf contrase&ntilde;a"
                 required
-                title="passconf contrase&ntilde;a"
                 >
         </div>
         <div class="form-group">
@@ -37,9 +29,14 @@
         </div>
     </form>
 
-    <div class="alert alert-danger" v-show="!hide_message">
+    <div class="alert alert-danger" v-show="errors">
         <i class="fa fa-info-circle"></i>
-        Las contraseñas no coinciden
+        {{ errors }}
+    </div>
+
+    <div class="alert alert-danger" v-show="user_id == 0">
+        <i class="fa fa-info-circle"></i>
+        Usuario no identificado con código: <strong>{{ activation_key }}</strong>
     </div>
 
 </div>
@@ -48,19 +45,19 @@
     new Vue({
         el: '#recover_app',
         data: {
-            app_url: '<?= base_url() ?>',
-            activation_key: '<?php echo $activation_key ?>',
-            hide_message: true
+            user_id: <?= $user_id ?>,
+            activation_key: '<?= $activation_key ?>',
+            hide_message: true,
+            errors: 0,
         },
         methods: {
             send_form: function(){
-                
-                axios.post(this.app_url + 'accounts/reset_password/' + this.activation_key, $('#activation_form').serialize())
+                axios.post(url_api + 'accounts/reset_password/' + this.activation_key, $('#recover_form').serialize())
                 .then(response => {
-                    console.log(response.data);
-                    this.hide_message = response.data.status;
+                    this.errors = response.data.errors;
                     if ( response.data.status == 1 ) {
-                        //window.location = this.app_url + 'app/logged';
+                        toastr['success']('Tu contraseña fue cambiada exitosamente');
+                        setTimeout(function(){ window.location = url_app + 'app/logged'; }, 3000);
                     }
                 })
                 .catch(function (error) {

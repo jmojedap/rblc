@@ -96,7 +96,7 @@ class Picture_model extends CI_Model{
     {
         $condition = NULL;
 
-        //$condition .= 'is_image = 1 AND ';   //Es imagen
+        $condition .= 'album_id = 10 AND ';   //Colección general de imágenes públicas de un usuario
 
         //$condition .= $this->role_filter() . ' AND ';
 
@@ -197,5 +197,29 @@ class Picture_model extends CI_Model{
         }
 
         return $list;
+    }
+
+    /**
+     * Listado de imágenes aleatorias, utilizadas en el home
+     * 2020-08-22
+     */
+    function get_random($qty)
+    {
+        $qty_rows = $this->Db_model->num_rows('file', "is_image = 1 AND album_id = 10");
+
+        $offset = rand(0, $qty_rows - $qty);
+
+        //Consulta
+        $this->db->select('file.id, title, file.url, file.url_thumbnail, user.display_name AS user_display_name, user.id AS user_id, user.url_thumbnail AS user_url_thumbnail');
+        $this->db->join('user_meta', 'user_meta.related_1 = file.id', 'left');  
+        $this->db->join('user', 'user.id = user_meta.user_id', 'left');
+        $this->db->order_by('file.priority', 'ASC');
+        $query = $this->db->get('file', $qty, $offset);
+
+        $data['offset'] = $offset;
+        $data['qty_rows'] = $qty_rows;
+        $data['list'] = $query->result();
+
+        return $data;
     }
 }

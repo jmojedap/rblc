@@ -112,6 +112,11 @@ a.small-title{
     background-color: #F37062;
 }
 
+.btn-main:hover{
+    color: #FFFFFF;
+    background-color: #df5344;
+}
+
 .btn-white {
     border: 1px solid #060607;
     background-color: #FFFFFF;
@@ -141,11 +146,18 @@ a.small-title{
     background-color: #ddd;
 }
 
+.btn-xl{
+    padding: 1em 1.5em;
+    border-radius: 1em;
+}
+
 .badge-colibri{
+    display: inline-block;
     color: white;
     background-color: #F37062;
     padding: 0.2em 1em;
-    margin-right: 0.5em;
+    margin-right: 0.4em;
+    margin-bottom: 2px;
     border-radius: 15px;
 }
 
@@ -191,6 +203,48 @@ a.small-title{
 .type_role_selector {
     padding-top: 30px;
     padding-bottom: 30px;
+}
+
+/* HOME */
+/*-----------------------------------------------------------------------------*/
+
+.home .icons{
+    padding-top: -30px;
+    padding-bottom: 30px;
+    width: 85%;
+    margin: 0 auto;
+}
+
+.home .icon{
+    width: 100%;
+    background-color: white;
+    padding: 30px;
+    margin: 20px;
+    margin-top: -30px;
+    height: 380px;
+    font-size: 0.9em;
+}
+
+.home .icon img {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.home h3{
+    font-size: 1.8em;
+}
+
+.home .img-footer{
+    margin-top: 3em;
+    padding: 3em;
+    padding-left: 10em;
+    color: white;
+    width: 100%;
+    height: 434px;
+}
+
+.home .img-footer h3{
+    font-size: 2em;
 }
 
 /* Comentarios */

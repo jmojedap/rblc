@@ -211,24 +211,32 @@ class Accounts extends CI_Controller {
 
     /**
      * Formulario para reestablecer contraseña
+     * 2020-08-21
      */
     function recover($activation_key)
     {
-        $row_user = $this->Db_model->row('user', "activation_key = '{$activation_key}'");        
-        
+        //Valores por defecto
+            $data['head_title'] = 'Unidentified user';
+            $data['user_id'] = 0;
+    
         //Variables
+            $row_user = $this->Db_model->row('user', "activation_key = '{$activation_key}'");        
             $data['activation_key'] = $activation_key;
             $data['row'] = $row_user;
+        
+        //Verificar que usuario haya sido identificado
+            if ( ! is_null($row_user) ) 
+            {
+                $data['head_title'] = $row_user->display_name;
+                $data['user_id'] = $row_user->id;
+            }
+
+        //Verificar que no tenga sesión iniciada
+            if ( $this->session->userdata('logged') ) redirect('app/logged');
+
+        //Cargar vista
             $data['view_a'] = 'accounts/recover_v';
-            
-        //Evaluar condiciones
-        if ( ! is_null($row_user) ) 
-        {
-            $data['head_title'] = $row_user->display_name;
             $this->load->view('templates/bssocial/start_v', $data);
-        } else {
-            redirect('app/denied');
-        }
     }
 
 // ADMINISTRACIÓN DE CUENTA

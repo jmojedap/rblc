@@ -8,7 +8,7 @@
 
         <?php $this->load->view('assets/bootstrap'); ?>
         
-        <link rel="stylesheet" href="<?php echo base_url('resources/templates/colibri_pre/css/main_20200813.css') ?>">
+        <link rel="stylesheet" href="<?php echo base_url('resources/templates/colibri_pre/css/main_20200822.css') ?>">
         <link rel="stylesheet" href="<?php echo base_url('resources/css/ideabook_colors.css') ?>">
 
         <!-- Google Analytics -->
@@ -23,6 +23,9 @@
         <!-- Vue.js -->
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+
+        <!-- Animate CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"/>
 
         <!-- PML Tools -->
         <link rel="stylesheet" href="<?php echo base_url('resources/css/style_pml.css') ?>">

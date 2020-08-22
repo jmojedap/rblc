@@ -254,7 +254,7 @@ class Accounts extends CI_Controller {
             $data['head_title'] = 'Accounts recovery';
             $data['view_a'] = 'accounts/recovery_v';
             $data['recaptcha_sitekey'] = K_RCSK;    //config/constants.php
-            $this->load->view(TPL_FRONT, $data);
+            $this->load->view('templates/admin_pml/start_v', $data);
         }
     }
 
@@ -277,7 +277,7 @@ class Accounts extends CI_Controller {
         {
             //Usuario existe, se envía email para restaurar constraseña
             $this->Account_model->activation_key($row->id);
-            $this->Account_model->email_activation($row->id, 'recovery');
+            if ( ENV == 'production') $this->Account_model->email_activation($row->id, 'recovery');
             $data = ['status' => 1, 'recaptcha_valid' => TRUE];
         }
 
@@ -287,28 +287,32 @@ class Accounts extends CI_Controller {
 
     /**
      * Formulario para reestablecer contraseña, se solicita nueva contraseña y confirmación
+     * 2020-08-21
      */
     function recover($activation_key)
     {
-        $row_user = $this->Db_model->row('user', "activation_key = '{$activation_key}'");        
+        //Valores por defecto
+            $data['head_title'] = 'Usuario no identificado';
+            $data['user_id'] = 0;
         
         //Variables
+            $row_user = $this->Db_model->row('user', "activation_key = '{$activation_key}'");        
             $data['activation_key'] = $activation_key;
             $data['row'] = $row_user;
-            $data['view_a'] = 'accounts/recover_v';
-            
-        //Evaluar condiciones
-            $conditions = 0;
-            if ( ! is_null($row_user) ) { $conditions++; }
-            if ( $this->session->userdata('logged') != TRUE ) { $conditions++; }
         
-        if ( $conditions == 2 ) 
-        {
-            $data['head_title'] = $row_user->display_name;
+        //Verificar que usuario haya sido identificado
+            if ( ! is_null($row_user) ) 
+            {
+                $data['head_title'] = $row_user->display_name;
+                $data['user_id'] = $row_user->id;
+            }
+
+        //Verificar que no tenga sesión iniciada
+            if ( $this->session->userdata('logged') ) redirect('app/logged');
+
+        //Cargar vista
+            $data['view_a'] = 'accounts/recover_v';
             $this->load->view('templates/admin_pml/start_v', $data);
-        } else {
-            redirect('app/denied');
-        }
     }
 
     /**
@@ -317,21 +321,20 @@ class Accounts extends CI_Controller {
      */
     function reset_password($activation_key)
     {
-        $data = array('status' => 0, 'message' => 'Password no changed');
+        $data = array('status' => 0, 'errors' => '');
         $row_user = $this->Db_model->row('user', "activation_key = '{$activation_key}'");        
         
-        $conditions = 0;
-        if ( $this->input->post('password') == $this->input->post('passconf') ) { $conditions++; }  //Contraseñas coinciden
-        if ( strlen($this->input->post('password')) > 0 ) { $conditions++; }                        //Hay contraseña escrita
-        if ( ! is_null($row_user) ) { $conditions++; }                                              //Usuario existente
+        //Validar condiciones
+        if ( $this->input->post('password') <> $this->input->post('passconf') ) $data['errors'] .= 'Passwords do not match. '; //Contraseñas coinciden
+        if ( is_null($row_user) ) $data['errors'] .= 'Usuario no identificado. ';
         
-        if ( $conditions == 3 ) 
+        if ( strlen($data['errors']) == 0 ) 
         {
             $this->Account_model->change_password($row_user->id, $this->input->post('password'));
             $this->Account_model->create_session($row_user->username, 1);
             
             $data['status'] = 1;
-            $data['message'] = 'Password changed for user: ' . $row_user->username;
+            $data['message'] = $this->input->post('password') . '::' . $this->input->post('conf');
         }
         
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
