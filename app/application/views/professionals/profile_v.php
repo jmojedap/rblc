@@ -6,6 +6,16 @@
                 <i class="fas fa-map-marker-alt"></i>
                 <?= $row->city ?>, <?= $row->state_province ?>
             </p>
+            <div class="d-flex mb-2">
+                <div>
+                    <img src="<?= URL_IMG ?>front/icon_colibri.png" alt="Icon professional followers">
+                    <span class="counter"><?= $qty_followers ?></span>
+                </div>
+                <div class="ml-3">
+                    <img src="<?= URL_IMG ?>front/icon_like.png" alt="Icon professional likes">
+                    <span class="counter"><?= $qty_likes ?></span>
+                </div>
+            </div>
             <div><?= $row->about ?></div>
         </div>
         <div class="col-md-4">

@@ -7,6 +7,8 @@ class Professional_model extends CI_Model{
         $data['row'] = $this->Db_model->row_id('user', $user_id);
         $data['head_title'] = substr($data['row']->display_name,0,50);
         $data['view_a'] = 'professionals/profile_v';
+        $data['qty_followers'] = $this->qty_followers($user_id);
+        $data['qty_likes'] = $this->qty_likes($user_id);
 
         return $data;
     }
@@ -227,6 +229,28 @@ class Professional_model extends CI_Model{
         }
 
         return $follow_status;
+    }
+
+    /**
+     * Int, cantidad de seguidores que tiene un usuario
+     * 2020-08-24
+     */
+    function qty_followers($user_id)
+    {
+        $qty_followers = $this->Db_model->num_rows('user_meta', "type_id = 1011 AND user_id = {$user_id}");
+        return $qty_followers;
+    }
+
+    /**
+     * Int, cantidad de likes que tienen las fotos asocidas a un usuario
+     * 2020-08-24
+     */
+    function qty_likes($user_id)
+    {
+        $condition  = "type_id = 10 AND file_id IN (SELECT id FROM file WHERE album_id = 10 AND table_id = 1000 AND related_1 = {$user_id})";
+        $qty_likes = $this->Db_model->num_rows('file_meta', $condition);
+
+        return $qty_likes;
     }
 
 // METADATA
