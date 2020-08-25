@@ -1,25 +1,16 @@
 
 
 <?php
-    //$options_ideabook = $this->session->userdata('ideabooks'); 
-    //$options_ideabook = $this->pml->query_to_array($ideabooks, 'title', 'id');
-
     $editable = false;
 
     if ( $this->session->userdata('user_id') == $row->related_1 ) { $editable = true; }
     if ( $this->session->userdata('role') <= 2 ) { $editable = true; }
 ?>
 
-<style>
-    .main_image{
-        width: 100%;
-    }
-</style>
-
 <div id="proyect_profile">
     <div class="row">
         <div class="col-md-8">
-            <img class="main_image" v-bind:src="current_image.url" alt="Main image of project" onerror="this.src='<?php echo URL_IMG ?>front/sm_coming_soon.png'">
+            <img class="w100pc" v-bind:src="current_image.url" alt="Main image of project" onerror="this.src='<?php echo URL_IMG ?>front/sm_coming_soon.png'">
             <br>
 
             <div class="d-flex flex-row bd-highlight my-3">
@@ -36,8 +27,9 @@
 
                 <?php if ( $this->session->userdata('logged') ) { ?>
                     
-                    <div class="p-2 bd-highlight mt-2">Save in an ideabook</div>
-                    <div class="p-2 bd-highlight">
+                    <div class="p-2 ml-2"><img src="<?= URL_IMG ?>front/icon_ideabook.png" alt="Icon ideabook"></div>
+                    <div class="p-2 mt-2">Save in an ideabook</div>
+                    <div class="p-2">
                         <div class="dropdown">
                             <a class="btn btn-main dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 My ideabooks
@@ -91,7 +83,7 @@
                     Price US: <?= $this->pml->money($row->integer_1) ?>
                 </p>
                 <div class="mb-2">
-                    <button class="btn btn-white btn-block">MESSAGE</button>
+                    <button class="btn btn-white btn-block" v-on:click="create_conversation">Message</button>
                 </div>
                 <?php if ( $editable ) { ?>
                     <a href="<?= base_url("projects/edit/{$row->id}") ?>" class="btn btn-white btn-block mb-2"> EDIT </a>
@@ -114,7 +106,10 @@
         },
         data: {
             project: <?= json_encode($row) ?>,
-            user: <?= json_encode($row_user) ?>,
+            user: {
+                id: '<?= $row_user->id ?>',
+                display_name: '<?= $row_user->display_name ?>'
+            },
             images: <?= json_encode($images->result()) ?>,
             current_image: {
                 url: '<?= URL_IMG ?>front/md_coming_soon.png'
@@ -123,8 +118,7 @@
             ideabooks: <?= json_encode($my_ideabooks->result()) ?>,
             new_ideabook_name: '',
             like_status: <?= $like_status ?>,
-            su_id: su_id,
-
+            su_id: su_id
         },
         methods: {
             set_current_image: function(image_key){
@@ -139,7 +133,7 @@
                     //console.log(response.data);
                     if ( response.data.saved_id > 1 )
                     {
-                        this.ideabooks = response.data.ideabooks;
+                        //this.ideabooks = response.data.ideabooks;
                         toastr['success']('Added to ideabook');
                         this.new_ideabook_name = '';
                     }
@@ -157,6 +151,18 @@
                         this.project.qty_likes++;
                     } else {
                         this.project.qty_likes--;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });  
+            },
+            create_conversation: function(){
+                axios.get(url_api + 'messages/create_conversation/' + this.user.id)
+                .then(response => {
+                    console.log(response.data);
+                    if ( response.data.conversation_id > 0 ) {
+                        window.location = url_app + 'messages/conversation/' + response.data.conversation_id;
                     }
                 })
                 .catch(function (error) {

@@ -1,8 +1,8 @@
-<div id="user_profile">
+<div id="user_profile" class="user_profile">
     <div class="row mb-3">
         <div class="col-md-8">
-            <h1><?= $row->display_name ?></h1>
-            <p>
+            <h1 class="mt-3"><?= $row->display_name ?></h1>
+            <p class="text-muted">
                 <i class="fas fa-map-marker-alt"></i>
                 <?= $row->city ?>, <?= $row->state_province ?>
             </p>

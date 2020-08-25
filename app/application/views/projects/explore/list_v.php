@@ -2,7 +2,7 @@
     <div class="user" v-for="(project, key) in list" v-bind:id="`row_` + project.id">
         <div class="row">
             <div class="col-md-9 pt-2">
-                <a v-bind:href="`<?= base_url('projects/info/') ?>` + project.id + `/` + project.slug">
+                <a v-bind:href="`<?= base_url('projects/info/') ?>` + project.id + `/` + project.slug" class="title_list">
                     <h2>{{ project.name }}</h2>
                 </a>
                 <p>

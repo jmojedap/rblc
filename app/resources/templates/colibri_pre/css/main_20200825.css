@@ -103,6 +103,15 @@ a.small-title{
     text-decoration: none;
 }
 
+a.title_list{
+    color: #333;
+    text-decoration: none;
+}
+
+a.title_list:hover{
+    color: #F37062;
+}
+
 .btn{
     border-radius: 0px;
 }
