@@ -29,6 +29,14 @@
                                 </a>
                             </div>
                         </div>
+                        <p class="mt-2">
+                            {{ picture.description }}
+                        </p>
+                        <p>
+                            <a v-bind:href="`<?php echo base_url("pictures/explore/1/?q=") ?>` + tag.name" v-for="tag in picture.tags">
+                                #{{ tag.name }}
+                            </a>
+                        </p>
                     </div>
                 </div>
             </div>

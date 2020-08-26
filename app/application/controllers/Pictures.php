@@ -38,22 +38,6 @@ class Pictures extends CI_Controller{
             $this->App_model->view(TPL_ADMIN, $data);
     }
 
-    /**
-     * JSON
-     * Listado de imágenes por página y filtradas por criterios de búsqueda
-     * 2020-07-28
-     */
-    function get($num_page = 1)
-    {
-        $this->load->model('Search_model');
-        $filters = $this->Search_model->filters();
-
-        $data = $this->Picture_model->get($filters, $num_page);
-
-        //Salida JSON
-        $this->output->set_content_type('application/json')->set_output(json_encode($data));
-    }
-
 // Picture info
 //-----------------------------------------------------------------------------
 

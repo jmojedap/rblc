@@ -6,10 +6,7 @@
     var menu_elements = [
             { slug: '', text: 'All'},
             { slug: 'kitchen', text: 'Kitchen'},
-            {
-                slug: 'bathroom',
-                text: 'Bathroom'
-            },
+            { slug: 'bathroom', text: 'Bathroom'},
             {
                 slug: 'livingroom',
                 text: 'Living Room'
@@ -62,30 +59,37 @@
 
     new Vue({
         el: '#app_explore',
+        created: function(){
+            this.get_list();
+        },
         data: {
             cf: '<?php echo $cf; ?>',
             controller: '<?php echo $controller; ?>',
             num_page: 1,
-            max_page: <?php echo $max_page; ?>,
+            max_page: 1,
             search_num_rows: 0,
             list: [],
             element: [],
-            filters: <?php echo json_encode($filters) ?>,
+            filters: {},
             menu_elements: menu_elements,
             tag: menu_elements[0],
-            loading_more: false
+            loading_more: false,
+            picture: {
+                row: {description: ''},
+                tags: {}
+            }
         },
         methods: {
             get_list: function(){
                 var params = new URLSearchParams();
                 params.append('q', app_q);
                 params.append('tag', this.tag.slug);
-                axios.post(app_url + this.controller + '/get/' + this.num_page, params)
+                axios.post(url_api + this.controller + '/get/' + this.num_page, params)
                 .then(response => {
                     this.list = response.data.list;
                     this.max_page = response.data.max_page;
                     this.search_num_rows = response.data.search_num_rows;
-                    history.pushState(null, null, app_url + this.cf + this.num_page +'/?' + response.data.str_filters);
+                    history.pushState(null, null, url_app + this.cf + this.num_page +'/?' + response.data.str_filters);
                     this.all_selected = false;
                     this.selected = [];
                 })
@@ -99,6 +103,17 @@
             },
             set_current: function(key){
                 this.element = this.list[key];
+                this.get_details();
+            },
+            //Obtener detalles de Picture
+            get_details: function(){
+                axios.get(url_api + 'pictures/get_details/' + this.element.id)
+                .then(response => {
+                    this.picture = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });  
             },
             set_tag: function(menu_key){
                 this.tag = this.menu_elements[menu_key];
@@ -132,12 +147,12 @@
                 var params = new URLSearchParams();
                 params.append('q', app_q);
                 params.append('tag', this.tag.slug);
-                axios.post(app_url + this.controller + '/get/' + this.num_page, params)
+                axios.post(url_api + this.controller + '/get/' + this.num_page, params)
                 .then(response => {
                     this.list = this.list.concat(response.data.list);   //Agregar resultados al listado
                     this.max_page = response.data.max_page;
                     this.search_num_rows = response.data.search_num_rows;
-                    history.pushState(null, null, app_url + this.cf + this.num_page +'/?' + response.data.str_filters);
+                    history.pushState(null, null, url_app + this.cf + this.num_page +'/?' + response.data.str_filters);
                     this.all_selected = false;
                     this.selected = [];
                     this.loading_more = false;

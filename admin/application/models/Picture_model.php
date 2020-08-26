@@ -3,13 +3,26 @@ class Picture_model extends CI_Model{
 
     function basic($file_id)
     {
-        $data['picture_id'] = $file_id;
-        $data['row'] = $this->Db_model->row_id('file', $file_id);
+        $data['row'] = $this->row("id = {$file_id}");
         $data['head_title'] = substr($data['row']->title,0,50);
         $data['view_a'] = 'pictures/user_v';
-        //$data['nav_2'] = 'pictures/menus/_v';
 
         return $data;
+    }
+
+    /**
+     * Registro de picture, tabla file
+     */
+    function row($condition)
+    {
+        $row = NULL;
+        //$this->db->select('id, file_name, title, description, creator_id, updater_id');
+        $this->db->select('id, file_name, title, description, related_1, album_id');
+        $query = $this->db->get_where('file', $condition);
+
+        if ( $query->num_rows() > 0 ) $row = $query->row();
+
+        return $row;
     }
 
 // EXPLORE FUNCTIONS - pictures/explore
@@ -140,7 +153,7 @@ class Picture_model extends CI_Model{
     /**
      * Condición WHERE según lo buscado en el filtro q
      */
-    function words_condition($q)
+    /*function words_condition($q)
     {
         $words_condition = $this->Search_model->words_condition($q, array('file_name', 'title', 'description', 'keywords'));
         if ( $words_condition )
@@ -149,7 +162,7 @@ class Picture_model extends CI_Model{
         }
 
         return $words_condition;
-    }
+    }*/
     
     /**
      * Cantidad total registros encontrados en la tabla con los filtros
@@ -197,6 +210,21 @@ class Picture_model extends CI_Model{
         }
 
         return $list;
+    }
+
+// Otras
+//-----------------------------------------------------------------------------
+
+    /**
+     * Query, tags de un file
+     */
+    function tags($file_id)
+    {
+        $this->db->select('id, name, slug');
+        $this->db->where("id IN (SELECT related_1 FROM file_meta WHERE file_id = {$file_id} AND type_id = 27)");
+        $tags = $this->db->get('tag');
+
+        return $tags;
     }
 
     /**

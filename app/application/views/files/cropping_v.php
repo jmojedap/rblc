@@ -3,13 +3,11 @@
 <script>
 // Variables
 //-----------------------------------------------------------------------------
-
     var image_id = '<?php echo $image_id ?>';
     var back_destination = '<?php echo $back_destination ?>';
 
 // Document Ready
 //-----------------------------------------------------------------------------
-
     $(document).ready(function ()
     {
         $("#crop_form").submit(function () {
@@ -24,7 +22,6 @@
                     toastr["error"]('Ocurrió un error al recortar');
                 }
             });
-
             return false;
         });
     });

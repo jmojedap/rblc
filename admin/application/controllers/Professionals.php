@@ -46,7 +46,6 @@ class Professionals extends CI_Controller{
 
         //Salida JSON
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
-        //$this->output->enable_profiler(TRUE);
     }
 
     /**

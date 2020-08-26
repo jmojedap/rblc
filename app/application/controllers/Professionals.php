@@ -36,15 +36,6 @@ class Professionals extends CI_Controller{
         //Cargar vista
             $this->App_model->view(TPL_ADMIN, $data);
     }
-
-    function get($num_page = 1)
-    {
-        $data = $this->Professional_model->get($num_page);
-
-        //Salida JSON
-        $this->output->set_content_type('application/json')->set_output(json_encode($data));
-    }
-    
     
 // CRUD
 //-----------------------------------------------------------------------------
@@ -78,7 +69,6 @@ class Professionals extends CI_Controller{
         $data['subtitle_head'] = 'images';
         $this->App_model->view(TPL_ADMIN, $data);
     }
-
 
 // EDICIÓN Y ACTUALIZACIÓN
 //-----------------------------------------------------------------------------

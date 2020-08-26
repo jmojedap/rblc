@@ -85,4 +85,21 @@ class Pictures extends CI_Controller{
         $data['view_a'] = 'pictures/edit_v';
         $this->App_model->view(TPL_ADMIN, $data);
     }
+
+    /**
+     * JSON
+     * Detalles de picture, row y tags
+     * 2020-08-26
+     */
+    function get_details($file_id)
+    {
+        $picture = $this->Picture_model->row("id = {$file_id}");
+
+        $tags = $this->Picture_model->tags($file_id);
+        $picture->tags = $tags->result();
+        $data = $picture;
+
+        //Salida JSON
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
 }
