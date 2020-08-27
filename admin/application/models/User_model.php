@@ -653,12 +653,12 @@ class User_model extends CI_Model{
     }
 
     /**
-     * Guardar conjuntamente los social links de un usuario
-     * 2020-07-13
+     * Guardar conjuntamente los social links de un usuario, guarda y elimina
+     * 2020-08-27
      */
     function save_social_links($user_id)
     {
-        $data = array('status' => 1, 'qty_saved' => 0);
+        $data = array('status' => 1, 'qty_saved' => 0, 'qty_deleted' => 0);
 
         //General
         $arr_row['type_id'] = 1050; //Link
@@ -671,10 +671,10 @@ class User_model extends CI_Model{
 
         foreach ($link_types as $type_key => $link_type)
         {
+            $condition = "type_id = 1050 AND user_id = {$user_id} AND related_1 = {$type_key}";
             if ( strlen($this->input->post($link_type)) )
             {
                 //Verificar si tiene ya un registro
-                $condition = "type_id = 1050 AND user_id = {$user_id} AND related_1 = {$type_key}";
                 $arr_row['related_1'] = $type_key;
                 $arr_row['text_1'] = $this->input->post($link_type);
                 $arr_row['text_2'] = $link_type;
@@ -682,6 +682,11 @@ class User_model extends CI_Model{
     
                 $data['status'] = 1;
                 ++$data['qty_saved']; 
+            } else {
+                //La casilla está vacía, elimina registro si existe
+                $this->db->where($condition);
+                $this->db->delete('user_meta');
+                $data['qty_deleted'] += $this->db->affected_rows();
             }
         }
 
