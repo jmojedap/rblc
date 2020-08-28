@@ -20,46 +20,46 @@
     var element_id = '<?php echo $row->id ?>';
     
     sections.explore = {
-        'icon': 'fa fa-arrow-left',
-        'text': 'Explore',
-        'class': '<?php echo $cl_nav_2['projects_explore'] ?>',
-        'cf': 'projects/explore/',
+        icon: 'fa fa-arrow-left',
+        text: 'Explore',
+        class: '<?php echo $cl_nav_2['projects_explore'] ?>',
+        cf: 'projects/explore/',
         'anchor': true
     };
 
     sections.info = {
-        'icon': 'fa fa-info-circle',
-        'text': 'Info',
-        'class': '<?php echo $cl_nav_2['projects_info'] ?>',
-        'cf': 'projects/info/' + element_id
+        icon: 'fa fa-info-circle',
+        text: 'Info',
+        class: '<?php echo $cl_nav_2['projects_info'] ?>',
+        cf: 'projects/info/' + element_id
     };
 
     sections.comments = {
-        'icon': 'far fa-comment',
-        'text': 'Comments',
-        'class': '<?php echo $cl_nav_2['projects_comments'] ?>',
-        'cf': 'projects/comments/' + element_id
+        icon: 'far fa-comment',
+        text: 'Comments',
+        class: '<?php echo $cl_nav_2['projects_comments'] ?>',
+        cf: 'projects/comments/' + element_id
     };
 
     sections.edit = {
-        'icon': 'fa fa-pencil-alt',
-        'text': 'Edit',
-        'class': '<?php echo $cl_nav_2['projects_edit'] ?>',
-        'cf': 'projects/edit/' + element_id
+        icon: 'fa fa-pencil-alt',
+        text: 'Edit',
+        class: '<?php echo $cl_nav_2['projects_edit'] ?>',
+        cf: 'projects/edit/' + element_id
     };
     
     sections.image = {
-        'icon': 'fa fa-image',
-        'text': 'Imagen',
-        'class': '<?php echo $cl_nav_2['projects_image'] ?>',
-        'cf': 'projects/image/' + element_id
+        icon: 'fa fa-image',
+        text: 'Imagen',
+        class: '<?php echo $cl_nav_2['projects_image'] ?>',
+        cf: 'projects/image/' + element_id
     };
 
     sections.image = {
-        'icon': 'fa fa-image',
-        'text': 'Images',
-        'class': '<?php echo $cl_nav_2['projects_images'] ?>',
-        'cf': 'projects/images/' + element_id
+        icon: 'fa fa-image',
+        text: 'Images',
+        class: '<?php echo $cl_nav_2['projects_images'] ?>',
+        cf: 'projects/images/' + element_id
     };
     
     //Secciones para cada rol

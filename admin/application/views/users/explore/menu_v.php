@@ -16,29 +16,29 @@
     var sections_rol = [];
     
     sections.explore = {
-        'icon': 'fa fa-search',
-        'text': 'Explore',
-        'class': '<?php echo $cl_nav_2['users_explore'] ?>',
-        'cf': 'users/explore'
+        icon: 'fa fa-search',
+        text: 'Explore',
+        class: '<?php echo $cl_nav_2['users_explore'] ?>',
+        cf: 'users/explore'
     };
 
     sections.add = {
-        'icon': 'fa fa-plus',
-        'text': 'New',
-        'class': '<?php echo $cl_nav_2['users_add'] ?>',
-        'cf': 'users/add'
+        icon: 'fa fa-plus',
+        text: 'New',
+        class: '<?php echo $cl_nav_2['users_add'] ?>',
+        cf: 'users/add'
     };
 
     sections.newsletter_subscribers = {
-        'icon': 'fas fa-newspaper',
-        'text': 'Subscribers',
-        'class': '<?php echo $cl_nav_2['users_newsletter_subscribers'] ?>',
-        'cf': 'users/newsletter_subscribers'
+        icon: 'fas fa-newspaper',
+        text: 'Subscribers',
+        class: '<?php echo $cl_nav_2['users_newsletter_subscribers'] ?>',
+        cf: 'users/newsletter_subscribers'
     };
     
     //Secciones para cada rol
-    sections_rol.dvlp = ['explore', 'add', 'newsletter_subscribers'];
-    sections_rol.admn = ['explore', 'add', 'newsletter_subscribers'];
+    sections_rol.dvlp = ['explore', 'newsletter_subscribers'];
+    sections_rol.admn = ['explore', 'newsletter_subscribers'];
     
     //Recorrer el sections del rol actual y cargarlos en el menú
     for ( key_section in sections_rol[app_r]) 

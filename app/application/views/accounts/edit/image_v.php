@@ -10,7 +10,7 @@
                 <?php $this->load->view('common/upload_file_form_v') ?>
             </div>
             <div v-show="user.image_id > 0">
-                <a class="btn btn-light" id="btn_crop" href="<?php echo base_url("accounts/edit/crop") ?>">
+                <a class="btn btn-light" id="btn_crop" href="<?php echo base_url("accounts/edit/cropping") ?>">
                     <i class="fa fa-crop"></i>
                 </a>
                 <button class="btn btn-warning" v-on:click="remove_image">

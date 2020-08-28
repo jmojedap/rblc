@@ -19,39 +19,39 @@
     var element_id = '<?php echo $row->id ?>';
     
     sections.explore = {
-        'icon': 'fa fa-arrow-left',
-        'text': 'Explore',
-        'class': '<?php echo $cl_nav_2['ideabooks_explore'] ?>',
-        'cf': 'ideabooks/explore/',
+        icon: 'fa fa-arrow-left',
+        text: 'Explore',
+        class: '<?php echo $cl_nav_2['ideabooks_explore'] ?>',
+        cf: 'ideabooks/explore/',
         'anchor': true
     };
 
     sections.info = {
-        'icon': 'fa fa-info-circle',
-        'text': 'Info',
-        'class': '<?php echo $cl_nav_2['ideabooks_info'] ?>',
-        'cf': 'ideabooks/info/' + element_id
+        icon: 'fa fa-info-circle',
+        text: 'Info',
+        class: '<?php echo $cl_nav_2['ideabooks_info'] ?>',
+        cf: 'ideabooks/info/' + element_id
     };
 
     sections.edit = {
-        'icon': 'fa fa-pencil-alt',
-        'text': 'Edit',
-        'class': '<?php echo $cl_nav_2['ideabooks_edit'] ?>',
-        'cf': 'ideabooks/edit/' + element_id
+        icon: 'fa fa-pencil-alt',
+        text: 'Edit',
+        class: '<?php echo $cl_nav_2['ideabooks_edit'] ?>',
+        cf: 'ideabooks/edit/' + element_id
     };
 
     sections.projects = {
-        'icon': 'fa fa-project-diagram',
-        'text': 'Projects',
-        'class': '<?php echo $cl_nav_2['ideabooks_projects'] ?>',
-        'cf': 'ideabooks/projects/' + element_id
+        icon: 'fa fa-project-diagram',
+        text: 'Projects',
+        class: '<?php echo $cl_nav_2['ideabooks_projects'] ?>',
+        cf: 'ideabooks/projects/' + element_id
     };
 
     sections.images = {
-        'icon': 'fa fa-image',
-        'text': 'Images',
-        'class': '<?php echo $cl_nav_2['ideabooks_images'] ?>',
-        'cf': 'ideabooks/images/' + element_id
+        icon: 'fa fa-image',
+        text: 'Images',
+        class: '<?php echo $cl_nav_2['ideabooks_images'] ?>',
+        cf: 'ideabooks/images/' + element_id
     };
     
     //Secciones para cada rol

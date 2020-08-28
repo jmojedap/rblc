@@ -14,23 +14,23 @@
     var sections_rol = [];
     
     sections.explore = {
-        'icon': 'fa fa-search',
-        'text': 'Explore',
-        'class': '<?php echo $cl_nav_2['projects_explore'] ?>',
-        'cf': 'projects/explore'
+        icon: 'fa fa-search',
+        text: 'Explore',
+        class: '<?php echo $cl_nav_2['projects_explore'] ?>',
+        cf: 'projects/explore'
     };
 
     sections.add = {
-        'icon': 'fa fa-plus',
-        'text': 'New',
-        'class': '<?php echo $cl_nav_2['projects_add'] ?>',
-        'cf': 'projects/add'
+        icon: 'fa fa-plus',
+        text: 'New',
+        class: '<?php echo $cl_nav_2['projects_add'] ?>',
+        cf: 'projects/add'
     };
     
     //Secciones para cada rol
-    sections_rol.dvlp = ['explore', 'add'];
-    sections_rol.admn = ['explore', 'add'];
-    sections_rol.edtr = ['explore', 'add'];
+    sections_rol.admn = ['explore'];
+    sections_rol.dvlp = ['explore'];
+    sections_rol.edtr = ['explore'];
     
     //Recorrer el sections del rol actual y cargarlos en el menú
     for ( key_section in sections_rol[app_r]) 

@@ -17,17 +17,17 @@
     var element_id = '<?php echo $this->uri->segment(3) ?>';
     
     sections.basic = {
-        'icon': '',
-        'text': 'General',
-        'class': '<?php echo $cl_nav_3['basic'] ?>',
-        'cf': 'users/edit/' + element_id + '/basic'
+        icon: '',
+        text: 'General',
+        class: '<?php echo $cl_nav_3['basic'] ?>',
+        cf: 'users/edit/' + element_id + '/basic'
     };
     
     sections.image = {
-        'icon': 'fa fa-user-circle',
-        'text': 'Image',
-        'class': '<?php echo $cl_nav_3['image'] ?>',
-        'cf': 'users/edit/' + element_id + '/image'
+        icon: 'fa fa-user-circle',
+        text: 'Image',
+        class: '<?php echo $cl_nav_3['image'] ?>',
+        cf: 'users/edit/' + element_id + '/image'
     };
     
     //Secciones para cada rol

@@ -17,24 +17,24 @@
     var element_id = '<?php echo $row->id ?>';
     
     sections.profile = {
-        'icon': 'fa fa-user',
-        'text': 'Perfil',
-        'class': '<?php echo $cl_nav_2['users_profile'] ?>',
-        'cf': 'users/profile/' + element_id
+        icon: 'fa fa-user',
+        text: 'Perfil',
+        class: '<?php echo $cl_nav_2['users_profile'] ?>',
+        cf: 'users/profile/' + element_id
     };
 
     sections.ideabooks = {
-        'icon': 'far fa-lightbulb',
-        'text': 'Ideabooks',
-        'class': '<?php echo $cl_nav_2['users_ideabooks'] ?>',
-        'cf': 'users/ideabooks/' + element_id
+        icon: 'far fa-lightbulb',
+        text: 'Ideabooks',
+        class: '<?php echo $cl_nav_2['users_ideabooks'] ?>',
+        cf: 'users/ideabooks/' + element_id
     };
 
     sections.edit = {
-        'icon': 'fa fa-pencil-alt',
-        'text': 'Editar',
-        'class': '<?php echo $cl_nav_2['users_edit'] ?>',
-        'cf': 'users/edit/' + element_id
+        icon: 'fa fa-pencil-alt',
+        text: 'Editar',
+        class: '<?php echo $cl_nav_2['users_edit'] ?>',
+        cf: 'users/edit/' + element_id
     };
     
     //Secciones para cada rol

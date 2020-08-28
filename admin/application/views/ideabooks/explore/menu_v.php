@@ -14,17 +14,17 @@
     var sections_rol = [];
     
     sections.explore = {
-        'icon': 'fa fa-search',
-        'text': 'Explore',
-        'class': '<?php echo $cl_nav_2['ideabooks_explore'] ?>',
-        'cf': 'ideabooks/explore'
+        icon: 'fa fa-search',
+        text: 'Explore',
+        class: '<?php echo $cl_nav_2['ideabooks_explore'] ?>',
+        cf: 'ideabooks/explore'
     };
 
     sections.add = {
-        'icon': 'fa fa-plus',
-        'text': 'New',
-        'class': '<?php echo $cl_nav_2['ideabooks_add'] ?>',
-        'cf': 'ideabooks/add'
+        icon: 'fa fa-plus',
+        text: 'New',
+        class: '<?php echo $cl_nav_2['ideabooks_add'] ?>',
+        cf: 'ideabooks/add'
     };
     
     //Secciones para cada rol

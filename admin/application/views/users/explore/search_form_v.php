@@ -17,7 +17,7 @@
                     v-on:change="get_list"
                     >
                 <div class="input-group-append" title="Search">
-                    <button type="button" class="btn btn-secondary btn-block" v-on:click="toggle_filters" title="Búsqueda avanzada">
+                    <button type="button" class="btn btn-light btn-block" v-on:click="toggle_filters" title="Búsqueda avanzada">
                         <i class="fa fa-chevron-up" v-show="showing_filters"></i>
                         <i class="fa fa-chevron-down" v-show="!showing_filters"></i>
                     </button>

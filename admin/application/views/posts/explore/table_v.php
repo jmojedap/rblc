@@ -27,7 +27,7 @@
                 </td>
                 
                 <td>
-                    <button class="btn btn-light btn-sm btn-sm-square" data-toggle="modal" data-target="#detail_modal" @click="set_current(key)">
+                    <button class="a4" data-toggle="modal" data-target="#detail_modal" @click="set_current(key)">
                         <i class="fa fa-info"></i>
                     </button>
                 </td>
