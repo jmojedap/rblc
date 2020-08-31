@@ -42,13 +42,6 @@ var nav_1_elements = [
                 icon: 'fa fa-file',
                 cf: 'files/explore',
                 sections: ['files/explore', 'files/add', 'files/edit', 'files/tags', 'files/cropping']
-            },
-            {
-                text: 'Events',
-                active: false,
-                icon: 'fa fa-calendar',
-                cf: 'events/explore',
-                sections: []
             }
         ],
         sections: []
@@ -72,13 +65,6 @@ var nav_1_elements = [
                 icon: 'fa fa-bars',
                 cf: 'items/manage',
                 sections: ['items/manage', 'items/import', 'items/import_e']
-            },
-            {
-                text: 'Database',
-                active: false,
-                icon: 'fa fa-database',
-                cf: 'sync/panel',
-                sections: []
             }
         ],
         sections: []

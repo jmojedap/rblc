@@ -26,7 +26,7 @@
             //this.get_list();
         },
         data: {
-            images: <?php echo json_encode($images->result()); ?>
+            images: <?= json_encode($images->result()); ?>
         },
         methods: {
             

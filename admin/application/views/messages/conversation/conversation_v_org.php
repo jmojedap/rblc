@@ -49,7 +49,7 @@
         },
         methods: {
             get_conversations: function(){
-                axios.get(app_url + 'messages/conversations/')
+                axios.get(url_app + 'messages/conversations/')
                 .then(response => {
                     //console.log(response.data.message)
                     this.conversations = response.data.conversations;
@@ -65,7 +65,7 @@
                 console.log('Current: ' + this.conversation_id);
             },
             send_message: function(){
-                axios.post(app_url + 'messages/send_message/' + this.conversation_id, $('#message_form').serialize())
+                axios.post(url_app + 'messages/send_message/' + this.conversation_id, $('#message_form').serialize())
                 .then(response => {
                     console.log(response.data.message_id);
                     this.form_values.message_text = '';
@@ -75,7 +75,7 @@
                 });
             },
             get_messages: function(){
-                axios.get(app_url + 'messages/get/' + this.conversation_id)
+                axios.get(url_app + 'messages/get/' + this.conversation_id)
                 .then(response => {
                     console.log('mensajes pedidos');
                     this.messages = response.data.messages;

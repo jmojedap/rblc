@@ -1,7 +1,7 @@
 <script>
     /*var form_values = {
         post_name: 'Asunto por definir',
-        excerpt: 'Este es el texto de la anotación, no tiene que ser tan larga pero si al menos dejar constancia de la situación, se hizo a las <?php echo date('Y-m-d H:i:s') ?>',
+        excerpt: 'Este es el texto de la anotación, no tiene que ser tan larga pero si al menos dejar constancia de la situación, se hizo a las <?= date('Y-m-d H:i:s') ?>',
         cat_1: ''
     }*/
     var form_values = {
@@ -13,8 +13,8 @@
 
 // Variables
 //-----------------------------------------------------------------------------
-    var arr_types = <?php echo json_encode($arr_types); ?>;
-    var arr_status = <?php echo json_encode($arr_status); ?>;
+    var arr_types = <?= json_encode($arr_types); ?>;
+    var arr_status = <?= json_encode($arr_status); ?>;
 
 // Filtros
 //-----------------------------------------------------------------------------
@@ -48,7 +48,7 @@
             list: [],
             num_page: 1,
             max_page: 1,
-            user_id: '<?php echo $row->id ?>',
+            user_id: '<?= $row->id ?>',
             form_values: form_values,
             search: {
                 q: ''
@@ -58,7 +58,7 @@
         },
         methods: {
             get_list: function(){
-                axios.post(app_url + 'notes/get/' + this.num_page, $('#search_form').serialize())
+                axios.post(url_app + 'notes/get/' + this.num_page, $('#search_form').serialize())
                 .then(response => {
                     this.list = response.data.list;
                     this.max_page = response.data.max_page;
@@ -90,7 +90,7 @@
                 document.getElementById("field_post_name").focus();
             },
             send_form: function(){
-                axios.post(app_url + 'notes/save/' + this.row_id, $('#note_form').serialize())
+                axios.post(url_app + 'notes/save/' + this.row_id, $('#note_form').serialize())
                 .then(response => {
                     console.log(response.data);
                     
@@ -114,7 +114,7 @@
                 this.row_key = key;
             },
             delete_element: function() {
-                axios.get(app_url + 'notes/delete/' + this.row_id)
+                axios.get(url_app + 'notes/delete/' + this.row_id)
                 .then(response => {
                     console.log(response.data);
                     if ( response.data.status == 1 )

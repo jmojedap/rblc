@@ -22,9 +22,9 @@
     }
 ?>
 <div style="<?= $styles['main'] ?>">
-    <h1 style="<?= $styles['h1'] ?>"><?php echo $texts['title'] ?></h1>
-    <h3><?php echo $row_user->first_name . ' ' . $row_user->last_name ?></h3>
-    <p><?php echo $texts['paragraph'] ?></p>
+    <h1 style="<?= $styles['h1'] ?>"><?= $texts['title'] ?></h1>
+    <h3><?= $row_user->first_name . ' ' . $row_user->last_name ?></h3>
+    <p><?= $texts['paragraph'] ?></p>
     <a style="<?= $styles['button'] ?>" href="<?= URL_APP . $texts['link'] ?>" target="_blank">
         <?= $texts['button'] ?>
     </a>

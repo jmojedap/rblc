@@ -11,7 +11,7 @@
         },
         methods: {
             send_form: function() {
-                axios.post(app_url + 'tags/insert/', $('#add_form').serialize())
+                axios.post(url_app + 'tags/insert/', $('#add_form').serialize())
                 .then(response => {
                     console.log('status: ' + response.data);
                     if ( response.data.status == 1 )
@@ -31,7 +31,7 @@
                 }
             },
             go_created: function() {
-                window.location = app_url + 'tags/info/' + this.row_id;
+                window.location = url_app + 'tags/info/' + this.row_id;
             }
         }
     });

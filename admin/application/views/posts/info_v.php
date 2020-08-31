@@ -4,27 +4,27 @@
             <tbody>
                 <tr>
                     <td>ID</td>
-                    <td><?php echo $row->id ?></td>
+                    <td><?= $row->id ?></td>
                 </tr>
                 <tr>
                     <td>Type ID</td>
-                    <td><?php echo $row->type_id ?></td>
+                    <td><?= $row->type_id ?></td>
                 </tr>
                 <tr>
                     <td>Post name</td>
-                    <td><?php echo $row->post_name ?></td>
+                    <td><?= $row->post_name ?></td>
                 </tr>
                 <tr>
                     <td>status</td>
-                    <td><?php echo $row->status ?></td>
+                    <td><?= $row->status ?></td>
                 </tr>
                 <tr>
                     <td>slug</td>
-                    <td><?php echo $row->slug ?></td>
+                    <td><?= $row->slug ?></td>
                 </tr>
                 <tr>
                     <td>Image ID</td>
-                    <td><?php echo $row->image_id ?></td>
+                    <td><?= $row->image_id ?></td>
                 </tr>
             </tbody>
         </table>
@@ -33,11 +33,11 @@
             <tbody>
                 <tr>
                     <td>count comments</td>
-                    <td><?php echo $row->qty_comments ?></td>
+                    <td><?= $row->qty_comments ?></td>
                 </tr>
                 <tr>
                     <td>published at</td>
-                    <td><?php echo $row->published_at ?></td>
+                    <td><?= $row->published_at ?></td>
                 </tr>
                 <tr>
                     <td>Updated by</td>
@@ -49,7 +49,7 @@
                 </tr>
                 <tr>
                     <td>Updated at</td>
-                    <td><?php echo $row->updated_at ?></td>
+                    <td><?= $row->updated_at ?></td>
                 </tr>
                 <tr>
                     <td>Created by</td>
@@ -61,7 +61,7 @@
                 </tr>
                 <tr>
                     <td>Created at</td>
-                    <td><?php echo $row->created_at ?></td>
+                    <td><?= $row->created_at ?></td>
                 </tr>
             </tbody>
         </table>
@@ -69,25 +69,25 @@
     <div class="col-md-8">
         <div class="card">
             <div class="card-body">
-                <h2><?php echo $row->post_name ?></h2>
+                <h2><?= $row->post_name ?></h2>
                 <div>
                     <h4 class="text-muted">content</h4>
-                    <?php echo $row->excerpt ?>
+                    <?= $row->excerpt ?>
                 </div>
                 <hr>
                 <div>
                     <h4 class="text-muted">content</h4>
-                    <?php echo $row->content ?>
+                    <?= $row->content ?>
                 </div>
                 <hr>
                 <div>
                     <h4 class="text-muted">content json</h4>
-                    <?php echo $row->content_json ?>
+                    <?= $row->content_json ?>
                 </div>
                 <hr>
                 <div>
                     <h4 class="text-muted">keywords:</h4>
-                    <?php echo $row->keywords ?>
+                    <?= $row->keywords ?>
                 </div>
             </div>
         </div>

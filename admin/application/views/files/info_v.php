@@ -12,19 +12,19 @@
             <tbody>
                 <tr>
                     <td>Updated by</td>
-                    <td><?php echo $this->App_model->name_user($row->updater_id) ?></td>
+                    <td><?= $this->App_model->name_user($row->updater_id) ?></td>
                 </tr>
                 <tr>
                     <td>Updated at</td>
-                    <td><?php echo $row->updated_at ?></td>
+                    <td><?= $row->updated_at ?></td>
                 </tr>
                 <tr>
                     <td>Creator</td>
-                    <td><?php echo $this->App_model->name_user($row->creator_id) ?></td>
+                    <td><?= $this->App_model->name_user($row->creator_id) ?></td>
                 </tr>
                 <tr>
                     <td>Created at</td>
-                    <td><?php echo $row->created_at ?></td>
+                    <td><?= $row->created_at ?></td>
                 </tr>
             </tbody>
         </table>
@@ -34,44 +34,44 @@
             <tbody>
                 <tr>
                     <td>ID</td>
-                    <td><?php echo $row->id ?></td>
+                    <td><?= $row->id ?></td>
                 </tr>
                 <tr>
                     <td>Type</td>
-                    <td><?php echo $row->type_id ?></td>
+                    <td><?= $row->type_id ?></td>
                 </tr>
                 <tr>
                     <td>Folder</td>
-                    <td><?php echo $row->folder ?></td>
+                    <td><?= $row->folder ?></td>
                 </tr>
                 <tr>
                     <td>File name</td>
-                    <td><?php echo $row->file_name ?></td>
+                    <td><?= $row->file_name ?></td>
                 </tr>
                 <tr>
                     <td>Is image</td>
-                    <td><?php echo $row->is_image ?></td>
+                    <td><?= $row->is_image ?></td>
                 </tr>
                 <tr>
                     <td>Size</td>
-                    <td><?php echo $row->size ?> KB</td>
+                    <td><?= $row->size ?> KB</td>
                 </tr>
                 <tr>
                     <td>Dimensions</td>
-                    <td><?php echo $row->width ?> x <?= $row->height ?></td>
+                    <td><?= $row->width ?> x <?= $row->height ?></td>
                 </tr>
             </tbody>
         </table>
 
         <div class="card">
             <div class="card-body">
-                <h3 class="card-title"><?php echo $row->title ?></h3>
+                <h3 class="card-title"><?= $row->title ?></h3>
                 <div class="row">
                     <div class="col-md-4 text-right">
                         subtitle
                     </div>
                     <div class="col-md-8">
-                        <?php echo $row->subtitle ?>
+                        <?= $row->subtitle ?>
                     </div>
                 </div>
                 <div class="row">
@@ -79,7 +79,7 @@
                         description
                     </div>
                     <div class="col-md-8">
-                        <?php echo $row->description ?>
+                        <?= $row->description ?>
                     </div>
                 </div>
                 <div class="row">
@@ -87,7 +87,7 @@
                         keywords
                     </div>
                     <div class="col-md-8">
-                        <?php echo $row->keywords ?>
+                        <?= $row->keywords ?>
                     </div>
                 </div>
             </div>
@@ -104,8 +104,8 @@
                 <?php if ( ! is_null($arr_meta) ) { ?>    
                     <?php foreach ( $arr_meta as $meta_field => $meta_value ) { ?>
                         <tr>
-                            <td><?php echo $meta_field ?></td>
-                            <td><?php echo $meta_value ?></td>
+                            <td><?= $meta_field ?></td>
+                            <td><?= $meta_value ?></td>
                         </tr>
                     <?php } ?>
                 <?php } ?>

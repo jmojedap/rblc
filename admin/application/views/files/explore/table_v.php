@@ -17,18 +17,18 @@
                 </td>
 
                 <td>
-                    <a v-bind:href="`<?php echo URL_UPLOADS ?>` + element.folder + element.file_name" data-lightbox="image-1" v-bind:data-title="element.title">
+                    <a v-bind:href="`<?= URL_UPLOADS ?>` + element.folder + element.file_name" data-lightbox="image-1" v-bind:data-title="element.title">
                         <img
-                            v-bind:src="`<?php echo URL_UPLOADS ?>` + element.folder + `sm_` + element.file_name"
+                            v-bind:src="`<?= URL_UPLOADS ?>` + element.folder + `sm_` + element.file_name"
                             class="rounded w50p"
                             alt="imagen miniatura"
-                            onerror="this.src='<?php echo URL_IMG ?>app/sm_nd_square.png'"
+                            onerror="this.src='<?= URL_IMG ?>app/sm_nd_square.png'"
                         >
                     </a>
                 </td>
                 
                 <td>
-                    <a v-bind:href="`<?php echo base_url("files/info/") ?>` + element.id">{{ element.title }}</a>
+                    <a v-bind:href="`<?= base_url("files/info/") ?>` + element.id">{{ element.title }}</a>
                     <p>{{ element.description }}</p>
                 </td>
 
@@ -36,7 +36,7 @@
                 </td>
 
                 <td>
-                    <a class="btn btn-sm btn-light btn-sm-square" v-bind:href="`<?php echo URL_UPLOADS ?>` + element.folder + element.file_name" target="_blank">
+                    <a class="btn btn-sm btn-light btn-sm-square" v-bind:href="`<?= URL_UPLOADS ?>` + element.folder + element.file_name" target="_blank">
                         <i class="fa fa-external-link-alt"></i>
                     </a>
                     <button class="btn btn-sm btn-light btn-sm-square" data-toggle="modal" data-target="#detail_modal" @click="set_current(key)">

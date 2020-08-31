@@ -45,7 +45,7 @@
         <p>Recuerda revisar también tu carpeta de correo no deseado.</p>
     </div>
 
-    <p>¿No tienes una cuenta? <a href="<?php echo base_url('accounts/signup') ?>">Regístrate</a></p>
+    <p>¿No tienes una cuenta? <a href="<?= base_url('accounts/signup') ?>">Regístrate</a></p>
 </div>
 
 <script>

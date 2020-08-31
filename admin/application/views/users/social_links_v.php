@@ -26,7 +26,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <?php echo form_dropdown('related_1', $options_link_type, '', 'class="form-control" v-model="form_values.related_1"') ?>
+                        <?= form_dropdown('related_1', $options_link_type, '', 'class="form-control" v-model="form_values.related_1"') ?>
                     </td>
                     <td>
                         <input
@@ -55,7 +55,7 @@
             this.get_list();
         },
         data: {
-            list: <?php echo json_encode($social_links->result()); ?>,
+            list: <?= json_encode($social_links->result()); ?>,
             form_values: {
                 id: '0',
                 related_1: '099',
@@ -65,7 +65,7 @@
         },
         methods: {
             get_list: function(){
-                axios.get(app_url + 'users/get_social_links/' + this.user_id)
+                axios.get(url_app + 'users/get_social_links/' + this.user_id)
                 .then(response => {
                     this.list = response.data.list;
                 })
@@ -74,7 +74,7 @@
                 });  
             },
             send_form: function(){
-                axios.post(app_url + 'users/save_social_link/' + this.user_id, $('#social_form').serialize())
+                axios.post(url_app + 'users/save_social_link/' + this.user_id, $('#social_form').serialize())
                 .then(response => {
                     if ( response.data.saved_id > 0 ) {
                         toastr["success"]('Guardado');
@@ -98,7 +98,7 @@
                 this.form_values.url = '';
             },
             delete_element: function(){
-                axios.get(app_url + 'users/delete_meta/' + this.user_id + '/' + this.form_values.id)
+                axios.get(url_app + 'users/delete_meta/' + this.user_id + '/' + this.form_values.id)
                 .then(response => {
                     this.get_list();
                     this.clean_form();

@@ -22,7 +22,7 @@
             //this.get_list();
         },
         data: {
-            tags: <?php echo json_encode($tags->result()) ?>
+            tags: <?= json_encode($tags->result()) ?>
         },
         methods: {
             /*get_list: function(){

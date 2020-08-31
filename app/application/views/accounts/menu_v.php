@@ -16,17 +16,17 @@
     var element_id = '<?php echo $row->id ?>';
     
     sections.profile = {
-        'icon': '',
-        'text': 'Profile',
-        'class': '<?php echo $cl_nav_2['accounts_profile'] ?>',
-        'cf': 'accounts/profile/'
+        icon: '',
+        text: 'Profile',
+        class: '<?php echo $cl_nav_2['accounts_profile'] ?>',
+        cf: 'accounts/profile/'
     };
 
     sections.edit = {
-        'icon': '',
-        'text': 'Edit',
-        'class': '<?php echo $cl_nav_2['accounts_edit'] ?>',
-        'cf': 'accounts/edit/basic'
+        icon: '',
+        text: 'Edit',
+        class: '<?php echo $cl_nav_2['accounts_edit'] ?>',
+        cf: 'accounts/edit/basic'
     };
     
     //Secciones para cada rol

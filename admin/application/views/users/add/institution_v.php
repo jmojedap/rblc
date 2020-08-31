@@ -46,7 +46,7 @@
                 </span>
             </div>
             <div class="col-md-4">
-                <?php echo form_dropdown('id_number_type', $id_number_type_options, '', 'class="form-control" required v-model="form_values.id_number_type"') ?>
+                <?= form_dropdown('id_number_type', $id_number_type_options, '', 'class="form-control" required v-model="form_values.id_number_type"') ?>
             </div>
         </div>
 
@@ -80,7 +80,7 @@
         <div class="form-group row">
             <label for="gender" class="col-md-4 col-form-label text-right">Sexo</label>
             <div class="col-md-8">
-                <?php echo form_dropdown('gender', $gender_options, '', 'class="form-control" required v-model="form_values.gender"') ?>
+                <?= form_dropdown('gender', $gender_options, '', 'class="form-control" required v-model="form_values.gender"') ?>
             </div>
         </div>
         
@@ -177,7 +177,7 @@
         <div class="form-group row">
             <label for="city_id" class="col-md-4 col-form-label text-right">Ciudad ubicación</label>
             <div class="col-md-8">
-                <?php echo form_dropdown('city_id', $city_options, '', 'id="field-city_id" class="form-control form-control-chosen" required v-model="form_values.city_id"') ?>
+                <?= form_dropdown('city_id', $city_options, '', 'id="field-city_id" class="form-control form-control-chosen" required v-model="form_values.city_id"') ?>
             </div>
         </div>
 

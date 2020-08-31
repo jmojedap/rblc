@@ -15,7 +15,7 @@
     sections.explore = {
         icon: 'fa fa-list-alt',
         text: 'Explorar',
-        class: '<?php echo $cl_nav_2['events_explore'] ?>',
+        class: '<?= $cl_nav_2['events_explore'] ?>',
         cf: 'events/explore'
     };
     

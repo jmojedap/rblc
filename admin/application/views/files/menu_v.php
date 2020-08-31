@@ -16,12 +16,12 @@
     var sections = [];
     var nav_2 = [];
     var sections_rol = [];
-    var element_id = '<?php echo $file_id ?>';
+    var element_id = '<?= $file_id ?>';
     
     sections.explore = {
         icon: 'fa fa-arrow-left',
         text: 'Explorar',
-        class: '<?php echo $cl_nav_2['files_explore'] ?>',
+        class: '<?= $cl_nav_2['files_explore'] ?>',
         cf: 'files/explore/',
         'anchor': true
     };
@@ -29,35 +29,35 @@
     sections.info = {
         icon: 'fa fa-info-circle',
         text: 'Información',
-        class: '<?php echo $cl_nav_2['files_info'] ?>',
+        class: '<?= $cl_nav_2['files_info'] ?>',
         cf: 'files/info/' + element_id
     };
 
     sections.tags = {
         icon: 'fas fa-tags',
         text: 'Tags',
-        class: '<?php echo $cl_nav_2['files_tags'] ?>',
+        class: '<?= $cl_nav_2['files_tags'] ?>',
         cf: 'files/tags/' + element_id
     };
 
     sections.cropping = {
         icon: 'fa fa-crop',
         text: 'Recortar',
-        class: '<?php echo $cl_nav_2['files_cropping'] ?>',
+        class: '<?= $cl_nav_2['files_cropping'] ?>',
         cf: 'files/cropping/' + element_id
     };
 
     sections.change = {
         icon: 'far fa-file',
         text: 'Cambiar',
-        class: '<?php echo $cl_nav_2['files_change'] ?>',
+        class: '<?= $cl_nav_2['files_change'] ?>',
         cf: 'files/change/' + element_id
     };
 
     sections.edit = {
         icon: 'fa fa-pencil-alt',
         text: 'Editar',
-        class: '<?php echo $cl_nav_2['files_edit'] ?>',
+        class: '<?= $cl_nav_2['files_edit'] ?>',
         cf: 'files/edit/' + element_id
     };
     

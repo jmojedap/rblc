@@ -18,14 +18,14 @@
     sections.person = {
         icon: '',
         text: 'Persona',
-        class: '<?php echo $cl_nav_3['person'] ?>',
+        class: '<?= $cl_nav_3['person'] ?>',
         cf: 'users/add/person'
     };
 
     sections.institution = {
         icon: '',
         text: 'Institución',
-        class: '<?php echo $cl_nav_3['institution'] ?>',
+        class: '<?= $cl_nav_3['institution'] ?>',
         cf: 'users/add/institution'
     };
     

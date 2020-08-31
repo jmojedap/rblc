@@ -25,12 +25,12 @@
         </div>
         
         <div class="form-group clearfix">
-            <a href="<?php echo base_url('accounts/recovery') ?>">¿Olvidaste los datos de tu cuenta?</a>
+            <a href="<?= base_url('accounts/recovery') ?>">¿Olvidaste los datos de tu cuenta?</a>
         </div>
         
         <div class="form-group d-none">
             <a href="<?php //echo $g_client->createAuthUrl(); ?>" class="btn btn_google btn-block btn-lg">
-                <img src="<?php echo URL_IMG . 'app/google.png'?>" style="width: 20px">
+                <img src="<?= URL_IMG . 'app/google.png'?>" style="width: 20px">
                 Ingresar con Google
             </a>
         </div>
@@ -44,7 +44,7 @@
         </div>
     </div>
 
-    <p>¿No tienes una cuenta? <a href="<?php echo base_url('accounts/signup') ?>">Regístrate</a></p>
+    <p>¿No tienes una cuenta? <a href="<?= base_url('accounts/signup') ?>">Regístrate</a></p>
 </div>
 
 <script>

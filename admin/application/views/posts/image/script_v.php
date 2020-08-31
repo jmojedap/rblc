@@ -1,8 +1,8 @@
 <script>
 // Variables
 //-----------------------------------------------------------------------------
-    var post_id = '<?php echo $row->id ?>';
-    var src_default = '<?php echo URL_IMG ?>app/nd.png';
+    var post_id = '<?= $row->id ?>';
+    var src_default = '<?= URL_IMG ?>app/nd.png';
 
 // Document Ready
 //-----------------------------------------------------------------------------
@@ -35,7 +35,7 @@
             processData: false,  // Important!
             contentType: false,
             cache: false,
-            url: app_url + 'posts/set_image/' + post_id,
+            url: url_app + 'posts/set_image/' + post_id,
             data: form_data,
             beforeSend: function(){
                 $('#status_text').html('Enviando archivo');
@@ -59,7 +59,7 @@
     {
        $.ajax({
             type: 'POST',
-            url: app_url + 'posts/remove_image/' + post_id,
+            url: url_app + 'posts/remove_image/' + post_id,
             success: function (response) {
                 if ( response.status == 1 )
                 {

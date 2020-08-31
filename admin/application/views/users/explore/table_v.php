@@ -18,17 +18,17 @@
                 </td>
                 
                 <td>
-                    <a v-bind:href="`<?php echo base_url("users/profile/") ?>` + element.id">
+                    <a v-bind:href="`<?= base_url("users/profile/") ?>` + element.id">
                         <img
                             v-bind:src="element.url_thumbnail"
                             class="rounded-circle w50p"
                             v-bind:alt="element.id"
-                            onerror="this.src='<?php echo URL_IMG ?>users/sm_user.png'"
+                            onerror="this.src='<?= URL_IMG ?>users/sm_user.png'"
                         >
                     </a>
                 </td>
                 <td>
-                    <a v-bind:href="`<?php echo base_url("users/profile/") ?>` + element.id + `/` + element.username">
+                    <a v-bind:href="`<?= base_url("users/profile/") ?>` + element.id + `/` + element.username">
                         {{ element.display_name }}
                     </a>
                 </td>

@@ -9,7 +9,7 @@
                             name="name" id="field-name"
                             type="text" class="form-control"
                             required
-                            value="<?php echo $row->name ?>"
+                            value="<?= $row->name ?>"
                             >
                     </div>
                 </div>
@@ -29,11 +29,11 @@
     new Vue({
         el: '#edit_tag',
         data: {
-            row_id: '<?php echo $row->id ?>'
+            row_id: '<?= $row->id ?>'
         },
         methods: {
             send_form: function(){
-                axios.post(app_url + 'tags/update/' + this.row_id, $('#tag_form').serialize())
+                axios.post(url_app + 'tags/update/' + this.row_id, $('#tag_form').serialize())
                 .then(response => {
                     if (response.data.status == 1) {
                         toastr['success']('Saved');

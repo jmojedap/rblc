@@ -6,11 +6,11 @@
                 <img class="w100pc"
                     alt="Colibri Picture"
                     v-bind:src="current.url"
-                    onerror="this.src='<?php echo URL_IMG ?>app/sm_coming_soon.jpg'"
+                    onerror="this.src='<?= URL_IMG ?>app/sm_coming_soon.jpg'"
                 >
             </div>
             <div class="modal-footer">
-                <a class="btn btn-light w100p" v-bind:href="`<?php echo base_url('pictures/info/') ?>` + current.id">View more</a>
+                <a class="btn btn-light w100p" v-bind:href="`<?= base_url('pictures/info/') ?>` + current.id">View more</a>
                 <button type="button" class="btn btn-light w100p" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete_modal"><i class="fa fa-trash"></i></button>
             </div>

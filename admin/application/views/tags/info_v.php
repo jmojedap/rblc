@@ -3,19 +3,19 @@
         <tbody>
             <tr>
                 <td>ID</td>
-                <td><?php echo $row->id ?></td>
+                <td><?= $row->id ?></td>
             </tr>
             <tr>
                 <td>Tag name</td>
-                <td><?php echo $row->name ?></td>
+                <td><?= $row->name ?></td>
             </tr>
             <tr>
                 <td>Slug</td>
-                <td><?php echo $row->slug ?></td>
+                <td><?= $row->slug ?></td>
             </tr>
             <tr>
                 <td>Files with this tag</td>
-                <td><?php echo $qty_files ?></td>
+                <td><?= $qty_files ?></td>
             </tr>
         </tbody>
     </table>
@@ -25,8 +25,8 @@
             <tr>
                 <td>Updated by</td>
                 <td>
-                    <a href="<?php echo base_url("users/profile/{$row->updater_id}") ?>">
-                        <?php echo $this->App_model->name_user($row->updater_id) ?>
+                    <a href="<?= base_url("users/profile/{$row->updater_id}") ?>">
+                        <?= $this->App_model->name_user($row->updater_id) ?>
                     </a>
                 </td>
             </tr>
@@ -34,14 +34,14 @@
                 <td>Updated at</td>
                 <td>
                     <?= $this->pml->date_format($row->updated_at, 'M d'); ?> &middot;
-                    <?php echo $this->pml->ago($row->updated_at) ?>
+                    <?= $this->pml->ago($row->updated_at) ?>
                 </td>
             </tr>
             <tr>
                 <td>Creator</td>
                 <td>
-                    <a href="<?php echo base_url("users/profile/{$row->creator_id}") ?>">
-                        <?php echo $this->App_model->name_user($row->creator_id) ?>
+                    <a href="<?= base_url("users/profile/{$row->creator_id}") ?>">
+                        <?= $this->App_model->name_user($row->creator_id) ?>
                     </a>
                 </td>
             </tr>
@@ -49,7 +49,7 @@
                 <td>Created at</td>
                 <td>
                     <?= $this->pml->date_format($row->created_at, 'M d'); ?> &middot;
-                    <?php echo $this->pml->ago($row->created_at) ?>
+                    <?= $this->pml->ago($row->created_at) ?>
                 </td>
             </tr>
         </tbody>

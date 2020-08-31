@@ -43,7 +43,7 @@
     $( function() {
       
         $("#field-tags").autocomplete({
-            source: "<?php echo base_url('app/arr_elements/tag') ?>",
+            source: "<?= base_url('app/arr_elements/tag') ?>",
             minLength: 3,
             select: function( event, ui ) { log(ui.item); }
         });
@@ -130,7 +130,7 @@
             //this.get_list();
         },
         data: {
-            row_id: '<?php echo $row->id ?>'
+            row_id: '<?= $row->id ?>'
         },
         methods: {
             send_form: function(){

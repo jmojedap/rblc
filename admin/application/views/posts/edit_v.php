@@ -16,7 +16,7 @@
 ?>
 
 <script>
-    var post_id = <?php echo $row->id ?>;
+    var post_id = <?= $row->id ?>;
 
     $(document).ready(function(){
         $('#field-content').summernote({
@@ -34,7 +34,7 @@
     function update_post(){
         $.ajax({        
             type: 'POST',
-            url: app_url + 'posts/update/' + post_id,
+            url: url_app + 'posts/update/' + post_id,
             data: $('#post_form').serialize(),
             success: function(response){
                 if ( response.status == 1 )
@@ -53,17 +53,17 @@
             <div class="col-md-7">
                 <div class="form-group">
                     <label for="excerpt">excerpt</label>
-                    <textarea name="excerpt" id="field-excerpt" rows="3" class="form-control"><?php echo $row->excerpt ?></textarea>
+                    <textarea name="excerpt" id="field-excerpt" rows="3" class="form-control"><?= $row->excerpt ?></textarea>
                 </div>
 
                 <div class="form-group">
                     <label for="content" class="form-control-label">content</label>
-                    <textarea name="content" id="field-content" class="form-control"><?php echo $row->content ?></textarea>
+                    <textarea name="content" id="field-content" class="form-control"><?= $row->content ?></textarea>
                 </div>
 
                 <div class="form-group">
                     <label for="content_json">content json</label>
-                    <textarea name="content_json" id="field-content_json" rows="3" class="form-control"><?php echo $row->content_json ?></textarea>
+                    <textarea name="content_json" id="field-content_json" rows="3" class="form-control"><?= $row->content_json ?></textarea>
                 </div>
 
 
@@ -83,7 +83,7 @@
                             type="text"
                             required
                             class="form-control"
-                            value="<?php echo $row->post_name ?>"
+                            value="<?= $row->post_name ?>"
                             >
                     </div>
                 </div>
@@ -91,7 +91,7 @@
                 <div class="form-group row">
                     <label for="type_id" class="col-md-4 col-form-label text-right">Type</label>
                     <div class="col-md-8">
-                        <?php echo form_dropdown('type_id', $options_type, $row->type_id, 'class="form-control"') ?>
+                        <?= form_dropdown('type_id', $options_type, $row->type_id, 'class="form-control"') ?>
                     </div>
                 </div>
 
@@ -106,19 +106,19 @@
                             class="form-control"
                             placeholder="Fecha publicación"
                             title="Fecha publicación"
-                            value="<?php echo $row->published_at ?>"
+                            value="<?= $row->published_at ?>"
                             >
                     </div>
                 </div>
 
                 <?php foreach ( $arr_fields as $field ) { ?>
                     <div class="form-group row">
-                        <label for="<?php echo $field ?>" class="col-md-4 col-form-label text-right"><?php echo str_replace('_',' ',$field) ?></label>
+                        <label for="<?= $field ?>" class="col-md-4 col-form-label text-right"><?= str_replace('_',' ',$field) ?></label>
                         <div class="col-md-8">
                             <input
-                                name="<?php echo $field ?>"
+                                name="<?= $field ?>"
                                 type="text" class="form-control"
-                                value="<?php echo $row->$field ?>"
+                                value="<?= $row->$field ?>"
                                 >
                         </div>
                     </div>

@@ -7,13 +7,13 @@
 <html lang="es">
     <head>
         <?php $this->load->view('templates/admin_pml/parts/head') ?>
-        <link rel="stylesheet" href="<?php echo URL_RESOURCES ?>css/start.css">
+        <link rel="stylesheet" href="<?= URL_RESOURCES ?>css/start.css">
     </head>
 
     <body>
         <div style="height: 6%" class="d-none d-lg-block"></div>
         <div class="start_container text-center">
-            <img src="<?php echo URL_IMG . 'app/start_logo.png' ?>" alt="Logo App" class="mb-2">
+            <img src="<?= URL_IMG . 'app/start_logo.png' ?>" alt="Logo App" class="mb-2">
             <?php $this->load->view($view_a); ?>
         </div>
         <div class="fixed-bottom text-center pb-2">

@@ -21,7 +21,7 @@
                             class="form-control"
                             placeholder="Project name"
                             title="Project name"
-                            value="<?php echo $row->post_name ?>"
+                            value="<?= $row->post_name ?>"
                             >
                     </div>
                 </div>
@@ -85,6 +85,17 @@
                     </div>
                 </div>
 
+                <div class="form-group row">
+                    <label for="related_1" class="col-md-4 col-form-label text-right">Owner Professional ID</label>
+                    <div class="col-md-8">
+                        <input
+                            name="related_1" type="text" class="form-control"
+                            required
+                            value="<?= $row->related_1 ?>"
+                        >
+                    </div>
+                </div>
+
                 
 
                 <div class="form-group row">
@@ -106,7 +117,7 @@
             //this.get_list();
         },
         data: {
-            row_id: '<?php echo $row->id ?>'
+            row_id: '<?= $row->id ?>'
         },
         methods: {
             send_form: function(){

@@ -13,7 +13,7 @@
             <tr v-for="(subscriber, subscriber_key) in subscribers">
                 <td>{{ subscriber.email }}</td>
                 <td>
-                    <a v-bind:href="`<?php echo base_url("users/profile/") ?>` + subscriber.creator_id" class="">
+                    <a v-bind:href="`<?= base_url("users/profile/") ?>` + subscriber.creator_id" class="">
                         {{ subscriber.creator_name }}
                     </a>
                 </td>
@@ -45,10 +45,10 @@
                 this.curr_subscriber = this.subscribers[subscriber_key];
             },
             delete_element: function(){
-                axios.get(app_url + 'posts/delete/' + this.curr_subscriber.id)
+                axios.get(url_app + 'posts/delete/' + this.curr_subscriber.id)
                 .then(response => {
                     if ( response.data.status == 1 ) {
-                        window.location = app_url + 'users/newsletter_subscribers';
+                        window.location = url_app + 'users/newsletter_subscribers';
                     }
                 })
                 .catch(function (error) {

@@ -9,7 +9,7 @@
 ?>
 
 <script>
-    var file_id = <?php echo $row->id ?>;
+    var file_id = <?= $row->id ?>;
 
     $(document).ready(function(){
         $('#file_form').submit(function(){
@@ -22,7 +22,7 @@
     function update_file(){
         $.ajax({        
             type: 'POST',
-            url: app_url + 'files/update/' + file_id,
+            url: url_app + 'files/update/' + file_id,
             data: $('#file_form').serialize(),
             success: function(response){
                 if ( response.status == 1 )
@@ -40,14 +40,14 @@
         <div class="card-body">
             <?php foreach ( $arr_fields as $field => $title ) { ?>
                 <div class="form-group row">
-                    <label for="<?php echo $field ?>" class="col-md-4 col-form-label text-right"><?php echo $title ?></label>
+                    <label for="<?= $field ?>" class="col-md-4 col-form-label text-right"><?= $title ?></label>
                     <div class="col-md-8">
                         <input
                             type="text"
-                            name="<?php echo $field ?>"
+                            name="<?= $field ?>"
                             class="form-control"
-                            title="<?php echo $title ?>"
-                            value="<?php echo $row->$field ?>"
+                            title="<?= $title ?>"
+                            value="<?= $row->$field ?>"
                             >
                     </div>
                 </div>

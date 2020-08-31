@@ -14,12 +14,12 @@
     var sections = [];
     var nav_2 = [];
     var sections_rol = [];
-    var element_id = '<?php echo $row->id ?>';
+    var element_id = '<?= $row->id ?>';
     
     sections.explore = {
         icon: 'fa fa-arrow-left',
         text: 'Explore',
-        class: '<?php echo $cl_nav_2['tags_explore'] ?>',
+        class: '<?= $cl_nav_2['tags_explore'] ?>',
         cf: 'tags/explore/',
         'anchor': true
     };
@@ -27,14 +27,14 @@
     sections.info = {
         icon: 'fa fa-info-circle',
         text: 'Info',
-        class: '<?php echo $cl_nav_2['tags_info'] ?>',
+        class: '<?= $cl_nav_2['tags_info'] ?>',
         cf: 'tags/info/' + element_id
     };
 
     sections.edit = {
         icon: 'fa fa-pencil-alt',
         text: 'Edit',
-        class: '<?php echo $cl_nav_2['tags_edit'] ?>',
+        class: '<?= $cl_nav_2['tags_edit'] ?>',
         cf: 'tags/edit/' + element_id
     };
     

@@ -13,7 +13,7 @@
                             class="form-control"
                             placeholder="Project name"
                             title="Project name"
-                            value="<?php echo $row->post_name ?>"
+                            value="<?= $row->post_name ?>"
                             >
                     </div>
                 </div>
@@ -48,11 +48,11 @@
             //this.get_list();
         },
         data: {
-            row_id: '<?php echo $row->id ?>'
+            row_id: '<?= $row->id ?>'
         },
         methods: {
             send_form: function(){
-                axios.post(app_url + 'ideabooks/update/' + this.row_id, $('#ideabook_form').serialize())
+                axios.post(url_app + 'ideabooks/update/' + this.row_id, $('#ideabook_form').serialize())
                 .then(response => {
                     if (response.data.status == 1) {
                         toastr['success']('Saved');

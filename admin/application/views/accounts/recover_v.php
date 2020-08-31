@@ -1,11 +1,11 @@
 <div id="recover_app">
     <div class="mt-2" v-show="user_id > 0">
-        <h4 class="white"><?php echo $row->display_name ?></h4>
+        <h4 class="white"><?= $row->display_name ?></h4>
         <p class="text-muted">
             <i class="fa fa-user"></i>
-            <?php echo $row->username ?>
+            <?= $row->username ?>
         </p>
-        <p>Establece tu nueva contraseña en <?php echo APP_NAME ?></p>
+        <p>Establece tu nueva contraseña en <?= APP_NAME ?></p>
     </div>
 
     <form id="recover_form" method="post" accept-charset="utf-8" @submit.prevent="send_form" v-show="user_id > 0">

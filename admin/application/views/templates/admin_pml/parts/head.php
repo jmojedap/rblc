@@ -1,6 +1,6 @@
 <meta charset="UTF-8">
-        <title><?php echo $head_title ?></title>
-        <link rel="shortcut icon" href="<?php echo URL_IMG ?>app/favicon.png" type="image/ico"/>
+        <title><?= $head_title ?></title>
+        <link rel="shortcut icon" href="<?= URL_IMG ?>app/favicon.png" type="image/ico"/>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
         <!--JQuery-->
@@ -15,7 +15,7 @@
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">        
 
         <!-- Sidebar elements -->
-        <script src="<?php echo URL_RESOURCES ?>js/admin_pml/menus/nav_1_elements_<?php echo $this->session->userdata('role') ?>.js"></script>
+        <script src="<?= URL_RESOURCES ?>js/admin_pml/menus/nav_1_elements_<?= $this->session->userdata('role') ?>.js"></script>
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -36,15 +36,15 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/locale/es.js" integrity="sha256-bETP3ndSBCorObibq37vsT+l/vwScuAc9LRJIQyb068=" crossorigin="anonymous"></script>
 
         <!-- Theme AdminPML BS4-->
-        <link href="<?php echo URL_RESOURCES ?>templates/admin_pml/dist/css/AdminLTE.css" rel="stylesheet" type="text/css" />
-        <link href="<?php echo URL_RESOURCES ?>templates/admin_pml/dist/css/skins/skin-salmon.css" rel="stylesheet" type="text/css" />
-        <script src="<?php echo URL_RESOURCES ?>templates/admin_pml/dist/js/app.min.js"></script>
+        <link href="<?= URL_RESOURCES ?>templates/admin_pml/dist/css/AdminLTE.css" rel="stylesheet" type="text/css" />
+        <link href="<?= URL_RESOURCES ?>templates/admin_pml/dist/css/skins/skin-salmon.css" rel="stylesheet" type="text/css" />
+        <script src="<?= URL_RESOURCES ?>templates/admin_pml/dist/js/app.min.js"></script>
 
         <!-- PML Tools -->
-        <link type="text/css" rel="stylesheet" href="<?php echo URL_RESOURCES . 'css/style_pml.css' ?>">
-        <script src="<?php echo URL_RESOURCES . 'js/pcrn.js' ?>"></script>
+        <link type="text/css" rel="stylesheet" href="<?= URL_RESOURCES . 'css/style_pml.css' ?>">
+        <script src="<?= URL_RESOURCES . 'js/pcrn.js' ?>"></script>
         <script>
-            const app_url = '<?php echo base_url() ?>'; const url_app = '<?php echo base_url() ?>'; const url_api = '<?php echo URL_API ?>';
+            const url_app = '<?= base_url() ?>'; const app_url = '<?= base_url() ?>'; const url_api = '<?= URL_API ?>';
         </script>
 
         <!-- END HEAD -->

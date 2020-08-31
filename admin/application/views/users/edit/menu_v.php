@@ -14,25 +14,25 @@
     var sections = [];
     var nav_3 = [];
     var sections_role = [];
-    var element_id = '<?php echo $this->uri->segment(3) ?>';
+    var element_id = '<?= $this->uri->segment(3) ?>';
     
     sections.basic = {
         icon: '',
         text: 'General',
-        class: '<?php echo $cl_nav_3['basic'] ?>',
+        class: '<?= $cl_nav_3['basic'] ?>',
         cf: 'users/edit/' + element_id + '/basic'
     };
     
     sections.image = {
         icon: 'fa fa-user-circle',
         text: 'Image',
-        class: '<?php echo $cl_nav_3['image'] ?>',
+        class: '<?= $cl_nav_3['image'] ?>',
         cf: 'users/edit/' + element_id + '/image'
     };
     
     //Secciones para cada rol
     sections_role.dvlp = ['basic', 'image'];
-    sections_role.admn = ['basic'];
+    sections_role.admn = ['basic', 'image'];
     sections_role.prpt = ['basic', 'image'];
     sections_role.clnt = ['basic', 'image'];
     

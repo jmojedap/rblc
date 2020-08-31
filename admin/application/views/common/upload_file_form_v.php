@@ -14,7 +14,7 @@
                 >
         </div>
         <div class="col-md-4">
-            <button class="btn btn-success btn-block" type="submit">Cargar</button>
+            <button class="btn btn-success btn-block" type="submit">Upload</button>
         </div>
     </div>
 </form>

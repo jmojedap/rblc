@@ -1,7 +1,7 @@
 <script>
 // Variables
 //-----------------------------------------------------------------------------
-    user_id = '<?php echo $row->id ?>';
+    user_id = '<?= $row->id ?>';
 
 // Document Ready
 //-----------------------------------------------------------------------------
@@ -18,9 +18,9 @@
     function set_activation_key(){
         $.ajax({        
             type: 'POST',
-            url: app_url + 'users/set_activation_key/' + user_id,
+            url: url_app + 'users/set_activation_key/' + user_id,
             success: function(response){
-                $('#activation_key').html(app_url + 'accounts/activation/' + response);
+                $('#activation_key').html(url_app + 'accounts/activation/' + response);
                 toastr['success']('Se actualizó la clave de activación');
             }
         });
@@ -39,12 +39,12 @@
     <div class="col col-md-4">
         <!-- Page Widget -->
         <div class="card text-center">
-            <img src="<?php echo $att_img['src'] ?>" alt="Profile picture" width="100%">
+            <img src="<?= $att_img['src'] ?>" alt="Profile picture" width="100%">
             <div class="card-body">
-                <h4 class="profile-user"><?php echo $this->Item_model->name(58, $row->role) ?></h4>
+                <h4 class="profile-user"><?= $this->Item_model->name(58, $row->role) ?></h4>
 
                 <?php if ($this->session->userdata('role') <= 1) { ?>
-                    <a href="<?php echo base_url("admin/ml/{$row->id}") ?>" role="button" class="btn btn-primary" title="Log in as this user">
+                    <a href="<?= base_url("admin/ml/{$row->id}") ?>" role="button" class="btn btn-primary" title="Log in as this user">
                         <i class="fa fa-sign-in-alt"></i>
                         Log In
                     </a>
@@ -58,16 +58,16 @@
             <tbody>
                 <tr>
                     <td width="25%" class="text-right"><span class="text-muted">Name</span></td>
-                    <td><?php echo $row->display_name ?></td>
+                    <td><?= $row->display_name ?></td>
                 </tr>
                 <tr>
                     <td class="text-right"><span class="text-muted">Username</span></td>
-                    <td><?php echo $row->username ?></td>
+                    <td><?= $row->username ?></td>
                 </tr>
 
                 <tr>
                     <td class="text-right"><span class="text-muted">E-mail</span></td>
-                    <td><?php echo $row->email ?></td>
+                    <td><?= $row->email ?></td>
                 </tr>
 
                 <tr>
@@ -93,19 +93,19 @@
 
                 <tr>
                     <td class="text-right"><span class="text-muted">Role</span></td>
-                    <td><?php echo $this->Item_model->name(58, $row->role) ?></td>
+                    <td><?= $this->Item_model->name(58, $row->role) ?></td>
                 </tr>
 
                 <tr>
                     <td class="text-right"><span class="text-muted">Updated at</span></td>
                     <td>
-                        <?php echo $this->pml->date_format($row->updated_at, 'Y-m-d h:i') ?> by <?php echo $this->App_model->name_user($row->updater_id, 'du') ?>
+                        <?= $this->pml->date_format($row->updated_at, 'Y-m-d h:i') ?> by <?= $this->App_model->name_user($row->updater_id, 'du') ?>
                     </td>
                 </tr>
                 <tr>
                     <td class="text-right"><span class="text-muted">Created at</span></td>
                     <td>
-                        <?php echo $this->pml->date_format($row->created_at, 'Y-m-d H:i') ?> by <?php echo $this->App_model->name_user($row->creator_id, 'du') ?>
+                        <?= $this->pml->date_format($row->created_at, 'Y-m-d H:i') ?> by <?= $this->App_model->name_user($row->creator_id, 'du') ?>
                     </td>
                 </tr>
                 <tr>

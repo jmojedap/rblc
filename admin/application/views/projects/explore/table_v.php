@@ -1,17 +1,12 @@
-<?php
-    //Clases columnas
-        $cl_col = array('id' => '','title' => '','price' => 'only-lg text-right');
-?>
-
 <div class="table-responsive">
-    <table class="table table-hover bg-white">
+    <table class="table bg-white">
         <thead>
             <th width="10px">
                 <input type="checkbox" id="checkbox_all_selected" @change="select_all" v-model="all_selected">
             </th>
-            <th class="<?php echo $cl_col['title'] ?>">Project</th>
+            <th>Project</th>
 
-            <th class="<?php echo $cl_col['price'] ?>">Price</th>
+            <th>Price</th>
             
             <th width="50px"></th>
         </thead>
@@ -21,14 +16,14 @@
                     <input type="checkbox" v-bind:id="`check_` + element.id" v-model="selected" v-bind:value="element.id">
                 </td>
                     
-                <td class="<?php echo $cl_col['title'] ?>">
-                    <a v-bind:href="`<?php echo base_url("projects/info/") ?>` + element.id">
+                <td>
+                    <a v-bind:href="`<?= base_url("projects/info/") ?>` + element.id">
                         {{ element.name }}
                     </a>
                     <p>{{ element.excerpt }}</p>
                 </td>
 
-                <td class="<?php echo $cl_col['price'] ?>">
+                <td>
                     {{ element.price | currency }}
                 </td>
                 

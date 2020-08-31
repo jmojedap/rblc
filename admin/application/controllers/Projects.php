@@ -233,15 +233,15 @@ class Projects extends CI_Controller{
 // PROJECTS DE USUARIOS
 //-----------------------------------------------------------------------------
 
-    function my_projects()
-    {
-        $projects = $this->Project_model->my_projects(argumento);
-    }
-
+    /**
+     * Actualiza registro y datos asociados de un project
+     * 2020-08-31
+     */
     function update_full($project_id)
     {
         //Update row
             $arr_row['post_name'] = $this->input->post('post_name');
+            $arr_row['related_1'] = $this->input->post('related_1');
             $arr_row['integer_1'] = $this->input->post('integer_1');
             $arr_row['updater_id'] = $this->session->userdata('user_id');
 

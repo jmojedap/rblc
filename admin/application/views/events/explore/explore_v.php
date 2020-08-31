@@ -1,4 +1,3 @@
-<script src="<?php echo URL_RESOURCES . 'js/pcrn.js' ?>"></script>
 
 <?php $this->load->view($views_folder . 'script_js'); ?>
 
@@ -8,17 +7,16 @@
     </div>
 
     <div class="col-md-3">
-        <a class="btn btn-warning text-light d-none"
-            id="btn_delete_selected"
+        <button class="btn btn-warning text-light d-none"
             title="Eliminar los usuarios seleccionados"
             data-toggle="modal"
             data-target="#modal_delete"
             >
             <i class="fa fa-trash"></i>
-        </a>
+        </button>
         
         <div class="btn-group d-none" role="group">
-            <a href="<?php echo base_url("events/export/?{$str_filters}") ?>" class="btn btn-success" title="Exportar registros encontrados a Excel">
+            <a href="<?= base_url("events/export/?{$str_filters}") ?>" class="btn btn-success" title="Exportar registros encontrados a Excel">
                 <i class="fa fa-file-excel"></i> Exportar
             </a>
         </div>

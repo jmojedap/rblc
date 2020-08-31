@@ -23,7 +23,7 @@
                                 <div class="media">
                                     <div class="pr-20">
                                         <a class="avatar avatar-online" href="javascript:void(0)">
-                                            <img class="img-fluid" src="<?php echo URL_IMG ?>users/sm_user.png"
+                                            <img class="img-fluid" src="<?= URL_IMG ?>users/sm_user.png"
                                                 alt="..."><i></i></a>
                                     </div>
                                     <div class="media-body">
@@ -39,7 +39,7 @@
                                 <div class="media">
                                     <div class="pr-20">
                                         <a class="avatar avatar-online" href="javascript:void(0)">
-                                            <img class="img-fluid" src="<?php echo URL_IMG ?>users/sm_user.png"
+                                            <img class="img-fluid" src="<?= URL_IMG ?>users/sm_user.png"
                                                 alt="..."><i></i></a>
                                     </div>
                                     <div class="media-body">
@@ -55,7 +55,7 @@
                                 <div class="media">
                                     <div class="pr-20">
                                         <a class="avatar avatar-online" href="javascript:void(0)">
-                                            <img class="img-fluid" src="<?php echo URL_IMG ?>users/sm_user.png"
+                                            <img class="img-fluid" src="<?= URL_IMG ?>users/sm_user.png"
                                                 alt="..."><i></i></a>
                                     </div>
                                     <div class="media-body">
@@ -71,7 +71,7 @@
                                 <div class="media">
                                     <div class="pr-20">
                                         <a class="avatar avatar-online" href="javascript:void(0)">
-                                            <img class="img-fluid" src="<?php echo URL_IMG ?>users/sm_user.png"
+                                            <img class="img-fluid" src="<?= URL_IMG ?>users/sm_user.png"
                                                 alt="..."><i></i></a>
                                     </div>
                                     <div class="media-body">
@@ -87,7 +87,7 @@
                                 <div class="media">
                                     <div class="pr-20">
                                         <a class="avatar avatar-away" href="javascript:void(0)">
-                                            <img class="img-fluid" src="<?php echo URL_IMG ?>users/sm_user.png"
+                                            <img class="img-fluid" src="<?= URL_IMG ?>users/sm_user.png"
                                                 alt="..."><i></i></a>
                                     </div>
                                     <div class="media-body">
@@ -103,7 +103,7 @@
                                 <div class="media">
                                     <div class="pr-20">
                                         <a class="avatar avatar-away" href="javascript:void(0)">
-                                            <img class="img-fluid" src="<?php echo URL_IMG ?>users/sm_user.png"
+                                            <img class="img-fluid" src="<?= URL_IMG ?>users/sm_user.png"
                                                 alt="..."><i></i></a>
                                     </div>
                                     <div class="media-body">
@@ -119,7 +119,7 @@
                                 <div class="media">
                                     <div class="pr-20">
                                         <a class="avatar avatar-online" href="javascript:void(0)">
-                                            <img class="img-fluid" src="<?php echo URL_IMG ?>users/sm_user.png"
+                                            <img class="img-fluid" src="<?= URL_IMG ?>users/sm_user.png"
                                                 alt="..."><i></i></a>
                                     </div>
                                     <div class="media-body">
@@ -135,7 +135,7 @@
                                 <div class="media">
                                     <div class="pr-20">
                                         <a class="avatar avatar-off" href="javascript:void(0)">
-                                            <img class="img-fluid" src="<?php echo URL_IMG ?>users/sm_user.png"
+                                            <img class="img-fluid" src="<?= URL_IMG ?>users/sm_user.png"
                                                 alt="..."><i></i></a>
                                     </div>
                                     <div class="media-body">
@@ -151,7 +151,7 @@
                                 <div class="media">
                                     <div class="pr-20">
                                         <a class="avatar avatar-off" href="javascript:void(0)">
-                                            <img class="img-fluid" src="<?php echo URL_IMG ?>users/sm_user.png"
+                                            <img class="img-fluid" src="<?= URL_IMG ?>users/sm_user.png"
                                                 alt="..."><i></i></a>
                                     </div>
                                     <div class="media-body">
@@ -167,7 +167,7 @@
                                 <div class="media">
                                     <div class="pr-20">
                                         <a class="avatar avatar-off" href="javascript:void(0)">
-                                            <img class="img-fluid" src="<?php echo URL_IMG ?>users/sm_user.png"
+                                            <img class="img-fluid" src="<?= URL_IMG ?>users/sm_user.png"
                                                 alt="..."><i></i></a>
                                     </div>
                                     <div class="media-body">
@@ -196,7 +196,7 @@
                 <div class="chat">
                     <div class="chat-avatar">
                         <a class="avatar" data-toggle="tooltip" href="#" data-placement="right" title="">
-                            <img src="<?php echo URL_IMG ?>users/sm_user.png" alt="June Lane">
+                            <img src="<?= URL_IMG ?>users/sm_user.png" alt="June Lane">
                         </a>
                     </div>
                     <div class="chat-body">
@@ -211,7 +211,7 @@
                 <div class="chat chat-left">
                     <div class="chat-avatar">
                         <a class="avatar" data-toggle="tooltip" href="#" data-placement="left" title="">
-                            <img src="<?php echo URL_IMG ?>users/sm_user.png" alt="Edward Fletcher">
+                            <img src="<?= URL_IMG ?>users/sm_user.png" alt="Edward Fletcher">
                         </a>
                     </div>
                     <div class="chat-body">
@@ -233,7 +233,7 @@
                 <div class="chat">
                     <div class="chat-avatar">
                         <a class="avatar" data-toggle="tooltip" href="#" data-placement="right" title="">
-                            <img src="<?php echo URL_IMG ?>users/sm_user.png" alt="June Lane">
+                            <img src="<?= URL_IMG ?>users/sm_user.png" alt="June Lane">
                         </a>
                     </div>
                     <div class="chat-body">
@@ -255,7 +255,7 @@
                 <div class="chat chat-left">
                     <div class="chat-avatar">
                         <a class="avatar" data-toggle="tooltip" href="#" data-placement="left" title="">
-                            <img src="<?php echo URL_IMG ?>users/sm_user.png" alt="Edward Fletcher">
+                            <img src="<?= URL_IMG ?>users/sm_user.png" alt="Edward Fletcher">
                         </a>
                     </div>
                     <div class="chat-body">
@@ -275,7 +275,7 @@
                 <div class="chat">
                     <div class="chat-avatar">
                         <a class="avatar" data-toggle="tooltip" href="#" data-placement="right" title="">
-                            <img src="<?php echo URL_IMG ?>users/sm_user.png" alt="June Lane">
+                            <img src="<?= URL_IMG ?>users/sm_user.png" alt="June Lane">
                         </a>
                     </div>
                     <div class="chat-body">

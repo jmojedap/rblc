@@ -4,7 +4,7 @@
     $editable = false;
 
     if ( $this->session->userdata('user_id') == $row->related_1 ) { $editable = true; }
-    if ( $this->session->userdata('role') <= 2 ) { $editable = true; }
+    if ( $this->session->userdata('role') <= 2 && $this->session->userdata('logged') ) { $editable = true; }
 ?>
 
 <div id="proyect_profile">

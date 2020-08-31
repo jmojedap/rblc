@@ -18,21 +18,21 @@
     sections.explore = {
         icon: 'fa fa-search',
         text: 'Explore',
-        class: '<?php echo $cl_nav_2['users_explore'] ?>',
+        class: '<?= $cl_nav_2['users_explore'] ?>',
         cf: 'users/explore'
     };
 
     sections.add = {
         icon: 'fa fa-plus',
         text: 'New',
-        class: '<?php echo $cl_nav_2['users_add'] ?>',
+        class: '<?= $cl_nav_2['users_add'] ?>',
         cf: 'users/add'
     };
 
     sections.newsletter_subscribers = {
         icon: 'fas fa-newspaper',
         text: 'Subscribers',
-        class: '<?php echo $cl_nav_2['users_newsletter_subscribers'] ?>',
+        class: '<?= $cl_nav_2['users_newsletter_subscribers'] ?>',
         cf: 'users/newsletter_subscribers'
     };
     

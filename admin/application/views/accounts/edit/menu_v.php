@@ -14,26 +14,26 @@
     var sections = [];
     var nav_3 = [];
     var sections_role = [];
-    var element_id = '<?php echo $this->uri->segment(3) ?>';
+    var element_id = '<?= $this->uri->segment(3) ?>';
     
     sections.basic = {
         icon: '',
         text: 'General',
-        class: '<?php echo $cl_nav_3['basic'] ?>',
+        class: '<?= $cl_nav_3['basic'] ?>',
         cf: 'accounts/edit/basic'
     };
     
     sections.image = {
         icon: 'fa fa-user-circle',
         text: 'Imagen',
-        class: '<?php echo $cl_nav_3['image'] ?>',
+        class: '<?= $cl_nav_3['image'] ?>',
         cf: 'accounts/edit/image'
     };
     
     sections.password = {
         icon: 'fa fa-lock',
         text: 'Contraseña',
-        class: '<?php echo $cl_nav_3['password'] ?>',
+        class: '<?= $cl_nav_3['password'] ?>',
         cf: 'accounts/edit/password'
     };
     
@@ -51,7 +51,7 @@
     }
     
     //Si el perfil visitado es el mismo al de el usuario en sesión
-    if ( element_id === '<?php echo $this->session->userdata('user_id'); ?>'  ) { nav_3.push(sections.password); }
+    if ( element_id === '<?= $this->session->userdata('user_id'); ?>'  ) { nav_3.push(sections.password); }
 </script>
 
 <?php

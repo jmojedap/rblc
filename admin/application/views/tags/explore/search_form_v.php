@@ -24,10 +24,10 @@
             <button class="btn btn-primary btn-block"><i class="fa fa-search"></i> Search</button>
         </div>
     </div>
-    <div id="adv_filters" style="<?php echo $filters_style ?>">
+    <div id="adv_filters" style="<?= $filters_style ?>">
         <div class="form-group row">
             <div class="col-md-9">
-                <?php echo form_dropdown('cat', $options_category, $filters['cat'], 'class="form-control" title="Filter by category" v-model="filters.cat"'); ?>
+                <?= form_dropdown('cat', $options_category, $filters['cat'], 'class="form-control" title="Filter by category" v-model="filters.cat"'); ?>
             </div>
             <label for="type" class="col-md-3 col-form-label">Category</label>
         </div>

@@ -6,14 +6,14 @@
             setInterval(() => {this.refresh_messages()}, 7000);
         },
         data: {
-            user_id: <?php echo $this->session->userdata('user_id'); ?>,
+            user_id: <?= $this->session->userdata('user_id'); ?>,
             conversation_id: 0,
             conversations: [],
             messages: [],
             message: {
                 id: 0,
                 text: '',
-                user_id: '<?php echo $this->session->userdata('user_id'); ?>',
+                user_id: '<?= $this->session->userdata('user_id'); ?>',
                 send_at: ''
             },
             current_message: {
@@ -24,7 +24,7 @@
         methods: {
             //Cargar listado de conversaciones en las que participa el usuario
             get_conversations: function(){
-                axios.get(app_url + 'messages/conversations/')
+                axios.get(url_app + 'messages/conversations/')
                 .then(response => {
                     //console.log(response.data.message)
                     this.conversations = response.data.conversations;
@@ -43,7 +43,7 @@
             send_message: function(){
                 new_id = Math.floor((Math.random() * 10000000) + 1)
                 this.display_message(new_id);
-                axios.post(app_url + 'messages/send_message/' + this.conversation_id, $('#message_form').serialize())
+                axios.post(url_app + 'messages/send_message/' + this.conversation_id, $('#message_form').serialize())
                 .then(response => {
                     this.last_id = response.data.message_id;
                     console.log(response.data.message_id);
@@ -65,7 +65,7 @@
             },
             //Cargar mensajes iniciales de la conversación
             get_messages: function(){
-                axios.get(app_url + 'messages/get/' + this.conversation_id)
+                axios.get(url_app + 'messages/get/' + this.conversation_id)
                 .then(response => {
                     this.messages = response.data.messages;
                     this.set_last();
@@ -77,7 +77,7 @@
             //Cargar mensajes nuevos
             refresh_messages: function(){
                 console.log('Buscando message_id > ' + this.last_id);
-                axios.get(app_url + 'messages/get/' + this.conversation_id + '/' + this.last_id)
+                axios.get(url_app + 'messages/get/' + this.conversation_id + '/' + this.last_id)
                 .then(response => {
                     if ( response.data.quan_messages > 0 )
                     {
@@ -118,7 +118,7 @@
             },
             //Eliminar un mensaje
             delete_message: function(key_message){
-                axios.get(app_url + 'messages/delete/' + this.current_message.id)
+                axios.get(url_app + 'messages/delete/' + this.current_message.id)
                 .then(response => {
                     console.log(response.data.status)
                     if ( response.data.status )

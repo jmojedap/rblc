@@ -48,7 +48,7 @@
                 <div class="form-group row">
                     <label for="country" class="col-md-4 col-form-label text-right">Country</label>
                     <div class="col-md-8">
-                        <?php echo form_dropdown('country', $options_country, '', 'id="field-country" v-model="form_values.country" class="form-control form-control-chosen" required') ?>
+                        <?= form_dropdown('country', $options_country, '', 'id="field-country" v-model="form_values.country" class="form-control form-control-chosen" required') ?>
                     </div>
                 </div>
 
@@ -90,7 +90,6 @@
                             type="text"
                             id="field-zip_code"
                             name="zip_code"
-                            required
                             class="form-control"
                             placeholder="Zip code"
                             title="Zip code"
@@ -106,7 +105,6 @@
                             type="text"
                             id="field-address"
                             name="address"
-                            required
                             class="form-control"
                             placeholder="Address"
                             title="Address"
@@ -205,7 +203,7 @@
                     <div class="form-group row">
                         <label for="type_id" class="col-md-4 col-form-label text-right">Type</label>
                         <div class="col-md-8">
-                            <?php echo form_dropdown('type_id', $options_type, '', 'class="form-control" v-model="form_values.type_id"') ?>
+                            <?= form_dropdown('type_id', $options_type, '', 'class="form-control" v-model="form_values.type_id"') ?>
                         </div>
                     </div>
 
@@ -238,26 +236,26 @@
 
     //Loading values in variable
     var form_values = {
-            display_name: '<?php echo $row->display_name ?>',
-            country: '<?php echo $row->country ?>',
-            state_province: '<?php echo $row->state_province ?>',
-            city: '<?php echo $row->city ?>',
-            zip_code: '<?php echo $row->zip_code ?>',
-            address: '<?php echo $row->address ?>',
-            address_line_2: '<?php echo $row->address_line_2 ?>',
-            email: '<?php echo $row->email ?>',
-            username: '<?php echo $row->username ?>',
-            code: '<?php echo $row->code ?>',
-            type_id: '0<?php echo $row->type_id ?>',
-            phone_number: '<?php echo $row->phone_number ?>',
-            about: '<?php echo $row->about ?>',
-            admin_notes: '<?php echo $row->admin_notes ?>',
+            display_name: '<?= $row->display_name ?>',
+            country: '<?= $row->country ?>',
+            state_province: '<?= $row->state_province ?>',
+            city: '<?= $row->city ?>',
+            zip_code: '<?= $row->zip_code ?>',
+            address: '<?= $row->address ?>',
+            address_line_2: '<?= $row->address_line_2 ?>',
+            email: '<?= $row->email ?>',
+            username: '<?= $row->username ?>',
+            code: '<?= $row->code ?>',
+            type_id: '0<?= $row->type_id ?>',
+            phone_number: '<?= $row->phone_number ?>',
+            about: '<?= $row->about ?>',
+            admin_notes: '<?= $row->admin_notes ?>',
     };
     new Vue({
     el: '#app_edit',
         data: {
             form_values: form_values,
-            row_id: '<?php echo $row->id ?>',
+            row_id: '<?= $row->id ?>',
             validation: {
                 id_number_unique: true,
                 username_unique: true,
@@ -266,7 +264,7 @@
         },
         methods: {
             validate_form: function() {
-                axios.post(app_url + 'users/validate/' + this.row_id, $('#edit_form').serialize())
+                axios.post(url_app + 'users/validate/' + this.row_id, $('#edit_form').serialize())
                 .then(response => {
                     //this.formulario_valido = response.data.status;
                     this.validation = response.data.validation;
@@ -276,7 +274,7 @@
                 });
             },
             validate_send: function () {
-                axios.post(app_url + 'users/validate/' + this.row_id, $('#edit_form').serialize())
+                axios.post(url_app + 'users/validate/' + this.row_id, $('#edit_form').serialize())
                 .then(response => {
                     if (response.data.status == 1) {
                     this.send_form();
@@ -289,12 +287,12 @@
                 });
             },
             send_form: function() {
-                axios.post(app_url + 'users/update/' + this.row_id, $('#edit_form').serialize())
+                axios.post(url_app + 'users/update/' + this.row_id, $('#edit_form').serialize())
                     .then(response => {
                         console.log('status: ' + response.data.mensaje);
                         if (response.data.status == 1)
                         {
-                        toastr['success']('Datos actualizados');
+                        toastr['success']('Saved');
                         }
                     })
                     .catch(function (error) {
@@ -306,7 +304,7 @@
                 params.append('display_name', this.form_values.display_name);
                 params.append('last_name', this.form_values.last_name);
                 
-                axios.post(app_url + 'users/username/', params)
+                axios.post(url_app + 'users/username/', params)
                 .then(response => {
                     this.form_values.username = response.data;
                 })

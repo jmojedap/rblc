@@ -58,7 +58,7 @@
             //this.get_list();
         },
         data: {
-            row_id: '<?php echo $row->id ?>'
+            row_id: '<?= $row->id ?>'
         },
         methods: {
             send_form: function(){

@@ -20,7 +20,7 @@
                 <div class="form-group row">
                     <label for="type_id" class="col-md-4 col-form-label text-right">Tipo</label>
                     <div class="col-md-8">
-                        <?php echo form_dropdown('type_id', $options_type, '', 'class="form-control" required v-model="form_values.type"') ?>
+                        <?= form_dropdown('type_id', $options_type, '', 'class="form-control" required v-model="form_values.type"') ?>
                     </div>
                 </div>
 

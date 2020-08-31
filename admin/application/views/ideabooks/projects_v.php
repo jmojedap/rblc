@@ -41,7 +41,7 @@
             <tr v-for="(project, project_key) in projects">
                 <td>{{ project.id }}</td>
                 <td>
-                    <a v-bind:href="`<?php echo base_url("projects/info/") ?>` + `/` + project.id">
+                    <a v-bind:href="`<?= base_url("projects/info/") ?>` + `/` + project.id">
                         {{ project.title }}
                     </a>
                 </td>
@@ -62,26 +62,26 @@
             //this.get_list();
         },
         data: {
-            ideabook_id: <?php echo $row->id ?>,
-            projects: <?php echo json_encode($arr_projects) ?>,
+            ideabook_id: <?= $row->id ?>,
+            projects: <?= json_encode($arr_projects) ?>,
             project_id: ''
         },
         methods: {
             add_project: function(){
-                axios.get(app_url + 'ideabooks/add_project/' + this.ideabook_id + '/' + this.project_id)
+                axios.get(url_app + 'ideabooks/add_project/' + this.ideabook_id + '/' + this.project_id)
                 .then(response => {
                     console.log(response.data)
-                    window.location = app_url + 'ideabooks/projects/' + this.ideabook_id;
+                    window.location = url_app + 'ideabooks/projects/' + this.ideabook_id;
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
             },
             delete_meta: function(meta_id){
-                axios.get(app_url + 'posts/delete_meta/' + this.ideabook_id + '/' + meta_id)
+                axios.get(url_app + 'posts/delete_meta/' + this.ideabook_id + '/' + meta_id)
                 .then(response => {
                     console.log(response.data)
-                    window.location = app_url + 'ideabooks/projects/' + this.ideabook_id;
+                    window.location = url_app + 'ideabooks/projects/' + this.ideabook_id;
                 })
                 .catch(function (error) {
                     console.log(error);

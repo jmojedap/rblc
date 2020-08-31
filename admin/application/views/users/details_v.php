@@ -24,8 +24,8 @@
             //this.get_list();
         },
         data: {
-            tags: <?php echo json_encode($tags->result()); ?>,
-            services: <?php echo json_encode($professional_services->result()); ?>
+            tags: <?= json_encode($tags->result()); ?>,
+            services: <?= json_encode($professional_services->result()); ?>
         },
         methods: {
             

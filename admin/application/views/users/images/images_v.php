@@ -33,7 +33,7 @@
         },
         methods: {
             get_list: function(){
-                axios.get(app_url + 'professionals/get_images/' + this.user_id)
+                axios.get(url_app + 'professionals/get_images/' + this.user_id)
                 .then(response => {
                     this.images = response.data.images;
                     if ( this.images.lenght > 0 )
@@ -52,7 +52,7 @@
                 form_data.append('related_1', this.user_id);   //Imágenes generales de usuario
                 form_data.append('album_id', 10);   //Imágenes generales de usuario
 
-                axios.post(app_url + 'files/upload/' + this.user_id, form_data, {headers: {'Content-Type': 'multipart/form-data'}})
+                axios.post(url_app + 'files/upload/' + this.user_id, form_data, {headers: {'Content-Type': 'multipart/form-data'}})
                 .then(response => {
                     //Cargar imágenes
                     if ( response.data.status == 1 ) { this.get_list(); }
@@ -72,7 +72,7 @@
                 this.current = this.images[key];
             },
             delete_element: function(){
-                axios.get(app_url + 'files/delete/' + this.current.id)
+                axios.get(url_app + 'files/delete/' + this.current.id)
                 .then(response => {
                     toastr['info']('Image deleted');
                     this.get_list();

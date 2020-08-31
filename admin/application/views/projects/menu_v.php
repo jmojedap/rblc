@@ -17,12 +17,12 @@
     var sections = [];
     var nav_2 = [];
     var sections_rol = [];
-    var element_id = '<?php echo $row->id ?>';
+    var element_id = '<?= $row->id ?>';
     
     sections.explore = {
         icon: 'fa fa-arrow-left',
         text: 'Explore',
-        class: '<?php echo $cl_nav_2['projects_explore'] ?>',
+        class: '<?= $cl_nav_2['projects_explore'] ?>',
         cf: 'projects/explore/',
         'anchor': true
     };
@@ -30,41 +30,35 @@
     sections.info = {
         icon: 'fa fa-info-circle',
         text: 'Info',
-        class: '<?php echo $cl_nav_2['projects_info'] ?>',
+        class: '<?= $cl_nav_2['projects_info'] ?>',
         cf: 'projects/info/' + element_id
     };
 
     sections.comments = {
         icon: 'far fa-comment',
         text: 'Comments',
-        class: '<?php echo $cl_nav_2['projects_comments'] ?>',
+        class: '<?= $cl_nav_2['projects_comments'] ?>',
         cf: 'projects/comments/' + element_id
     };
 
     sections.edit = {
         icon: 'fa fa-pencil-alt',
         text: 'Edit',
-        class: '<?php echo $cl_nav_2['projects_edit'] ?>',
-        cf: 'projects/edit/' + element_id
-    };
-    
-    sections.image = {
-        icon: 'fa fa-image',
-        text: 'Imagen',
-        class: '<?php echo $cl_nav_2['projects_image'] ?>',
-        cf: 'projects/image/' + element_id
+        class: '<?= $cl_nav_2['projects_edit'] ?>',
+        cf: 'projects/edit/' + element_id,
+        anchor: true
     };
 
-    sections.image = {
+    sections.images = {
         icon: 'fa fa-image',
         text: 'Images',
-        class: '<?php echo $cl_nav_2['projects_images'] ?>',
+        class: '<?= $cl_nav_2['projects_images'] ?>',
         cf: 'projects/images/' + element_id
     };
     
     //Secciones para cada rol
-    sections_rol.dvlp = ['explore', 'info', 'comments', 'image', 'edit'];
-    sections_rol.admn = ['explore', 'info', 'comments', 'image', 'edit'];
+    sections_rol.dvlp = ['explore', 'info', 'images', 'edit'];
+    sections_rol.admn = ['explore', 'info', 'images', 'edit'];
     
     //Recorrer el sections del rol actual y cargarlos en el menú
     for ( key_section in sections_rol[app_r]) 

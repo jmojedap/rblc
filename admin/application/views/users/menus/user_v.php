@@ -14,32 +14,32 @@
     var sections = [];
     var nav_2 = [];
     var sections_rol = [];
-    var element_id = '<?php echo $row->id ?>';
+    var element_id = '<?= $row->id ?>';
     
     sections.profile = {
         icon: 'fa fa-user',
-        text: 'Perfil',
-        class: '<?php echo $cl_nav_2['users_profile'] ?>',
+        text: 'Profile',
+        class: '<?= $cl_nav_2['users_profile'] ?>',
         cf: 'users/profile/' + element_id
     };
 
     sections.ideabooks = {
         icon: 'far fa-lightbulb',
         text: 'Ideabooks',
-        class: '<?php echo $cl_nav_2['users_ideabooks'] ?>',
+        class: '<?= $cl_nav_2['users_ideabooks'] ?>',
         cf: 'users/ideabooks/' + element_id
     };
 
     sections.edit = {
         icon: 'fa fa-pencil-alt',
-        text: 'Editar',
-        class: '<?php echo $cl_nav_2['users_edit'] ?>',
+        text: 'Edit',
+        class: '<?= $cl_nav_2['users_edit'] ?>',
         cf: 'users/edit/' + element_id
     };
     
     //Secciones para cada rol
     sections_rol.dvlp = ['profile', 'ideabooks', 'edit'];
-    sections_rol.admn = ['profile'];
+    sections_rol.admn = ['profile', 'edit'];
     sections_rol.prpt = ['profile', 'edit'];
     
     //Recorrer el sections del rol actual y cargarlos en el menú

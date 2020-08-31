@@ -30,7 +30,7 @@
                                         <a class="avatar avatar-online" href="javascript:void(0)">
                                             <img
                                                 class="img-fluid"
-                                                src="<?php echo URL_IMG ?>users/sm_user.png"
+                                                src="<?= URL_IMG ?>users/sm_user.png"
                                                 alt="..."><i></i>
                                         </a>
                                     </div>
@@ -49,7 +49,7 @@
                                         <a class="avatar avatar-online" href="javascript:void(0)">
                                             <img
                                                 class="img-fluid"
-                                                src="<?php echo URL_IMG ?>users/sm_user.png"
+                                                src="<?= URL_IMG ?>users/sm_user.png"
                                                 alt="..."><i></i>
                                         </a>
                                     </div>
@@ -84,7 +84,7 @@
                     >
                     <div class="chat-avatar">
                         <a class="avatar" data-toggle="tooltip" href="#" data-placement="right" title="">
-                            <img src="<?php echo URL_IMG ?>users/sm_user.png" alt="June Lane" style="width: 35px;">
+                            <img src="<?= URL_IMG ?>users/sm_user.png" alt="June Lane" style="width: 35px;">
                         </a>
                     </div>
                     <div class="chat-body" v-on:click="set_current_message(key_message)">

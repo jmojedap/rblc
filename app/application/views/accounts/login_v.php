@@ -1,3 +1,5 @@
+
+
 <div id="login_app" class="text-center">
     <p>
         Escribe tu correo electrónico
@@ -28,12 +30,7 @@
             <a href="<?php echo base_url('accounts/recovery') ?>">¿Olvidaste los datos de tu cuenta?</a>
         </div>
         
-        <!-- <div class="form-group">
-            <a href="<?php echo $g_client->createAuthUrl(); ?>" class="btn btn_google btn-block btn-lg">
-                <img src="<?php echo URL_IMG . 'app/google.png'?>" style="width: 20px">
-                Ingresar con Google
-            </a>
-        </div> -->
+        
     </form>
 
     <br/>

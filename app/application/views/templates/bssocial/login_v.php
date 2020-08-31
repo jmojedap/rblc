@@ -1,3 +1,5 @@
+<?php $this->load->view('accounts/facebook_login/script_v') ?>
+
 <div id="login_app" class="">
     <h1>Costumer Login</h1>
     <div class="row">
@@ -41,6 +43,16 @@
             <div id="messages" v-if="!status">
                 <div class="alert alert-warning" v-for="message in messages">
                     {{ message }}
+                </div>
+            </div>
+
+            <hr>
+
+            <!-- Botón Login con Facebook -->
+            <div class="form-group text-center">
+                <div class="fb-login-button"
+                    data-size="large" data-button-type="login_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="false" data-width=""
+                    scope="public_profile,email" onlogin="checkLoginState();">
                 </div>
             </div>
         </div>

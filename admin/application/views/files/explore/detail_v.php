@@ -23,8 +23,8 @@
                     <tr>
                         <td>Ruta</td>
                         <td>
-                            <a class="url_truncate" v-bind:href="`<?php echo URL_UPLOADS ?>` + element.folder + element.file_name" target="_blank">
-                                <?php echo URL_UPLOADS ?>{{ element.folder }}{{ element.file_name }}
+                            <a class="url_truncate" v-bind:href="`<?= URL_UPLOADS ?>` + element.folder + element.file_name" target="_blank">
+                                <?= URL_UPLOADS ?>{{ element.folder }}{{ element.file_name }}
                             </a>
                         </td>
                     </tr>
@@ -34,7 +34,7 @@
                 </p>
             </div>
             <div class="modal-footer">
-                <a class="btn btn-primary w100p" v-bind:href="`<?php echo base_url('files/info/') ?>` + element.id">Abrir</a>
+                <a class="btn btn-primary w100p" v-bind:href="`<?= base_url('files/info/') ?>` + element.id">Abrir</a>
                 <button type="button" class="btn btn-secondary w100p" data-dismiss="modal">Cerrar</button>
             </div>
         </div>

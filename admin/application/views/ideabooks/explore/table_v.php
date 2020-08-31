@@ -14,7 +14,7 @@
                 </td>
                     
                 <td>
-                    <a v-bind:href="`<?php echo base_url("ideabooks/info/") ?>` + element.id">
+                    <a v-bind:href="`<?= base_url("ideabooks/info/") ?>` + element.id">
                         {{ element.name }}
                     </a>
                     <br>

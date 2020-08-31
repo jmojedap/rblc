@@ -26,7 +26,7 @@
                 </p>
             </div>
             <div class="modal-footer">
-                <a class="btn btn-primary w100p" v-bind:href="`<?php echo base_url("{$controller}/info/") ?>` + element.id">Open</a>
+                <a class="btn btn-primary w100p" v-bind:href="`<?= base_url("{$controller}/info/") ?>` + element.id">Open</a>
                 <button type="button" class="btn btn-secondary w100p" data-dismiss="modal">Close</button>
             </div>
         </div>

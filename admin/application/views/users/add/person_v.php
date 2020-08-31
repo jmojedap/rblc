@@ -13,7 +13,7 @@
         <div class="form-group row">
             <label for="role" class="col-md-4 col-form-label text-right">Role</label>
             <div class="col-md-8">
-                <?php echo form_dropdown('role', $options_role, '', 'class="form-control" v-model="form_values.role"') ?>
+                <?= form_dropdown('role', $options_role, '', 'class="form-control" v-model="form_values.role"') ?>
             </div>
         </div>
 
@@ -68,7 +68,7 @@
         <div class="form-group row">
             <label for="country" class="col-md-4 col-form-label text-right">Country</label>
             <div class="col-md-8">
-                <?php echo form_dropdown('country', $options_country, '', 'id="field-country" class="form-control form-control-chosen" required v-model="form_values.country"') ?>
+                <?= form_dropdown('country', $options_country, '', 'id="field-country" class="form-control form-control-chosen" required v-model="form_values.country"') ?>
             </div>
         </div>
 

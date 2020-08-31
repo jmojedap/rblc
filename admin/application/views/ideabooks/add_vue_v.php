@@ -11,7 +11,7 @@
         },
         methods: {
             send_form: function() {
-                axios.post(app_url + 'ideabooks/insert/', $('#add_form').serialize())
+                axios.post(url_app + 'ideabooks/insert/', $('#add_form').serialize())
                 .then(response => {
                     console.log('status: ' + response.data);
                     if ( response.data.status == 1 )
@@ -29,7 +29,7 @@
                 for ( key in form_values ) { this.form_values[key] = ''; }
             },
             go_created: function() {
-                window.location = app_url + 'ideabooks/edit/' + this.row_id;
+                window.location = url_app + 'ideabooks/edit/' + this.row_id;
             }
         }
     });

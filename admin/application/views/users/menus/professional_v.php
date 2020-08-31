@@ -18,12 +18,12 @@
     var sections = [];
     var nav_2 = [];
     var sections_rol = [];
-    var element_id = '<?php echo $row->id ?>';
+    var element_id = '<?= $row->id ?>';
 
     sections.explore = {
         icon: 'fa fa-arrow-left',
         text: 'Explore',
-        class: '<?php echo $cl_nav_2['users_explore'] ?>',
+        class: '<?= $cl_nav_2['users_explore'] ?>',
         cf: 'users/explore/',
         'anchor': true
     };
@@ -31,42 +31,42 @@
     sections.profile = {
         icon: 'fa fa-user',
         text: 'Profile',
-        class: '<?php echo $cl_nav_2['users_profile'] ?>',
+        class: '<?= $cl_nav_2['users_profile'] ?>',
         cf: 'users/profile/' + element_id
     };
 
     sections.images = {
         icon: 'far fa-address-card',
         text: 'Images',
-        class: '<?php echo $cl_nav_2['professionals_images'] ?>',
+        class: '<?= $cl_nav_2['professionals_images'] ?>',
         cf: 'professionals/images/' + element_id
     };
 
     sections.content = {
         icon: 'far fa-address-card',
         text: 'Content',
-        class: '<?php echo $cl_nav_2['users_content'] ?>',
+        class: '<?= $cl_nav_2['users_content'] ?>',
         cf: 'users/content/' + element_id
     };
 
     sections.categories = {
         icon: 'far fa-sticky-note',
         text: 'Categories',
-        class: '<?php echo $cl_nav_2['professionals_categories'] ?>',
+        class: '<?= $cl_nav_2['professionals_categories'] ?>',
         cf: 'professionals/categories/' + element_id
     };
 
     sections.social_links = {
         icon: 'fa fa-link',
         text: 'Social',
-        class: '<?php echo $cl_nav_2['users_social_links'] ?>',
+        class: '<?= $cl_nav_2['users_social_links'] ?>',
         cf: 'users/social_links/' + element_id
     };
 
     sections.edit = {
         icon: 'fa fa-pencil-alt',
         text: 'Edit',
-        class: '<?php echo $cl_nav_2['users_edit'] ?>',
+        class: '<?= $cl_nav_2['users_edit'] ?>',
         cf: 'users/edit/' + element_id
     };
     

@@ -13,19 +13,19 @@
     var sections = [];
     var nav_2 = [];
     var sections_rol = [];
-    var element_id = '<?php echo $row->id ?>';
+    var element_id = '<?= $row->id ?>';
     
     sections.profile = {
         icon: 'fa fa-user',
         text: 'Profile',
-        class: '<?php echo $cl_nav_2['accounts_profile'] ?>',
+        class: '<?= $cl_nav_2['accounts_profile'] ?>',
         cf: 'accounts/profile/'
     };
 
     sections.edit = {
         icon: 'fa fa-pencil-alt',
         text: 'Edit',
-        class: '<?php echo $cl_nav_2['accounts_edit'] ?>',
+        class: '<?= $cl_nav_2['accounts_edit'] ?>',
         cf: 'accounts/edit/basic'
     };
     

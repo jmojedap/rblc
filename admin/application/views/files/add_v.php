@@ -30,7 +30,7 @@
             success: function(response){
                 if ( response.status == 1 )
                 {
-                    window.location = app_url + 'files/cropping/' + response.row.id;
+                    window.location = url_app + 'files/cropping/' + response.row.id;
                 }
             }
         });
