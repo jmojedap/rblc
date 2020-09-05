@@ -74,6 +74,12 @@ class Pictures extends CI_Controller{
     function home()
     {
         $data['head_title'] = APP_NAME;
+
+        //Carrusel
+        $carousel_id = $this->Db_model->field_id('sis_option', 104, 'option_value');
+        $this->db->select('id, url');
+        $data['carousel_images'] = $this->db->get_where('file', "table_id = 2000 AND related_1 = {$carousel_id}");
+
         $data['view_a'] = 'info/home_v';
         $this->App_model->view(TPL_ADMIN, $data);
     }

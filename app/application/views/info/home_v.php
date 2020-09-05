@@ -1,6 +1,6 @@
 <div id="home_app">
     <div class="home">
-        <img src="<?= URL_IMG ?>home/home-1.jpg" alt="home picture" class="w100pc">
+        <img v-bind:src="carousel[i].url" alt="home picture" class="w100pc" id="carousel_image"> 
         <div class="bg-main only-lg">
             <div class="icons text-center">
                 <div class="d-flex">
@@ -57,9 +57,13 @@
         el: '#home_app',
         created: function(){
             this.get_list();
+            this.update_carousel_image();
         },
         data: {
-            list: []
+            list: [],
+            carousel: <?= json_encode($carousel_images->result()) ?>,
+            changes: '',
+            i: 0,   //Current Carousel Key
         },
         methods: {
             get_list: function(){
@@ -71,6 +75,16 @@
                     console.log(error);
                 });  
             },
+            update_carousel_image: function(){  
+                this.interval = setInterval(() => {
+                    var new_key = this.i + 1;
+                    if ( new_key >= this.carousel.length ) new_key = 0;
+                    this.i = new_key;
+                    //console.log (this.i);
+                    $('#carousel_image').fadeOut(100);
+                    $('#carousel_image').fadeIn(2000);
+                }, 8000);
+            }
         }
     });
 </script>

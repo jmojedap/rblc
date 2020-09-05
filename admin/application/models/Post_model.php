@@ -46,7 +46,7 @@ class Post_model extends CI_Model{
     {
         $edit_view = 'posts/edit_v';
         if ( $row->type_id == 19) { $edit_view = 'posts/types/glossary/edit_v'; }
-        if ( $row->type_id == 7110 ) { $edit_view = 'posts/types/project/edit_v'; }
+        if ( $row->type_id == 7110 ) { $edit_view = 'posts/types/post/edit_v'; }
 
         return $edit_view;
     }
@@ -68,6 +68,22 @@ class Post_model extends CI_Model{
         
         return $data;
     }
+
+    /**
+     * Nombre de la vista con el formulario para la edición del post. Puede cambiar dependiendo
+     * del tipo (type_id).
+     * 2020-08-20
+     */
+    function type_folder($row)
+    {
+        $type_folder = 'posts/';
+        if ( $row->type_id == 5 ) $type_folder = 'posts/types/album/';
+
+        return $type_folder;
+    }
+
+// ELIMINACIÓN DE UN POST
+//-----------------------------------------------------------------------------
     
     /**
      * Determina si el usuario en sesión tiene permiso para eliminar un registro en la tabla post
@@ -352,6 +368,55 @@ class Post_model extends CI_Model{
             $this->db->update('post', $arr_row);
         }
         
+        return $data;
+    }
+
+// IMAGES
+//-----------------------------------------------------------------------------
+
+    /**
+     * Imágenes asociadas al post, mediante la tabla post_meta, tipo 1
+     * 2020-09-05
+     */
+    function images($post_id)
+    {
+        $this->db->select('file.id, file.title, url, url_thumbnail, file.integer_1 AS main');
+        $this->db->where('is_image', 1);
+        $this->db->where('table_id', '2000');       //Tabla post
+        $this->db->where('related_1', $post_id);   //Relacionado con el post
+        $images = $this->db->get('file');
+
+        return $images;
+    }
+
+    /**
+     * Establecer una imagen asociada a un post como la imagen principal (tabla file)
+     * 2020-09-05
+     */
+    function set_main_image($post_id, $file_id)
+    {
+        $data = array('status' => 0);
+
+        $row_file = $this->Db_model->row_id('file', $file_id);
+        if ( ! is_null($row_file) )
+        {
+            //Quitar otro principal
+            $this->db->query("UPDATE file SET integer_1 = 0 WHERE table_id = 2000 AND related_1 = {$post_id} AND integer_1 = 1");
+
+            //Poner nuevo principal
+            $this->db->query("UPDATE file SET integer_1 = 1 WHERE id = {$file_id} AND related_1 = {$post_id}");
+
+            //Actualizar registro en tabla post
+            $arr_row['image_id'] = $row_file->id;
+            $arr_row['url_image'] = $row_file->url;
+            $arr_row['url_thumbnail'] = $row_file->url_thumbnail;
+
+            $this->db->where('id', $post_id);
+            $this->db->update('post', $arr_row);
+
+            $data['status'] = 1;
+        }
+
         return $data;
     }
 

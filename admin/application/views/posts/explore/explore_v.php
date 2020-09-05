@@ -5,14 +5,13 @@
         </div>
 
         <div class="col">
-            <a class="btn btn-light"
-                title="Eliminar elementos seleccionados"
+            <button class="btn btn-light"
                 data-toggle="modal"
                 data-target="#modal_delete"
                 v-show="selected.length > 0"
                 >
                 <i class="fa fa-trash"></i>
-            </a>
+            </button>
             
         </div>
         

@@ -24,7 +24,7 @@ class App extends CI_Controller {
         }    
     }
 
-    function home()
+    function home_ant()
     {
         $data['head_title'] = 'Welcome to colibri:house';
         $data['view_a'] = 'app/home_v';

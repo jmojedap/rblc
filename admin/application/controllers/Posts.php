@@ -85,6 +85,61 @@ class Posts extends CI_Controller{
         //Salida JSON
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
+
+// INFORMACÍON LECTURA Y APERTURA
+//-----------------------------------------------------------------------------
+
+    /**
+     * Abrir o redireccionar a la vista pública de un post
+     */
+    function open($post_id)
+    {
+        $row = $this->Db_model->row_id('post', $post_id);
+        $destination = "posts/read/{$post_id}";
+
+        if ( $row->type_id == 41 ) { $destination = "polls/build/{$row->id}"; }
+
+        redirect($destination);
+    }
+
+    /**
+     * Mostrar post en vista lectura
+     */
+    function read($post_id)
+    {
+        //Datos básicos
+        $data = $this->Post_model->basic($post_id);
+        unset($data['nav_2']);
+        $data['view_a'] = $this->Post_model->type_folder($data['row']) . 'read_v';
+
+        $this->App_model->view(TPL_ADMIN, $data);
+    }
+
+    /**
+     * Información general del post
+     */
+    function info($post_id)
+    {        
+        //Datos básicos
+        $data = $this->Post_model->basic($post_id);
+        $data['view_a'] = $this->Post_model->type_folder($data['row']) . 'info_v';
+
+        $this->App_model->view(TPL_ADMIN, $data);
+    }
+
+    /**
+     * Información detallada del post desde la perspectiva de base de datos
+     * 2020-08-18
+     */
+    function details($post_id)
+    {        
+        //Datos básicos
+        $data = $this->Post_model->basic($post_id);
+        $data['view_a'] = 'posts/details_v';
+        $data['fields'] = $this->db->list_fields('post');
+
+        $this->App_model->view(TPL_ADMIN, $data);
+    }
     
 // CRUD
 //-----------------------------------------------------------------------------
@@ -111,16 +166,6 @@ class Posts extends CI_Controller{
     {
         $data = $this->Post_model->insert();
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
-    }
-    
-    /**
-     * Información general del post
-     */
-    function info($post_id)
-    {
-        $data = $this->Post_model->basic($post_id);
-        $data['view_a'] = 'posts/info_v';
-        $this->App_model->view(TPL_ADMIN, $data);
     }
     
 // EDICIÓN Y ACTUALIZACIÓN
@@ -209,6 +254,53 @@ class Posts extends CI_Controller{
     function remove_image($post_id)
     {
         $data = $this->Post_model->remove_image($post_id);
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
+
+// PROJECT IMAGES
+//-----------------------------------------------------------------------------
+
+    /**
+     * Vista, gestión de imágenes de un post
+     * 2020-07-14
+     */
+    function images($post_id)
+    {
+        $data = $this->Post_model->basic($post_id);
+
+        $data['images'] = $this->Post_model->images($post_id);
+        
+        //Para formulario file
+        $data['form_table_id'] = 2000;
+        $data['form_related_1'] = $post_id;
+
+        $data['view_a'] = 'posts/images/images_v';
+        $data['subtitle_head'] = 'Images';
+        $this->App_model->view(TPL_ADMIN, $data);
+    }
+
+    /**
+     * AJAX JSON
+     * Imágenes de un post
+     * 2020-07-07
+     */
+    function get_images($post_id)
+    {
+        $images = $this->Post_model->images($post_id);
+        $data['images'] = $images->result();
+
+        //Salida JSON
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
+
+    /**
+     * Establecer imagen principal de un post
+     * 2020-07-07
+     */
+    function set_main_image($post_id, $file_id)
+    {
+        $data = $this->Post_model->set_main_image($post_id, $file_id);
+        //Salida JSON
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 
