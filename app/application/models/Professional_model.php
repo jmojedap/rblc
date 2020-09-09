@@ -30,7 +30,7 @@ class Professional_model extends CI_Model{
             $data['views_folder'] = 'professionals/explore/';           //Carpeta donde están las vistas de exploración
             
         //Vistas
-            $data['head_title'] = 'Usuarios';
+            $data['head_title'] = 'Professionals';
             $data['head_subtitle'] = $data['search_num_rows'];
             $data['view_a'] = $data['views_folder'] . 'explore_v';
         

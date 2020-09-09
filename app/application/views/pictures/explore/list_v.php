@@ -21,5 +21,7 @@
         <?php } ?>
     </div>
 </div>
-<p class="text-center" v-show="loading_more"><i class="fa fa-spinner fa-spin fa-2x"></i></p>
+<p class="text-center mt-3 mb-1" v-show="loading_more">
+    <img src="<?= URL_IMG ?>gifs/colibri.gif" alt="colibri animation">
+</p>
 <p class="text-center" v-show="num_page == max_page">No more results</p>

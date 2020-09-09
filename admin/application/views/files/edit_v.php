@@ -1,10 +1,10 @@
 <?php
     $arr_fields = array(
-        'file_name' => 'Nombre archivo',
-        'title' => 'Título',
-        'subtitle' => 'Subtítulo',
-        'description' => 'Descripción',
-        'keywords' => 'Palabras clave'
+        'title' => 'Title',
+        'subtitle' => 'Subtitle',
+        'external_link' => 'Destination URL',
+        'description' => 'Description',
+        'keywords' => 'Keywords'
     );
 ?>
 

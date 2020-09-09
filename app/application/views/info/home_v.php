@@ -1,7 +1,10 @@
 <div id="home_app">
     <div class="home">
-        <img v-bind:src="carousel[i].url" alt="home picture" class="w100pc" id="carousel_image"> 
-        <div class="bg-main only-lg">
+        <div id="new-slider">
+            <div class="arrow prev"></div>
+            <div class="arrow next"></div>
+        </div>
+        <div class="three-buttons bg-main only-lg">
             <div class="icons text-center">
                 <div class="d-flex">
                     <div class="icon">
@@ -57,6 +60,7 @@
         el: '#home_app',
         created: function(){
             this.get_list();
+            this.populate_slider();
             this.update_carousel_image();
         },
         data: {
@@ -75,16 +79,43 @@
                     console.log(error);
                 });  
             },
+            populate_slider: function () {
+                this.carousel.forEach(e => {
+                    let slide = document.createElement('a');
+                    $(slide)
+                        .attr('href', e.external_link)
+                        //.attr('target', e.target)
+                        .append(`<img src="${e.url}">`)
+                        .append(`<span class="slide-title">${e.title}<span>`)
+                        .append(`<span class="slide-subtitle">${e.subtitle}<span>`);
+                    $('#new-slider').prepend(slide);
+                });
+            },
             update_carousel_image: function(){  
                 this.interval = setInterval(() => {
-                    var new_key = this.i + 1;
-                    if ( new_key >= this.carousel.length ) new_key = 0;
-                    this.i = new_key;
-                    //console.log (this.i);
-                    $('#carousel_image').fadeOut(100);
-                    $('#carousel_image').fadeIn(2000);
-                }, 8000);
+                    let last = $('#new-slider a').last();
+                    $(last).animate({
+                        'opacity': 0
+                    }, {
+                        duration: 350,
+                        easing: 'linear',
+                        complete: function () {
+                            $(last).prependTo($('#new-slider'));
+                            $(last).css('opacity', 1);
+                        }
+                    })
+                }, 6000);
             }
         }
     });
+</script>
+
+<script>
+    if ($('#new-slider')) {
+        $('#new-slider').css('height', (9 * $('#new-slider').width() / 16) + 'px');
+        console.log('configuring slider ...');
+        $(window).resize(function () {
+            $('#new-slider').css('height', (9 * $('#new-slider').width() / 16) + 'px');
+        });
+    }
 </script>

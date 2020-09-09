@@ -16,11 +16,12 @@
     if ( $cf == 'projects/images' ) { $cl_menu['projects'] .= ' active'; }
 ?>
 
-<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #F37062;">
+<nav class="navbar main-navbar navbar-expand-lg navbar-dark" style="background-color: #F37062;">
     <div class="container">
         <a class="navbar-brand" href="<?php echo URL_APP ?>">
-            <img class="d-block" src="<?php echo URL_IMG ?>app/logo_admin.png" alt="Main logo" srcset="">
+            <img class="d-block" src="<?php echo URL_IMG ?>app/logo.png" alt="Main logo" srcset="">
         </a>
+        
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>

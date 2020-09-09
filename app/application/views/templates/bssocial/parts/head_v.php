@@ -1,4 +1,4 @@
-<title><?php echo $head_title ?></title>
+<title>Colibri.House <?php echo $head_title ?></title>
         
         <link rel="shortcut icon" href="<?php echo URL_IMG ?>app/favicon.png"> 
         
@@ -8,7 +8,7 @@
 
         <?php $this->load->view('assets/bootstrap'); ?>
         
-        <link rel="stylesheet" href="<?php echo base_url('resources/templates/colibri_pre/css/main_20200825.css') ?>">
+        <link rel="stylesheet" href="<?php echo base_url('resources/templates/colibri_pre/css/main_20200909.css') ?>">
         <link rel="stylesheet" href="<?php echo base_url('resources/css/ideabook_colors.css') ?>">
 
         <!-- Google Analytics -->

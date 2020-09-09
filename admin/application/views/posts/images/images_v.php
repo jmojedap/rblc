@@ -17,6 +17,9 @@
                             Main
                         </button>
                         <button class="btn btn-sm btn-light" v-on:click="set_current(image_key)" data-toggle="modal" data-target="#delete_modal"><i class="fa fa-trash"></i></button>
+                        <a v-bind:href="`<?= base_url("files/edit/") ?>` + image.id" class="btn btn-sm btn-light" target="_blank">
+                            <i class="fa fa-pencil-alt"></i>
+                        </a>
                     </div>
                 </div>
             </div>
