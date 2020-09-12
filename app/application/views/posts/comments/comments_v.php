@@ -57,12 +57,16 @@
     <?php $this->load->view('common/modal_single_delete_v') ?>
 </div>
 
-
 <script>
+// Filters
+//-----------------------------------------------------------------------------
     Vue.filter('ago', function (date) {
         if (!date) return ''
         return moment(date, "YYYY-MM-DD HH:mm:ss").fromNow();
     });
+
+// VueApp
+//-----------------------------------------------------------------------------
 
 
     new Vue({

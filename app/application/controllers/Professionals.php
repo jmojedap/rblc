@@ -52,7 +52,7 @@ class Professionals extends CI_Controller{
         $data['follow_status'] = $this->Professional_model->follow_status($user_id);
 
         //Vista
-        $data['view_a'] = 'professionals/profile_v';
+        $data['view_a'] = 'professionals/profile/profile_v';
         $this->App_model->view(TPL_ADMIN, $data);
     }
     

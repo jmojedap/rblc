@@ -7,27 +7,27 @@
         <div class="three-buttons bg-main only-lg">
             <div class="icons text-center">
                 <div class="d-flex">
-                    <div class="icon">
+                    <a class="icon" href="<?= base_url('pictures/explore') ?>">
                         <img src="<?= URL_IMG ?>front/icon_inspiration.png" alt="Icon image" class="mb-3">
                         <h3>Find inspiraton</h3>
                         <p>
                             You can look for ideas and references to complete your home
                         </p>
-                    </div>
-                    <div class="icon">
+                    </a>
+                    <a class="icon" href="<?= base_url('professionals/explore') ?>">
                         <img src="<?= URL_IMG ?>front/icon_professional.png" alt="Icon image" class="mb-3">
                         <h3>Find professionals</h3>
                         <p>
                         Contact services and enterprices who make the laundry, cleaning and reparing job
                         </p>
-                    </div>
-                    <div class="icon">
+                    </a>
+                    <a class="icon" href="<?= base_url('projects/explore') ?>">
                         <img src="<?= URL_IMG ?>front/icon_product.png" alt="Icon image" class="mb-3">
                         <h3>Find products</h3>
                         <p>
                             Here all projects and products of luxury design
                         </p>
-                    </div>
+                    </a>
                     
                     
                 </div>

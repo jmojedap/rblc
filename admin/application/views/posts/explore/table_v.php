@@ -4,6 +4,7 @@
             <th width="10px">
                 <input type="checkbox" id="checkbox_all_selected" @change="select_all" v-model="all_selected">
             </th>
+            <th width="10px"></th>
             <th class="w150p">Tipo</th>
             <th class="">Nombre</th>
             
@@ -14,6 +15,8 @@
                 <td>
                     <input type="checkbox" v-bind:id="`check_` + element.id" v-model="selected" v-bind:value="element.id">
                 </td>
+
+                <td>{{ element.id }}</td>
                     
                 </td>
                 <td class="">

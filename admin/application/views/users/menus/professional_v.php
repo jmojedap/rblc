@@ -67,7 +67,8 @@
         icon: 'fa fa-pencil-alt',
         text: 'Edit',
         class: '<?= $cl_nav_2['users_edit'] ?>',
-        cf: 'users/edit/' + element_id
+        cf: 'users/edit/' + element_id,
+        anchor: true
     };
     
     //Secciones para cada rol

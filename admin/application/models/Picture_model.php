@@ -17,7 +17,7 @@ class Picture_model extends CI_Model{
     {
         $row = NULL;
         //$this->db->select('id, file_name, title, description, creator_id, updater_id');
-        $this->db->select('id, file_name, title, description, related_1, album_id');
+        $this->db->select('id, file_name, title, description, related_1, album_id, url, url_thumbnail');
         $query = $this->db->get_where('file', $condition);
 
         if ( $query->num_rows() > 0 ) $row = $query->row();

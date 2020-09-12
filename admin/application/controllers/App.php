@@ -112,6 +112,17 @@ class App extends CI_Controller {
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 
+// HELP
+//-----------------------------------------------------------------------------
+
+    function help($post_id = 0)
+    {
+        $data['head_title'] = 'Ayuda';
+        $data['view_a'] = 'app/help/help_v';
+        $this->App_model->view(TPL_ADMIN, $data);
+    }
+
+
 //AUTOCOMPLETAR
 //---------------------------------------------------------------------------------------------------
     

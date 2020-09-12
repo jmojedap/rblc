@@ -90,5 +90,13 @@ var nav_1_elements = [
             }
         ],
         sections: []
+    },
+    {
+        text: 'Help',
+        active: false,
+        icon: 'fa fa-question-circle',
+        cf: 'app/help',
+        subelements: [],
+        sections: ['app/help']
     }
 ];

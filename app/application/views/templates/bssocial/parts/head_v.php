@@ -8,11 +8,20 @@
 
         <?php $this->load->view('assets/bootstrap'); ?>
         
-        <link rel="stylesheet" href="<?php echo base_url('resources/templates/colibri_pre/css/main_20200909.css') ?>">
+        <link rel="stylesheet" href="<?php echo base_url('resources/templates/colibri_pre/css/main_20200911.css') ?>">
         <link rel="stylesheet" href="<?php echo base_url('resources/css/ideabook_colors.css') ?>">
 
         <!-- Google Analytics -->
-        <?php //$this->load->view('assets/google_analytics') ?>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-177846858-1"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-177846858-1');
+        </script>
+
 
         <!-- Moment.js -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.js" integrity="sha256-H9jAz//QLkDOy/nzE9G4aYijQtkLt9FvGmdUTwBk6gs=" crossorigin="anonymous"></script>

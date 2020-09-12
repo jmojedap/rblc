@@ -34,13 +34,13 @@
         icon: 'fa fa-pencil-alt',
         text: 'Edit',
         class: '<?= $cl_nav_2['users_edit'] ?>',
-        cf: 'users/edit/' + element_id
+        cf: 'users/edit/' + element_id,
+        anchor: true
     };
     
     //Secciones para cada rol
-    sections_rol.dvlp = ['profile', 'ideabooks', 'edit'];
+    sections_rol.dvlp = ['profile', 'edit'];
     sections_rol.admn = ['profile', 'edit'];
-    sections_rol.prpt = ['profile', 'edit'];
     
     //Recorrer el sections del rol actual y cargarlos en el menú
     for ( key_section in sections_rol[app_r]) 

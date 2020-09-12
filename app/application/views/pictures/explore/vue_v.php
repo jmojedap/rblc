@@ -7,14 +7,8 @@
             { slug: '', text: 'All'},
             { slug: 'kitchen', text: 'Kitchen'},
             { slug: 'bathroom', text: 'Bathroom'},
-            {
-                slug: 'livingroom',
-                text: 'Living Room'
-            },
-            {
-                slug: 'wine-cellar',
-                text: 'Wine cellar'
-            },
+            { slug: 'livingroom', text: 'Living Room'},
+            { slug: 'wine-cellar', text: 'Wine cellar' },
             {
                 slug: 'outdoor',
                 text: 'Outdoor'
@@ -77,10 +71,13 @@
             picture: {
                 row: {description: ''},
                 tags: {}
-            }
+            },
+            gallery_visible: true
         },
         methods: {
             get_list: function(){
+                this.gallery_visible = false;
+
                 var params = new URLSearchParams();
                 params.append('q', app_q);
                 params.append('tag', this.tag.slug);
@@ -92,6 +89,7 @@
                     history.pushState(null, null, url_app + this.cf + this.num_page +'/?' + response.data.str_filters);
                     this.all_selected = false;
                     this.selected = [];
+                    this.gallery_visible = true;
                 })
                 .catch(function (error) {
                     console.log(error);

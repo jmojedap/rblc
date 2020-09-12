@@ -39,7 +39,7 @@
     <div class="col col-md-4">
         <!-- Page Widget -->
         <div class="card text-center">
-            <img src="<?= $att_img['src'] ?>" alt="Imagen del usuario" width="100%">
+            <img src="<?= $att_img['src'] ?>" alt="Imagen del usuario" width="100%" onerror="this.src='<?php echo URL_IMG ?>users/md_user.png'">
             <div class="card-body">
                 <h4 class="profile-user"><?= $this->Item_model->name(58, $row->role) ?></h4>
 
