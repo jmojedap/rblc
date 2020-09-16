@@ -380,8 +380,7 @@ class User_model extends CI_Model{
         if ( ! is_null($row->image_id) )
         {
             $this->load->model('File_model');
-            $this->File_model->delete($row->image_id);
-            $data['status'] = 1;
+            $data = $this->File_model->delete($row->image_id);
         }
         
         return $data;

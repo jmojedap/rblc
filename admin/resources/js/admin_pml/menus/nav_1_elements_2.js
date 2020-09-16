@@ -16,14 +16,6 @@ var nav_1_elements = [
         sections: ['projects/explore', 'projects/info', 'projects/image', 'projects/edit', 'projects/images', 'projects/descriptors']
     },
     {
-        text: 'Ideabooks',
-        active: false,
-        icon: 'far fa-lightbulb',
-        cf: 'ideabooks/explore',
-        subelements: [],
-        sections: ['ideabooks/explore', 'ideabooks/info', 'ideabooks/images', 'ideabooks/edit']
-    },
-    {
         text: 'Tags',
         active: false,
         icon: 'fa fa-tag',
@@ -60,13 +52,6 @@ var nav_1_elements = [
         icon: 'fa fa-cog',
         cf: '',
         subelements: [
-            {
-                text: 'General',
-                active: false,
-                icon: 'fa fa-sliders-h',
-                cf: 'admin/options',
-                sections: ['admin/acl', 'admin/options', 'admin/colors']
-            },
             {
                 text: 'Items',
                 active: false,

@@ -36,6 +36,7 @@ class App extends CI_Controller {
             $arr_destination = array(
                 0 => 'users/explore/',  //Developer
                 1 => 'users/explore/',  //Administrador
+                2 => 'users/explore/',  //Editor
                 13 => 'accounts/profile/', //Professional
                 23 => 'accounts/profile/',  //Homeowner
             );

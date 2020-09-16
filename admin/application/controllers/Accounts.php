@@ -488,7 +488,8 @@ class Accounts extends CI_Controller {
         $this->load->model('File_model');
         $data_upload = $this->File_model->upload();
         
-        $data = array('status' => 0);
+        $data = array('status' => 0, 'message' => 'La imagen no fue cargada');
+        $data['data_upload'] = $data_upload;
         if ( $data_upload['status'] )
         {
             $this->load->model('User_model');

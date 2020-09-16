@@ -3,6 +3,7 @@
 ?>
 
 <form accept-charset="utf-8" method="POST" id="search_form" @submit.prevent="get_list">
+    <input type="hidden" name="u" value="<?= $this->session->userdata('user_id') ?>">
     <div class="form-group row">
         <div class="col-md-9">
             <div class="input-group mb-2">

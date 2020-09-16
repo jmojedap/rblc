@@ -41,8 +41,11 @@
         },
         methods: {
             get_list: function(){
-                axios.post(url_api + this.controller + '/get/' + this.num_page, $('#search_form').serialize())
+                var form_data = new FormData;
+                form_data.append('u', '<?= $this->session->userdata('user_id') ?>');
+                axios.post(url_api + this.controller + '/get/' + this.num_page, form_data)
                 .then(response => {
+                    console.log('cargando');
                     this.list = response.data.list;
                     this.max_page = response.data.max_page;
                     this.search_num_rows = response.data.search_num_rows;

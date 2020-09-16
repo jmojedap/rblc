@@ -4,6 +4,7 @@
             <th width="10px">
                 <input type="checkbox" id="checkbox_all_selected" @change="select_all" v-model="all_selected">
             </th>
+            <th width="10px">ID</th>
             <th width="60px"></th>
             <th>Name</th>
             <th>City</th>
@@ -16,6 +17,8 @@
                 <td>
                     <input type="checkbox" v-bind:id="`check_` + element.id" v-model="selected" v-bind:value="element.id">
                 </td>
+
+                <td class="table-warning">{{ element.id }}</td>
                 
                 <td>
                     <a v-bind:href="`<?= base_url("users/profile/") ?>` + element.id">

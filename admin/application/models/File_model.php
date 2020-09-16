@@ -506,16 +506,15 @@ class File_model extends CI_Model{
             $deleteable = true; 
         } else {
             $row = $this->Db_model->row_id('file', $file_id);
-
-            //Si es el usuario creador
-            if ( $row->creator_id == $this->session->userdata('user_id') ) { $deleteable = true; }
-
-            //Si es el usuario asociado
-            if ( $row->table_id == 1000 && $row->related_1 == $this->session->userdata('user_id') ) { $deleteable = true; }
+            if ( ! is_null($row) )
+            {
+                //Si es el usuario creador
+                if ( $row->creator_id == $this->session->userdata('user_id') ) { $deleteable = true; }
+                //Si es el usuario asociado
+                if ( $row->table_id == 1000 && $row->related_1 == $this->session->userdata('user_id') ) { $deleteable = true; }
+            }
         }
-
         return $deleteable;
-
     }
     
     /**
@@ -587,8 +586,8 @@ class File_model extends CI_Model{
             $this->db->update('post', $arr_row_post);
 
         //Otras Aplicación
-            $this->db->query("DELETE FROM post_meta WHERE type_id = 1 AND related_1  = {$file_id}"); //Imágen de post
-            $this->db->query("DELETE FROM user_meta WHERE type_id = 1 AND related_1  = {$file_id}"); //Imágen de usuario
+            $this->db->query("DELETE FROM post_meta WHERE type_id = 1 AND related_1 = {$file_id}"); //Imágen de post
+            $this->db->query("DELETE FROM user_meta WHERE type_id = 1 AND related_1 = {$file_id}"); //Imágen de usuario
     }
 
     /**

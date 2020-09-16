@@ -2,6 +2,7 @@
 
 <?php
     $options_type = $this->Item_model->options("category_id = 63", 'Account type');
+    $options_role = $this->Item_model->options("category_id = 58 AND cod >= {$this->session->userdata('role')}");
     $options_country = $this->App_model->options_country();
 ?>
 
@@ -9,6 +10,13 @@
     <div class="card center_box_750">
         <div class="card-body">
             <form id="edit_form" accept-charset="utf-8" @submit.prevent="validate_send">
+                <div class="form-group row">
+                    <label for="role" class="col-md-4 col-form-label text-right">Role</label>
+                    <div class="col-md-8">
+                        <?php echo form_dropdown('role', $options_role, '', 'class="form-control" v-model="form_values.role"') ?>
+                    </div>
+                </div>
+
                 <div class="form-group row">
                     <label for="display_name" class="col-md-4 col-form-label text-right">Name</label>
                     <div class="col-md-8">
@@ -236,6 +244,7 @@
 
     //Loading values in variable
     var form_values = {
+            role: '0<?= $row->role ?>',
             display_name: '<?= $row->display_name ?>',
             country: '<?= $row->country ?>',
             state_province: '<?= $row->state_province ?>',

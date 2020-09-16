@@ -241,7 +241,7 @@ class Projects extends CI_Controller{
     {
         //Update row
             $arr_row['post_name'] = $this->input->post('post_name');
-            $arr_row['related_1'] = $this->input->post('related_1');
+            if ( ! is_null($this->input->post('related_1')) ) $arr_row['related_1'] = $this->input->post('related_1');
             $arr_row['integer_1'] = $this->input->post('integer_1');
             $arr_row['updater_id'] = $this->session->userdata('user_id');
 

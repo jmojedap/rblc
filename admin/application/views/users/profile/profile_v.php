@@ -21,7 +21,7 @@
             url: url_app + 'users/set_activation_key/' + user_id,
             success: function(response){
                 $('#activation_key').html(url_app + 'accounts/recover/' + response);
-                toastr['success']('Se actualizó la clave de activación');
+                toastr['success']('Activation link generated');
             }
         });
     }
@@ -118,7 +118,7 @@
                             <button class="btn btn-primary btn-sm" id="btn_set_activation_key">
                                 <i class="fa fa-redo-alt"></i>
                             </button>
-                            <span class="text-muted">Activación</span>
+                            <span class="text-muted">Activation</span>
                         </td>
                         <td>
                             <span id="activation_key"></span>

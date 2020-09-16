@@ -10,7 +10,7 @@
             </div>
             <div class="ml-auto p-2 bd-highlight">
                 <img src="<?= URL_IMG ?>front/icon_liked_white.png" alt="icon liked" style="">
-                <span class="counter-white mr-2">536</span>
+                <span class="counter-white mr-2">0</span>
                 <?php if ( $this->session->userdata('user_id') == $row->creator_id   ) { ?>
                     <a href="<?= base_url("ideabooks/edit/{$row->id}") ?>" class="a-white mr-2">
                         <i class="fa fa-edit fa-2x"></i>
@@ -27,7 +27,7 @@
                     <div class="image-container">
                         <img
                             v-bind:src="image.url_thumbnail"
-                            class="picture"
+                            class="picture mb-3"
                             alt="alt"
                             onerror="this.src='<?php echo URL_IMG ?>front/md_coming_soon.png'"
                         >
