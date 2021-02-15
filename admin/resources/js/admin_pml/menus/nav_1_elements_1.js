@@ -32,27 +32,20 @@ var nav_1_elements = [
         sections: ['tags/explore', 'tags/info', 'tags/edit']
     },
     {
-        text: 'Data',
+        text: 'Files',
         active: false,
-        icon: 'fa fa-table',
-        cf: '',
-        subelements: [
-            {
-                text: 'Posts',
-                active: false,
-                icon: 'fa fa-newspaper',
-                cf: 'posts/explore',
-                sections: ['posts/explore', 'posts/add', 'posts/info', 'posts/edit', 'posts/import', 'posts/comments', 'posts/image']
-            },
-            {
-                text: 'Files',
-                active: false,
-                icon: 'fa fa-file',
-                cf: 'files/explore',
-                sections: ['files/explore', 'files/add', 'files/edit', 'files/tags', 'files/cropping']
-            }
-        ],
-        sections: []
+        icon: 'far fa-file',
+        cf: 'files/explore',
+        subelements: [],
+        sections: ['files/explore']
+    },
+    {
+        text: 'Posts',
+        active: false,
+        icon: 'far fa-file',
+        cf: 'posts/explore',
+        subelements: [],
+        sections: ['posts/explore']
     },
     {
         text: 'Settings',

@@ -41,12 +41,24 @@ class Pictures extends CI_Controller{
 // Picture info
 //-----------------------------------------------------------------------------
 
+    /**
+     * Detalles de la imagen
+     * 2021-02-15
+     */
     function details($file_id)
     {
-        $data = $this->Model->basic($file_id);
-        $data['view_a'] = 'view_a';
-        $data['nav_2'] = '';
-        $data['subtitle_head'] = '';
+        $data = $this->Picture_model->basic($file_id);
+
+        //Identificar al usuario propietario de la imagen
+        $data['user'] = NULL;
+        if ( $data['row']->table_id == 1000 ) $data['user'] = $this->Db_model->row_id('user', $data['row']->related_1);
+
+        //Tags de la imagen
+        $data['tags'] = $this->Picture_model->tags($file_id);
+
+        $data['like_status'] = $this->Picture_model->like_status($file_id);
+
+        $data['view_a'] = 'pictures/details/details_v';
         $this->App_model->view(TPL_ADMIN, $data);
     }
 

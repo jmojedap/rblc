@@ -16,7 +16,7 @@
     if ( $cf == 'projects/images' ) { $cl_menu['projects'] .= ' active'; }
 ?>
 
-<nav class="navbar main-navbar navbar-expand-lg navbar-dark" style="background-color: #F37062;">
+<nav class="navbar main-navbar navbar-expand-lg navbar-dark" style="background-color: #FF6529;">
     <div class="container">
         <a class="navbar-brand" href="<?php echo URL_APP ?>">
             <img class="d-block" src="<?php echo URL_IMG ?>app/logo.png" alt="Main logo" srcset="">
@@ -41,7 +41,7 @@
                     <a class="<?= $cl_menu['professionals'] ?>" href="<?= base_url('professionals/explore') ?>">FIND A PRO</a>
                 </li>
                 <li class="nav-item">
-                    <a class="<?= $cl_menu['projects'] ?>" href="<?= base_url('projects/explore') ?>">PRODUCTS</a>
+                    <a class="<?= $cl_menu['projects'] ?>" href="<?= base_url('projects/explore') ?>">PROJECTS</a>
                 </li>
             </ul>
 

@@ -6,6 +6,6 @@
 ?>
 
 <form accept-charset="utf-8" method="GET" class="form-inline my-2 my-md-0" action="<?php echo base_url($search_form_action) ?>">
-    <input type="text" placeholder="Search for inspiration..." aria-label="Search"
+    <input type="text" placeholder="Search..." aria-label="Search"
         id="app_q" name="q" value="<?php echo $this->input->get('q') ?>">
 </form>

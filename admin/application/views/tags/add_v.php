@@ -6,9 +6,9 @@
                     <label for="name" class="col-md-4 col-form-label text-right">Name</label>
                     <div class="col-md-8">
                         <input
-                            id="field-name" class="form-control"
-                            name="name"
-                            required
+                            type="text" class="form-control" name="name"
+                            pattern="^[A-Z0-9 _]*[A-Z0-9][A-Z0-9 _]*$" required
+                            title="Solo se permiten letras, números y espacios"
                             autofocus
                             v-model="form_values.name">
                     </div>

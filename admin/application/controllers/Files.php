@@ -74,6 +74,7 @@ class Files extends CI_Controller{
     function info($file_id)
     {
         $data = $this->File_model->basic($file_id);
+        $data['tags'] = $this->File_model->tags($file_id);
         $data['view_a'] = 'files/info_v';
         $data['nav_2'] = 'files/menu_v';
         $this->App_model->view(TPL_ADMIN, $data);
@@ -94,19 +95,15 @@ class Files extends CI_Controller{
     function edit($file_id)
     {
         $data = $this->File_model->basic($file_id);
-        
-        //Variables
-            $data['destino_form'] = "files/editar_e/{$file_id}";
-            $data['att_img'] = $this->File_model->att_img($file_id, '500px_');
-        
-        //Variables generales
-            $data['file_id'] = $file_id;
-            $data['head_subtitle'] = $data['row']->file_name;
-            $data['nav_2'] = 'files/menu_v';
-            $data['view_a'] = 'files/edit_v';
-            
-        //Variables generales
-        
+
+        //Opciones para agregar
+        $data['options_tag'] = $this->App_model->options_tag('category_id = 1');
+
+        //Datos actuales
+        $data['tags'] = $this->File_model->tags($file_id);
+
+        $data['nav_2'] = 'files/menu_v';
+        $data['view_a'] = 'files/edit_v';
         $this->App_model->view(TPL_ADMIN, $data);
     }
 

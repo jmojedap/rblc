@@ -18,7 +18,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="display_name" class="col-md-4 col-form-label text-right">Name</label>
+                    <label for="display_name" class="col-md-4 col-form-label text-right">Name <span class="text-danger">*</span></label>
                     <div class="col-md-8">
                         <input
                             id="field-display_name"
@@ -54,14 +54,14 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="country" class="col-md-4 col-form-label text-right">Country</label>
+                    <label for="country" class="col-md-4 col-form-label text-right">Country <span class="text-danger">*</span></label>
                     <div class="col-md-8">
                         <?= form_dropdown('country', $options_country, '', 'id="field-country" v-model="form_values.country" class="form-control form-control-chosen" required') ?>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label for="state_province" class="col-md-4 col-form-label text-right">State/Province</label>
+                    <label for="state_province" class="col-md-4 col-form-label text-right">State/Province <span class="text-danger">*</span></label>
                     <div class="col-md-8">
                         <input
                             type="text"
@@ -152,7 +152,7 @@
 
                 <?php if ( $this->session->userdata('type') <= 2 ) { ?>
                     <div class="form-group row" id="form-group_username">
-                        <label for="username" class="col-md-4 col-form-label text-right">Username</label>
+                        <label for="username" class="col-md-4 col-form-label text-right">Username <span class="text-danger">*</span></label>
                         <div class="col-md-8">
                             <div class="input-group">
                                 <!-- /btn-group -->

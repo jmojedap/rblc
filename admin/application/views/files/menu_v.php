@@ -20,15 +20,15 @@
     
     sections.explore = {
         icon: 'fa fa-arrow-left',
-        text: 'Explorar',
+        text: 'Explore',
         class: '<?= $cl_nav_2['files_explore'] ?>',
         cf: 'files/explore/',
         'anchor': true
     };
 
     sections.info = {
-        icon: 'fa fa-info-circle',
-        text: 'Información',
+        icon: '',
+        text: 'Info',
         class: '<?= $cl_nav_2['files_info'] ?>',
         cf: 'files/info/' + element_id
     };
@@ -55,14 +55,16 @@
     };
 
     sections.edit = {
-        icon: 'fa fa-pencil-alt',
-        text: 'Editar',
+        icon: '',
+        text: 'Edit',
         class: '<?= $cl_nav_2['files_edit'] ?>',
-        cf: 'files/edit/' + element_id
+        cf: 'files/edit/' + element_id,
+        anchor: true
     };
     
     //Secciones para cada rol
-    sections_rol.dvlp = ['explore', 'info', 'tags', 'cropping', 'change', 'edit'];
+    sections_rol.dvlp = ['explore', 'info', 'edit'];
+    sections_rol.admn = ['explore', 'info', 'edit'];
     
     //Recorrer el sections del rol actual y cargarlos en el menú
     for ( key_section in sections_rol[app_r]) 

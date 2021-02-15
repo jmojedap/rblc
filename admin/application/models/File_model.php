@@ -832,10 +832,8 @@ class File_model extends CI_Model{
      */
     function tags($file_id)
     {
-        $this->db->select('tag.id, name, slug, file_meta.id AS meta_id');
-        $this->db->join('file_meta', 'file_meta.related_1 = tag.id');
-        $this->db->where('file_id', $file_id);
-        $this->db->where('file_meta.type_id', 27);
+        $this->db->select('id, name, slug');
+        $this->db->where("id IN (SELECT related_1 FROM file_meta WHERE file_id = {$file_id} AND type_id = 27)");
         $tags = $this->db->get('tag');
 
         return $tags;
@@ -945,6 +943,7 @@ class File_model extends CI_Model{
             
             $data['saved_id'] = $this->db->insert_id();
             $data['status'] = 1;
+            $data['like_status'] = 1;
         } else {
             //Existe, eliminar (Unlike)
             $this->db->where('id', $row_meta->id);
@@ -952,9 +951,25 @@ class File_model extends CI_Model{
             
             $data['qty_deleted'] = $this->db->affected_rows();
             $data['status'] = 2;
+            $data['like_status'] = 0;
         }
 
         return $data;
+    }
+
+    /**
+     * Devuelve 0 o 1, dependiendo si el usuario en sesión like o no un post
+     * 2020-07-27
+     */
+    function like_status($post_id)
+    {
+        $like_status = 0;
+        if ( $this->session->userdata('user_id') )
+        {
+            $like_status = $this->Db_model->num_rows('post_meta', "post_id = {$post_id} AND type_id = 10 AND related_1 = {$this->session->userdata('user_id')}");
+        }
+
+        return $like_status;
     }
 
 // CAMPO file.searcher

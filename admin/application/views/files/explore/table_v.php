@@ -36,10 +36,10 @@
                 </td>
 
                 <td>
-                    <a class="btn btn-sm btn-light btn-sm-square" v-bind:href="`<?= URL_UPLOADS ?>` + element.folder + element.file_name" target="_blank">
+                    <a class="a4" v-bind:href="`<?= URL_UPLOADS ?>` + element.folder + element.file_name" target="_blank">
                         <i class="fa fa-external-link-alt"></i>
                     </a>
-                    <button class="btn btn-sm btn-light btn-sm-square" data-toggle="modal" data-target="#detail_modal" @click="set_current(key)">
+                    <button class="a4" data-toggle="modal" data-target="#detail_modal" @click="set_current(key)">
                         <i class="fa fa-info"></i>
                     </button>
                 </td>

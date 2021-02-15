@@ -2,17 +2,14 @@
 <script>
 // Variables
 //-----------------------------------------------------------------------------
-    var type_names = <?php echo json_encode($arr_types); ?>;
+    var type_names = <?= json_encode($arr_types); ?>;
     var menu_elements = [
             { slug: '', text: 'All'},
             { slug: 'kitchen', text: 'Kitchen'},
             { slug: 'bathroom', text: 'Bathroom'},
             { slug: 'livingroom', text: 'Living Room'},
             { slug: 'wine-cellar', text: 'Wine cellar' },
-            {
-                slug: 'outdoor',
-                text: 'Outdoor'
-            },
+            { slug: 'outdoor', text: 'Outdoor' },
             {
                 slug: 'library',
                 text: 'Library'
@@ -57,8 +54,9 @@
             this.get_list();
         },
         data: {
-            cf: '<?php echo $cf; ?>',
-            controller: '<?php echo $controller; ?>',
+            app_rid: app_rid,
+            cf: '<?= $cf; ?>',
+            controller: '<?= $controller; ?>',
             num_page: 1,
             max_page: 1,
             search_num_rows: 0,

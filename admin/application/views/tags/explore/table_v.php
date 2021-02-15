@@ -1,8 +1,9 @@
 <div class="table-responsive">
-    <table class="table table-hover bg-white">
+    <table class="table bg-white">
         <thead>
             <th width="10px"><input type="checkbox" id="checkbox_all_selected" @change="select_all" v-model="all_selected"></th>
             <th>Tag name</th>
+            <th></th>
             <th width="50px"></th>
         </thead>
         <tbody>
@@ -14,6 +15,13 @@
                 <td>
                     <a v-bind:href="`<?= base_url("{$controller}/info/") ?>` + element.id">
                         {{ element.name }}
+                    </a>
+                </td>
+
+                <td>
+                    <a v-bind:href="`<?= URL_APP ?>pictures/explore/1/?q=` + element.slug" class="btn btn-light btn-sm" target="_blank">
+                        <i class="fa fa-external-link-alt"></i>
+                        Imágenes
                     </a>
                 </td>
                 

@@ -44,7 +44,7 @@
         <link type="text/css" rel="stylesheet" href="<?= URL_RESOURCES . 'css/style_pml.css' ?>">
         <script src="<?= URL_RESOURCES . 'js/pcrn.js' ?>"></script>
         <script>
-            const url_app = '<?= base_url() ?>'; const app_url = '<?= base_url() ?>'; const url_api = '<?= URL_API ?>';
+            const url_app = '<?= base_url() ?>'; const url_api = '<?= URL_API ?>'; const url_front = '<?= URL_APP ?>';
         </script>
 
         <!-- END HEAD -->

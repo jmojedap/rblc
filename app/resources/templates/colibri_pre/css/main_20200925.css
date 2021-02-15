@@ -24,7 +24,7 @@ footer {
 }
 
 footer .decco-column {
-    border-right: 4px solid #f37062;
+    border-right: 4px solid #FF6529;
 }
 
 @media only screen and (max-width: 768px) {
@@ -58,7 +58,7 @@ footer a.social_link {
 /*-----------------------------------------------------------------------------*/
 
 .bg-main {
-    background-color: #F37062;
+    background-color: #FF6529;
 }
 
 .bg-main h1 {
@@ -69,11 +69,15 @@ footer a.social_link {
     color: #666;
 }
 
+.bg-blue {
+    background-color: #2F72DE;
+}
+
 /* Texto */
 /*-----------------------------------------------------------------------------*/
 
 .full_width_title {
-    background-color: #f37062;
+    background-color: #FF6529;
     color: white;
     text-align: center;
     padding: 1em;
@@ -82,17 +86,17 @@ footer a.social_link {
 }
 
 .text-colibri-1 {
-    color: #F37062;
+    color: #FF6529;
 }
 
 .text-highlight {
-    color: #F37062;
+    color: #FF6529;
 }
 
 .counter {
     font-weight: bold;
     font-size: 1.2em;
-    color: #F37062;
+    color: #FF6529;
 }
 
 .counter-white {
@@ -105,7 +109,7 @@ footer a.social_link {
 /*-----------------------------------------------------------------------------*/
 
 a {
-    color: #F37062;
+    color: #FF6529;
 }
 
 a:hover {
@@ -129,7 +133,7 @@ a.title_list {
 }
 
 a.title_list:hover {
-    color: #F37062;
+    color: #FF6529;
 }
 
 .btn {
@@ -138,7 +142,7 @@ a.title_list:hover {
 
 .btn-main {
     color: #FFFFFF;
-    background-color: #F37062;
+    background-color: #FF6529;
 }
 
 .btn-main:hover {
@@ -183,7 +187,7 @@ a.title_list:hover {
 .badge-colibri {
     display: inline-block;
     color: white;
-    background-color: #F37062;
+    background-color: #FF6529;
     padding: 0.2em 1em;
     margin-right: 0.4em;
     margin-bottom: 2px;
@@ -196,7 +200,7 @@ a.title_list:hover {
 #app_q {
     height: 35px;
     border: 2px solid #FFFFFF;
-    background-color: #F37062;
+    background-color: #FF6529;
     color: white;
     border-radius: 18px;
     padding-left: 20px;
@@ -341,7 +345,7 @@ a.title_list:hover {
 }
 
 .nav-tabs .nav-link.active {
-    border-color: #f37062;
+    border-color: #FF6529;
 }
 
 #nav_2 {
@@ -368,7 +372,7 @@ a.title_list:hover {
 
 #nav_2 .nav-link.active {
     color: white;
-    background-color: #f37062;
+    background-color: #FF6529;
 }
 
 /* Exploración de imágenes */
@@ -469,8 +473,8 @@ a.title_list:hover {
 }
 
 .list-group-item.active {
-    background-color: #F37062;
-    border-color: #F37062;
+    background-color: #FF6529;
+    border-color: #FF6529;
 }
 
 .message-active {
@@ -544,4 +548,10 @@ a.title_list:hover {
 #new-slider a .slide-subtitle {
     font-size: 13px;
     top: 36px;
+}
+
+/* Bootstrap Ajustes */
+/*-----------------------------------------------------------------------------*/
+.dropdown-item.active{
+    background-color: #2F72DE;
 }

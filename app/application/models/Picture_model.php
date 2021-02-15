@@ -46,4 +46,19 @@ class Picture_model extends CI_Model{
 
         return $tags;
     }
+
+    /**
+     * Devuelve 0 o 1, dependiendo si el usuario en sesión like o no un archivo
+     * 2021-02-15
+     */
+    function like_status($file_id)
+    {
+        $like_status = 0;
+        if ( $this->session->userdata('user_id') )
+        {
+            $like_status = $this->Db_model->num_rows('file_meta', "file_id = {$file_id} AND type_id = 10 AND related_1 = {$this->session->userdata('user_id')}");
+        }
+
+        return $like_status;
+    }
 }

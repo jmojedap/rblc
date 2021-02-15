@@ -36,10 +36,12 @@
             filters: {},
             showing_filters: false,
             menu_elements: menu_elements,
-            category: menu_elements[0]
+            category: menu_elements[0],
+            loading: false
         },
         methods: {
             get_list: function(){
+                this.loading = true
                 var params = new URLSearchParams();
                 params.append('q', app_q);
                 params.append('cat', this.category.slug);
@@ -49,16 +51,18 @@
                     this.max_page = response.data.max_page;
                     this.search_num_rows = response.data.search_num_rows;
                     history.pushState(null, null, app_url + this.cf + this.num_page +'/?' + response.data.str_filters);
-                    this.all_selected = false;
-                    this.selected = [];
+                    this.all_selected = false
+                    this.selected = []
+                    this.loading = false
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
             },
             sum_page: function(sum){
-                this.num_page = Pcrn.limit_between(this.num_page + sum, 1, this.max_page);
-                this.get_list();
+                this.num_page = Pcrn.limit_between(this.num_page + sum, 1, this.max_page)
+                this.get_list()
+                window.scrollTo(0,0)
             },
             set_current: function(key){
                 this.element = this.list[key];

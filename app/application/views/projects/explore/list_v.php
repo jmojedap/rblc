@@ -1,4 +1,8 @@
-<div class="users">
+<div class="text-center mb-2" v-show="loading">
+    <i class="fa fa-spin fa-spinner fa-3x text-muted"></i>
+</div>
+
+<div class="users" v-show="!loading">
     <div class="user" v-for="(project, key) in list" v-bind:id="`row_` + project.id">
         <div class="row">
             <div class="col-md-9 pt-2">

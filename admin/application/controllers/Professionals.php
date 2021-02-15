@@ -208,7 +208,7 @@ class Professionals extends CI_Controller{
     }
 
     /**
-     * Imágenes asociadas aun usuario
+     * Imágenes asociadas a un usuario
      */
     function get_images($user_id, $album_id = 10)
     {

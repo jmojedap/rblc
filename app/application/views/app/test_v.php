@@ -28,7 +28,7 @@
         }
 
         header{
-            background-color: #F37062;
+            background-color: #FF6529;
             color: white;
             height: 60px;
         }

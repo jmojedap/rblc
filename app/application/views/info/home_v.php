@@ -4,25 +4,25 @@
             <div class="arrow prev"></div>
             <div class="arrow next"></div>
         </div>
-        <div class="three-buttons bg-main only-lg">
+        <div class="three-buttons bg-blue only-lg">
             <div class="icons text-center">
                 <div class="d-flex">
                     <a class="icon" href="<?= base_url('pictures/explore') ?>">
-                        <img src="<?= URL_IMG ?>front/icon_inspiration.png" alt="Icon image" class="mb-3">
+                        <img src="<?= URL_IMG ?>front/icon_inspiration-alt.png" alt="Icon image" class="mb-3">
                         <h3>Find inspiraton</h3>
                         <p>
                             You can look for ideas and references to complete your home
                         </p>
                     </a>
                     <a class="icon" href="<?= base_url('professionals/explore') ?>">
-                        <img src="<?= URL_IMG ?>front/icon_professional.png" alt="Icon image" class="mb-3">
+                        <img src="<?= URL_IMG ?>front/icon_professional-alt.png" alt="Icon image" class="mb-3">
                         <h3>Find professionals</h3>
                         <p>
                         Contact services and enterprices who make the laundry, cleaning and reparing job
                         </p>
                     </a>
                     <a class="icon" href="<?= base_url('projects/explore') ?>">
-                        <img src="<?= URL_IMG ?>front/icon_product.png" alt="Icon image" class="mb-3">
+                        <img src="<?= URL_IMG ?>front/icon_product-alt.png" alt="Icon image" class="mb-3">
                         <h3>Find products</h3>
                         <p>
                             Here all projects and products of luxury design

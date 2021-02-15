@@ -8,6 +8,8 @@
                         <input
                             name="name" id="field-name"
                             type="text" class="form-control"
+                            pattern="^[A-Z0-9 _]*[A-Z0-9][A-Z0-9 _]*$"
+                            title="Solo se permiten letras, números y espacios"
                             required
                             value="<?= $row->name ?>"
                             >

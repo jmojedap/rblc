@@ -4,12 +4,18 @@
     <div class="col-md-4">
         <?php if ( $row->is_image ) { ?>
             <img class="rounded mb-2" alt="imagen archivo" src="<?= $row->url_thumbnail ?>" style="max-width: 100%;">   
-        <?php } ?>
-
-        
+        <?php } ?>        
 
         <table class="table bg-white">
             <tbody>
+                <tr>
+                    <td></td>
+                    <td>
+                        <a href="<?= URL_APP . 'pictures/edit/' . $row->id ?>" class="btn btn-light w120p" target="_blank">
+                            Edit in Front
+                        </a>
+                    </td>
+                </tr>
                 <tr>
                     <td>Updated by</td>
                     <td><?= $this->App_model->name_user($row->updater_id) ?></td>
@@ -59,6 +65,16 @@
                 <tr>
                     <td>Dimensions</td>
                     <td><?= $row->width ?> x <?= $row->height ?></td>
+                </tr>
+                <tr>
+                    <td>Tags</td>
+                    <td>
+                        <?php foreach ( $tags->result() as $tag ) : ?>
+                            <a href="<?= URL_APP . "pictures/explore/?tag={$tag->slug}" ?>" target="_blank">
+                                <?= $tag->name ?> &middot;
+                            </a>
+                        <?php endforeach ?>
+                    </td>
                 </tr>
             </tbody>
         </table>

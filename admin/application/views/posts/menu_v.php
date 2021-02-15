@@ -64,7 +64,7 @@
     
     //Secciones para cada rol
     sections_rol.dvlp = ['explore', 'info', 'images', 'details', 'edit'];
-    sections_rol.admn = ['info', 'image', 'edit'];
+    sections_rol.admn = ['explore', 'info', 'images', 'details', 'edit'];
     
     //Recorrer el sections del rol actual y cargarlos en el menú
     for ( key_section in sections_rol[app_r]) 

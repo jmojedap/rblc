@@ -65,7 +65,9 @@
     </div>
     <div class="gallery-3">
         <div class="image-container" v-for="(image, image_key) in images">
-            <img class="picture" v-bind:alt="image.title" v-bind:src="image.url_thumbnail" data-toggle="modal" data-target="#picture_modal" v-on:click="set_key(image_key)">
+            <a v-bind:href="`<?php echo base_url("pictures/details/") ?>` + image.id">
+                <img class="picture" v-bind:alt="image.title" v-bind:src="image.url_thumbnail" data-toggle="modal_no" data-target="#picture_modal" v-on:click="set_key(image_key)">
+            </a>
         </div>
     </div>
     <?php $this->load->view('professionals/profile/picture_modal_v') ?>

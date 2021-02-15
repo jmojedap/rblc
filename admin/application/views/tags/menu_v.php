@@ -25,14 +25,14 @@
     };
 
     sections.info = {
-        icon: 'fa fa-info-circle',
+        icon: '',
         text: 'Info',
         class: '<?= $cl_nav_2['tags_info'] ?>',
         cf: 'tags/info/' + element_id
     };
 
     sections.edit = {
-        icon: 'fa fa-pencil-alt',
+        icon: '',
         text: 'Edit',
         class: '<?= $cl_nav_2['tags_edit'] ?>',
         cf: 'tags/edit/' + element_id

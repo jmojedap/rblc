@@ -161,7 +161,7 @@ class Tag_model extends CI_Model{
     function search($filters, $per_page = NULL, $offset = NULL)
     {
         //Construir consulta
-            $this->db->select('tag.id, name');
+            $this->db->select('tag.id, name, slug');
             
         //Orden
             if ( $filters['o'] != '' )
