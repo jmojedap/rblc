@@ -6,8 +6,15 @@
                 <td><?= $row->id ?></td>
             </tr>
             <tr>
-                <td>Project name</td>
+                <td>Name</td>
                 <td><?= $row->post_name ?></td>
+            </tr>
+            <tr>
+                <td>Type</td>
+                <td>
+                    (<?= $row->related_2 ?>)
+                    <?= $this->Item_model->name(722, $row->related_2); ?>
+                </td>
             </tr>
             <tr>
                 <td>Owner user</td>

@@ -33,10 +33,11 @@ class Projects extends CI_Controller{
             $data = $this->Project_model->explore_data($filters, $num_page);
         
         //Opciones de filtros de búsqueda
-            $data['options_type'] = $this->Item_model->options('category_id = 33', 'Todos');
+            $data['options_project_type'] = $this->Item_model->options('category_id = 722', 'Todos');
             
         //Arrays con valores para contenido en lista
             $data['arr_types'] = $this->Item_model->arr_cod('category_id = 33');
+            $data['arr_project_types'] = $this->Item_model->arr_cod('category_id = 722');
             
         //Cargar vista
             $this->App_model->view(TPL_ADMIN, $data);
@@ -81,6 +82,9 @@ class Projects extends CI_Controller{
      */
     function add()
     {
+        //Opciones
+            $data['options_project_type'] = $this->Item_model->options('category_id = 722');
+
         //Variables generales
             $data['head_title'] = 'Project';
             $data['head_subtitle'] = 'Nuevo';
@@ -132,6 +136,7 @@ class Projects extends CI_Controller{
         $data['options_descriptors'] = $this->Item_model->options('category_id = 710');
         $data['options_styles'] = $this->Item_model->options('category_id = 712');
         $data['options_feelings'] = $this->Item_model->options('category_id = 714');
+        $data['options_project_types'] = $this->Item_model->options('category_id = 722');
 
         //Datos actuales
         $data['descriptors'] = $this->Project_model->metadata($project_id, 710);
@@ -235,13 +240,14 @@ class Projects extends CI_Controller{
 
     /**
      * Actualiza registro y datos asociados de un project
-     * 2020-08-31
+     * 2021-02-24 (related_2)
      */
     function update_full($project_id)
     {
         //Update row
             $arr_row['post_name'] = $this->input->post('post_name');
             if ( ! is_null($this->input->post('related_1')) ) $arr_row['related_1'] = $this->input->post('related_1');
+            $arr_row['related_2'] = $this->input->post('related_2');
             $arr_row['integer_1'] = $this->input->post('integer_1');
             $arr_row['updater_id'] = $this->session->userdata('user_id');
 

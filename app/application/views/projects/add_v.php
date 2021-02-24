@@ -3,7 +3,7 @@
         <div class="card-body">
             <form id="add_form" accept-charset="utf-8" @submit.prevent="send_form">
                 <div class="form-group row">
-                    <label for="post_name" class="col-md-4 col-form-label text-right">Project name</label>
+                    <label for="post_name" class="col-md-4 col-form-label text-right">Name</label>
                     <div class="col-md-8">
                         <input
                             id="field-post_name" class="form-control"
@@ -14,15 +14,19 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="integer_1" class="col-md-4 col-form-label text-right">Project price in US</label>
+                    <label for="related_2" class="col-md-4 col-form-label text-right">Type</label>
+                    <div class="col-md-8">
+                        <select name="related_2" class="form-control" required>
+                            <option v-for="(option_related_2, key_related_2) in options_project_type" v-bind:value="key_related_2">{{ option_related_2 }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="integer_1" class="col-md-4 col-form-label text-right">Price in US</label>
                     <div class="col-md-8">
                         <input
-                            id="field-integer_1"
-                            type="text"
-                            required
-                            name="integer_1"
-                            class="form-control"
-                            title="Price"
+                            name="integer_1" type="text" class="form-control"
+                            required title="Price"
                             >
                     </div>
                 </div>

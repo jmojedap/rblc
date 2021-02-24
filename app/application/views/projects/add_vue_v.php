@@ -8,7 +8,8 @@
         el: '#add_project',
         data: {
             form_values: form_values,
-            row_id: 0
+            row_id: 0,
+            options_project_type: <?= json_encode($options_project_type) ?>
         },
         methods: {
             send_form: function() {

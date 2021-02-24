@@ -157,7 +157,7 @@ class Project_model extends CI_Model{
     function search($filters, $per_page = NULL, $offset = NULL)
     {
         //Construir consulta
-            $this->db->select('id, post_name AS name, related_1 AS professional_id, integer_1 AS price, slug, url_image, url_image, url_thumbnail');
+            $this->db->select('id, post_name AS name, related_1 AS professional_id, integer_1 AS price, related_2, slug, url_image, url_image, url_thumbnail');
             
         //Orden
             if ( $filters['o'] != '' )
@@ -180,7 +180,7 @@ class Project_model extends CI_Model{
     
     /**
      * String con condición WHERE SQL para filtrar post
-     * 2020-08-01
+     * 2021-02-24 (project type)
      */
     function search_condition($filters)
     {
@@ -199,7 +199,7 @@ class Project_model extends CI_Model{
         
         //Otros filtros
         if ( $filters['u'] != '' ) { $condition .= "related_1 = {$filters['u']} AND "; }
-        //if ( $filters['like'] == 1 ) { $condition .= "post.id IN (SELECT post_id FROM post_meta WHERE type_id = 10 AND related_1 = '{$this->session->userdata('user_id')}') AND "; }
+        if ( $filters['type'] != '' ) { $condition .= "related_2 = {$filters['type']} AND "; }
         if ( strlen($filters['cat']) > 0 )
         {
             $sql_categories = "SELECT cod FROM item WHERE category_id = 710 AND item_name LIKE '%{$filters['cat']}%'";

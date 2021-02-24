@@ -7,7 +7,7 @@
                     <div class="col-md-8">
                         <input
                             type="text" class="form-control" name="name"
-                            pattern="^[A-Z0-9 _]*[A-Z0-9][A-Z0-9 _]*$" required
+                            required
                             title="Solo se permiten letras, números y espacios"
                             autofocus
                             v-model="form_values.name">

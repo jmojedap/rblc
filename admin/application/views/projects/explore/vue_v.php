@@ -2,13 +2,13 @@
 <script>
 // Variables
 //-----------------------------------------------------------------------------
-    var type_names = <?= json_encode($arr_types); ?>;
+    var project_type_names = <?= json_encode($arr_project_types) ?>;
 
 // Filters
 //-----------------------------------------------------------------------------
-    Vue.filter('type_name', function (value) {
+    Vue.filter('project_type_name', function (value) {
         if (!value) return '-';
-        new_value = type_names[value];
+        new_value = project_type_names[value];
         return new_value;
     });
 

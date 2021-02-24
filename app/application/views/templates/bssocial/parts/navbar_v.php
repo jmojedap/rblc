@@ -51,7 +51,7 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <a href="<?= base_url("accounts/profile") ?>">
-                        <img src="<?= $this->session->userdata('src_img') ?>"    alt="user image" class="rounded-circle" style="max-width: 40px;">
+                        <img src="<?= $this->session->userdata('src_img') ?>" alt="user image" class="rounded-circle" style="max-width: 40px;" onerror="this.src='<?= URL_IMG ?>users/sm_user.png'">
                     </a>
                 </li>
                 <li class="nav-item dropdown">

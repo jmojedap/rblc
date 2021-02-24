@@ -6,12 +6,9 @@
                     <label for="post_name" class="col-md-4 col-form-label text-right">Name</label>
                     <div class="col-md-8">
                         <input
-                            name="name" id="field-name"
-                            type="text" class="form-control"
-                            pattern="^[A-Z0-9 _]*[A-Z0-9][A-Z0-9 _]*$"
+                            name="name" type="text" class="form-control"
                             title="Solo se permiten letras, números y espacios"
-                            required
-                            value="<?= $row->name ?>"
+                            required value="<?= $row->name ?>"
                             >
                     </div>
                 </div>

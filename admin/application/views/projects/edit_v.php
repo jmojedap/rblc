@@ -11,18 +11,21 @@
         <div class="card-body">
             <form accept-charset="utf-8" method="POST" id="project_form" @submit.prevent="send_form">
                 <div class="form-group row">
-                    <label for="post_name" class="col-md-4 col-form-label text-right">Project name</label>
+                    <label for="post_name" class="col-md-4 col-form-label text-right">Name</label>
                     <div class="col-md-8">
                         <input
-                            type="text"
-                            id="field-post_name"
-                            name="post_name"
-                            required
-                            class="form-control"
-                            placeholder="Project name"
-                            title="Project name"
+                            type="text" name="post_name" class="form-control"
+                            required placeholder="Project name" title="Project name"
                             value="<?= $row->post_name ?>"
                             >
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="related_2" class="col-md-4 col-form-label text-right">Type</label>
+                    <div class="col-md-8">
+                        <select name="related_2" class="form-control" required v-model="row.related_2">
+                            <option v-for="(option_related_2, key_related_2) in options_project_types" v-bind:value="key_related_2">{{ option_related_2 }}</option>
+                        </select>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -111,25 +114,24 @@
 </div>
 
 <script>
-    new Vue({
+    var edit_project = new Vue({
         el: '#edit_project',
-        created: function(){
-            //this.get_list();
-        },
         data: {
-            row_id: '<?= $row->id ?>'
+            row:{
+                id: '<?= $row->id ?>',
+                related_2: '0<?= $row->related_2 ?>'
+            },
+            options_project_types: <?= json_encode($options_project_types) ?>
         },
         methods: {
             send_form: function(){
-                axios.post(url_api + 'projects/update_full/' + this.row_id, $('#project_form').serialize())
+                axios.post(url_api + 'projects/update_full/' + this.row.id, $('#project_form').serialize())
                 .then(response => {
                     if (response.data.status == 1) {
-                        toastr['success']('Saved');
+                        toastr['success']('Saved')
                     }
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });  
+                .catch(function (error) { console.log(error) })
             },
         }
     });

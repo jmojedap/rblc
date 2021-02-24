@@ -8,7 +8,7 @@ var nav_1_elements = [
         sections: ['users/explore', 'users/profile', 'users/import', 'users/add', 'users/notes']
     },
     {
-        text: 'Projects',
+        text: 'Projects / Products',
         active: false,
         icon: 'fa fa-project-diagram',
         cf: 'projects/explore',

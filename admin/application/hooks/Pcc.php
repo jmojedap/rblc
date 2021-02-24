@@ -20,105 +20,67 @@ class Pcc {
             } else {
                 //No tiene allow
                 //header('HTTP/1.0 403 Forbidden');
+                redirect("app/denied/{$cf}");
                 //exit;
-                redirect("app/denied/{$cf}/forbidden");
             }
     }
     
     /**
-     * Control de acceso de usuarios basado en el id de los recursos (sis_acl.id)
+     * Control de acceso de usuarios basado en el archivo config/acl.php
      * CF > Ruta Controller/Function
+     * 2020-12-26
      */
     function allow_cf($cf)
     {
-        //Valor inicial
-        $allow_cf = TRUE;
+        //Cargando lista de control de acceso, application/config/acl.php
+        $this->CI->config->load('acl', TRUE);
+        $acl = $this->CI->config->item('acl');
+
+        //Variables
+        $role = $this->CI->session->userdata('role');
+        $allow_cf = FALSE;
         
-        //Si no es administrador, verificar permiso
-        if ( $this->CI->session->userdata('role') > 1 ) 
+        //Verificar en funciones públicas
+        if ( in_array($cf, $acl['public_functions']) ) $allow_cf = TRUE;
+        
+        //Si inició sesión
+        if ( $this->CI->session->userdata('logged') == TRUE )
         {
-            $acl = $this->CI->session->userdata('acl');    
-
-            $functions = $this->CI->db->get_where('sis_acl', "cf = '{$cf}'");
-
-            $cf_id = 0;
-            if ( $functions->num_rows() > 0 ) { $cf_id = $functions->row()->id; }
-
-            //Si el controlador/funcion requerido no está entre las functions permitidas
-            if ( ! in_array($cf_id, $acl) ) { $allow_cf = FALSE; }      
+            //Es administrador, todos los permisos
+            if ( $role <= 1 ) $allow_cf = TRUE;
+            //Funciones para todos los usuarios con sesión iniciada
+            if ( in_array($cf, $acl['logged_functions']) ) $allow_cf = TRUE;
         }
-        
-        //Si no está logueado
-        if ( ! $this->CI->session->userdata('logged') ) { $allow_cf = FALSE; }
-        
-        //Si está ingresando a una función pública, se otorga permiso
-        $public_functions = $this->public_functions();
-        if ( in_array($cf, $public_functions) ) { $allow_cf = TRUE; }
-        
+
+        //Funciones para el rol actual
+        if ( array_key_exists($cf, $acl['function_roles']) )
+        {
+            $roles = $acl['function_roles'][$cf];
+            if ( in_array($role, $roles) ) $allow_cf = TRUE;
+        }
+
         return $allow_cf;
-        
     }
     
     /**
-     * Array con las functions (controlador/funcion) a las que se pueden acceder
-     * libremente, sin iniciar sesión de usuario.
-     * 
-     * @return string
+     * Antes de cada acceso, actualiza la variable de sesión de cantidad de mensajes 
+     * sin leer
      */
-    function public_functions()
+    function no_leidos()
     {
-        $public_functions[] = '/';
-        $public_functions[] = 'accounts/';
-        $public_functions[] = 'accounts/index';
-        $public_functions[] = 'accounts/login';
-        $public_functions[] = 'accounts/validate_login';
-        $public_functions[] = 'accounts/logout';
+        $this->CI = &get_instance();
         
-        $public_functions[] = 'accounts/signup';
-        $public_functions[] = 'accounts/check_email';
-        $public_functions[] = 'accounts/validate_signup';
-        $public_functions[] = 'accounts/register';
-        $public_functions[] = 'accounts/registered';
+        //Consulta
+            $this->CI->db->where('estado', 0);  //No leído
+            $this->CI->db->where('usuario_id', $this->CI->session->userdata('usuario_id'));  //No leído
+            $mensajes = $this->CI->db->get('mensaje_usuario');
+            
+        //Establecer valor
+            $no_leidos = 0;
+            if ( $mensajes->num_rows() > 0 ) { $no_leidos = $mensajes->num_rows(); }
         
-        $public_functions[] = 'accounts/activation';
-        $public_functions[] = 'accounts/activate';
-        $public_functions[] = 'accounts/recovery';
-        $public_functions[] = 'accounts/recovery_email';
-        $public_functions[] = 'accounts/recover';
-        $public_functions[] = 'accounts/reset_password';
-
-        $public_functions[] = 'accounts/g_callback';
-        $public_functions[] = 'accounts/g_signup';
-
-        $public_functions[] = 'accounts/validate_facebook_login';
-
-        $public_functions[] = 'app/logged';
-        $public_functions[] = 'app/denied';
-        $public_functions[] = 'app/test';
-        $public_functions[] = 'app/save_subscription';  //Colibri
-
-        $public_functions[] = 'sync/tables_status';
-        $public_functions[] = 'sync/get_rows';
-        $public_functions[] = 'sync/quan_rows';
-
-        $public_functions[] = 'comments/element_comments';
-
-        $public_functions[] = 'accounts/fb_login';
-
-        $public_functions[] = 'users/get_social_links';
-
-        $public_functions[] = 'professionals/get_info';
-        $public_functions[] = 'professionals/get';
-        $public_functions[] = 'professionals/get_images';
-
-        $public_functions[] = 'projects/get';   //Colibri
-
-        $public_functions[] = 'pictures/get';   //Colibri
-        $public_functions[] = 'pictures/get_random';   //Colibri
-        $public_functions[] = 'pictures/get_details';   //Colibri
-
-        $public_functions[] = 'ideabooks/get_images';   //Colibri
-        
-        return $public_functions;
+        //Actualizar variable de sesión
+            $this->CI->session->set_userdata('no_leidos', $no_leidos);
     }
+    
 }

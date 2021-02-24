@@ -46,6 +46,9 @@ class Projects extends CI_Controller{
      */
     function add()
     {
+        //Opciones formulario
+            $data['options_project_type'] = $this->Item_model->options('category_id = 722');
+
         //Variables generales
             $data['head_title'] = 'Project';
             $data['head_subtitle'] = 'New';
@@ -94,6 +97,7 @@ class Projects extends CI_Controller{
         $data['options_descriptors'] = $this->Item_model->options('category_id = 710');
         $data['options_styles'] = $this->Item_model->options('category_id = 712');
         $data['options_feelings'] = $this->Item_model->options('category_id = 714');
+        $data['options_project_type'] = $this->Item_model->options('category_id = 722');
 
         //Datos actuales
         $data['descriptors'] = $this->Project_model->metadata($project_id, 710);

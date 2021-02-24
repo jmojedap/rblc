@@ -4,7 +4,8 @@
             <th width="10px">
                 <input type="checkbox" id="checkbox_all_selected" @change="select_all" v-model="all_selected">
             </th>
-            <th>Project</th>
+            <th>Name</th>
+            <th>Type</th>
 
             <th>Price</th>
             
@@ -22,6 +23,8 @@
                     </a>
                     <p>{{ element.excerpt }}</p>
                 </td>
+
+                <td>{{ element.related_2 | project_type_name }}</td>
 
                 <td>
                     {{ element.price | currency }}
