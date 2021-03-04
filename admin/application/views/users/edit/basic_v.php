@@ -1,11 +1,5 @@
 <?php $this->load->view('assets/bs4_chosen') ?>
 
-<?php
-    $options_type = $this->Item_model->options("category_id = 63", 'Account type');
-    $options_role = $this->Item_model->options("category_id = 58 AND cod >= {$this->session->userdata('role')}");
-    $options_country = $this->App_model->options_country();
-?>
-
 <div id="app_edit">
     <div class="card center_box_750">
         <div class="card-body">
@@ -216,6 +210,15 @@
                     </div>
 
                     <div class="form-group row">
+                        <label for="cat_1" class="col-md-4 col-form-label text-right">Professional category</label>
+                        <div class="col-md-8">
+                            <select name="cat_1" v-model="form_values.cat_1" class="form-control" required>
+                                <option v-for="(option_cat_1, key_cat_1) in options_cat_1" v-bind:value="key_cat_1">{{ option_cat_1 }}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
                         <label for="admin_notes" class="col-md-4 col-form-label text-right">Administration notes (Private)</label>
                         <div class="col-md-8">
                             <textarea
@@ -256,6 +259,7 @@
             username: '<?= $row->username ?>',
             code: '<?= $row->code ?>',
             type_id: '0<?= $row->type_id ?>',
+            cat_1: '0<?= $row->cat_1 ?>',
             phone_number: '<?= $row->phone_number ?>',
             about: '<?= $row->about ?>',
             admin_notes: '<?= $row->admin_notes ?>',
@@ -269,7 +273,8 @@
                 id_number_unique: true,
                 username_unique: true,
                 email_unique: true
-            }
+            },
+            options_cat_1: <?= json_encode($options_cat_1) ?>
         },
         methods: {
             validate_form: function() {

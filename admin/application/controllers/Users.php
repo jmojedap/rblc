@@ -207,6 +207,12 @@ class Users extends CI_Controller{
             $data['url_image'] = $data['row']->url_image;
             $data['back_destination'] = "users/edit/{$user_id}/image";
         }
+
+        //Opciones formulario
+            $data['options_type'] = $this->Item_model->options("category_id = 63", 'Account type');
+            $data['options_role'] = $this->Item_model->options("category_id = 58 AND cod >= {$this->session->userdata('role')}");
+            $data['options_cat_1'] = $this->Item_model->options("category_id = 720", 'Professional category');
+            $data['options_country'] = $this->App_model->options_country();
         
         //Array data espefícicas
             $data['nav_3'] = 'users/edit/menu_v';

@@ -98,6 +98,7 @@ class Files extends CI_Controller{
 
         //Opciones para agregar
         $data['options_tag'] = $this->App_model->options_tag('category_id = 1');
+        $data['options_cat_1'] = $this->Item_model->options('category_id = 718', 'Picture category');
 
         //Datos actuales
         $data['tags'] = $this->File_model->tags($file_id);
@@ -283,13 +284,14 @@ class Files extends CI_Controller{
 
     /**
      * Actualiza datos descriptivos de la tabla file, y metadatos (tags) para file_meta
-     * 2020-08-11
+     * 2021-03-03
      */
     function update_full($file_id)
     {
         //Update row
             $arr_row['file_name'] = $this->input->post('file_name');
             $arr_row['description'] = $this->input->post('description');
+            $arr_row['cat_1'] = $this->input->post('cat_1');
             $arr_row['keywords'] = $this->input->post('keywords');
             $arr_row['updater_id'] = $this->session->userdata('user_id');
 

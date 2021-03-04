@@ -5,7 +5,7 @@
             <p v-show="filters.q">
                 Searching
                 "<b class="text-colibri-1" v-show="filters.q">{{ filters.q }}</b>"
-                in <span class="badge-colibri">{{ tag.text }}</span> 
+                in <span class="badge-colibri">{{ category.text }}</span> 
             </p>
         </div>
         <div class="col-md-6">

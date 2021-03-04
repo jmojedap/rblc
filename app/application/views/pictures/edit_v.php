@@ -1,3 +1,4 @@
+
 <?php $this->load->view('assets/bs4_chosen') ?>
 
 <?php
@@ -5,10 +6,7 @@
 ?>
 
 <div id="picture_app" class="mt-2">
-    <a href="<?= base_url("professionals/images") ?>" class="btn btn-light w120p">
-        <i class="fa fa-arrow-left"></i>
-        Images
-    </a>
+    <a href="<?= base_url("professionals/images") ?>" class="btn btn-light w120p"><i class="fa fa-arrow-left"></i> Images</a>
     <div class="row mt-2">
         <div class="col-md-4">
             <img class="w100pc" src="<?= $row->url ?>" alt="Picture">
@@ -17,6 +15,14 @@
             <div class="card center_box_750">
                 <div class="card-body">
                     <form accept-charset="utf-8" method="POST" id="picture_form" @submit.prevent="send_form">
+                        <div class="form-group row">
+                            <label for="cat_1" class="col-md-4 col-form-label text-right">Picture category</label>
+                            <div class="col-md-8">
+                                <select name="cat_1" v-model="form_values.cat_1" class="form-control" required>
+                                    <option v-for="(option_cat_1, key_cat_1) in options_cat_1" v-bind:value="key_cat_1">{{ option_cat_1 }}</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="form-group row">
                             <label for="title" class="col-md-4 col-form-label text-right">Title</label>
                             <div class="col-md-8">
@@ -76,7 +82,11 @@
             //this.get_list();
         },
         data: {
-            file_id: <?= $row->id ?>
+            file_id: <?= $row->id ?>,
+            form_values: {
+                cat_1: '0<?= $row->cat_1 ?>'
+            },
+            options_cat_1: <?= json_encode($options_cat_1) ?>
         },
         methods: {
             send_form: function(){

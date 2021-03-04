@@ -264,7 +264,7 @@ class File_model extends CI_Model{
     
     /**
      * Crea el registro del file en la tabla file
-     * 2020-07-20
+     * 2020-03-03, agregar cat_1
      */
     function insert($upload_data)
     {
@@ -282,6 +282,7 @@ class File_model extends CI_Model{
             $arr_row['table_id'] = ( ! is_null($this->input->post('table_id')) ) ? $this->input->post('table_id') : 0;
             $arr_row['related_1'] = ( ! is_null($this->input->post('related_1')) ) ? $this->input->post('related_1') : 0;
             $arr_row['album_id'] = ( ! is_null($this->input->post('album_id')) ) ? $this->input->post('album_id') : 0;
+            $arr_row['cat_1'] = ( ! is_null($this->input->post('cat_1')) ) ? $this->input->post('cat_1') : 0;
             $arr_row['updated_at'] = date('Y-m-d H:i:s');
             $arr_row['updater_id'] = $this->session->userdata('user_id');
             $arr_row['created_at'] = date('Y-m-d H:i:s');

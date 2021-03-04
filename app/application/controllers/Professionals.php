@@ -20,18 +20,17 @@ class Professionals extends CI_Controller{
     
 //EXPLORE
 //---------------------------------------------------------------------------------------------------
-        
+    
     function explore()
     {        
         //Datos básicos de la exploración
             $data = $this->Professional_model->explore_data(1);
         
         //Opciones de filtros de búsqueda
-            $data['options_role'] = $this->Item_model->options('category_id = 58', 'Todos');
+            $data['options_professional_services'] = $this->Item_model->options('category_id = 716', 'All');
             
         //Arrays con valores para contenido en lista
-            $data['arr_roles'] = $this->Item_model->arr_cod('category_id = 58');
-            $data['arr_id_number_types'] = $this->Item_model->arr_item('category_id = 53', 'cod_abr');
+            //$data['arr_roles'] = $this->Item_model->arr_cod('category_id = 58');
             
         //Cargar vista
             $this->App_model->view(TPL_ADMIN, $data);
@@ -63,6 +62,8 @@ class Professionals extends CI_Controller{
     {
         $user_id = $this->session->userdata('user_id');
         $data = $this->Professional_model->basic($user_id);
+
+        $data['options_cat_1'] = $this->Item_model->options('category_id = 718', 'Select category');
 
         $data['view_a'] = 'professionals/images/images_v';
         $data['nav_2'] = 'accounts/edit/menu_v';

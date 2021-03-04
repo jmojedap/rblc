@@ -1,5 +1,10 @@
 <div id="app_explore">
     <?php $this->load->view($views_folder . 'menu_v') ?>
+
+    <?php //$this->load->view($views_folder . 'search_form_v') ?>
+
+    <h2>{{ category.text }}</h2>
+
     <div class="row">
         <div class="col-md-6">
             <p class="text-muted">{{ search_num_rows }} results &middot; Page {{ num_page }}/{{ max_page }}</p>

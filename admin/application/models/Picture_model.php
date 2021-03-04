@@ -127,6 +127,7 @@ class Picture_model extends CI_Model{
             $sql_tags = "SELECT id FROM tag WHERE slug LIKE '%{$filters['tag']}%'";
             $condition .= "file.id IN (SELECT file_id FROM file_meta WHERE related_1 IN ({$sql_tags})) AND ";
         }
+        if ( strlen($filters['cat_1']) > 0 ) $condition .= "file.cat_1 = {$filters['cat_1']} AND ";
         
         //Quitar cadena final de ' AND '
         if ( strlen($condition) > 0 ) { $condition = substr($condition, 0, -5);}

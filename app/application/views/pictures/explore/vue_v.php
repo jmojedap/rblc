@@ -1,49 +1,30 @@
+<?php
+    $cat_1 = 0;
+    if ( ! is_null($this->input->get('cat_1')) ) $cat_1 = $this->input->get('cat_1');
+?>
 
 <script>
 // Variables
 //-----------------------------------------------------------------------------
     var type_names = <?= json_encode($arr_types); ?>;
-    var menu_elements = [
-            { slug: '', text: 'All'},
-            { slug: 'kitchen', text: 'Kitchen'},
-            { slug: 'bathroom', text: 'Bathroom'},
-            { slug: 'livingroom', text: 'Living Room'},
-            { slug: 'wine-cellar', text: 'Wine cellar' },
-            { slug: 'outdoor', text: 'Outdoor' },
-            {
-                slug: 'library',
-                text: 'Library'
-            },
-            {
-                slug: 'woodwork',
-                text: 'Woodwork'
-            },
-            {
-                slug: 'bar',
-                text: 'Bars'
-            },
-            {
-                slug: 'stonework',
-                text: 'Stonework'
-            },
-            {
-                slug: 'basement',
-                text: 'Basement'
-            },
-            {
-                slug: 'ironwork',
-                text: 'Ironwork'
-            }
-        ];
+    var menu_elements = {
+        0: {id: '', slug: '', text: 'All'},
+        1: {id:'1',slug:'kitchen-dining',text:'Kitchen & Dining'},
+        2: {id:'2',slug:'bathrooms',text:'Bathrooms'},
+        3: {id:'3',slug:'closets',text:'Closets'},
+        4: {id:'4',slug:'bedrooms',text:'Bedrooms'},
+        5: {id:'5',slug:'home-office',text:'Home Office'},
+        6: {id:'6',slug:'living',text:'Living'},
+        7: {id:'7',slug:'bar-wine',text:'Bar & Wine'},
+        8: {id:'8',slug:'outdoor',text:'Outdoor'},
+        9: {id:'9',slug:'walkways',text:'Walkways'},
+        10: {id:'10',slug:'other-rooms',text:'Other Rooms'}
+    };
+
+    var cat_1 = <?= $cat_1 ?>;
 
 // Filters
 //-----------------------------------------------------------------------------
-
-    /*Vue.filter('type_name', function (value) {
-        if (!value) return '-';
-        new_value = type_names[value];
-        return new_value;
-    });*/
 
 // App
 //-----------------------------------------------------------------------------
@@ -64,7 +45,7 @@
             element: [],
             filters: {},
             menu_elements: menu_elements,
-            tag: menu_elements[0],
+            category: menu_elements[cat_1],
             loading_more: false,
             picture: {
                 row: {description: ''},
@@ -78,7 +59,7 @@
 
                 var params = new URLSearchParams();
                 params.append('q', app_q);
-                params.append('tag', this.tag.slug);
+                params.append('cat_1', this.category.id);
                 axios.post(url_api + this.controller + '/get/' + this.num_page, params)
                 .then(response => {
                     this.list = response.data.list;
@@ -111,8 +92,8 @@
                     console.log(error);
                 });  
             },
-            set_tag: function(menu_key){
-                this.tag = this.menu_elements[menu_key];
+            set_category: function(menu_key){
+                this.category = this.menu_elements[menu_key];
                 this.num_page = 1;
                 this.get_list();
             },
@@ -142,7 +123,7 @@
                 this.num_page++;
                 var params = new URLSearchParams();
                 params.append('q', app_q);
-                params.append('tag', this.tag.slug);
+                params.append('cat_1', this.category.id);
                 axios.post(url_api + this.controller + '/get/' + this.num_page, params)
                 .then(response => {
                     this.list = this.list.concat(response.data.list);   //Agregar resultados al listado

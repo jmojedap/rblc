@@ -95,6 +95,10 @@
                     <td class="text-right"><span class="text-muted">Role</span></td>
                     <td><?= $this->Item_model->name(58, $row->role) ?></td>
                 </tr>
+                <tr>
+                    <td class="text-right"><span class="text-muted">Professional category</span></td>
+                    <td><?= $this->Item_model->name(720, $row->cat_1) ?></td>
+                </tr>
 
                 <tr>
                     <td class="text-right"><span class="text-muted">Updated at</span></td>

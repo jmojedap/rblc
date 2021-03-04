@@ -1,12 +1,17 @@
-<?php
-    $options_gender = $this->Item_model->options('category_id = 59 AND cod <= 2', 'Gender');
-?>
-
 <div id="app_edit">
     <div class="card center_box_750">
         <div class="card-body">
             <h3>Bussines Information</h3>
             <form id="edit_form" accept-charset="utf-8" @submit.prevent="validate_send">
+                <div class="form-group row">
+                    <label for="cat_1" class="col-md-4 col-form-label">Main professional category</label>
+                    <div class="col-md-8">
+                        <select name="cat_1" v-model="form_values.cat_1" class="form-control" required>
+                            <option v-for="(option_cat_1, key_cat_1) in options_cat_1" v-bind:value="key_cat_1">{{ option_cat_1 }}</option>
+                        </select>
+                    </div>
+                </div>
+            
                 <div class="form-group row">
                     <label for="display_name" class="col-md-4 col-form-label">Company name</label>
                     <div class="col-md-8">
@@ -163,6 +168,7 @@
         state_province: '<?php echo $row->state_province ?>',
         birth_date: '<?php echo $row->birth_date ?>',
         gender: '0<?php echo $row->gender ?>',
+        cat_1: '0<?php echo $row->cat_1 ?>',
         address: '<?php echo $row->address ?>',
         address_line_2: '<?php echo $row->address_line_2 ?>'
     };
@@ -174,7 +180,8 @@
             validation: {
                 username_unique: true,
                 email_unique: true,
-            }
+            },
+            options_cat_1: <?= json_encode($options_cat_1) ?>
         },
         methods: {
             validate_form: function() {

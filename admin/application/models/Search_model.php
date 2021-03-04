@@ -52,6 +52,7 @@ class Search_model extends CI_Model{
             'fe1',      //Filtro especial 1
             'fe2',      //Filtro especial 2
             'fe3',      //Filtro especial 3
+            'cat_1',    //Category 1
             'o',        //Order by
             'ot'        //Order type
         );

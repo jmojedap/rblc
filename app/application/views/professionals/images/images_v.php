@@ -1,7 +1,7 @@
 <div id="user_images" class="mt-2">
     <div class="card center_box_750">
         <div class="card-body">
-            <?php $this->load->view('common/upload_file_form_v') ?>
+            <?php $this->load->view('professionals/images/upload_file_form_v') ?>
         </div>
     </div>
     <hr>
@@ -29,7 +29,9 @@
             file: '',
             user_id: '<?= $row->id ?>',
             images: [],
-            current: {}
+            current: {},
+            form_values: { cat_1: '' },
+            options_cat_1: <?= json_encode($options_cat_1) ?>
         },
         methods: {
             get_list: function(){
@@ -51,6 +53,7 @@
                 form_data.append('table_id', 1000);   //Imagen asociada a registro en la tabla user (1000)
                 form_data.append('related_1', this.user_id);   //Imágenes generales de usuario
                 form_data.append('album_id', 10);   //Imágenes generales de usuario
+                form_data.append('cat_1', this.form_values.cat_1)
 
                 axios.post(url_api + 'files/upload/' + this.user_id, form_data, {headers: {'Content-Type': 'multipart/form-data'}})
                 .then(response => {

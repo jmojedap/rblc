@@ -65,6 +65,7 @@ class Professional_model extends CI_Model{
     
     /**
      * String con condición WHERE SQL para filtrar user
+     * 2021-03-03
      */
     function search_condition($filters)
     {
@@ -83,6 +84,7 @@ class Professional_model extends CI_Model{
             $sql_categories = "SELECT cod FROM item WHERE category_id = 716 AND ancestry LIKE '%-{$filters['cat']}-%'";
             $condition .= "user.id IN (SELECT user_id FROM user_meta WHERE type_id = 716 AND related_1 IN ({$sql_categories})) AND ";
         }
+        if ( strlen($filters['cat_1']) > 0 ) $condition .= "user.cat_1 = {$filters['cat_1']} AND ";
         
         //Quitar cadena final de ' AND '
         if ( strlen($condition) > 0 ) { $condition = substr($condition, 0, -5);}

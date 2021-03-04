@@ -72,6 +72,7 @@ class Pictures extends CI_Controller{
 
         //Opciones para agregar
         $data['options_tag'] = $this->App_model->options_tag('category_id = 1');
+        $data['options_cat_1'] = $this->Item_model->options('category_id = 718', 'Picture category');
 
         //Datos actuales
         $data['tags'] = $this->Picture_model->tags($file_id);

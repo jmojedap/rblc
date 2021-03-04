@@ -274,6 +274,10 @@ class Accounts extends CI_Controller {
             $data['url_image'] = $data['row']->url_image;
             $data['back_destination'] = "accounts/edit/image";
         }
+
+        //Options form
+            $data['options_gender'] = $this->Item_model->options('category_id = 59 AND cod <= 2', 'Gender');
+            $data['options_cat_1'] = $this->Item_model->options("category_id = 720", 'Professional category');
         
         //Array data espefícicas
             $data['nav_2'] = 'accounts/edit/menu_v';

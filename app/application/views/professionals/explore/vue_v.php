@@ -1,18 +1,21 @@
+<?php
+    $cat_1 = 0;
+    if ( ! is_null($filters['cat_1']) ) $cat_1 = $filters['cat_1'];
+?>
 
 <script>
 // Variables
 //-----------------------------------------------------------------------------
-    var menu_elements = [
-        { id: '', slug: '', text: 'All'},
-        { id: '5', slug: 'artist-artisan', text: 'Artist and artisan' },
-        { id: '6', slug: 'marketing-resources', text: 'Marketing resources'},
-        { id: '7', slug: 'materials-spaces', text: 'Materials and spaces' },
-        { id: '9', slug: 'special-services', text: 'Special services' },
-        { id: '2', slug: 'woodwork', text: 'Woodwork' },
-        { id: '3', slug: 'electronic-services', text: 'Electronic services' },
-        { id: '4', slug: 'builders-remodelators', text: 'Builders and remodelators' },
-        { id: '8', slug: 'professional', text: 'Professional' }
-    ];
+    var menu_elements = {
+        0: {id: '', slug: '', text: 'All'},
+        1: {id:'1',slug:'design',text:'Design'},
+        2: {id:'2',slug:'remodeling-renovation',text:'Remodeling & Renovation'},
+        3: {id:'3',slug:'outdoor',text:'Outdoor'},
+        4: {id:'4',slug:'apliances-systems',text:'Apliances & Systems'},
+        5: {id:'5',slug:'services',text:'Services'}
+    };
+
+    var cat_1 = '<?= $cat_1 ?>';
 
 // App
 //-----------------------------------------------------------------------------
@@ -34,7 +37,7 @@
             str_filters: '<?= $str_filters ?>',
             showing_filters: false,
             menu_elements: menu_elements,
-            category: menu_elements[0],
+            category: menu_elements[cat_1],
             loading: false
         },
         methods: {
@@ -42,7 +45,7 @@
                 this.loading = true
                 var params = new URLSearchParams();
                 params.append('q', app_q);
-                params.append('cat', this.category.id);
+                params.append('cat_1', this.category.id);
                 axios.post(url_api + this.controller + '/get/' + this.num_page, params)
                 .then(response => {
                     this.list = response.data.list;

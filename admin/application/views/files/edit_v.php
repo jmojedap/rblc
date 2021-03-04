@@ -24,6 +24,14 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label for="cat_1" class="col-md-4 col-form-label text-right">Picture category</label>
+                            <div class="col-md-8">
+                                <select name="cat_1" v-model="form_values.cat_1" class="form-control" required>
+                                    <option v-for="(option_cat_1, key_cat_1) in options_cat_1" v-bind:value="key_cat_1">{{ option_cat_1 }}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label for="description" class="col-md-4 col-form-label text-right">Description</label>
                             <div class="col-md-8">
                                 <textarea name="description" id="field-description" class="form-control" required rows="3" maxlength="280"><?= $row->description ?></textarea>
@@ -72,7 +80,11 @@
             //this.get_list();
         },
         data: {
-            file_id: <?= $row->id ?>
+            file_id: <?= $row->id ?>,
+            form_values: {
+                cat_1: '0<?= $row->cat_1 ?>'
+            },
+            options_cat_1: <?= json_encode($options_cat_1) ?>
         },
         methods: {
             send_form: function(){

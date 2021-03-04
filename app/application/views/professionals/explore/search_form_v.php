@@ -3,14 +3,8 @@
         <div class="col-md-9">
             <div class="input-group mb-2">
                 <input
-                    place="text"
-                    name="q"
-                    class="form-control"
-                    placeholder="Search"
-                    autofocus
-                    title="Search"
-                    v-model="filters.q"
-                    v-on:change="get_list"
+                    type="text" name="q" class="form-control" placeholder="Search"
+                    title="Search" v-model="filters.q" v-on:change="get_list"
                     >
             </div>
         </div>

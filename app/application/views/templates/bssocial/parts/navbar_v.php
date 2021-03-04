@@ -34,11 +34,37 @@
                 <li class="nav-item">
                     <a class="<?= $cl_menu['home'] ?>" href="<?= base_url('home') ?>">HOME <span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item">
-                    <a class="<?= $cl_menu['pictures'] ?>" href="<?= base_url('pictures/explore/') ?>">INSPIRATION</a>
+                <li class="nav-item dropdown">
+                    <a class="<?= $cl_menu['pictures'] ?> dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        INSPIRATION
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class='dropdown-item' href='<?= base_url('pictures/explore/') ?>'>All</a>
+                        <a class='dropdown-item' href='<?= base_url('pictures/explore/?cat_1=1') ?>'>Kitchen & Dining</a>
+                        <a class='dropdown-item' href='<?= base_url('pictures/explore/?cat_1=2') ?>'>Bathrooms</a>
+                        <a class='dropdown-item' href='<?= base_url('pictures/explore/?cat_1=3') ?>'>Closets</a>
+                        <a class='dropdown-item' href='<?= base_url('pictures/explore/?cat_1=4') ?>'>Bedrooms</a>
+                        <a class='dropdown-item' href='<?= base_url('pictures/explore/?cat_1=5') ?>'>Home Office</a>
+                        <a class='dropdown-item' href='<?= base_url('pictures/explore/?cat_1=6') ?>'>Living</a>
+                        <a class='dropdown-item' href='<?= base_url('pictures/explore/?cat_1=7') ?>'>Bar & Wine</a>
+                        <a class='dropdown-item' href='<?= base_url('pictures/explore/?cat_1=8') ?>'>Outdoor</a>
+                        <a class='dropdown-item' href='<?= base_url('pictures/explore/?cat_1=9') ?>'>Walkways</a>
+                        <a class='dropdown-item' href='<?= base_url('pictures/explore/?cat_1=10') ?>'>Other Rooms</a>
+                    </div>
                 </li>
-                <li class="nav-item">
-                    <a class="<?= $cl_menu['professionals'] ?>" href="<?= base_url('professionals/explore') ?>">FIND A PRO</a>
+                <li class="nav-item dropdown">
+                    <a class="<?= $cl_menu['professionals'] ?> dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        FIND A PRO
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class='dropdown-item' href='<?= base_url('professionals/explore/') ?>'>All</a>
+                        <a class='dropdown-item' href='<?= base_url('professionals/explore/?cat_1=1') ?>'>Design</a>
+                        <a class='dropdown-item' href='<?= base_url('professionals/explore/?cat_1=2') ?>'>Remodeling & Renovation</a>
+                        <a class='dropdown-item' href='<?= base_url('professionals/explore/?cat_1=3') ?>'>Outdoor</a>
+                        <a class='dropdown-item' href='<?= base_url('professionals/explore/?cat_1=4') ?>'>Apliances & Systems</a>
+                        <a class='dropdown-item' href='<?= base_url('professionals/explore/?cat_1=5') ?>'>Services</a>
+
+                    </div>
                 </li>
                 <li class="nav-item">
                     <a class="<?= $cl_menu['projects'] ?>" href="<?= base_url('projects/explore') ?>">PROJECTS</a>
