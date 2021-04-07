@@ -23,7 +23,7 @@ admin/application/logs/*
 !admin/application/*/.htaccess
 admin/vendor/
 
-admin/resources/assets
+admin/resources/*/assets
 
 admin/application/config/
 
@@ -38,7 +38,7 @@ app/application/logs/*
 !app/application/*/.htaccess
 
 app/vendor
-app/resources/assets
+app/resources/*/assets
 app/application/config
 
 # operating system related files
