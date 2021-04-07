@@ -28,7 +28,7 @@ class Validation_model extends CI_Model{
      */
     function username($user_id = null)
     {
-        $validation['username_unique'] = $this->Db_model->is_unique('user', 'username', $this->input->post('username'), $user_id);
+        $validation['username_unique'] = $this->Db_model->is_unique('users', 'username', $this->input->post('username'), $user_id);
         return $validation;
     }
 
@@ -45,7 +45,7 @@ class Validation_model extends CI_Model{
         if ( strlen($this->input->post('email')) > 0 )
         {
         }*/
-        $validation['email_unique'] = $this->Db_model->is_unique('user', 'email', $this->input->post('email'), $user_id);
+        $validation['email_unique'] = $this->Db_model->is_unique('users', 'email', $this->input->post('email'), $user_id);
 
         //$validation['email_valid'] = ( $validation['email_unique'] );    //Se validan las dos condiciones
 
@@ -58,7 +58,7 @@ class Validation_model extends CI_Model{
      */
     function id_number($user_id = null)
     {
-        $validation['id_number_unique'] = $this->Db_model->is_unique('user', 'id_number', $this->input->post('id_number'), $user_id);
+        $validation['id_number_unique'] = $this->Db_model->is_unique('users', 'id_number', $this->input->post('id_number'), $user_id);
         return $validation;
     }
 }

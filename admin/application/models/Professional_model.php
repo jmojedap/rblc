@@ -4,7 +4,7 @@ class Professional_model extends CI_Model{
     function basic($user_id)
     {
         $data['user_id'] = $user_id;
-        $data['row'] = $this->Db_model->row_id('user', $user_id);
+        $data['row'] = $this->Db_model->row_id('users', $user_id);
         $data['head_title'] = substr($data['row']->display_name,0,50);
         $data['view_a'] = 'users/user_v';
         $data['nav_2'] = 'users/menus/user_v';
@@ -81,10 +81,10 @@ class Professional_model extends CI_Model{
         //Filtros
         if ( strlen($filters['cat']) > 0 )
         {
-            $sql_categories = "SELECT cod FROM item WHERE category_id = 716 AND ancestry LIKE '%-{$filters['cat']}-%'";
-            $condition .= "user.id IN (SELECT user_id FROM user_meta WHERE type_id = 716 AND related_1 IN ({$sql_categories})) AND ";
+            $sql_categories = "SELECT cod FROM items WHERE category_id = 716 AND ancestry LIKE '%-{$filters['cat']}-%'";
+            $condition .= "users.id IN (SELECT user_id FROM users_meta WHERE type_id = 716 AND related_1 IN ({$sql_categories})) AND ";
         }
-        if ( strlen($filters['cat_1']) > 0 ) $condition .= "user.cat_1 = {$filters['cat_1']} AND ";
+        if ( strlen($filters['cat_1']) > 0 ) $condition .= "users.cat_1 = {$filters['cat_1']} AND ";
         
         //Quitar cadena final de ' AND '
         if ( strlen($condition) > 0 ) { $condition = substr($condition, 0, -5);}
@@ -95,7 +95,7 @@ class Professional_model extends CI_Model{
     function search($filters, $per_page = NULL, $offset = NULL)
     {
         //Construir consulta
-            $this->db->select('user.id, username, display_name, email, image_id, url_image, url_thumbnail, user.type_id, country, state_province, city, about');
+            $this->db->select('users.id, username, display_name, email, image_id, url_image, url_thumbnail, users.type_id, country, state_province, city, about');
             
         //Orden
             if ( $filters['o'] != '' )
@@ -111,7 +111,7 @@ class Professional_model extends CI_Model{
             if ( $search_condition ) { $this->db->where($search_condition);}
             
         //Obtener resultados
-            $query = $this->db->get('user', $per_page, $offset); //Resultados por página
+            $query = $this->db->get('users', $per_page, $offset); //Resultados por página
         
         return $query;
         
@@ -150,7 +150,7 @@ class Professional_model extends CI_Model{
         $this->db->select('id');
         $search_condition = $this->search_condition($filters);
         if ( $search_condition ) { $this->db->where($search_condition);}
-        $query = $this->db->get('user'); //Para calcular el total de resultados
+        $query = $this->db->get('users'); //Para calcular el total de resultados
 
         return $query->num_rows();
     }
@@ -173,17 +173,17 @@ class Professional_model extends CI_Model{
 //-----------------------------------------------------------------------------
 
     /**
-     * Imágenes asociadas al usuario, mediante la tabla user_meta, tipo 1
+     * Imágenes asociadas al usuario, mediante la tabla users_meta, tipo 1
      * 2020-05-15
      */
     function images($user_id)
     {
-        $this->db->select('file.id, file.title, url, url_thumbnail');
+        $this->db->select('files.id, files.title, url, url_thumbnail');
         $this->db->where('table_id', 1000); //Tabla usuario
         $this->db->where('related_1', $user_id);
         $this->db->where('album_id', 10);   //Colección general de imágenes de un usuario
 
-        $images = $this->db->get('file');
+        $images = $this->db->get('files');
 
         return $images;
     }
@@ -209,12 +209,12 @@ class Professional_model extends CI_Model{
 
     function metadata($user_id, $type_id)
     {
-        $this->db->select('user_meta.id AS meta_id, item_name AS title, user_meta.related_1');
-        $this->db->where('user_meta.type_id', $type_id);
-        $this->db->where('item.category_id', $type_id);
-        $this->db->where('user_meta.user_id', $user_id);
-        $this->db->join('user_meta', 'item.cod = user_meta.related_1');
-        $elements = $this->db->get('item');
+        $this->db->select('users_meta.id AS meta_id, item_name AS title, users_meta.related_1');
+        $this->db->where('users_meta.type_id', $type_id);
+        $this->db->where('items.category_id', $type_id);
+        $this->db->where('users_meta.user_id', $user_id);
+        $this->db->join('users_meta', 'items.cod = users_meta.related_1');
+        $elements = $this->db->get('items');
 
         return $elements;
     }
@@ -225,18 +225,18 @@ class Professional_model extends CI_Model{
      */
     function tags($user_id, $category_id = NULL)
     {
-        $this->db->select('user_meta.id AS meta_id, tag.name, user_meta.related_1');
-        $this->db->where('user_meta.type_id', 27);  //Metadato, tag
+        $this->db->select('users_meta.id AS meta_id, tags.name, users_meta.related_1');
+        $this->db->where('users_meta.type_id', 27);  //Metadato, tag
         if ( ! is_null($category_id) ) { $this->db->where('tag.category_id', $type_id); }
-        $this->db->where('user_meta.user_id', $user_id);
-        $this->db->join('user_meta', 'tag.id = user_meta.related_1');
-        $tags = $this->db->get('tag');
+        $this->db->where('users_meta.user_id', $user_id);
+        $this->db->join('users_meta', 'tag.id = users_meta.related_1');
+        $tags = $this->db->get('tags');
 
         return $tags;
     }
 
     /**
-     * Guarda un registro en la tabla user_meta
+     * Guarda un registro en la tabla users_meta
      * 2020-07-16
      */
     function save_meta($arr_row, $fields = array('related_1'))
@@ -248,13 +248,13 @@ class Professional_model extends CI_Model{
             $condition .= " AND {$field} = '{$arr_row[$field]}'";
         }
 
-        $meta_id = $this->Db_model->save('user_meta', $condition, $arr_row);
+        $meta_id = $this->Db_model->save('users_meta', $condition, $arr_row);
         
         return $meta_id;
     }
 
     /**
-     * Guarda múltiples registros en la tabla user_meta, con un array,
+     * Guarda múltiples registros en la tabla users_meta, con un array,
      * y elimina los que no estén en el array enviado por post ($new_metas)
      * 2020-08-01
      */

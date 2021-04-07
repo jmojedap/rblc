@@ -94,7 +94,7 @@ class Posts extends CI_Controller{
      */
     function open($post_id)
     {
-        $row = $this->Db_model->row_id('post', $post_id);
+        $row = $this->Db_model->row_id('posts', $post_id);
         $destination = "posts/read/{$post_id}";
 
         if ( $row->type_id == 41 ) { $destination = "polls/build/{$row->id}"; }
@@ -122,21 +122,20 @@ class Posts extends CI_Controller{
     {        
         //Datos básicos
         $data = $this->Post_model->basic($post_id);
-        $data['view_a'] = $this->Post_model->type_folder($data['row']) . 'info_v';
+        $data['view_a'] = $data['type_folder'] . 'info_v';
 
         $this->App_model->view(TPL_ADMIN, $data);
     }
 
     /**
      * Información detallada del post desde la perspectiva de base de datos
-     * 2020-08-18
+     * 2021-04-07
      */
     function details($post_id)
     {        
         //Datos básicos
         $data = $this->Post_model->basic($post_id);
-        $data['view_a'] = 'posts/details_v';
-        $data['fields'] = $this->db->list_fields('post');
+        $data['view_a'] = 'common/row_details_v';
 
         $this->App_model->view(TPL_ADMIN, $data);
     }
@@ -148,32 +147,29 @@ class Posts extends CI_Controller{
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
     
-// CRUD
+// CREACIÓN DE UN POST
 //-----------------------------------------------------------------------------
 
     /**
-     * Formulario para la creación de un nuevo post
+     * Vista Formulario para la creación de un nuevo post
      */
     function add()
     {
         //Variables generales
-            $data['head_title'] = 'Post';
+            $data['head_title'] = 'posts';
             $data['head_subtitle'] = 'Nuevo';
             $data['nav_2'] = 'posts/explore/menu_v';
-            $data['view_a'] = 'posts/add_v';
+            $data['view_a'] = 'posts/add/add_v';
 
         $this->App_model->view(TPL_ADMIN, $data);
     }
 
-    /**
-     * Crea un nuevo registro en la tabla post
-     * 2019-11-29
-     */
-    function insert()
+    function save()
     {
-        $data = $this->Post_model->insert();
+        $data = $this->Post_model->save();
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
+    
     
 // EDICIÓN Y ACTUALIZACIÓN
 //-----------------------------------------------------------------------------
@@ -190,21 +186,10 @@ class Posts extends CI_Controller{
         $data['options_type'] = $this->Item_model->options('category_id = 33', 'Todos');
         
         //Array data espefícicas
-            $data['nav_2'] = 'posts/menu_v';
             $data['head_subtitle'] = 'Editar';
-            $data['view_a'] = $this->Post_model->edit_view($data['row']);
+            $data['view_a'] = $data['type_folder'] . 'edit_v';
         
         $this->App_model->view(TPL_ADMIN, $data);
-    }
-
-    /**
-     * Guardar un registro en la tabla post, si post_id = 0, se crea nuevo registro
-     * 2019-11-29
-     */
-    function update($post_id)
-    {
-        $data = $this->Post_model->update($post_id);
-        $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
     
 // IMAGEN PRINCIPAL DEL POST
@@ -341,7 +326,7 @@ class Posts extends CI_Controller{
     }
 
     /**
-     * Elimina registro de la tabla post_meta
+     * Elimina registro de la tabla posts_meta
      * 2020-07-03
      */
     function delete_meta($post_id, $meta_id)

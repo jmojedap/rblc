@@ -1,5 +1,5 @@
 <?php
-    $link_types = $this->db->get_where('item', 'category_id = 44 AND item_group = 1');
+    $link_types = $this->db->get_where('items', 'category_id = 44 AND item_group = 1');
 ?>
 
 <div id="social_links_app">

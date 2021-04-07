@@ -3,7 +3,7 @@ class Message_model extends CI_Model{
 
     function basic($conversation_id)
     {
-        $data['row'] = $this->Db_model->row_id('conversation', $conversation_id);
+        $data['row'] = $this->Db_model->row_id('conversations', $conversation_id);
         $data['head_title'] = $data['row']->subject;
 
         return $data;
@@ -14,7 +14,7 @@ class Message_model extends CI_Model{
 
     /**
      * Crea una conversación individual (tipo 1), agrega al usuario en sesión y al usuario
-     * relacionado (tabla user_meta)
+     * relacionado (tabla users_meta)
      * 2019-09-23
      */
     function create_conversation($user_id)
@@ -24,7 +24,7 @@ class Message_model extends CI_Model{
         $arr_row['creator_id'] = $this->session->userdata('user_id');   //Usuario que inicia la conversación
 
         $condition = $this->Db_model->condition($arr_row, array('type_id', 'related_id', 'creator_id'));
-        $conversation_id = $this->Db_model->insert_if('conversation', $condition, $arr_row);
+        $conversation_id = $this->Db_model->insert_if('conversations', $condition, $arr_row);
 
         //Agregar usuario en sesión
         $meta_1 = $this->add_user($conversation_id, $this->session->userdata('user_id'), $user_id);
@@ -50,7 +50,7 @@ class Message_model extends CI_Model{
         $arr_row['updater_id'] = $this->session->userdata('user_id');
 
         $condition = $this->Db_model->condition($arr_row, array('user_id', 'type_id', 'related_1'));
-        $meta_id = $this->Db_model->insert_if('user_meta', $condition, $arr_row);
+        $meta_id = $this->Db_model->insert_if('users_meta', $condition, $arr_row);
 
         return $meta_id;
     }
@@ -61,19 +61,19 @@ class Message_model extends CI_Model{
      */
     function conversations($num_page, $q)
     {
-        $this->db->select('conversation.id, conversation.updated_at, user_meta.related_2 AS element_id, user.display_name AS title, user.url_image');
-        //$this->db->select('conversation.id');
-        $this->db->join('user_meta', 'conversation.id = user_meta.related_1');
-        $this->db->join('user', 'user.id = user_meta.related_2');
-        $this->db->where('user_meta.user_id', $this->session->userdata('user_id'));
-        $this->db->order_by('conversation.updated_at', 'DESC');
+        $this->db->select('conversations.id, conversations.updated_at, users_meta.related_2 AS element_id, users.display_name AS title, users.url_image');
+        //$this->db->select('conversations.id');
+        $this->db->join('users_meta', 'conversations.id = users_meta.related_1');
+        $this->db->join('users', 'users.id = users_meta.related_2');
+        $this->db->where('users_meta.user_id', $this->session->userdata('user_id'));
+        $this->db->order_by('conversations.updated_at', 'DESC');
 
         if ( ! is_null($q))
         {
-            $this->db->where("user.display_name LIKE '%{$q}%'");
+            $this->db->where("users.display_name LIKE '%{$q}%'");
         }
 
-        $query = $this->db->get('conversation');
+        $query = $this->db->get('conversations');
 
         foreach ($query->result_array() as $row_conversation)
         {
@@ -92,7 +92,7 @@ class Message_model extends CI_Model{
      */
     function conversation_meta($row_conversation)
     {
-        /*$row_user = $this->Db_model->row_id('user', $row_conversation['element_id']);
+        /*$row_user = $this->Db_model->row_id('users', $row_conversation['element_id']);
         $conversation_meta['title'] = $row_user->display_name;
         $conversation_meta['url_image'] = $row_user->url_image;*/
         $conversation_meta['qty_unread'] = $this->qty_unread($this->session->userdata('user_id'), $row_conversation['id']);
@@ -107,8 +107,8 @@ class Message_model extends CI_Model{
     function qty_unread($user_id, $conversation_id = NULL)
     {
         $this->db->select('message_user.id');
-        $this->db->join('message', 'message.id = message_user.message_id');
-        if ( ! is_null($conversation_id)) { $this->db->where('message.conversation_id', $conversation_id); }
+        $this->db->join('messages', 'messages.id = message_user.message_id');
+        if ( ! is_null($conversation_id)) { $this->db->where('messages.conversation_id', $conversation_id); }
         $this->db->where('message_user.user_id', $user_id);
         $this->db->where('message_user.status', 0); //Enviado, sin leer
         $query = $this->db->get('message_user');
@@ -131,15 +131,15 @@ class Message_model extends CI_Model{
             $arr_row['text'] = $this->input->post('text');
             $arr_row['user_id'] = $this->session->userdata('user_id');
 
-            $this->db->insert('message', $arr_row);
+            $this->db->insert('messages', $arr_row);
             $message_id = $this->db->insert_id();
 
         //Enviar mensaje a los participantes
             $qty_sent = $this->assign_users($conversation_id, $message_id);
 
-        //Actualizar edición de conversación, conversation.updated_at
+        //Actualizar edición de conversación, conversations.updated_at
             $this->db->where('id', $conversation_id);
-            $this->db->update('conversation', array('updated_at' => date('Y-m-d H:i:s')));
+            $this->db->update('conversations', array('updated_at' => date('Y-m-d H:i:s')));
 
         //Preparar resultado
             $data = array('status' => 1, 'message_id' => $message_id, 'qty_sent' => $qty_sent);
@@ -173,7 +173,7 @@ class Message_model extends CI_Model{
     }
 
     /**
-     * Usuarios que participan en una conversación. Tabla user_meta, type 12
+     * Usuarios que participan en una conversación. Tabla users_meta, type 12
      * 2020-07-21
      */
     function users($conversation_id)
@@ -181,7 +181,7 @@ class Message_model extends CI_Model{
         $this->db->select('user_id');
         $this->db->where('type_id', 12);
         $this->db->where('related_1', $conversation_id);
-        $users = $this->db->get('user_meta');
+        $users = $this->db->get('users_meta');
 
         return $users;
     }
@@ -192,17 +192,17 @@ class Message_model extends CI_Model{
      */
     function messages($conversation_id, $message_id)
     {
-        $condition = 'message.id = 0';
-        if ( $message_id >= 0 ) { $condition = "message.id > {$message_id}"; }
+        $condition = 'messages.id = 0';
+        if ( $message_id >= 0 ) { $condition = "messages.id > {$message_id}"; }
 
-        $this->db->select('message.id, text, message.user_id, sent_at, message_user.id AS mu_id');
-        $this->db->join('message_user', 'message.id = message_user.message_id');
+        $this->db->select('messages.id, text, messages.user_id, sent_at, message_user.id AS mu_id');
+        $this->db->join('message_user', 'messages.id = message_user.message_id');
         $this->db->where('conversation_id', $conversation_id);
         $this->db->where($condition);
         $this->db->where('message_user.status <= 1');   //Que no haya sido eliminado
         $this->db->where('message_user.user_id', $this->session->userdata('user_id'));
-        $this->db->order_by('message.id', 'ASC');
-        $messages = $this->db->get('message', 100); //Limitado a los 100 últimos mensajes
+        $this->db->order_by('messages.id', 'ASC');
+        $messages = $this->db->get('messages', 100); //Limitado a los 100 últimos mensajes
 
         return $messages;
     }

@@ -47,7 +47,7 @@ class Accounts extends CI_Controller {
                 $data['head_title'] = APP_NAME;
                 $data['view_a'] = 'accounts/login_v';
                 //$data['g_client'] = $this->Account_model->g_client(); //Para botón login con Google
-                $this->load->view('templates/admin_pml/start_v', $data);
+                $this->load->view('templates/admin_pml/start', $data);
             }
     }
 
@@ -80,7 +80,7 @@ class Accounts extends CI_Controller {
     //ML Master Login, 
     function ml($user_id)
     {
-        $username = $this->Db_model->field_id('user', $user_id, 'username');
+        $username = $this->Db_model->field_id('users', $user_id, 'username');
         if ( $this->session->userdata('role') <= 1 ) { $this->Account_model->create_session($username, FALSE); }
         
         redirect('app/logged');
@@ -100,14 +100,14 @@ class Accounts extends CI_Controller {
         $data['with_email'] = $with_email;
         $data['g_client'] = $this->Account_model->g_client(); //Para botón login con Google
         $data['recaptcha_sitekey'] = K_RCSK;    //config/constants.php
-        $this->load->view('templates/admin_pml/start_v', $data);
+        $this->load->view('templates/admin_pml/start', $data);
     }
     
     /**
      * AJAX JSON
      * 
      * Recibe los datos POST del form en accounts/signup. Si se validan los 
-     * datos, se registra el user. Se devuelve $data, con resultados de registro
+     * datos, se registra elusuario.  Se devuelve $data, con resultados de registro
      * o de validación (si falló).
      * 2019-11-27
      */
@@ -177,9 +177,9 @@ class Accounts extends CI_Controller {
     {   
         //Solicitar vista
         $data['head_title'] = 'Usuario registrado';
-        $data['row'] = $this->Db_model->row_id('user', $user_id);
+        $data['row'] = $this->Db_model->row_id('users', $user_id);
         $data['view_a'] = 'accounts/registered_v';
-        $this->load->view('templates/bootstrap/start_v', $data);
+        $this->load->view('templates/bootstrap/start', $data);
     }
 
     /**
@@ -189,7 +189,7 @@ class Accounts extends CI_Controller {
     {
         $data = array('status' => 0, 'user' => array());
 
-        $row = $this->Db_model->row('user', "email = '{$this->input->post('email')}'");
+        $row = $this->Db_model->row('users', "email = '{$this->input->post('email')}'");
 
         if ( ! is_null($row))
         {
@@ -213,7 +213,7 @@ class Accounts extends CI_Controller {
         $data['activation_key'] = $activation_key;
         $data['view_a'] = 'accounts/activation_v';
 
-        $this->App_model->view('templates/admin_pml/start_v', $data);
+        $this->App_model->view('templates/admin_pml/start', $data);
     }
 
     /**
@@ -254,7 +254,7 @@ class Accounts extends CI_Controller {
             $data['head_title'] = 'Accounts recovery';
             $data['view_a'] = 'accounts/recovery_v';
             $data['recaptcha_sitekey'] = K_RCSK;    //config/constants.php
-            $this->load->view('templates/admin_pml/start_v', $data);
+            $this->load->view('templates/admin_pml/start', $data);
         }
     }
 
@@ -271,7 +271,7 @@ class Accounts extends CI_Controller {
         $recaptcha = $this->Validation_model->recaptcha(); //Validación Google ReCaptcha V3
 
         //Identificar usuario
-        $row = $this->Db_model->row('user', "email = '{$this->input->post('email')}'");
+        $row = $this->Db_model->row('users', "email = '{$this->input->post('email')}'");
 
         if ( ! is_null($row) && $recaptcha->score > 0.5 ) 
         {
@@ -296,7 +296,7 @@ class Accounts extends CI_Controller {
             $data['user_id'] = 0;
         
         //Variables
-            $row_user = $this->Db_model->row('user', "activation_key = '{$activation_key}'");        
+            $row_user = $this->Db_model->row('users', "activation_key = '{$activation_key}'");        
             $data['activation_key'] = $activation_key;
             $data['row'] = $row_user;
         
@@ -312,7 +312,7 @@ class Accounts extends CI_Controller {
 
         //Cargar vista
             $data['view_a'] = 'accounts/recover_v';
-            $this->load->view('templates/admin_pml/start_v', $data);
+            $this->load->view('templates/admin_pml/start', $data);
     }
 
     /**
@@ -322,7 +322,7 @@ class Accounts extends CI_Controller {
     function reset_password($activation_key)
     {
         $data = array('status' => 0, 'errors' => '');
-        $row_user = $this->Db_model->row('user', "activation_key = '{$activation_key}'");        
+        $row_user = $this->Db_model->row('users', "activation_key = '{$activation_key}'");        
         
         //Validar condiciones
         if ( $this->input->post('password') <> $this->input->post('passconf') ) $data['errors'] .= 'Passwords do not match. '; //Contraseñas coinciden
@@ -384,7 +384,7 @@ class Accounts extends CI_Controller {
     function change_password()
     {
         $conditions = 0;
-        $row_user = $this->Db_model->row_id('user', $this->session->userdata('user_id'));
+        $row_user = $this->Db_model->row_id('users', $this->session->userdata('user_id'));
         
         //Valores iniciales para el resultado del proceso
             $data = array('status' => 0, 'message' => 'The password was not changed. ');
@@ -542,7 +542,7 @@ class Accounts extends CI_Controller {
             $g_userinfo = $this->Account_model->g_userinfo($g_client);
         
         //Check if email already exists in the BD
-            $row_user = $this->Db_model->row('user', "email = '{$g_userinfo['email']}'");
+            $row_user = $this->Db_model->row('users', "email = '{$g_userinfo['email']}'");
 
         //Create session or insert new user
             if ( ! is_null($row_user) )

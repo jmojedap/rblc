@@ -33,5 +33,14 @@
             </div>
             <label for="type" class="col-md-3 control-label col-form-label">Tipo</label>
         </div>
+        <div class="form-group row">
+            <div class="col-md-9">
+                <select name="feeling" v-model="filters.feeling" class="form-control">
+                    <option v-for="(option_feeling, key_feeling) in options_feeling" v-bind:value="key_feeling">{{ option_feeling }}</option>
+                </select>
+            </div>
+            <label for="type" class="col-md-3 control-label col-form-label">Feeling</label>
+        </div>
+
     </div>
 </form>

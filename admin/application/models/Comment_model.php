@@ -3,7 +3,7 @@ class Comment_model extends CI_Model{
 
     function basic($comment_id)
     {
-        $row = $this->Db_model->row_id('comment', $comment_id);
+        $row = $this->Db_model->row_id('comments', $comment_id);
 
         $data['comment_id'] = $comment_id;
         $data['row'] = $row;
@@ -112,7 +112,7 @@ class Comment_model extends CI_Model{
         //Obtener resultados
         if ( is_null($per_page) )
         {
-            $query = $this->db->get('comment'); //Resultados totales
+            $query = $this->db->get('comments'); //Resultados totales
         } else {
             $query = $this->db->get('comment', $per_page, $offset); //Resultados por página
         }
@@ -144,7 +144,7 @@ class Comment_model extends CI_Model{
     {
         
         $role = $this->session->userdata('role');
-        $condition = 'id = 0';  //Valor por defecto, ningún post, se obtendrían cero post.
+        $condition = 'id = 0';  //Valor por defecto, ningún post, se obtendrían cero posts.
         
         if ( $role <= 2 ) 
         {   //Desarrollador, todos los post
@@ -180,7 +180,7 @@ class Comment_model extends CI_Model{
 //-----------------------------------------------------------------------------
     
     /**
-     * Insertar un registro en la tabla comment.
+     * Insertar un registro en la tabla comments.
      * 2020-06-08
      */
     function save($table_id, $element_id)
@@ -195,7 +195,7 @@ class Comment_model extends CI_Model{
             $arr_row['creator_id'] = $this->session->userdata('user_id');
 
             //Insertar en la tabla
-                $this->db->insert('comment', $arr_row);
+                $this->db->insert('comments', $arr_row);
                 $data['saved_id'] = $this->db->insert_id();
 
                 //Actualizar los contadores
@@ -239,12 +239,12 @@ class Comment_model extends CI_Model{
         $per_page = 25;
         $offset = $per_page * ($num_page - 1);
 
-        $this->db->select('comment.id, comment_text, parent_id, score, qty_comments, comment.created_at, comment.creator_id, user.username, user.display_name');
+        $this->db->select('comments.id, comment_text, parent_id, score, qty_comments, comments.created_at, comments.creator_id, users.username, users.display_name');
         $this->db->where('element_id', $element_id);
         $this->db->where('table_id', $table_id);
         $this->db->where('parent_id', $parent_id);
         $this->db->order_by('created_at', 'DESC');
-        $this->db->join('user', 'user.id = comment.creator_id');
+        $this->db->join('users', 'users.id = comments.creator_id');
         $comments = $this->db->get('comment', $per_page, $offset);
 
         return $comments;
@@ -257,7 +257,7 @@ class Comment_model extends CI_Model{
     function deleteable($comment_id, $element_id)
     {
         $deleteable = FALSE;
-        $row = $this->Db_model->row('comment', "id = {$comment_id} AND element_id = {$element_id}");
+        $row = $this->Db_model->row('comments', "id = {$comment_id} AND element_id = {$element_id}");
 
         if ( ! is_null($row) )  //Existe
         {
@@ -278,11 +278,11 @@ class Comment_model extends CI_Model{
         if ( $this->deleteable($comment_id, $element_id) )
         {
             //Tener registro para actualizaciones posteriores
-            $row = $this->Db_model->row('comment', "id = {$comment_id} AND element_id = {$element_id}");
+            $row = $this->Db_model->row('comments', "id = {$comment_id} AND element_id = {$element_id}");
 
             //Eliminar comentario y sus descendientes
             $this->db->where("id = {$comment_id} OR parent_id = {$comment_id}");
-            $this->db->delete('comment');
+            $this->db->delete('comments');
 
             $data['qty_deleted'] = $this->db->affected_rows();
 
@@ -304,7 +304,7 @@ class Comment_model extends CI_Model{
 //-----------------------------------------------------------------------------
 
     /**
-     * Después de agregar o eliminar un comentario, se actualiza el campo post.qty_comments.
+     * Después de agregar o eliminar un comentario, se actualiza el campo posts.qty_comments.
      */
     function update_qty_comments($table_id, $element_id, $qty_sum = 1)
     {
@@ -323,7 +323,7 @@ class Comment_model extends CI_Model{
     }
 
     /**
-     * Después de agregar o eliminar un comentario, se actualiza el campo comment.qty_comments.
+     * Después de agregar o eliminar un comentario, se actualiza el campo comments.qty_comments.
      */
     function update_qty_answers($comment_id, $qty_sum = 1)
     {
@@ -335,7 +335,7 @@ class Comment_model extends CI_Model{
             $arr_row['qty_comments'] = $this->Db_model->num_rows('comment', "parent_id = {$comment_id}");
     
             $this->db->where('id', $comment_id);
-            $this->db->update('comment', $arr_row);
+            $this->db->update('comments', $arr_row);
         }
     }
 }

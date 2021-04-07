@@ -3,7 +3,7 @@ class Ideabook_model extends CI_Model{
 
     function basic($post_id)
     {
-        $row = $this->Db_model->row_id('post', $post_id);
+        $row = $this->Db_model->row_id('posts', $post_id);
 
         $data['post_id'] = $post_id;
         $data['row'] = $row;
@@ -18,7 +18,7 @@ class Ideabook_model extends CI_Model{
 //-----------------------------------------------------------------------------
     
     /**
-     * Insertar un registro en la tabla post.
+     * Insertar un registro en la tabla posts.
      * 2020-02-22
      */
     function insert($arr_row = NULL)
@@ -28,7 +28,7 @@ class Ideabook_model extends CI_Model{
         $data = array('status' => 0);
         
         //Insert in table
-            $this->db->insert('post', $arr_row);
+            $this->db->insert('posts', $arr_row);
             $data['saved_id'] = $this->db->insert_id();
 
         if ( $data['saved_id'] > 0 ) { $data['status'] = 1; }
@@ -46,7 +46,7 @@ class Ideabook_model extends CI_Model{
 
         //Guardar
             $arr_row = $this->Db_model->arr_row($post_id);
-            $saved_id = $this->Db_model->save('post', "id = {$post_id}", $arr_row);
+            $saved_id = $this->Db_model->save('posts', "id = {$post_id}", $arr_row);
 
         //Actualizar resultado
             if ( $saved_id > 0 ){ $data = array('status' => 1); }
@@ -62,7 +62,7 @@ class Ideabook_model extends CI_Model{
         
         if ( $process == 'insert' )
         {
-            $arr_row['slug'] = $this->Db_model->unique_slug($arr_row['post_name'], 'post');
+            $arr_row['slug'] = $this->Db_model->unique_slug($arr_row['post_name'], 'posts');
             $arr_row['creator_id'] = $this->session->userdata('user_id');
         }
         
@@ -91,7 +91,7 @@ class Ideabook_model extends CI_Model{
             
             //Tabla principal
                 $this->db->where('id', $post_id);
-                $this->db->delete('post');
+                $this->db->delete('posts');
 
             $quan_deleted = $this->db->affected_rows();
         }
@@ -168,7 +168,7 @@ class Ideabook_model extends CI_Model{
             if ( $search_condition ) { $this->db->where($search_condition);}
             
         //Obtener resultados
-            $query = $this->db->get('post', $per_page, $offset); //Resultados por página
+            $query = $this->db->get('posts', $per_page, $offset); //Resultados por página
         
         return $query;
     }
@@ -193,7 +193,7 @@ class Ideabook_model extends CI_Model{
         
         //Otros filtros
         if ( $filters['u'] != '' ) { $condition .= "creator_id = {$filters['u']} AND "; }
-        //if ( $filters['like'] == 1 ) { $condition .= "post.id IN (SELECT post_id FROM post_meta WHERE type_id = 10 AND related_1 = '{$this->session->userdata('user_id')}') AND "; }
+        //if ( $filters['like'] == 1 ) { $condition .= "posts.id IN (SELECT post_id FROM posts_meta WHERE type_id = 10 AND related_1 = '{$this->session->userdata('user_id')}') AND "; }
 
         
         //Quitar cadena final de ' AND '
@@ -208,7 +208,7 @@ class Ideabook_model extends CI_Model{
     function role_filter()
     {
         $role = $this->session->userdata('role');
-        $condition = 'id = 0';  //Valor por defecto, ningún post, se obtendrían cero post.
+        $condition = 'id = 0';  //Valor por defecto, ningún post, se obtendrían cero posts.
         
         if ( $role <= 2 ) 
         {   //Desarrollador, todos los post
@@ -243,7 +243,7 @@ class Ideabook_model extends CI_Model{
         $this->db->select('id');
         $search_condition = $this->search_condition($filters);
         if ( $search_condition ) { $this->db->where($search_condition);}
-        $query = $this->db->get('post'); //Para calcular el total de resultados
+        $query = $this->db->get('posts'); //Para calcular el total de resultados
 
         return $query->num_rows();
     }
@@ -267,7 +267,7 @@ class Ideabook_model extends CI_Model{
 //-----------------------------------------------------------------------------
 
     /**
-     * Agrega registro a post_meta, asociando post con una imagen de la tabla file
+     * Agrega registro a posts_meta, asociando post con una imagen de la tabla file
      * 2020-07-03
      */
     function add_image($ideabook_id, $file_id)
@@ -277,7 +277,7 @@ class Ideabook_model extends CI_Model{
         $arr_row['related_1'] = $file_id;
 
         $condition = "post_id = {$post_id} AND type_id = 1 AND related_1 = {$file_id}";
-        $data['saved_id'] = $this->Db_model->save('post_meta', $condition, $arr_row);
+        $data['saved_id'] = $this->Db_model->save('posts_meta', $condition, $arr_row);
 
         return $data;
     }
@@ -292,8 +292,8 @@ class Ideabook_model extends CI_Model{
         $str_projects = $this->pml->query_to_str($projects, 'id');
 
         $this->db->select('id AS file_id, url, url_thumbnail');
-        $this->db->where("id IN (SELECT related_1 FROM post_meta WHERE type_id = 1 AND post_id IN ({$str_projects}))");
-        $files = $this->db->get('file');
+        $this->db->where("id IN (SELECT related_1 FROM posts_meta WHERE type_id = 1 AND post_id IN ({$str_projects}))");
+        $files = $this->db->get('files');
 
         return $files;
     }
@@ -306,19 +306,19 @@ class Ideabook_model extends CI_Model{
      */
     function projects($ideabook_id)
     {
-        $this->db->select('post.id, post_name AS title, post_meta.id AS meta_id, post.url_image, post.url_thumbnail');
-        $this->db->where('post.type_id', 7110); //Post tipo project
-        $this->db->join('post_meta', 'post.id = post_meta.related_1');
-        $this->db->where('post_meta.type_id', 722);   //Asignación de project
-        $this->db->where('post_meta.post_id', $ideabook_id);
+        $this->db->select('posts.id, post_name AS title, posts_meta.id AS meta_id, posts.url_image, posts.url_thumbnail');
+        $this->db->where('posts.type_id', 7110); //Post tipo project
+        $this->db->join('posts_meta', 'posts.id = posts_meta.related_1');
+        $this->db->where('posts_meta.type_id', 722);   //Asignación de project
+        $this->db->where('posts_meta.post_id', $ideabook_id);
 
-        $projects = $this->db->get('post');
+        $projects = $this->db->get('posts');
         
         return $projects;
     }
 
     /**
-     * Agrega registro a post_meta, asociando project a un ideabook
+     * Agrega registro a posts_meta, asociando project a un ideabook
      * 2020-07-03
      */
     function add_project($ideabook_id, $project_id)
@@ -330,7 +330,7 @@ class Ideabook_model extends CI_Model{
         $arr_row['creator_id'] = $this->session->userdata('user_id');
 
         $condition = "post_id = {$arr_row['post_id']} AND type_id = {$arr_row['type_id']} AND related_1 = {$project_id}";
-        $data['saved_id'] = $this->Db_model->insert_if('post_meta', $condition, $arr_row);
+        $data['saved_id'] = $this->Db_model->insert_if('posts_meta', $condition, $arr_row);
 
         return $data;
     }

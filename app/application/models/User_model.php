@@ -4,7 +4,7 @@ class User_model extends CI_Model{
     function basic($user_id)
     {
         $data['user_id'] = $user_id;
-        $data['row'] = $this->Db_model->row_id('user', $user_id);
+        $data['row'] = $this->Db_model->row_id('users', $user_id);
         $data['head_title'] = substr($data['row']->display_name,0,50);
         $data['view_a'] = 'users/user_v';
         //$data['nav_2'] = 'users/menus/user_v';
@@ -89,7 +89,7 @@ class User_model extends CI_Model{
 
         //Construir consulta
             $this->db->select('user.id, username, display_name, first_name, last_name, email, role, image_id, url_image, url_thumbnail, status, user.type_id');
-            //$this->db->join('place', 'place.id = user.city_id', 'left');
+            //$this->db->join('places', 'places.id = user.city_id', 'left');
         
         //Crear array con términos de búsqueda
             $words_condition = $this->Search_model->words_condition($filters['q'], array('first_name', 'last_name', 'display_name', 'email', 'id_number'));
@@ -115,9 +115,9 @@ class User_model extends CI_Model{
         //Obtener resultados
         if ( is_null($per_page) )
         {
-            $query = $this->db->get('user'); //Resultados totales
+            $query = $this->db->get('users'); //Resultados totales
         } else {
-            $query = $this->db->get('user', $per_page, $offset); //Resultados por página
+            $query = $this->db->get('users', $per_page, $offset); //Resultados por página
         }
         
         return $query;
@@ -232,7 +232,7 @@ class User_model extends CI_Model{
         //Otros filtros
             if ( $filters['condition'] != '' ) { $this->db->where($filters['condition']); }    //Condición adicional
             
-        $query = $this->db->get('user', $limit); //Resultados por página
+        $query = $this->db->get('users', $limit); //Resultados por página
         
         return $query;
     }
@@ -248,7 +248,7 @@ class User_model extends CI_Model{
         if ( is_null($arr_row) ) { $arr_row = $this->arr_row('insert'); }
         
         //Insert in table
-            $this->db->insert('user', $arr_row);
+            $this->db->insert('users', $arr_row);
             $user_id = $this->db->insert_id();
 
         //Set result
@@ -271,7 +271,7 @@ class User_model extends CI_Model{
         {
             //Actualizar
                 $this->db->where('id', $user_id);
-                $this->db->update('user', $arr_row);
+                $this->db->update('users', $arr_row);
             
             //Preparar resultado
                 $data['message'] = 'Los datos fueron guardados';
@@ -299,7 +299,7 @@ class User_model extends CI_Model{
         if ( $this->deletable($user_id) ) 
         {
             $this->db->where('id', $user_id);
-            $this->db->delete('user');
+            $this->db->delete('users');
             $quan_deleted = $this->db->affected_rows();
         }
 
@@ -380,14 +380,14 @@ class User_model extends CI_Model{
     function set_image($user_id, $file_id)
     {
         $data = array('status' => 0, 'message' => 'La imagen no fue asignada'); //Resultado inicial
-        $row_file = $this->Db_model->row_id('file', $file_id);
+        $row_file = $this->Db_model->row_id('files', $file_id);
         
         $arr_row['image_id'] = $row_file->id;
         $arr_row['url_image'] = $row_file->folder . $row_file->file_name;
         $arr_row['url_thumbnail'] = $row_file->folder . 'sm_' . $row_file->file_name;
         
         $this->db->where('id', $user_id);
-        $this->db->update('user', $arr_row);
+        $this->db->update('users', $arr_row);
         
         if ( $this->db->affected_rows() )
         {
@@ -408,7 +408,7 @@ class User_model extends CI_Model{
     function remove_image($user_id)
     {
         $data['status'] = 0;
-        $row = $this->Db_model->row_id('user', $user_id);
+        $row = $this->Db_model->row_id('users', $user_id);
         
         if ( ! is_null($row->image_id) )
         {
@@ -475,12 +475,12 @@ class User_model extends CI_Model{
     {
         //Validar
             $error_text = '';
-            $row_place = $this->Db_model->row_id('place', $row_data[8]);
+            $row_place = $this->Db_model->row_id('places', $row_data[8]);
                             
             if ( strlen($row_data[3]) == 0 ) { $error_text = 'La casilla `Mostrar como` está vacía. '; }
             if ( strlen($row_data[5]) == 0 ) { $error_text = 'La casilla `No documento` está vacía. '; }
-            if ( ! $this->Db_model->is_unique('user', 'id_number', $row_data[2]) ) { $error_text .= 'El No Documento (' . $row_data[2] . ') ya está registrado. '; }
-            if ( ! $this->Db_model->is_unique('user', 'email', $row_data[14]) && strlen($row_data[14]) >= 5 ) { $error_text .= 'El correo electrónico (' . $row_data[14] . ') ya está registrado. '; }
+            if ( ! $this->Db_model->is_unique('users', 'id_number', $row_data[2]) ) { $error_text .= 'El No Documento (' . $row_data[2] . ') ya está registrado. '; }
+            if ( ! $this->Db_model->is_unique('users', 'email', $row_data[14]) && strlen($row_data[14]) >= 5 ) { $error_text .= 'El correo electrónico (' . $row_data[14] . ') ya está registrado. '; }
             if ( is_null($row_place) ) { $error_text = "El ID de ciudad '{$row_data[8]}' no existe. "; }
 
 
@@ -568,7 +568,7 @@ class User_model extends CI_Model{
         $suffix = '';
         
         $condition = "username = '{$username}'";
-        $qty_users = $this->Db_model->num_rows('user', $condition);
+        $qty_users = $this->Db_model->num_rows('users', $condition);
 
         if ( $qty_users > 0 )
         {
@@ -595,20 +595,20 @@ class User_model extends CI_Model{
             $condition .= " AND {$field} = '{$arr_row[$field]}'";
         }
 
-        $meta_id = $this->Db_model->save('user_meta', $condition, $arr_row);
+        $meta_id = $this->Db_model->save('users_meta', $condition, $arr_row);
         
         return $meta_id;
     }
 
     /**
-     * Elimina un registro de la tabla user_meta
+     * Elimina un registro de la tabla users_meta
      * 2020-05-27
      */
     function delete_meta($user_id, $meta_id)
     {
         $this->db->where('id', $meta_id);
         $this->db->where('user_id', $user_id);
-        $this->db->delete('user_meta');
+        $this->db->delete('users_meta');
         
         $data['qty_deleted'] = $this->db->affected_rows();
 
@@ -622,13 +622,13 @@ class User_model extends CI_Model{
      * Tags of User
      * 2020-05-14
      */
-    function tags($user_id, $condition = 'tag.id > 0')
+    function tags($user_id, $condition = 'tags.id > 0')
     {
         $this->db->select('name');
         $this->db->where($condition);
-        $this->db->where('user_meta.user_id', $user_id);
-        $this->db->join('user_meta', 'tag.id = user_meta.related_1');
-        $tags = $this->db->get('tag');
+        $this->db->where('users_meta.user_id', $user_id);
+        $this->db->join('users_meta', 'tags.id = users_meta.related_1');
+        $tags = $this->db->get('tags');
 
         return $tags;
     }
@@ -639,12 +639,12 @@ class User_model extends CI_Model{
      */
     function professional_services($user_id)
     {
-        $this->db->select('item.cod AS id, item_name AS name, slug');
-        $this->db->where('user_meta.type_id', 716);
-        $this->db->where('item.category_id', 716);
-        $this->db->where('user_meta.user_id', $user_id);
-        $this->db->join('user_meta', 'item.cod = user_meta.related_1');
-        $elements = $this->db->get('item');
+        $this->db->select('items.cod AS id, item_name AS name, slug');
+        $this->db->where('users_meta.type_id', 716);
+        $this->db->where('items.category_id', 716);
+        $this->db->where('users_meta.user_id', $user_id);
+        $this->db->join('users_meta', 'items.cod = users_meta.related_1');
+        $elements = $this->db->get('items');
 
         return $elements;
     }
@@ -654,7 +654,7 @@ class User_model extends CI_Model{
         $this->db->select('id AS post_id, content');
         $this->db->where('type_id', 1020);
         $this->db->where('related_1', $user_id);
-        $posts = $this->db->get('post');
+        $posts = $this->db->get('posts');
 
         $row_content = NULL;
         if ( $posts->num_rows() > 0 )
@@ -669,16 +669,16 @@ class User_model extends CI_Model{
 //-----------------------------------------------------------------------------
 
     /**
-     * Imágenes asociadas al usuario, mediante la tabla user_meta, tipo 1
+     * Imágenes asociadas al usuario, mediante la tabla users_meta, tipo 1
      * 2020-05-15
      */
     function images($user_id)
     {
-        $this->db->select('file.id, file.title, url, url_thumbnail');
-        $this->db->where('user_meta.type_id', 1);
-        $this->db->where('user_meta.user_id', $user_id);
-        $this->db->join('user_meta', 'file.id = user_meta.related_1');
-        $images = $this->db->get('file');
+        $this->db->select('files.id, files.title, url, url_thumbnail');
+        $this->db->where('users_meta.type_id', 1);
+        $this->db->where('users_meta.user_id', $user_id);
+        $this->db->join('users_meta', 'files.id = users_meta.related_1');
+        $images = $this->db->get('files');
 
         return $images;
     }
@@ -712,10 +712,10 @@ class User_model extends CI_Model{
      */
     function social_links($user_id)
     {
-        $this->db->select('user_meta.id, related_1, text_2 AS type, text_1 as url');
+        $this->db->select('users_meta.id, related_1, text_2 AS type, text_1 as url');
         $this->db->where('type_id', 1050);
         $this->db->where('user_id', $user_id);
-        $social_links = $this->db->get('user_meta');
+        $social_links = $this->db->get('users_meta');
 
         return $social_links;
     }
@@ -729,7 +729,7 @@ class User_model extends CI_Model{
         $arr_row = $this->Db_model->arr_row($meta_id);
         $arr_row['type_id'] = 1050; //Link
         $arr_row['user_id'] = $user_id;
-        $arr_row['text_2'] = $this->Db_model->field('item', "category_id = 44 AND cod = '{$this->input->post('related_1')}'", 'slug');
+        $arr_row['text_2'] = $this->Db_model->field('items', "category_id = 44 AND cod = '{$this->input->post('related_1')}'", 'slug');
 
         $data['saved_id'] = $this->save_meta($arr_row, array('related_1'));
 
@@ -747,7 +747,7 @@ class User_model extends CI_Model{
         $this->db->select('id, post_name AS title');
         $this->db->where('creator_id', $user_id);
         $this->db->where('type_id', 7120);
-        $ideabooks = $this->db->get('post', 50);
+        $ideabooks = $this->db->get('posts', 50);
 
         return $ideabooks;
     }
@@ -764,7 +764,7 @@ class User_model extends CI_Model{
         //Condición
         $condition = "user_id = {$user_id} AND type_id = 1011 AND related_1 = {$this->session->userdata('user_id')}";
 
-        $row_meta = $this->Db_model->row('user_meta', $condition);
+        $row_meta = $this->Db_model->row('users_meta', $condition);
 
         $data = array('status' => 0);
 
@@ -777,14 +777,14 @@ class User_model extends CI_Model{
             $arr_row['updater_id'] = $this->session->userdata('user_id');
             $arr_row['creator_id'] = $this->session->userdata('user_id');
 
-            $this->db->insert('user_meta', $arr_row);
+            $this->db->insert('users_meta', $arr_row);
             
             $data['saved_id'] = $this->db->insert_id();
             $data['status'] = 1;
         } else {
             //Existe, eliminar (Dejar de seguir)
             $this->db->where('id', $row_meta->id);
-            $this->db->delete('user_meta');
+            $this->db->delete('users_meta');
             
             $data['qty_deleted'] = $this->db->affected_rows();
             $data['status'] = 2;

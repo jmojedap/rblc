@@ -1,30 +1,26 @@
 <?php
 class   Event_model extends CI_Model{
-    
+
 // EXPLORE FUNCTIONS - events/explore
 //-----------------------------------------------------------------------------
     
     /**
      * Array con los datos para la vista de exploración
-     * 
-     * @return string
      */
-    function explore_data($num_page)
+    function explore_data($filters, $num_page, $per_page = 10)
     {
         //Data inicial, de la tabla
-            $data = $this->explore_table_data($num_page);
+            $data = $this->get($filters, $num_page, $per_page);
         
         //Elemento de exploración
             $data['controller'] = 'events';                      //Nombre del controlador
+            $data['cf'] = 'events/explore/';                      //Nombre del controlador
             $data['views_folder'] = 'events/explore/';           //Carpeta donde están las vistas de exploración
-            $data['head_title'] = 'Eventos';
-                
-        //Otros
-            $data['search_num_rows'] = $this->search_num_rows($data['filters']);
-            $data['head_subtitle'] = $this->search_num_rows($data['filters']);
-            $data['max_page'] = ceil($this->pml->if_zero($data['search_num_rows'],1) / $data['per_page']);   //Cantidad de páginas
-
+            $data['num_page'] = $num_page;                      //Número de la página
+            
         //Vistas
+            $data['head_title'] = 'Eventos';
+            $data['head_subtitle'] = $data['search_num_rows'];
             $data['view_a'] = $data['views_folder'] . 'explore_v';
             $data['nav_2'] = $data['views_folder'] . 'menu_v';
         
@@ -32,73 +28,50 @@ class   Event_model extends CI_Model{
     }
 
     /**
-     * Array con los datos para la tabla de la vista de exploración
-     * 
-     * @param type $num_page
-     * @return string
+     * Array con listado de events, filtrados por búsqueda y num página, más datos adicionales sobre
+     * la búsqueda, filtros aplicados, total resultados, página máxima.
+     * 2020-08-01
      */
-    function explore_table_data($num_page)
+    function get($filters, $num_page, $per_page)
     {
-        //Elemento de exploración
-            $data['cf'] = 'events/explore/';     //CF Controlador Función
-            $data['adv_filters'] = array('type');
-        
-        //Paginación
-            $data['num_page'] = $num_page;                  //Número de la página de datos que se está consultado
-            $data['per_page'] = 15;                           //Cantidad de registros por página
-            $offset = ($num_page - 1) * $data['per_page'];    //Número de la página de datos que se está consultado
-        
+        //Referencia
+            $offset = ($num_page - 1) * $per_page;      //Número de la página de datos que se está consultado
+
         //Búsqueda y Resultados
-            $this->load->model('Search_model');
-            $data['filters'] = $this->Search_model->filters();
-            $data['str_filters'] = $this->Search_model->str_filters();
-            $data['elements'] = $this->Event_model->search($data['filters'], $data['per_page'], $offset);    //Resultados para página
-            
-        //Otros
-            $data['search_num_rows'] = $this->Event_model->search_num_rows($data['filters']);
-            $data['max_page'] = ceil($this->pml->if_zero($data['search_num_rows'],1) / $data['per_page']);   //Cantidad de páginas
-            $data['all_selected'] = '-'. $this->pml->query_to_str($data['elements'], 'id');           //Para selección masiva de todos los elementos de la página
-            
+            $elements = $this->search($filters, $per_page, $offset);    //Resultados para página
+        
+        //Cargar datos
+            $data['filters'] = $filters;
+            $data['list'] = $this->list($filters, $per_page, $offset);    //Resultados para página
+            $data['str_filters'] = $this->Search_model->str_filters();      //String con filtros en formato GET de URL
+            $data['search_num_rows'] = $this->search_num_rows($data['filters']);
+            $data['max_page'] = ceil($this->pml->if_zero($data['search_num_rows'],1) / $per_page);   //Cantidad de páginas
+
         return $data;
+    }
+
+    /**
+     * Segmento Select SQL, con diferentes formatos, consulta de usuarios
+     * 2020-12-12
+     */
+    function select($format = 'general')
+    {
+        $arr_select['general'] = 'events.*, users.display_name AS user_display_name';
+
+        //$arr_select['export'] = 'usuario.id, username, usuario.email, nombre, apellidos, sexo, rol_id, estado, no_documento, tipo_documento_id, institucion_id, grupo_id';
+
+        return $arr_select[$format];
     }
     
     /**
-     * String con condición WHERE SQL para filtrar user
-     * 
-     * @param type $filters
-     * @return type
+     * Query de events, filtrados según búsqueda, limitados por página
+     * 2020-08-01
      */
-    function search_condition($filters)
-    {
-        $condition = NULL;
-        
-        //Tipo de evento
-        if ( $filters['type'] != '' ) { $condition .= "type_id = {$filters['type']} AND "; }
-        if ( $filters['u'] != '' ) { $condition .= "user_id = {$filters['u']} AND "; }
-        
-        if ( strlen($condition) > 0 )
-        {
-            $condition = substr($condition, 0, -5);
-        }
-        
-        return $condition;
-    }
-    
     function search($filters, $per_page = NULL, $offset = NULL)
     {
-        
-        $role_filter = $this->role_filter($this->session->userdata('user_id'));
-
         //Construir consulta
-            $this->db->select('event.id, event.type_id, start, end, seconds, event.status, event.element_id, user_id, user.display_name');
-            $this->db->join('user', 'event.user_id = user.id');
-        
-        //Crear array con términos de búsqueda
-            /*$words_condition = $this->Search_model->words_condition($filters['q'], array('first_name', 'last_name', 'display_name', 'email'));
-            if ( $words_condition )
-            {
-                $this->db->where($words_condition);
-            }*/
+            $this->db->select($this->select());
+            $this->db->join('users', 'events.user_id = users.id', 'left');
             
         //Orden
             if ( $filters['o'] != '' )
@@ -106,74 +79,103 @@ class   Event_model extends CI_Model{
                 $order_type = $this->pml->if_strlen($filters['ot'], 'ASC');
                 $this->db->order_by($filters['o'], $order_type);
             } else {
-                $this->db->order_by('event.created_at', 'DESC');
+                $this->db->order_by('events.id', 'DESC');
             }
             
         //Filtros
-            $this->db->where($role_filter); //Filtro según el rol de user en sesión
             $search_condition = $this->search_condition($filters);
             if ( $search_condition ) { $this->db->where($search_condition);}
             
         //Obtener resultados
-        if ( is_null($per_page) )
-        {
-            $query = $this->db->get('event'); //Resultados totales
-        } else {
-            $query = $this->db->get('event', $per_page, $offset); //Resultados por página
-        }
+            $query = $this->db->get('events', $per_page, $offset); //Resultados por página
         
         return $query;
+    }
+
+    /**
+     * String con condición WHERE SQL para filtrar events
+     * 2020-08-01
+     */
+    function search_condition($filters)
+    {
+        $condition = NULL;
+
+        $condition .= $this->role_filter() . ' AND ';
+
+        //q words condition
+        $words_condition = $this->Search_model->words_condition($filters['q'], array('content', 'ip_address'));
+        if ( $words_condition )
+        {
+            $condition .= $words_condition . ' AND ';
+        }
         
+        //Otros filtros
+        if ( $filters['type'] != '' ) { $condition .= "events.type_id = {$filters['type']} AND "; }
+        if ( $filters['u'] != '' ) { $condition .= "events.user_id = {$filters['u']} AND "; }
+        if ( $filters['fe3'] != '' ) { $condition .= "events.element_id = {$filters['fe3']} AND "; }
+        if ( $filters['fe1'] != '' ) { $condition .= "events.related_1 = {$filters['fe1']} AND "; }
+        if ( $filters['d1'] != '' ) { $condition .= "events.created_at >= '{$filters['d1']} 00:00:00' AND "; }
+        if ( $filters['d2'] != '' ) { $condition .= "events.created_at <= '{$filters['d2']} 23:59:59' AND "; }
+        
+        //Quitar cadena final de ' AND '
+        if ( strlen($condition) > 0 ) { $condition = substr($condition, 0, -5);}
+        
+        return $condition;
+    }
+
+    /**
+     * Array Listado elemento resultado de la búsqueda (filtros).
+     * 2020-06-19
+     */
+    function list($filters, $per_page = NULL, $offset = NULL)
+    {
+        $query = $this->search($filters, $per_page, $offset);
+        $list = array();
+
+        foreach ($query->result() as $row)
+        {
+            /*$row->qty_students = $this->Db_model->num_rows('group_user', "group_id = {$row->id}");  //Cantidad de estudiantes*/
+            /*if ( $row->image_id == 0 )
+            {
+                $first_image = $this->first_image($row->id);
+                $row->url_image = $first_image['url'];
+                $row->url_thumbnail = $first_image['url_thumbnail'];
+            }*/
+            $list[] = $row;
+        }
+
+        return $list;
     }
     
     /**
      * Devuelve la cantidad de registros encontrados en la tabla con los filtros
      * establecidos en la búsqueda
-     * 
-     * @param type $filters
-     * @return type
      */
     function search_num_rows($filters)
     {
-        $query = $this->search($filters); //Para calcular el total de resultados
+        $this->db->select('id');
+        $search_condition = $this->search_condition($filters);
+        if ( $search_condition ) { $this->db->where($search_condition);}
+        $query = $this->db->get('events'); //Para calcular el total de resultados
+
         return $query->num_rows();
     }
     
     /**
-     * Devuelve segmento SQL
-     * 
-     * @param type $user_id
-     * @return type 
+     * Devuelve segmento SQL, para filtrar listado de usuarios según el rol del usuario en sesión
+     * 2020-08-01
      */
     function role_filter()
     {
-        
         $role = $this->session->userdata('role');
-        $condition = 'event.id = 0';  //Valor por defecto, ningún user, se obtendrían cero user.
+        $condition = 'id = 0';  //Valor por defecto, ningún user, se obtendrían cero events.
         
         if ( $role <= 2 ) 
         {   //Desarrollador, todos los user
-            $condition = 'event.id > 0';
+            $condition = 'events.id > 0';
         }
         
         return $condition;
-    }
-    
-    /**
-     * Array con options para ordenar el listado de user en la vista de
-     * exploración
-     * 
-     * @return string
-     */
-    function order_options()
-    {
-        $order_options = array(
-            '' => '[ Ordenar por ]',
-            'id' => 'ID Evento',
-            'start' => 'Inicio'
-        );
-        
-        return $order_options;
     }
 
 // CRUD
@@ -188,7 +190,7 @@ class   Event_model extends CI_Model{
     function deletable($event_id)
     {   
         $deletable = FALSE;
-        $row_event = $this->Db_model->row_id('event', $event_id);
+        $row_event = $this->Db_model->row_id('events', $event_id);
         
         //El user creó el event
         if ( $row_event->creator_id == $this->session->userdata('user_id') ) {
@@ -216,7 +218,7 @@ class   Event_model extends CI_Model{
         {
             //Tabla
                 $this->db->where('id', $event_id);
-                $this->db->delete('event');
+                $this->db->delete('events');
                 
             $quan_deleted = $this->db->affected_rows();
         }
@@ -225,7 +227,7 @@ class   Event_model extends CI_Model{
     }
     
     /**
-     * Modifica el campo event.status para un registro específico
+     * Modifica el campo events.status para un registro específico
      * 
      * @param type $type_id
      * @param type $element_id
@@ -237,7 +239,7 @@ class   Event_model extends CI_Model{
         
         $this->db->where('type_id', $type_id);
         $this->db->where('element_id', $element_id);
-        $this->db->update('event', $arr_row);
+        $this->db->update('events', $arr_row);
     }
     
     /**
@@ -255,7 +257,7 @@ class   Event_model extends CI_Model{
                 $condition .= " AND " . $condition_add;
             }
         
-            $event_id = $this->Db_model->exists('event', $condition);
+            $event_id = $this->Db_model->exists('events', $condition);
         
         //Guardar el event
         if ( $event_id == 0 )
@@ -265,12 +267,12 @@ class   Event_model extends CI_Model{
             $arr_row['created_at'] = date('Y-m-d H:i:s');
             $arr_row['creator_id'] = $this->pml->if_strlen($this->session->userdata('user_id'), 0);
             
-            $this->db->insert('event', $arr_row);
+            $this->db->insert('events', $arr_row);
             $event_id = $this->db->insert_id();
         } else {
             //Ya existe, editar
             $this->db->where('id', $event_id);
-            $this->db->update('event', $arr_row);
+            $this->db->update('events', $arr_row);
         }
         
         return $event_id;
@@ -300,12 +302,13 @@ class   Event_model extends CI_Model{
 // DATOS
 //---------------------------------------------------------------------------------------------------------
     
-    function quan_events($filters)
+    function qty_events($filters)
     {
-        if ( $filters['u'] != '' ) { $this->db->where('user_id', $filters['u']); }   //Usuario
-        if ( $filters['t'] != '' ) { $this->db->where('type_id', $filters['t']); }      //Tipo
+        if ( $filters['u'] != '' ) { $this->db->where('user_id', $filters['u']); }      //Usuario
+        if ( $filters['tp'] != '' ) { $this->db->where('type_id', $filters['tp']); }    //Tipo
+        if ( $filters['d1'] != '' ) { $this->db->where('start >=', $filters['d1']); }    //Fecha inicial
         
-        $query = $this->db->get('event');
+        $query = $this->db->get('events');
         
         return $query->num_rows();
     }
@@ -316,7 +319,7 @@ class   Event_model extends CI_Model{
         $row = NULL;
         
         $this->db->where($arr_conditions);
-        $query = $this->db->get('event');
+        $query = $this->db->get('events');
         if ( $query->num_rows() > 0 ){ $row = $query->row(); }
         
         return $row;
@@ -342,7 +345,7 @@ class   Event_model extends CI_Model{
      */
     function save_ev_login()
     {
-        $row_user = $this->Db_model->row_id('user', $this->session->userdata('user_id'));
+        $row_user = $this->Db_model->row_id('users', $this->session->userdata('user_id'));
         
         //Registro, valores generales
             $arr_row['type_id'] = 101;   //Login de usuario
@@ -358,5 +361,24 @@ class   Event_model extends CI_Model{
             $this->session->set_userdata('login_id', $event_id);
         
         return $event_id;
+    }
+
+// RESUMEN
+//-----------------------------------------------------------------------------
+
+    function summary($qty_days)
+    {
+        $date = date('Y-m-d');
+        $qty_days_mod = $qty_days - 1;
+        $start = date('Y-m-d', strtotime($date . " - {$qty_days_mod} days"));
+
+        $this->db->select('type_id, item_name AS event_type, COUNT(events.id) AS qty_events');
+        $this->db->join('items', 'items.cod = events.type_id AND items.category_id = 13');
+        $this->db->where('start >=', "{$start} 00:00:00");
+        $this->db->group_by('type_id');
+        $this->db->order_by('COUNT(events.id)', 'DESC');
+        $events = $this->db->get('events');
+
+        return $events;
     }
 }

@@ -45,7 +45,7 @@ class Account_model extends CI_Model{
         $rememberme = $this->input->cookie('lelisesionrc');
 
         $condition = "activation_key = '{$rememberme}'";
-        $row_user = $this->Db_model->row('user', $condition);
+        $row_user = $this->Db_model->row('users', $condition);
 
         if ( ! is_null($row_user) && strlen($rememberme) > 0)
         {
@@ -61,7 +61,7 @@ class Account_model extends CI_Model{
         //Editar, evento de inicio de sesión
         if ( strlen($this->session->userdata('login_id')) > 0 ) 
         {
-            $row_event = $this->Db_model->row_id('event', $this->session->userdata('login_id'));
+            $row_event = $this->Db_model->row_id('events', $this->session->userdata('login_id'));
 
             $arr_row['end'] = date('Y-m-d H:i:s');
             $arr_row['status'] = 2;    //Cerrado
@@ -70,7 +70,7 @@ class Account_model extends CI_Model{
             if ( ! is_null($row_event) ) 
             {
                 //Si el evento existe
-                $this->Db_model->save('event', "id = {$row_event->id}", $arr_row);
+                $this->Db_model->save('events', "id = {$row_event->id}", $arr_row);
             }
         }
     
@@ -113,7 +113,7 @@ class Account_model extends CI_Model{
         $arr_row['last_login'] = date('Y-m-d H:i:s');
 
         $this->db->where('username', $username);
-        $this->db->update('user', $arr_row);
+        $this->db->update('users', $arr_row);
     }
 
     /**
@@ -123,7 +123,7 @@ class Account_model extends CI_Model{
     function session_data($username)
     {
         $this->load->helper('text');
-        $row_user = $this->Db_model->row('user', "username = '{$username}' OR email='{$username}' OR id_number='{$username}'");
+        $row_user = $this->Db_model->row('users', "username = '{$username}' OR email='{$username}' OR id_number='{$username}'");
 
         //$data general
             $data = array(
@@ -133,7 +133,7 @@ class Account_model extends CI_Model{
                 'first_name'    =>  $row_user->first_name,
                 'user_id'    =>  $row_user->id,
                 'role'    => $row_user->role,
-                'role_abbr'    => $this->Db_model->field('item', "category_id = 58 AND cod = {$row_user->role}", 'abbreviation'),
+                'role_abbr'    => $this->Db_model->field('items', "category_id = 58 AND cod = {$row_user->role}", 'abbreviation'),
                 'last_login'    => $row_user->last_login,
                 'src_img'    => $this->App_model->src_img_user($row_user, 'sm_'),
                 'acl' => $this->acl($row_user)   //Listado de permisos
@@ -241,7 +241,7 @@ class Account_model extends CI_Model{
         $arr_row['activation_key'] = strtolower(random_string('alpha', 12));
         
         $this->db->where('id', $user_id);
-        $this->db->update('user', $arr_row);
+        $this->db->update('users', $arr_row);
 
         return $arr_row['activation_key'];
     }
@@ -252,13 +252,13 @@ class Account_model extends CI_Model{
      */
     function activate($activation_key)
     {
-        $row_user = $this->Db_model->row('user', "activation_key = '{$activation_key}'");
+        $row_user = $this->Db_model->row('users', "activation_key = '{$activation_key}'");
 
         if ( ! is_null($row_user) )
         {
             //Update
                 $this->db->where('id', $row_user->id);
-                $this->db->update('user', array('status' => 1));
+                $this->db->update('users', array('status' => 1));
 
             //Crear sesión de usuario
                 $this->create_session($row_user->email);
@@ -278,7 +278,7 @@ class Account_model extends CI_Model{
         );
         
         $this->db->where('id', $user_id);
-        $this->db->update('user', $arr_row);
+        $this->db->update('users', $arr_row);
     }
 
     /**
@@ -297,7 +297,7 @@ class Account_model extends CI_Model{
          
         //Buscar user con username o correo electrónico
             $condition = "username = '{$userlogin}' OR email = '{$userlogin}'";
-            $row_user = $this->Db_model->row('user', $condition);
+            $row_user = $this->Db_model->row('users', $condition);
         
         if ( ! is_null($row_user) )
         {    
@@ -346,7 +346,7 @@ class Account_model extends CI_Model{
         $data['message'] = 'No existe un user identificado con "'. $userlogin .'"';
         
         $this->db->where("username = '{$userlogin}' OR email = '{$userlogin}'");
-        $query = $this->db->get('user');
+        $query = $this->db->get('users');
         
         if ( $query->num_rows() > 0 )
         {
@@ -374,7 +374,7 @@ class Account_model extends CI_Model{
         $data = array('status' => 0, 'message' => 'El proceso no fue ejecutado');
         
         //Identificar user
-        $row_user = $this->Db_model->row('user', "email = '{$email}'");
+        $row_user = $this->Db_model->row('users', "email = '{$email}'");
 
         if ( ! is_null($row_user) ) 
         {
@@ -396,7 +396,7 @@ class Account_model extends CI_Model{
      */
     function email_activation($user_id, $activation_type = 'activation')
     {
-        $row_user = $this->Db_model->row_id('user', $user_id);
+        $row_user = $this->Db_model->row_id('users', $user_id);
         
         //Establecer código de activación
             $this->activation_key($user_id);
@@ -430,7 +430,7 @@ class Account_model extends CI_Model{
      */
     function activation_message($user_id, $activation_type)
     {
-        $row_user = $this->Db_model->row_id('user', $user_id);
+        $row_user = $this->Db_model->row_id('users', $user_id);
         $data['row_user'] = $row_user ;
         $data['activation_type'] = $activation_type;
         

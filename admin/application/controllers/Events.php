@@ -18,68 +18,71 @@ class Events extends CI_Controller{
         redirect('events/explore');
     }
     
-//EXPLORE FUNCTIONS
+//EXPLORE
 //---------------------------------------------------------------------------------------------------
-    
+            
     /**
      * Exploración y búsqueda de usuarios
+     * 2020-08-01
      */
     function explore($num_page = 1)
-    {
+    {        
+        //Identificar filtros de búsqueda
+            $this->load->model('Search_model');
+            $filters = $this->Search_model->filters();
+
         //Datos básicos de la exploración
-            $data = $this->Event_model->explore_data($num_page);
+            $data = $this->Event_model->explore_data($filters, $num_page);
         
         //Opciones de filtros de búsqueda
             $data['options_type'] = $this->Item_model->options('category_id = 13', 'Todos');
             
-        //Arrays con valores para contenido en la tabla
+        //Arrays con valores para contenido en lista
             $data['arr_types'] = $this->Item_model->arr_cod('category_id = 13');
-        
+            
         //Cargar vista
             $this->App_model->view(TPL_ADMIN, $data);
     }
 
     /**
-     * AJAX
-     * Devuelve JSON, que incluye string HTML de la tabla de exploración para la
-     * página $num_page, y los filtros enviados por post
-     * 
-     * @param type $num_page
+     * JSON
+     * Listado de users, según filtros de búsqueda
      */
-    function explore_table($num_page = 1)
+    function get($num_page = 1, $per_page = 10)
     {
-        //Datos básicos de la exploración
-            $data = $this->Event_model->explore_table_data($num_page);
-        
-        //Arrays con valores para contenido en lista
-            $data['arr_types'] = $this->Item_model->arr_cod('category_id = 13');
-        
-        //Preparar respuesta
-            $data['html'] = $this->load->view('events/explore/table_v', $data, TRUE);
-        
-        //Salida
-            $this->output
-            ->set_content_type('application/json')
-            ->set_output(json_encode($data));
+        $this->load->model('Search_model');
+        $filters = $this->Search_model->filters();
+        $data = $this->Event_model->get($filters, $num_page, $per_page);
+
+        //Salida JSON
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
-    
+
     /**
-     * Eliminar un grupo de users selected
+     * AJAX JSON
+     * Eliminar un conjunto de users seleccionados
+     * 2021-02-20
      */
     function delete_selected()
     {
         $selected = explode(',', $this->input->post('selected'));
+        $data['qty_deleted'] = 0;
         
-        foreach ( $selected as $element_id ) 
-        {
-            $this->Event_model->delete($element_id);
-        }
+        foreach ( $selected as $row_id ) $data['qty_deleted'] += $this->Event_model->delete($row_id);
         
-        $result['message'] = 'Cantidad seleccionados : ' . count($selected);
-        $result['status'] = 1;
-        
-        $this->output
-        ->set_content_type('application/json')
-        ->set_output(json_encode($result));
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
+
+    function summary($qty_days = 7)
+    {
+        $data['events'] = $this->Event_model->summary($qty_days);
+        $data['qty_days'] = $qty_days;
+
+        $data['view_a'] = 'events/summary_v';
+        $data['nav_2'] = 'events/explore/menu_v';
+        $data['head_title'] = 'Eventos';
+        $data['head_subtitle'] = 'resumen';
+
+        $this->App_model->view(TPL_ADMIN, $data);
     }
 }

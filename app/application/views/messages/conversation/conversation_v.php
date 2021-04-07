@@ -13,7 +13,7 @@
                 <li class="list-group-item" v-for="(conversation, key) in conversations" v-on:click="set_current(key)"
                     v-bind:class="{active: conversation.id == conversation_id}">
                     <div class="media">
-                        <img class="rounded-circle user_img mr-3" v-bind:src="conversation.url_image" alt="Image user profile" onerror="this.src='<?php echo URL_IMG ?>users/sm_user.png'">
+                        <img class="rounded-circle user_img mr-3" v-bind:src="conversation.url_image" alt="Image user profile" onerror="this.src='<?= URL_IMG ?>users/sm_user.png'">
                         <div class="media-body">
                             <h5 class="mt-0">{{ conversation.title }}</h5>
                             <small class="text-muted">{{ conversation.updated_at | ago }}</small>

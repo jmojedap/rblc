@@ -38,15 +38,15 @@
     };
     
     //Secciones para cada rol
-    sections_role.dvlp = ['basic', 'image', 'password'];
-    sections_role.admn = ['basic', 'image', 'password'];
-    sections_role.prof = ['basic', 'image', 'password'];
-    sections_role.hown = ['basic', 'image', 'password'];
+    sections_role[0] = ['basic', 'image', 'password'];
+    sections_role[1] = ['basic', 'image', 'password'];
+    sections_role[13] = ['basic', 'image', 'password'];
+    sections_role[23] = ['basic', 'image', 'password'];
     
     //Recorrer el sections del rol actual y cargarlos en el menú
-    for ( key_section in sections_role[app_r]) 
+    for ( key_section in sections_role[app_rid]) 
     {
-        var key = sections_role[app_r][key_section];   //Identificar elemento
+        var key = sections_role[app_rid][key_section];   //Identificar elemento
         nav_3.push(sections[key]);    //Agregar el elemento correspondiente
     }
     

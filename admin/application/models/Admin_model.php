@@ -26,7 +26,7 @@ class Admin_model extends CI_Model{
     }
 
     /**
-     * Elimina opción, de la tabla post.
+     * Elimina opción, de la tabla posts.
      */
     function delete_option($option_id)
     {
@@ -51,7 +51,7 @@ class Admin_model extends CI_Model{
         $this->db->select('id, item_name AS controller, filters AS subdomain');
         $this->db->where('category_id', 32);
         
-        $controllers = $this->db->get('item');
+        $controllers = $this->db->get('items');
         
         return $controllers;
     }

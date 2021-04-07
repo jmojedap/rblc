@@ -19,6 +19,24 @@
         </div>
     </div>
 
+    <div class="row mb-2">
+        <div class="col-md-4">
+            <select name="descriptor" v-model="filters.descriptor" class="form-control" v-on:change="get_list">
+                <option v-for="(option_descriptor, key_descriptor) in options_descriptor" v-bind:value="key_descriptor">{{ option_descriptor }}</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <select name="style" v-model="filters.style" class="form-control" v-on:change="get_list">
+                <option v-for="(option_style, key_style) in options_style" v-bind:value="key_style">{{ option_style }}</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <select name="feeling" v-model="filters.feeling" class="form-control" v-on:change="get_list">
+                <option v-for="(option_feeling, key_feeling) in options_feeling" v-bind:value="key_feeling">{{ option_feeling }}</option>
+            </select>
+        </div>
+    </div>
+
     <div id="elements_table">
         <?php $this->load->view($views_folder . 'list_v'); ?>
         <?php $this->load->view($views_folder . 'detail_v'); ?>

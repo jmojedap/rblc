@@ -40,7 +40,7 @@ class Files extends CI_Controller{
 
     /**
      * AJAX JSON
-     * Eliminar un conjunto de posts seleccionados
+     * Eliminar un conjunto de archivos seleccionados
      */
     function delete_selected()
     {
@@ -49,7 +49,8 @@ class Files extends CI_Controller{
         
         foreach ( $selected as $row_id ) 
         {
-            $qty_deleted += $this->File_model->delete($row_id);
+            $data_deleted = $this->File_model->delete($row_id);
+            $qty_deleted += $data_deleted['qty_deleted'];
         }
         
         $result['status'] = 1;
@@ -160,7 +161,7 @@ class Files extends CI_Controller{
      */
     function change_e($file_id)
     {
-        $row_ant = $this->Db_model->row_id('file', $file_id);   //Registro antes del cambio
+        $row_ant = $this->Db_model->row_id('files', $file_id);   //Registro antes del cambio
 
         $data = $this->File_model->upload($file_id);
         
@@ -283,7 +284,7 @@ class Files extends CI_Controller{
 //-----------------------------------------------------------------------------
 
     /**
-     * Actualiza datos descriptivos de la tabla file, y metadatos (tags) para file_meta
+     * Actualiza datos descriptivos de la tabla file, y metadatos (tags) para files_meta
      * 2021-03-03
      */
     function update_full($file_id)
@@ -295,7 +296,7 @@ class Files extends CI_Controller{
             $arr_row['keywords'] = $this->input->post('keywords');
             $arr_row['updater_id'] = $this->session->userdata('user_id');
 
-            $data['saved_id'] = $this->Db_model->save('file', "id = {$file_id}", $arr_row);
+            $data['saved_id'] = $this->Db_model->save('files', "id = {$file_id}", $arr_row);
 
         //Guardar Tags
             $tags = ( is_null($this->input->post('tags')) ) ? array() : $this->input->post('tags');

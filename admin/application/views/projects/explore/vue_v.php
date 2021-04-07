@@ -36,7 +36,9 @@
             selected: [],
             all_selected: false,
             filters: <?= json_encode($filters) ?>,
-            showing_filters: false
+            showing_filters: false,
+            options_feeling: <?= json_encode($options_feeling) ?>,
+            loading: false,
         },
         methods: {
             get_list: function(){

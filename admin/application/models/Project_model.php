@@ -3,7 +3,7 @@ class Project_model extends CI_Model{
 
     function basic($project_id)
     {
-        $row = $this->Db_model->row_id('post', $project_id);
+        $row = $this->Db_model->row_id('posts', $project_id);
 
         $data['project_id'] = $project_id;
         $data['row'] = $row;
@@ -18,7 +18,7 @@ class Project_model extends CI_Model{
 //-----------------------------------------------------------------------------
     
     /**
-     * Insertar un registro en la tabla post.
+     * Insertar un registro en la tabla posts.
      * 2020-02-22
      */
     function insert($arr_row = NULL)
@@ -28,7 +28,7 @@ class Project_model extends CI_Model{
         $data = array('status' => 0);
         
         //Insert in table
-            $this->db->insert('post', $arr_row);
+            $this->db->insert('posts', $arr_row);
             $data['saved_id'] = $this->db->insert_id();
 
         if ( $data['saved_id'] > 0 ) { $data['status'] = 1; }
@@ -46,7 +46,7 @@ class Project_model extends CI_Model{
 
         //Guardar
             $arr_row = $this->Db_model->arr_row($project_id);
-            $saved_id = $this->Db_model->save('post', "id = {$project_id}", $arr_row);
+            $saved_id = $this->Db_model->save('posts', "id = {$project_id}", $arr_row);
 
         //Actualizar resultado
             if ( $saved_id > 0 ){ $data = array('status' => 1); }
@@ -67,7 +67,7 @@ class Project_model extends CI_Model{
         
         if ( $process == 'insert' )
         {
-            $arr_row['slug'] = $this->Db_model->unique_slug($arr_row['post_name'], 'post');
+            $arr_row['slug'] = $this->Db_model->unique_slug($arr_row['post_name'], 'posts');
             $arr_row['creator_id'] = $this->session->userdata('user_id');
         }
         
@@ -96,7 +96,7 @@ class Project_model extends CI_Model{
             
             //Tabla principal
                 $this->db->where('id', $project_id);
-                $this->db->delete('post');
+                $this->db->delete('posts');
 
             $qty_deleted = $this->db->affected_rows();
         }
@@ -173,7 +173,7 @@ class Project_model extends CI_Model{
             if ( $search_condition ) { $this->db->where($search_condition);}
             
         //Obtener resultados
-            $query = $this->db->get('post', $per_page, $offset); //Resultados por página
+            $query = $this->db->get('posts', $per_page, $offset); //Resultados por página
         
         return $query;
     }
@@ -200,10 +200,13 @@ class Project_model extends CI_Model{
         //Otros filtros
         if ( $filters['u'] != '' ) { $condition .= "related_1 = {$filters['u']} AND "; }
         if ( $filters['type'] != '' ) { $condition .= "related_2 = {$filters['type']} AND "; }
+        if ( $filters['descriptor'] != '' ) { $condition .= "id IN (SELECT post_id FROM posts_meta WHERE type_id = 710 AND related_1 = '{$filters['descriptor']}') AND "; }
+        if ( $filters['style'] != '' ) { $condition .= "id IN (SELECT post_id FROM posts_meta WHERE type_id = 712 AND related_1 = '{$filters['style']}') AND "; }
+        if ( $filters['feeling'] != '' ) { $condition .= "id IN (SELECT post_id FROM posts_meta WHERE type_id = 714 AND related_1 = '{$filters['feeling']}') AND "; }
         if ( strlen($filters['cat']) > 0 )
         {
-            $sql_categories = "SELECT cod FROM item WHERE category_id = 710 AND item_name LIKE '%{$filters['cat']}%'";
-            $condition .= "post.id IN (SELECT post_id FROM post_meta WHERE type_id = 710 AND related_1 IN ({$sql_categories})) AND ";
+            $sql_categories = "SELECT cod FROM items WHERE category_id = 710 AND item_name LIKE '%{$filters['cat']}%'";
+            $condition .= "posts.id IN (SELECT post_id FROM posts_meta WHERE type_id = 710 AND related_1 IN ({$sql_categories})) AND ";
         }
         
         //Quitar cadena final de ' AND '
@@ -218,7 +221,7 @@ class Project_model extends CI_Model{
     function role_filter()
     {
         $role = $this->session->userdata('role');
-        $condition = 'id = 0';  //Valor por defecto, ningún post, se obtendrían cero post.
+        $condition = 'id = 0';  //Valor por defecto, ningún post, se obtendrían cero posts.
         
         if ( $role <= 2 ) 
         {   //Desarrollador, todos los post
@@ -251,7 +254,7 @@ class Project_model extends CI_Model{
         $this->db->select('id');
         $search_condition = $this->search_condition($filters);
         if ( $search_condition ) { $this->db->where($search_condition);}
-        $query = $this->db->get('post'); //Para calcular el total de resultados
+        $query = $this->db->get('posts'); //Para calcular el total de resultados
 
         return $query->num_rows();
     }
@@ -275,22 +278,22 @@ class Project_model extends CI_Model{
 //-----------------------------------------------------------------------------
 
     /**
-     * Imágenes asociadas al project, mediante la tabla post_meta, tipo 1
+     * Imágenes asociadas al project, mediante la tabla posts_meta, tipo 1
      * 2020-05-08
      */
     function images($project_id)
     {
-        $this->db->select('post_meta.id AS meta_id, file.id, file.title, url, url_thumbnail, post_meta.integer_1 AS main');
-        $this->db->where('post_meta.type_id', 1);
-        $this->db->where('post_meta.post_id', $project_id);
-        $this->db->join('post_meta', 'file.id = post_meta.related_1');
-        $images = $this->db->get('file');
+        $this->db->select('posts_meta.id AS meta_id, files.id, files.title, url, url_thumbnail, posts_meta.integer_1 AS main');
+        $this->db->where('posts_meta.type_id', 1);
+        $this->db->where('posts_meta.post_id', $project_id);
+        $this->db->join('posts_meta', 'files.id = posts_meta.related_1');
+        $images = $this->db->get('files');
 
         return $images;
     }
 
     /**
-     * Asocia un archivo imagen a un projecto en la tabla post_meta
+     * Asocia un archivo imagen a un projecto en la tabla posts_meta
      * 2020-07-06
      */
     function add_image($project_id, $file_id)
@@ -301,28 +304,28 @@ class Project_model extends CI_Model{
 
         $condition = "type_id = {$arr_row['type_id']} AND post_id = {$arr_row['post_id']} AND related_1 = {$arr_row['related_1']}";
 
-        $saved_id = $this->Db_model->save('post_meta', $condition, $arr_row);
+        $saved_id = $this->Db_model->save('posts_meta', $condition, $arr_row);
 
         return $saved_id;
     }
 
     /**
-     * Establecer una imagen asociada a un project (post_meta) como la imagen principal (tabla post)
+     * Establecer una imagen asociada a un project (posts_meta) como la imagen principal (tabla post)
      * 2020-07-09
      */
     function set_main_image($project_id, $meta_id)
     {
         $data = array('status' => 0);
 
-        $row_meta = $this->Db_model->row('post_meta', "id = {$meta_id} AND post_id = {$project_id}");
-        $row_file = $this->Db_model->row_id('file', $row_meta->related_1);
+        $row_meta = $this->Db_model->row('posts_meta', "id = {$meta_id} AND post_id = {$project_id}");
+        $row_file = $this->Db_model->row_id('files', $row_meta->related_1);
         if ( ! is_null($row_file) )
         {
             //Quitar otro principal
-            $this->db->query("UPDATE post_meta SET integer_1 = 0 WHERE type_id = 1 AND post_id = {$project_id} AND integer_1 = 1");
+            $this->db->query("UPDATE posts_meta SET integer_1 = 0 WHERE type_id = 1 AND post_id = {$project_id} AND integer_1 = 1");
 
             //Poner nuevo principal
-            $this->db->query("UPDATE post_meta SET integer_1 = 1 WHERE id = {$meta_id} AND post_id = {$project_id}");
+            $this->db->query("UPDATE posts_meta SET integer_1 = 1 WHERE id = {$meta_id} AND post_id = {$project_id}");
 
             //Actualizar registro en tabla projecto
             $arr_row['image_id'] = $row_file->id;
@@ -330,7 +333,7 @@ class Project_model extends CI_Model{
             $arr_row['url_thumbnail'] = $row_file->url_thumbnail;
 
             $this->db->where('id', $project_id);
-            $this->db->update('post', $arr_row);
+            $this->db->update('posts', $arr_row);
 
             $data['status'] = 1;
         }
@@ -347,18 +350,18 @@ class Project_model extends CI_Model{
     {
         $qty_deleted = 0;
 
-        $row_meta = $this->Db_model->row('post_meta', "id = {$meta_id} AND post_id = {$project_id}");
+        $row_meta = $this->Db_model->row('posts_meta', "id = {$meta_id} AND post_id = {$project_id}");
 
         if ( ! is_null($row_meta) )
         {
             //Eliminar archivos y registro en tabla file
-            $row_file = $this->Db_model->row_id('file', $row_meta->related_1);
+            $row_file = $this->Db_model->row_id('files', $row_meta->related_1);
             $this->load->model('File_model');
             $this->File_model->delete($row_file->id);
 
-            //Eliminar de tabla post_meta
+            //Eliminar de tabla posts_meta
             $this->db->where('id', $meta_id);
-            $this->db->delete('post_meta');
+            $this->db->delete('posts_meta');
             
             $qty_deleted = $this->db->affected_rows();
         }
@@ -371,18 +374,18 @@ class Project_model extends CI_Model{
 
     function metadata($project_id, $type_id)
     {
-        $this->db->select('post_meta.id AS meta_id, item_name AS title, post_meta.related_1');
-        $this->db->where('post_meta.type_id', $type_id);
-        $this->db->where('item.category_id', $type_id);
-        $this->db->where('post_meta.post_id', $project_id);
-        $this->db->join('post_meta', 'item.cod = post_meta.related_1');
-        $elements = $this->db->get('item');
+        $this->db->select('posts_meta.id AS meta_id, item_name AS title, posts_meta.related_1');
+        $this->db->where('posts_meta.type_id', $type_id);
+        $this->db->where('items.category_id', $type_id);
+        $this->db->where('posts_meta.post_id', $project_id);
+        $this->db->join('posts_meta', 'items.cod = posts_meta.related_1');
+        $elements = $this->db->get('items');
 
         return $elements;
     }
 
     /**
-     * Guarda un registro en la tabla post_meta
+     * Guarda un registro en la tabla posts_meta
      * 2020-07-16
      */
     function save_meta($arr_row, $fields = array('related_1'))
@@ -394,13 +397,13 @@ class Project_model extends CI_Model{
             $condition .= " AND {$field} = '{$arr_row[$field]}'";
         }
 
-        $meta_id = $this->Db_model->save('post_meta', $condition, $arr_row);
+        $meta_id = $this->Db_model->save('posts_meta', $condition, $arr_row);
         
         return $meta_id;
     }
 
     /**
-     * Guarda múltiples registros en la tabla post_meta, con un array,
+     * Guarda múltiples registros en la tabla posts_meta, con un array,
      * y elimina los que no estén en el array enviado por post ($new_metas)
      * 2020-07-16
      */

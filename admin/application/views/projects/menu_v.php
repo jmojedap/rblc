@@ -16,7 +16,7 @@
 <script>
     var sections = [];
     var nav_2 = [];
-    var sections_rol = [];
+    var sections_role = [];
     var element_id = '<?= $row->id ?>';
     
     sections.explore = {
@@ -57,13 +57,13 @@
     };
     
     //Secciones para cada rol
-    sections_rol.dvlp = ['explore', 'info', 'images', 'edit'];
-    sections_rol.admn = ['explore', 'info', 'images', 'edit'];
+    sections_role[0] = ['explore', 'info', 'images', 'edit'];
+    sections_role[1] = ['explore', 'info', 'images', 'edit'];
     
     //Recorrer el sections del rol actual y cargarlos en el menú
-    for ( key_section in sections_rol[app_r]) 
+    for ( key_section in sections_role[app_rid]) 
     {
-        var key = sections_rol[app_r][key_section];   //Identificar elemento
+        var key = sections_role[app_rid][key_section];   //Identificar elemento
         nav_2.push(sections[key]);    //Agregar el elemento correspondiente
     }
     

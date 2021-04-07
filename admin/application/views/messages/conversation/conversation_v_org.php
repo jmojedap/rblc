@@ -8,7 +8,7 @@
                 v-for="(conversation, key) in conversations"
                 v-on:click="set_current(key)"
                 >
-                {{ conversation.title }}
+                {{ conversations.title }}
             </a>
         </div>
         </div>

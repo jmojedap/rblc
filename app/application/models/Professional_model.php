@@ -4,7 +4,7 @@ class Professional_model extends CI_Model{
     function basic($user_id)
     {
         $data['user_id'] = $user_id;
-        $data['row'] = $this->Db_model->row_id('user', $user_id);
+        $data['row'] = $this->Db_model->row_id('users', $user_id);
         $data['head_title'] = substr($data['row']->display_name,0,50);
         $data['view_a'] = 'professionals/profile_v';
         $data['qty_followers'] = $this->qty_followers($user_id);
@@ -84,8 +84,8 @@ class Professional_model extends CI_Model{
         $role_filter = $this->role_filter($this->session->userdata('user_id'));
 
         //Construir consulta
-            $this->db->select('user.id, username, display_name, first_name, last_name, email, role, image_id, url_image, url_thumbnail, status, user.type_id');
-            //$this->db->join('place', 'place.id = user.city_id', 'left');
+            $this->db->select('users.id, username, display_name, first_name, last_name, email, role, image_id, url_image, url_thumbnail, status, users.type_id');
+            //$this->db->join('places', 'places.id = user.city_id', 'left');
         
         //Crear array con términos de búsqueda
             $words_condition = $this->Search_model->words_condition($filters['q'], array('first_name', 'last_name', 'display_name', 'email', 'id_number'));
@@ -111,9 +111,9 @@ class Professional_model extends CI_Model{
         //Obtener resultados
         if ( is_null($per_page) )
         {
-            $query = $this->db->get('user'); //Resultados totales
+            $query = $this->db->get('users'); //Resultados totales
         } else {
-            $query = $this->db->get('user', $per_page, $offset); //Resultados por página
+            $query = $this->db->get('users', $per_page, $offset); //Resultados por página
         }
         
         return $query;
@@ -147,7 +147,7 @@ class Professional_model extends CI_Model{
         
         if ( $role <= 2 ) 
         {   //Desarrollador, todos los user
-            $condition = 'user.id > 0';
+            $condition = 'users.id > 0';
         }
         
         return $condition;
@@ -179,7 +179,7 @@ class Professional_model extends CI_Model{
         $this->db->select('id AS post_id, content');
         $this->db->where('type_id', 1020);
         $this->db->where('related_1', $user_id);
-        $posts = $this->db->get('post');
+        $posts = $this->db->get('posts');
 
         $row_content = NULL;
         if ( $posts->num_rows() > 0 )
@@ -194,14 +194,14 @@ class Professional_model extends CI_Model{
 //-----------------------------------------------------------------------------
 
     /**
-     * Imágenes asociadas al usuario, mediante la tabla user_meta, tipo 1
+     * Imágenes asociadas al usuario, mediante la tabla users_meta, tipo 1
      * 2020-05-15
      */
     function images($user_id)
     {
-        $this->db->select('file.id, file.title, url, url_thumbnail');
+        $this->db->select('files.id, files.title, url, url_thumbnail');
         $this->db->where('creator_id', $user_id);
-        $images = $this->db->get('file');
+        $images = $this->db->get('files');
 
         return $images;
     }
@@ -220,7 +220,7 @@ class Professional_model extends CI_Model{
         if ( $this->session->userdata('logged') )
         {
             $condition = "user_id = {$user_id} AND type_id = 1011 AND related_1 = {$this->session->userdata('user_id')}";
-            $row_meta = $this->Db_model->row('user_meta', $condition);
+            $row_meta = $this->Db_model->row('users_meta', $condition);
     
             if ( ! is_null($row_meta) )
             {
@@ -237,7 +237,7 @@ class Professional_model extends CI_Model{
      */
     function qty_followers($user_id)
     {
-        $qty_followers = $this->Db_model->num_rows('user_meta', "type_id = 1011 AND user_id = {$user_id}");
+        $qty_followers = $this->Db_model->num_rows('users_meta', "type_id = 1011 AND user_id = {$user_id}");
         return $qty_followers;
     }
 
@@ -247,8 +247,8 @@ class Professional_model extends CI_Model{
      */
     function qty_likes($user_id)
     {
-        $condition  = "type_id = 10 AND file_id IN (SELECT id FROM file WHERE album_id = 10 AND table_id = 1000 AND related_1 = {$user_id})";
-        $qty_likes = $this->Db_model->num_rows('file_meta', $condition);
+        $condition  = "type_id = 10 AND file_id IN (SELECT id FROM files WHERE album_id = 10 AND table_id = 1000 AND related_1 = {$user_id})";
+        $qty_likes = $this->Db_model->num_rows('files_meta', $condition);
 
         return $qty_likes;
     }
@@ -258,12 +258,12 @@ class Professional_model extends CI_Model{
 
     function metadata($user_id, $type_id)
     {
-        $this->db->select('user_meta.id AS meta_id, item_name AS title, user_meta.related_1');
-        $this->db->where('user_meta.type_id', $type_id);
-        $this->db->where('item.category_id', $type_id);
-        $this->db->where('user_meta.user_id', $user_id);
-        $this->db->join('user_meta', 'item.cod = user_meta.related_1');
-        $elements = $this->db->get('item');
+        $this->db->select('users_meta.id AS meta_id, item_name AS title, users_meta.related_1');
+        $this->db->where('users_meta.type_id', $type_id);
+        $this->db->where('items.category_id', $type_id);
+        $this->db->where('users_meta.user_id', $user_id);
+        $this->db->join('users_meta', 'items.cod = users_meta.related_1');
+        $elements = $this->db->get('items');
 
         return $elements;
     }
@@ -274,12 +274,12 @@ class Professional_model extends CI_Model{
      */
     function tags($user_id, $category_id = NULL)
     {
-        $this->db->select('user_meta.id AS meta_id, tag.name, user_meta.related_1');
-        $this->db->where('user_meta.type_id', 27);  //Metadato, tag
-        if ( ! is_null($category_id) ) { $this->db->where('tag.category_id', $type_id); }
-        $this->db->where('user_meta.user_id', $user_id);
-        $this->db->join('user_meta', 'tag.id = user_meta.related_1');
-        $tags = $this->db->get('tag');
+        $this->db->select('users_meta.id AS meta_id, tags.name, users_meta.related_1');
+        $this->db->where('users_meta.type_id', 27);  //Metadato, tag
+        if ( ! is_null($category_id) ) { $this->db->where('tags.category_id', $type_id); }
+        $this->db->where('users_meta.user_id', $user_id);
+        $this->db->join('users_meta', 'tags.id = users_meta.related_1');
+        $tags = $this->db->get('tags');
 
         return $tags;
     }
@@ -315,7 +315,7 @@ class Professional_model extends CI_Model{
         //Otros filtros
             if ( $filters['condition'] != '' ) { $this->db->where($filters['condition']); }    //Condición adicional
             
-        $query = $this->db->get('user', $limit); //Resultados por página
+        $query = $this->db->get('users', $limit); //Resultados por página
         
         return $query;
     }

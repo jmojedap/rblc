@@ -30,14 +30,14 @@
     };
     
     //Secciones para cada rol
-    sections_role.dvlp = ['person', 'institution'];
-    sections_role.admn = ['person'];
-    sections_role.edtr = ['person'];
+    sections_role[0] = ['person', 'institution'];
+    sections_role[1] = ['person'];
+    sections_role[2] = ['person'];
     
     //Recorrer el sections del rol actual y cargarlos en el menú
-    for ( key_section in sections_role[app_r]) 
+    for ( key_section in sections_role[app_rid]) 
     {
-        var key = sections_role[app_r][key_section];   //Identificar elemento
+        var key = sections_role[app_rid][key_section];   //Identificar elemento
         nav_3.push(sections[key]);    //Agregar el elemento correspondiente
     }
 </script>

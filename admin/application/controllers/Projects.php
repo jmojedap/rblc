@@ -34,6 +34,7 @@ class Projects extends CI_Controller{
         
         //Opciones de filtros de búsqueda
             $data['options_project_type'] = $this->Item_model->options('category_id = 722', 'Todos');
+            $data['options_feeling'] = $this->Item_model->options('category_id = 714', 'All feeling');
             
         //Arrays con valores para contenido en lista
             $data['arr_types'] = $this->Item_model->arr_cod('category_id = 33');
@@ -84,6 +85,7 @@ class Projects extends CI_Controller{
     {
         //Opciones
             $data['options_project_type'] = $this->Item_model->options('category_id = 722');
+            $data['options_feelings'] = $this->Item_model->options('category_id = 714', 'All feelings');
 
         //Variables generales
             $data['head_title'] = 'Project';
@@ -251,7 +253,7 @@ class Projects extends CI_Controller{
             $arr_row['integer_1'] = $this->input->post('integer_1');
             $arr_row['updater_id'] = $this->session->userdata('user_id');
 
-            $data['saved_id'] = $this->Db_model->save('post', "id = {$project_id}", $arr_row);
+            $data['saved_id'] = $this->Db_model->save('posts', "id = {$project_id}", $arr_row);
 
         //Save descriptors
             $descriptors = ( is_null($this->input->post('descriptors')) ) ? array() : $this->input->post('descriptors');

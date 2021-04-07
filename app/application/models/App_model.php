@@ -91,7 +91,7 @@ class App_model extends CI_Model{
     function name_user($user_id, $format = 'd')
     {
         $name_user = 'ND';
-        $row = $this->Db_model->row_id('user', $user_id);
+        $row = $this->Db_model->row_id('users', $user_id);
 
         if ( ! is_null($row) ) 
         {
@@ -124,9 +124,9 @@ class App_model extends CI_Model{
         
         if ( strlen($place_id) > 0 )
         {
-            $this->db->select("place.id, place.place_name, region, country"); 
-            $this->db->where('place.id', $place_id);
-            $row = $this->db->get('place')->row();
+            $this->db->select("places.id, places.place_name, region, country"); 
+            $this->db->where('places.id', $place_id);
+            $row = $this->db->get('places')->row();
 
             if ( $format == 1 ){
                 $place_name = $row->place_name;
@@ -162,10 +162,10 @@ class App_model extends CI_Model{
      */
     function options_place($condition, $value_field = 'cr', $empty_text = 'Lugar')
     {
-        $this->db->select("CONCAT('0', place.id) AS place_id, place_name, CONCAT((place_name), ', ', (region)) AS cr", FALSE); 
+        $this->db->select("CONCAT('0', places.id) AS place_id, place_name, CONCAT((place_name), ', ', (region)) AS cr", FALSE); 
         $this->db->where($condition);
-        $this->db->order_by('place.place_name', 'ASC');
-        $query = $this->db->get('place');
+        $this->db->order_by('places.place_name', 'ASC');
+        $query = $this->db->get('places');
 
         $options_place = array_merge(array('00' => '[ ' . $empty_text . ' ]'), $this->pml->query_to_array($query, $value_field, 'place_id'));
         //$options_place = $this->pml->query_to_array($query, $value_field, 'place_id');
@@ -183,8 +183,8 @@ class App_model extends CI_Model{
         $this->db->select("cod, full_name", FALSE); 
         $this->db->where('type_id = 2');
         $this->db->where($condition);
-        $this->db->order_by('place.full_name', 'ASC');
-        $query = $this->db->get('place');
+        $this->db->order_by('places.full_name', 'ASC');
+        $query = $this->db->get('places');
 
         $options_place = array_merge(array('00' => '[ Select Country ]'), $this->pml->query_to_array($query, 'full_name', 'cod'));
         
@@ -197,10 +197,10 @@ class App_model extends CI_Model{
     function options_user($condition, $empty_text = 'Usuario', $value_field = 'display_name')
     {
         
-        $this->db->select("CONCAT('0', user.id) AS user_id, display_name, username, CONCAT(display_name, (' | '), username) as du", FALSE); 
+        $this->db->select("CONCAT('0', users.id) AS user_id, display_name, username, CONCAT(display_name, (' | '), username) as du", FALSE); 
         $this->db->where($condition);
         $this->db->order_by('user.display_name', 'ASC');
-        $query = $this->db->get('user');
+        $query = $this->db->get('users');
         
         $options_user = array_merge(array('' => '[ ' . $empty_text . ' ]'), $this->pml->query_to_array($query, $value_field, 'user_id'));
         
@@ -214,10 +214,10 @@ class App_model extends CI_Model{
     function options_tag($condition, $empty_text = 'tag', $value_field = 'name')
     {
         
-        $this->db->select("CONCAT('0', tag.id) AS tag_id, name", FALSE); 
+        $this->db->select("CONCAT('0', tags.id) AS tag_id, name", FALSE); 
         $this->db->where($condition);
-        $this->db->order_by('tag.name', 'ASC');
-        $query = $this->db->get('tag');
+        $this->db->order_by('tags.name', 'ASC');
+        $query = $this->db->get('tags');
         
         $options_tag = array_merge(array('' => '[ ' . $empty_text . ' ]'), $this->pml->query_to_array($query, $value_field, 'tag_id'));
         

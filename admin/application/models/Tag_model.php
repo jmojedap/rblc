@@ -3,7 +3,7 @@ class Tag_model extends CI_Model{
 
     function basic($tag_id)
     {
-        $row = $this->Db_model->row_id('tag', $tag_id);
+        $row = $this->Db_model->row_id('tags', $tag_id);
 
         $data['tag_id'] = $tag_id;
         $data['row'] = $row;
@@ -17,7 +17,7 @@ class Tag_model extends CI_Model{
 //-----------------------------------------------------------------------------
     
     /**
-     * Insertar un registro en la tabla tag.
+     * Insertar un registro en la tabla tags.
      * 2020-02-22
      */
     function insert($arr_row = NULL)
@@ -27,7 +27,7 @@ class Tag_model extends CI_Model{
         $data = array('status' => 0);
         
         //Insert in table
-            $this->db->insert('tag', $arr_row);
+            $this->db->insert('tags', $arr_row);
             $data['saved_id'] = $this->db->insert_id();
 
         if ( $data['saved_id'] > 0 ) { $data['status'] = 1; }
@@ -45,7 +45,7 @@ class Tag_model extends CI_Model{
 
         //Guardar
             $arr_row = $this->Db_model->arr_row($tag_id);
-            $saved_id = $this->Db_model->save('tag', "id = {$tag_id}", $arr_row);
+            $saved_id = $this->Db_model->save('tags', "id = {$tag_id}", $arr_row);
 
         //Actualizar resultado
             if ( $saved_id > 0 ){ $data = array('status' => 1); }
@@ -93,11 +93,11 @@ class Tag_model extends CI_Model{
         if ( $this->deleteable($tag_id) ) 
         {
             //Tablas relacionadas
-                $this->db->query("DELETE FROM file_meta WHERE type_id = 27 AND related_1 = {$tag_id}");
+                $this->db->query("DELETE FROM files_meta WHERE type_id = 27 AND related_1 = {$tag_id}");
             
             //Tabla principal
                 $this->db->where('id', $tag_id);
-                $this->db->delete('tag');
+                $this->db->delete('tags');
 
             $qty_affected = $this->db->affected_rows();
         }
@@ -161,7 +161,7 @@ class Tag_model extends CI_Model{
     function search($filters, $per_page = NULL, $offset = NULL)
     {
         //Construir consulta
-            $this->db->select('tag.id, name, slug');
+            $this->db->select('tags.id, name, slug');
             
         //Orden
             if ( $filters['o'] != '' )
@@ -177,7 +177,7 @@ class Tag_model extends CI_Model{
             if ( $search_condition ) { $this->db->where($search_condition);}
             
         //Obtener resultados
-            $query = $this->db->get('tag', $per_page, $offset); //Resultados por página
+            $query = $this->db->get('tags', $per_page, $offset); //Resultados por página
         
         return $query;
     }
@@ -217,7 +217,7 @@ class Tag_model extends CI_Model{
         $this->db->select('id');
         $search_condition = $this->search_condition($filters);
         if ( $search_condition ) { $this->db->where($search_condition);}
-        $query = $this->db->get('tag'); //Para calcular el total de resultados
+        $query = $this->db->get('tags'); //Para calcular el total de resultados
 
         return $query->num_rows();
     }
@@ -229,11 +229,11 @@ class Tag_model extends CI_Model{
     function role_filter()
     {
         $role = $this->session->userdata('role');
-        $condition = 'id = 0';  //Valor por defecto, ningún user, se obtendrían cero tag.
+        $condition = 'id = 0';  //Valor por defecto, ningún user, se obtendrían cero tags.
         
         if ( $role <= 2 ) 
         {   //Desarrollador, todos los user
-            $condition = 'tag.id > 0';
+            $condition = 'tags.id > 0';
         }
         
         return $condition;
@@ -268,7 +268,7 @@ class Tag_model extends CI_Model{
             $this->db->select('id, name AS value');
             if ( $search_condition ) { $this->db->where($search_condition);}
             $this->db->order_by('name', 'ASC');
-            $query = $this->db->get('tag', $limit); //Resultados por página
+            $query = $this->db->get('tags', $limit); //Resultados por página
         
         return $query;
     }

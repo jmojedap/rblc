@@ -88,79 +88,10 @@ class Admin extends CI_Controller {
     function ml($user_id)
     {
         $this->load->model('Account_model');
-        $username = $this->Db_model->field_id('user', $user_id, 'username');
+        $username = $this->Db_model->field_id('users', $user_id, 'username');
         if ( $this->session->userdata('rol_id') <= 1 ) { $this->Account_model->create_session($username, FALSE); }
         
         redirect('app/logged');
-    }
-    
-    
-// SIS_ACL - Access Control List, permisos por rol de usuario
-//-----------------------------------------------------------------------------
-    
-    /**
-     * VISTA
-     * Listado y formulario para gestión de ACL
-     * 2020-03-24
-     */
-    function acl($subdomain = 'admin', $controller = 'users')
-    {
-        //Variables
-        $data['subdomain'] = $subdomain;
-        $data['controller'] = $controller;
-        $data['controllers'] = $this->Admin_model->controllers();
-        $data['options_type_id'] = $this->Item_model->options('category_id = 5', 'Tipo de recurso');
-
-        //Solicitar vista
-        $data['head_title'] = 'ACL Permisos de acceso';
-        $data['nav_2'] = 'system/admin/menu_v';        
-        $data['view_a'] = 'system/admin/acl/acl_v';
-
-        $this->App_model->view(TPL_ADMIN, $data);
-    }
-    
-    /**
-     * JSON
-     * Lista de procesos en la tabla sis_acl, por controller
-     * 
-     */
-    function acl_list($subdomain = 'admin', $controller = 'users')
-    {
-        $this->db->select('id, controller, function_name, cf, description, roles, CONCAT("0", (type_id)) AS type_id, input_vars, response, updated_at');
-        $this->db->where('subdomain', $subdomain);
-        $this->db->where('controller', $controller);
-        $this->db->order_by('function_name', 'ASC');
-        $lista = $this->db->get('sis_acl');
-        
-        $this->output->set_content_type('application/json')->set_output(json_encode($lista->result()));
-    }
-    
-    /**
-     * AJAX JSON
-     * Recibe datos de formulario en admin/acl_list, guarda datos en la tabla
-     * sis_acl
-     */
-    function acl_save($row_id = 0)
-    {
-        //Construir registro
-            $arr_row = $this->input->post();   //Tomado de formulario
-            $arr_row['function_title'] = $arr_row['controller'] . ' ' . $arr_row['function_name'];
-            $arr_row['cf'] = $arr_row['controller'] . '/' . $arr_row['function_name'];
-            
-        //Guardar
-            $data = $this->Admin_model->acl_save($arr_row, $row_id);
-        
-        $this->output->set_content_type('application/json')->set_output(json_encode($data));
-    }
-    
-    /**
-     * AJAX
-     * Eliminar un registro, devuelve la cantidad de registros eliminados
-     */
-    function acl_delete($row_id, $controller)
-    {
-        $data = $this->Admin_model->acl_delete($row_id, $controller);
-        $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 
 // Colores
@@ -216,5 +147,28 @@ class Admin extends CI_Controller {
         $data['status'] = 1;
 
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
+
+    /**
+     * TEMPORAL
+     * Actualizar campo file.file_name, a partir de la url
+     * 2021-03-24
+     */
+    function set_file_names()
+    {
+        $this->db->select('*');
+        $this->db->where('file_name = ""');
+        $files = $this->db->get('files');
+
+        foreach ($files->result() as $row_file)
+        {
+            $parts = explode('/', $row_file->url);
+            $arr_row['file_name'] = end($parts);
+
+            $this->db->where('id', $row_file->id);
+            $this->db->update('files', $arr_row);
+            
+            echo $arr_row['file_name'] . '</br>';
+        }
     }
 }

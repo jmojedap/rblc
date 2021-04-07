@@ -18,7 +18,7 @@ class Picture_model extends CI_Model{
         $row = NULL;
         //$this->db->select('id, file_name, title, description, creator_id, updater_id');
         $this->db->select('id, file_name, title, description, related_1, album_id, url, url_thumbnail');
-        $query = $this->db->get_where('file', $condition);
+        $query = $this->db->get_where('files', $condition);
 
         if ( $query->num_rows() > 0 ) $row = $query->row();
 
@@ -79,9 +79,9 @@ class Picture_model extends CI_Model{
     function search($filters, $per_page = NULL, $offset = NULL)
     {
         //Construir consulta
-            $this->db->select('file.id, title, file.url, file.url_thumbnail, user.display_name AS user_display_name, user.id AS user_id, user.url_thumbnail AS user_url_thumbnail');
-            $this->db->join('user_meta', 'user_meta.related_1 = file.id', 'left');  
-            $this->db->join('user', 'user.id = user_meta.user_id', 'left');
+            $this->db->select('files.id, title, files.url, files.url_thumbnail, users.display_name AS user_display_name, users.id AS user_id, users.url_thumbnail AS user_url_thumbnail');
+            $this->db->join('users_meta', 'users_meta.related_1 = files.id', 'left');  
+            $this->db->join('users', 'users.id = users_meta.user_id', 'left');
             
         //Orden
             if ( $filters['o'] != '' )
@@ -89,7 +89,7 @@ class Picture_model extends CI_Model{
                 $order_type = $this->pml->if_strlen($filters['ot'], 'ASC');
                 $this->db->order_by($filters['o'], $order_type);
             } else {
-                $this->db->order_by('file.priority', 'ASC');
+                $this->db->order_by('files.priority', 'ASC');
             }
             
         //Filtros
@@ -97,7 +97,7 @@ class Picture_model extends CI_Model{
             if ( $search_condition ) { $this->db->where($search_condition);}
             
         //Obtener resultados
-            $query = $this->db->get('file', $per_page, $offset); //Resultados por página
+            $query = $this->db->get('files', $per_page, $offset); //Resultados por página
         
         return $query;
     }
@@ -124,10 +124,10 @@ class Picture_model extends CI_Model{
         //Filtros
         if ( strlen($filters['tag']) > 0 )
         {
-            $sql_tags = "SELECT id FROM tag WHERE slug LIKE '%{$filters['tag']}%'";
-            $condition .= "file.id IN (SELECT file_id FROM file_meta WHERE related_1 IN ({$sql_tags})) AND ";
+            $sql_tags = "SELECT id FROM tags WHERE slug LIKE '%{$filters['tag']}%'";
+            $condition .= "files.id IN (SELECT file_id FROM files_meta WHERE related_1 IN ({$sql_tags})) AND ";
         }
-        if ( strlen($filters['cat_1']) > 0 ) $condition .= "file.cat_1 = {$filters['cat_1']} AND ";
+        if ( strlen($filters['cat_1']) > 0 ) $condition .= "files.cat_1 = {$filters['cat_1']} AND ";
         
         //Quitar cadena final de ' AND '
         if ( strlen($condition) > 0 ) { $condition = substr($condition, 0, -5);}
@@ -141,7 +141,7 @@ class Picture_model extends CI_Model{
     function role_filter()
     {
         $role = $this->session->userdata('role');
-        $condition = 'id = 0';  //Valor por defecto, ningún file, se obtendrían cero file.
+        $condition = 'id = 0';  //Valor por defecto, ningún file, se obtendrían cero files.
         
         if ( $role <= 2 ) 
         {   //Desarrollador, todos los file
@@ -174,7 +174,7 @@ class Picture_model extends CI_Model{
         $this->db->select('id');
         $search_condition = $this->search_condition($filters);
         if ( $search_condition ) { $this->db->where($search_condition);}
-        $query = $this->db->get('file'); //Para calcular el total de resultados
+        $query = $this->db->get('files'); //Para calcular el total de resultados
 
         return $query->num_rows();
     }
@@ -206,7 +206,7 @@ class Picture_model extends CI_Model{
         foreach ($query->result() as $row)
         {
             //Liked por el usuario en sesión?
-            $row->liked = $this->Db_model->num_rows('file_meta', "file_id = {$row->id} AND type_id = 10 AND related_1 = {$this->session->userdata('user_id')}");
+            $row->liked = $this->Db_model->num_rows('files_meta', "file_id = {$row->id} AND type_id = 10 AND related_1 = {$this->session->userdata('user_id')}");
             $list[] = $row;
         }
 
@@ -222,8 +222,8 @@ class Picture_model extends CI_Model{
     function tags($file_id)
     {
         $this->db->select('id, name, slug');
-        $this->db->where("id IN (SELECT related_1 FROM file_meta WHERE file_id = {$file_id} AND type_id = 27)");
-        $tags = $this->db->get('tag');
+        $this->db->where("id IN (SELECT related_1 FROM files_meta WHERE file_id = {$file_id} AND type_id = 27)");
+        $tags = $this->db->get('tags');
 
         return $tags;
     }
@@ -234,16 +234,16 @@ class Picture_model extends CI_Model{
      */
     function get_random($qty)
     {
-        $qty_rows = $this->Db_model->num_rows('file', "is_image = 1 AND album_id = 10");
+        $qty_rows = $this->Db_model->num_rows('files', "is_image = 1 AND album_id = 10");
 
         $offset = rand(0, $qty_rows - $qty);
 
         //Consulta
-        $this->db->select('file.id, title, file.url, file.url_thumbnail, user.display_name AS user_display_name, user.id AS user_id, user.url_thumbnail AS user_url_thumbnail');
-        $this->db->join('user_meta', 'user_meta.related_1 = file.id', 'left');  
-        $this->db->join('user', 'user.id = user_meta.user_id', 'left');
-        $this->db->order_by('file.priority', 'ASC');
-        $query = $this->db->get('file', $qty, $offset);
+        $this->db->select('files.id, title, files.url, files.url_thumbnail, users.display_name AS user_display_name, users.id AS user_id, users.url_thumbnail AS user_url_thumbnail');
+        $this->db->join('users_meta', 'users_meta.related_1 = files.id', 'left');  
+        $this->db->join('users', 'users.id = users_meta.user_id', 'left');
+        $this->db->order_by('files.priority', 'ASC');
+        $query = $this->db->get('files', $qty, $offset);
 
         $data['offset'] = $offset;
         $data['qty_rows'] = $qty_rows;

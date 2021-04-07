@@ -3,14 +3,13 @@ class Post_model extends CI_Model{
 
     function basic($post_id)
     {
-        $row = $this->Db_model->row_id('post', $post_id);
+        $row = $this->Db_model->row_id('posts', $post_id);
 
-        $data['post_id'] = $post_id;
         $data['row'] = $row;
-        $data['att_img'] = $this->att_img($row);
+        $data['type_folder'] = $this->type_folder($row->type_id);
         $data['head_title'] = $data['row']->post_name;
         $data['view_a'] = 'posts/post_v';
-        $data['nav_2'] = 'posts/menu_v';
+        $data['nav_2'] = $data['type_folder'] . 'menu_v';
 
         return $data;
     }
@@ -19,7 +18,7 @@ class Post_model extends CI_Model{
 //-----------------------------------------------------------------------------
     
     /**
-     * Insertar un registro en la tabla post.
+     * Insertar un registro en la tabla posts.
      * 2020-02-22
      */
     function insert($arr_row = NULL)
@@ -29,7 +28,7 @@ class Post_model extends CI_Model{
         $data = array('status' => 0);
         
         //Insert in table
-            $this->db->insert('post', $arr_row);
+            $this->db->insert('posts', $arr_row);
             $data['saved_id'] = $this->db->insert_id();
 
         if ( $data['saved_id'] > 0 ) { $data['status'] = 1; }
@@ -38,7 +37,7 @@ class Post_model extends CI_Model{
     }
 
     /**
-     * Nombre de la vista con el formulario para la edición del post. Puede cambiar dependiendo
+     * Nombre de la vista con el formulario para la edición del posts. Puede cambiar dependiendo
      * del tipo (type_id).
      * 2020-02-23
      */
@@ -61,7 +60,7 @@ class Post_model extends CI_Model{
 
         //Guardar
             $arr_row = $this->Db_model->arr_row($post_id);
-            $saved_id = $this->Db_model->save('post', "id = {$post_id}", $arr_row);
+            $saved_id = $this->Db_model->save('posts', "id = {$post_id}", $arr_row);
 
         //Actualizar resultado
             if ( $saved_id > 0 ){ $data = array('status' => 1); }
@@ -72,12 +71,14 @@ class Post_model extends CI_Model{
     /**
      * Nombre de la vista con el formulario para la edición del post. Puede cambiar dependiendo
      * del tipo (type_id).
-     * 2020-08-20
+     * 2021-03-26
      */
-    function type_folder($row)
+    function type_folder($type_id)
     {
         $type_folder = 'posts/';
-        if ( $row->type_id == 5 ) $type_folder = 'posts/types/album/';
+        $special_types = array(7110);
+
+        if ( in_array($type_id, $special_types) ) { $type_folder = "posts/types/{$type_id}/"; }
 
         return $type_folder;
     }
@@ -92,7 +93,7 @@ class Post_model extends CI_Model{
     function deleteable($post_id)
     {
         $deleteable = 0;    //Valor por defecto
-        $row = $this->Db_model->row_id('post', $post_id);
+        $row = $this->Db_model->row_id('posts', $post_id);
 
         //Es administrador
         if ( $this->session->userdata('role') <= 1 ) $deleteable = 1;
@@ -114,8 +115,8 @@ class Post_model extends CI_Model{
         if ( $this->deleteable($post_id) ) 
         {
             //Tablas y relacionadas principal
-                $this->db->query("DELETE FROM post_meta WHERE post_id = {$post_id}");
-                $this->db->query("DELETE FROM post WHERE id = {$post_id}");
+                $this->db->query("DELETE FROM posts_meta WHERE post_id = {$post_id}");
+                $this->db->query("DELETE FROM posts WHERE id = {$post_id}");
 
             $qty_deleted = $this->db->affected_rows();  //De la última consulta
         }
@@ -209,7 +210,7 @@ class Post_model extends CI_Model{
             if ( $search_condition ) { $this->db->where($search_condition);}
             
         //Obtener resultados
-            $query = $this->db->get('post', $per_page, $offset); //Resultados por página
+            $query = $this->db->get('posts', $per_page, $offset); //Resultados por página
         
         return $query;
         
@@ -250,7 +251,7 @@ class Post_model extends CI_Model{
         $this->db->select('id');
         $search_condition = $this->search_condition($filters);
         if ( $search_condition ) { $this->db->where($search_condition);}
-        $query = $this->db->get('post'); //Para calcular el total de resultados
+        $query = $this->db->get('posts'); //Para calcular el total de resultados
 
         return $query->num_rows();
     }
@@ -262,7 +263,7 @@ class Post_model extends CI_Model{
     {
         
         $role = $this->session->userdata('role');
-        $condition = 'id = 0';  //Valor por defecto, ningún post, se obtendrían cero post.
+        $condition = 'id = 0';  //Valor por defecto, ningún post, se obtendrían cero posts.
         
         if ( $role <= 2 ) 
         {   //Desarrollador, todos los post
@@ -297,7 +298,7 @@ class Post_model extends CI_Model{
         
         if ( $process == 'insert' )
         {
-            $arr_row['slug'] = $this->Db_model->unique_slug($arr_row['post_name'], 'post');
+            $arr_row['slug'] = $this->Db_model->unique_slug($arr_row['post_name'], 'posts');
             $arr_row['creator_id'] = $this->session->userdata('user_id');
         }
         
@@ -315,7 +316,7 @@ class Post_model extends CI_Model{
             'onerror' => "this.src='" . URL_IMG . "app/nd.png'"
         );
 
-        $row_file = $this->Db_model->row_id('file', $row->image_id);
+        $row_file = $this->Db_model->row_id('files', $row->image_id);
         if ( ! is_null($row_file) )
         {
             $att_img['src'] = URL_UPLOADS . $row_file->folder . $row_file->file_name;
@@ -331,12 +332,12 @@ class Post_model extends CI_Model{
     function set_image($post_id, $file_id)
     {
         $data = array('status' => 0, 'message' => 'La imagen no fue asignada'); //Resultado inicial
-        $row_file = $this->Db_model->row_id('file', $file_id);
+        $row_file = $this->Db_model->row_id('files', $file_id);
         
         $arr_row['image_id'] = $row_file->id;
         
         $this->db->where('id', $post_id);
-        $this->db->update('post', $arr_row);
+        $this->db->update('posts', $arr_row);
         
         if ( $this->db->affected_rows() )
         {
@@ -354,7 +355,7 @@ class Post_model extends CI_Model{
     function remove_image($post_id)
     {
         $data['status'] = 0;
-        $row = $this->Db_model->row_id('post', $post_id);
+        $row = $this->Db_model->row_id('posts', $post_id);
         
         if ( ! is_null($row->image_id) )
         {
@@ -365,7 +366,7 @@ class Post_model extends CI_Model{
             //Modificar Row en tabla Post
             $arr_row['image_id'] = 0;
             $this->db->where('image_id', $row->image_id);
-            $this->db->update('post', $arr_row);
+            $this->db->update('posts', $arr_row);
         }
         
         return $data;
@@ -375,16 +376,16 @@ class Post_model extends CI_Model{
 //-----------------------------------------------------------------------------
 
     /**
-     * Imágenes asociadas al post, mediante la tabla post_meta, tipo 1
+     * Imágenes asociadas al post, mediante la tabla posts_meta, tipo 1
      * 2020-09-05
      */
     function images($post_id)
     {
-        $this->db->select('file.id, file.title, url, url_thumbnail, file.integer_1 AS main');
+        $this->db->select('files.id, files.title, url, url_thumbnail, files.integer_1 AS main');
         $this->db->where('is_image', 1);
         $this->db->where('table_id', '2000');       //Tabla post
         $this->db->where('related_1', $post_id);   //Relacionado con el post
-        $images = $this->db->get('file');
+        $images = $this->db->get('files');
 
         return $images;
     }
@@ -397,7 +398,7 @@ class Post_model extends CI_Model{
     {
         $data = array('status' => 0);
 
-        $row_file = $this->Db_model->row_id('file', $file_id);
+        $row_file = $this->Db_model->row_id('files', $file_id);
         if ( ! is_null($row_file) )
         {
             //Quitar otro principal
@@ -412,7 +413,7 @@ class Post_model extends CI_Model{
             $arr_row['url_thumbnail'] = $row_file->url_thumbnail;
 
             $this->db->where('id', $post_id);
-            $this->db->update('post', $arr_row);
+            $this->db->update('posts', $arr_row);
 
             $data['status'] = 1;
         }
@@ -432,13 +433,13 @@ class Post_model extends CI_Model{
         $arr_row = $this->arr_row_meta($post_id);
         $condition = "id = {$meta_id} AND post_id = {$post_id}";
 
-        $data['saved_id'] = $this->Db_model->save('post_meta', $condition, $arr_row);
+        $data['saved_id'] = $this->Db_model->save('posts_meta', $condition, $arr_row);
     
         return $data;
     }
 
     /**
-     * Elimina registro de la tabla post_meta, requiere post y meta id, para confirmar
+     * Elimina registro de la tabla posts_meta, requiere post y meta id, para confirmar
      * 2020-08-13
      */
     function delete_meta($post_id, $meta_id)
@@ -446,7 +447,7 @@ class Post_model extends CI_Model{
         //Valores iniciales
         $data = array('status' => 0, 'qty_deleted' => 0);
         $conditions = 0;
-        $row = $this->Db_model->row_id('post', $post_id);
+        $row = $this->Db_model->row_id('posts', $post_id);
 
         //Comprobar permiso para eliminar
         if ( $this->session->userdata('role') <= 2 ) $conditions++;                      //Es administrador
@@ -457,7 +458,7 @@ class Post_model extends CI_Model{
         {
             $this->db->where('id', $meta_id);
             $this->db->where('post_id', $post_id);
-            $this->db->delete('post_meta');
+            $this->db->delete('posts_meta');
             
             $data['qty_deleted'] = $this->db->affected_rows();
             $data['status'] = 1;
@@ -467,7 +468,7 @@ class Post_model extends CI_Model{
     }
 
     /**
-     * Construye array con registro para insertar o actualizar post_meta
+     * Construye array con registro para insertar o actualizar posts_meta
      * 2020-07-03
      */
     function arr_row_meta($post_id, $meta_id = 0)
@@ -560,7 +561,7 @@ class Post_model extends CI_Model{
                 $arr_row['text_2'] = $this->pml->if_strlen($row_data[12], '');
                 $arr_row['status'] = $this->pml->if_strlen($row_data[13], 2);
                 $arr_row['published_at'] = $this->pml->dexcel_dmysql($row_data[14]);
-                $arr_row['slug'] = $this->Db_model->unique_slug($row_data[0], 'post');
+                $arr_row['slug'] = $this->Db_model->unique_slug($row_data[0], 'posts');
                 
                 $arr_row['creator_id'] = $this->session->userdata('user_id');
                 $arr_row['updater_id'] = $this->session->userdata('user_id');
@@ -588,7 +589,7 @@ class Post_model extends CI_Model{
         //Condición
         $condition = "post_id = {$post_id} AND type_id = 10 AND related_1 = {$this->session->userdata('user_id')}";
 
-        $row_meta = $this->Db_model->row('post_meta', $condition);
+        $row_meta = $this->Db_model->row('posts_meta', $condition);
 
         $data = array();
 
@@ -601,7 +602,7 @@ class Post_model extends CI_Model{
             $arr_row['updater_id'] = $this->session->userdata('user_id');
             $arr_row['creator_id'] = $this->session->userdata('user_id');
 
-            $this->db->insert('post_meta', $arr_row);
+            $this->db->insert('posts_meta', $arr_row);
             
             $data['saved_id'] = $this->db->insert_id();
             $data['qty_sum'] = 1;
@@ -609,14 +610,14 @@ class Post_model extends CI_Model{
         } else {
             //Existe, eliminar (Dejar de seguir)
             $this->db->where('id', $row_meta->id);
-            $this->db->delete('post_meta');
+            $this->db->delete('posts_meta');
             
             $data['qty_sum'] = -1;
             $data['like_status'] = 0;
         }
 
         //Actualizar contador en registro tabla post
-        $this->db->query("UPDATE post SET qty_likes = (qty_likes + ({$data['qty_sum']})) WHERE id = {$post_id}");
+        $this->db->query("UPDATE posts SET qty_likes = (qty_likes + ({$data['qty_sum']})) WHERE id = {$post_id}");
 
         return $data;
     }
@@ -627,13 +628,13 @@ class Post_model extends CI_Model{
      */
     function liked($user_id, $condition = NULL)
     {
-        $this->db->select('post.id, post_name AS name, post.slug, url_image, url_thumbnail, excerpt, post_meta.id AS meta_id');
-        $this->db->join('post_meta', 'post.id = post_meta.post_id');
-        $this->db->where('post_meta.related_1', $user_id);
-        $this->db->where('post_meta.type_id', 10);    //Follower
+        $this->db->select('posts.id, post_name AS name, posts.slug, url_image, url_thumbnail, excerpt, posts_meta.id AS meta_id');
+        $this->db->join('posts_meta', 'posts.id = posts_meta.post_id');
+        $this->db->where('posts_meta.related_1', $user_id);
+        $this->db->where('posts_meta.type_id', 10);    //Follower
         if ( ! is_null($condition) ) { $this->db->where($condition); }
-        $this->db->order_by('post_meta.created_at', 'DESC');
-        $posts = $this->db->get('post');
+        $this->db->order_by('posts_meta.created_at', 'DESC');
+        $posts = $this->db->get('posts');
 
         return $posts;
     }
@@ -647,7 +648,7 @@ class Post_model extends CI_Model{
         $like_status = 0;
         if ( $this->session->userdata('user_id') )
         {
-            $like_status = $this->Db_model->num_rows('post_meta', "post_id = {$post_id} AND type_id = 10 AND related_1 = {$this->session->userdata('user_id')}");
+            $like_status = $this->Db_model->num_rows('posts_meta', "post_id = {$post_id} AND type_id = 10 AND related_1 = {$this->session->userdata('user_id')}");
         }
 
         return $like_status;

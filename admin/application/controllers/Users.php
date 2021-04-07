@@ -466,7 +466,7 @@ class Users extends CI_Controller{
     {
         $this->db->where('role', 23);
         $this->db->where('image_id', 0);
-        $users = $this->db->get('user');
+        $users = $this->db->get('users');
 
         foreach ($users->result() as $row_user)
         {
@@ -492,11 +492,11 @@ class Users extends CI_Controller{
     function newsletter_subscribers()
     {
         //Seleccionar suscriptores
-        $this->db->select('post.id, text_1 AS email, post.creator_id, user.display_name AS creator_name');
-        $this->db->where('post.type_id', 112);   //Post subscription
-        $this->db->order_by('post.created_at', 'DESC');
-        $this->db->join('user', 'user.id = post.creator_id');
-        $data['subscribers'] = $this->db->get('post');
+        $this->db->select('posts.id, text_1 AS email, posts.creator_id, users.display_name AS creator_name');
+        $this->db->where('posts.type_id', 112);   //Post subscription
+        $this->db->order_by('posts.created_at', 'DESC');
+        $this->db->join('users', 'users.id = posts.creator_id');
+        $data['subscribers'] = $this->db->get('posts');
 
         $data['nav_2'] = 'users/explore/menu_v';
         $data['view_a'] = 'users/newsletter_subscribers_v';

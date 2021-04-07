@@ -24,13 +24,6 @@ class App extends CI_Controller {
         }    
     }
 
-    function home_ant()
-    {
-        $data['head_title'] = 'Welcome to colibri:house';
-        $data['view_a'] = 'app/home_v';
-        $this->App_model->view(TPL_ADMIN, $data);
-    }
-
     /**
      * Destinos a los que se redirige después de validar el login de usuario
      * según el rol de usuario (índice del array)

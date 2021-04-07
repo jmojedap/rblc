@@ -4,7 +4,7 @@ class Picture_model extends CI_Model{
     function basic($file_id)
     {
         $data['picture_id'] = $file_id;
-        $data['row'] = $this->Db_model->row_id('file', $file_id);
+        $data['row'] = $this->Db_model->row_id('files', $file_id);
         $data['head_title'] = substr($data['row']->title,0,50);
         $data['view_a'] = 'pictures/user_v';
         //$data['nav_2'] = 'pictures/menus/_v';
@@ -41,8 +41,8 @@ class Picture_model extends CI_Model{
     function tags($file_id)
     {
         $this->db->select('id, name, slug');
-        $this->db->where("id IN (SELECT related_1 FROM file_meta WHERE file_id = {$file_id} AND type_id = 27)");
-        $tags = $this->db->get('tag');
+        $this->db->where("id IN (SELECT related_1 FROM files_meta WHERE file_id = {$file_id} AND type_id = 27)");
+        $tags = $this->db->get('tags');
 
         return $tags;
     }
@@ -56,7 +56,7 @@ class Picture_model extends CI_Model{
         $like_status = 0;
         if ( $this->session->userdata('user_id') )
         {
-            $like_status = $this->Db_model->num_rows('file_meta', "file_id = {$file_id} AND type_id = 10 AND related_1 = {$this->session->userdata('user_id')}");
+            $like_status = $this->Db_model->num_rows('files_meta', "file_id = {$file_id} AND type_id = 10 AND related_1 = {$this->session->userdata('user_id')}");
         }
 
         return $like_status;

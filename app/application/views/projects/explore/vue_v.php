@@ -33,11 +33,18 @@
             search_num_rows: 0,
             list: [],
             element: [],
-            filters: {},
+            filters: {
+                descriptor: '',
+                style: '',
+                feeling: '',
+            },
             showing_filters: false,
             menu_elements: menu_elements,
             category: menu_elements[0],
-            loading: false
+            loading: false,
+            options_descriptor: <?= json_encode($options_descriptor) ?>,
+            options_style: <?= json_encode($options_style) ?>,
+            options_feeling: <?= json_encode($options_feeling) ?>,
         },
         methods: {
             get_list: function(){
@@ -45,6 +52,10 @@
                 var params = new URLSearchParams();
                 params.append('q', app_q);
                 params.append('cat', this.category.slug);
+                params.append('descriptor', this.filters.descriptor);
+                params.append('style', this.filters.style);
+                params.append('feeling', this.filters.feeling);
+                
                 axios.post(url_api + this.controller + '/get/' + this.num_page, params)
                 .then(response => {
                     this.list = response.data.list;

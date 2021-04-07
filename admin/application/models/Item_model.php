@@ -16,7 +16,7 @@ class Item_model extends CI_Model{
         
         $this->db->select('MAX(cod) AS max_cod');
         $this->db->where('category_id', $category_id);
-        $query = $this->db->get('item');
+        $query = $this->db->get('items');
         
         if ( $query->num_rows() > 0 ) 
         {
@@ -37,7 +37,7 @@ class Item_model extends CI_Model{
 
         $this->db->where('id', $item_id);
         $this->db->where('category_id', $category_id);
-        $this->db->delete('item');
+        $this->db->delete('items');
 
         $data['qty_deleted'] = $this->db->affected_rows();
 
@@ -47,7 +47,7 @@ class Item_model extends CI_Model{
     }
     
     /**
-     * Guardar un registro en la tabla item. Insertar o Editar.
+     * Guardar un registro en la tabla items. Insertar o Editar.
      */
     function save($arr_row, $item_id)
     {
@@ -56,7 +56,7 @@ class Item_model extends CI_Model{
             if ( $item_id == 0 ) { $condition = "category_id = {$arr_row['category_id']} AND cod = {$arr_row['cod']}"; }
         
         //Insert or Update
-            $data['saved_id'] = $this->Db_model->save('item', $condition, $arr_row);
+            $data['saved_id'] = $this->Db_model->save('items', $condition, $arr_row);
             
         //Result
             $data['status'] = 0;
@@ -64,7 +64,7 @@ class Item_model extends CI_Model{
             {
                 $data['status'] = 1;
                 //Modificar campos dependientes
-                $row_item = $this->Db_model->row_id('item', $data['saved_id']);
+                $row_item = $this->Db_model->row_id('items', $data['saved_id']);
                 $this->update_ancestry($row_item);
                 $this->update_offspring($row_item);
             }
@@ -73,13 +73,13 @@ class Item_model extends CI_Model{
     }
     
     /**
-     * Devuelve el value del field item.cod para una categoría
+     * Devuelve el value del field items.cod para una categoría
      * dado un value de un field
      */
     function cod($category_id, $value, $field = 'abbreviation')
     {   
         $condition = "category_id = {$category_id} AND {$field} = '{$value}'";
-        $cod = $this->Pcrn->field('item', $condition, 'cod');
+        $cod = $this->Pcrn->field('items', $condition, 'cod');
         
         return $cod;
     }
@@ -91,7 +91,7 @@ class Item_model extends CI_Model{
     {
         $this->db->order_by('ancestry', 'ASC');
         $this->db->order_by('cod', 'ASC');
-        $items = $this->db->get_where('item', "category_id = {$category_id}");
+        $items = $this->db->get_where('items', "category_id = {$category_id}");
         
         return $items;
     }
@@ -111,7 +111,7 @@ class Item_model extends CI_Model{
         $this->db->select("{$field} as field");
         $this->db->where('cod', $cod);
         $this->db->where('category_id', $category_id);
-        $query = $this->db->get('item');
+        $query = $this->db->get('items');
         
         if ( $query->num_rows() > 0 ) 
         {
@@ -123,7 +123,7 @@ class Item_model extends CI_Model{
     
     /**
      * Devuelve el name de un item con el formato correspondiente, a partir
-     * del item.id
+     * del items.id
      * 
      * @param type $item_id
      * @return type
@@ -134,7 +134,7 @@ class Item_model extends CI_Model{
         
         $this->db->select("{$field} as field");
         $this->db->where('id', $item_id);
-        $query = $this->db->get('item');
+        $query = $this->db->get('items');
         
         if ( $query->num_rows() > 0 ) 
         {
@@ -161,7 +161,7 @@ class Item_model extends CI_Model{
         $this->db->where($condition);
         $this->db->order_by('position', 'ASC');
         $this->db->order_by('cod', 'ASC');
-        $query = $this->db->get('item');
+        $query = $this->db->get('items');
         
         $arr_item = $this->pml->query_to_array($query, 'item_name', 'cod');
         
@@ -172,7 +172,7 @@ class Item_model extends CI_Model{
      * Array con options de item, para elementos select de formularios.
      * La variable $condition es una condición WHERE de SQL para filtrar los items.
      * En el array el índice corresponde al cod y el value del array al
-     * field item. La variable $empty_value se pone al principio del array
+     * field items. La variable $empty_value se pone al principio del array
      * cuando el field select está vacío, sin ninguna opción seleccionada.
      * 
      */
@@ -185,7 +185,7 @@ class Item_model extends CI_Model{
         $this->db->where($condition);
         $this->db->order_by('cod', 'ASC');
         $this->db->order_by('position', 'ASC');
-        $query = $this->db->get('item');
+        $query = $this->db->get('items');
         
         $options_pre = $this->pml->query_to_array($query, 'field_value', 'str_cod');
         
@@ -203,7 +203,7 @@ class Item_model extends CI_Model{
      * Array con options de item, para elementos select de formularios.
      * La variable $condition es una condición WHERE de SQL para filtrar los items.
      * En el array el índice corresponde al id y el value del array al
-     * field item. La variable $empty_value se pone al principio del array
+     * field items. La variable $empty_value se pone al principio del array
      * cuando el field select está vacío, sin ninguna opción seleccionada.
      */
     function options_id($condition, $empty_value = NULL)
@@ -214,7 +214,7 @@ class Item_model extends CI_Model{
         $this->db->where($condition);
         $this->db->order_by('position', 'ASC');
         $this->db->order_by('cod', 'ASC');
-        $query = $this->db->get('item');
+        $query = $this->db->get('items');
         
         $options_pre = $this->pml->query_to_array($query, 'field_value', 'field_index_str');
         
@@ -289,7 +289,7 @@ class Item_model extends CI_Model{
         $this->db->select($select);
         $this->db->where($condition);
         $this->db->order_by($config['order_by'], $config['order_type']);
-        $query = $this->db->get('item');
+        $query = $this->db->get('items');
         
         $arr_item = $this->pml->query_to_array($query, 'field_value', $indice);
         
@@ -309,7 +309,7 @@ class Item_model extends CI_Model{
         if ( $category_id > 0 ) { $this->db->where('category_id', $category_id); }
         $this->db->where($config['condition']);
         $this->db->order_by($config['order_by'], $config['order_type']);
-        $query = $this->db->get('item');
+        $query = $this->db->get('items');
         
         $arr_item = $this->pml->query_to_array($query, 'field_value', $indice);
         
@@ -362,7 +362,7 @@ class Item_model extends CI_Model{
     {
         //Validar
             $error_text = '';
-            $row_category = $this->Db_model->row('item', "category_id = 0 AND cod = '$row_data[0]'");
+            $row_category = $this->Db_model->row('items', "category_id = 0 AND cod = '$row_data[0]'");
                             
             if ( strlen($row_data[1]) == 0 ) { $error_text = 'La casilla `cod` está vacía. '; }
             if ( strlen($row_data[2]) == 0 ) { $error_text = 'La casilla `item name` está vacía. '; }
@@ -379,7 +379,7 @@ class Item_model extends CI_Model{
                 $arr_row['description'] = ( is_null($row_data[8]) ) ? $row_category->item_name . ' - ' . $row_data[2] : $row_data[8];
                 $arr_row['long_name'] = ( is_null($row_data[10]) ) ? $row_data[2] : $row_data[10];
                 $arr_row['short_name'] = ( is_null($row_data[11]) ) ? $row_data[2] : $row_data[11];
-                $arr_row['slug'] = $row_category->slug . '-' . $this->Db_model->unique_slug($row_data[2], 'item');
+                $arr_row['slug'] = $row_category->slug . '-' . $this->Db_model->unique_slug($row_data[2], 'items');
 
                 //Guardar en tabla item
                 $data_insert = $this->save($arr_row, 0);
@@ -396,7 +396,7 @@ class Item_model extends CI_Model{
 //-----------------------------------------------------------------------------
 
     /**
-     * Actualiza el campo item.ancestry para un item específico
+     * Actualiza el campo items.ancestry para un item específico
      * 2020-05-05
      */
     function update_ancestry($row)
@@ -408,7 +408,7 @@ class Item_model extends CI_Model{
         //Si tiene padre, cambiar valores
         if ( $row->parent_id > 0 )
         {
-            $row_parent = $this->Db_model->row('item', "category_id = {$row->category_id} AND cod = {$row->parent_id}");
+            $row_parent = $this->Db_model->row('items', "category_id = {$row->category_id} AND cod = {$row->parent_id}");
             $prefix = $row_parent->ancestry;
             $level = $row_parent->level + 1;
         }
@@ -419,11 +419,11 @@ class Item_model extends CI_Model{
         
         //Actualizar
             $this->db->where('id', $row->id);
-            $this->db->update('item', $arr_row);   
+            $this->db->update('items', $arr_row);   
     }
     
     /**
-     * Actualiza el campo item.ancestry para todos los items correspondientes a la descendencia
+     * Actualiza el campo items.ancestry para todos los items correspondientes a la descendencia
      * de un item ($row), necesaria cuando un item cambia de padre inmediado en la jerarqía
      * 2020-05-05
      */
@@ -444,12 +444,12 @@ class Item_model extends CI_Model{
     function offspring($item_id, $format = 'query')
     {
         $offspring = NULL;
-        $row = $this->Db_model->row_id('item', $item_id);
+        $row = $this->Db_model->row_id('items', $item_id);
         
         $this->db->like("CONCAT('-', (ancestry), '-')", "-{$row->cod}-");
         $this->db->where('category_id', $row->category_id);
         $this->db->order_by('ancestry', 'ASC');
-        $query = $this->db->get('item');
+        $query = $this->db->get('items');
         
         if ( $format == 'query' ) {
             $offspring = $query;

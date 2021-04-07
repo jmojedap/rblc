@@ -3,7 +3,7 @@ class Tag_model extends CI_Model{
 
     function basic($tag_id)
     {
-        $row = $this->Db_model->row_id('tag', $tag_id);
+        $row = $this->Db_model->row_id('tags', $tag_id);
 
         $data['tag_id'] = $tag_id;
         $data['row'] = $row;
@@ -28,7 +28,7 @@ class Tag_model extends CI_Model{
         $data = array('status' => 0);
         
         //Insert in table
-            $this->db->insert('tag', $arr_row);
+            $this->db->insert('tags', $arr_row);
             $data['saved_id'] = $this->db->insert_id();
 
         if ( $data['saved_id'] > 0 ) { $data['status'] = 1; }
@@ -46,7 +46,7 @@ class Tag_model extends CI_Model{
 
         //Guardar
             $arr_row = $this->Db_model->arr_row($tag_id);
-            $saved_id = $this->Db_model->save('tag', "id = {$tag_id}", $arr_row);
+            $saved_id = $this->Db_model->save('tags', "id = {$tag_id}", $arr_row);
 
         //Actualizar resultado
             if ( $saved_id > 0 ){ $data = array('status' => 1); }
@@ -76,7 +76,7 @@ class Tag_model extends CI_Model{
             
             //Tabla principal
                 $this->db->where('id', $tag_id);
-                $this->db->delete('post');
+                $this->db->delete('posts');
 
             $quan_deleted = $this->db->affected_rows();
         }
@@ -182,9 +182,9 @@ class Tag_model extends CI_Model{
         //Obtener resultados
         if ( is_null($per_page) )
         {
-            $query = $this->db->get('tag'); //Resultados totales
+            $query = $this->db->get('tags'); //Resultados totales
         } else {
-            $query = $this->db->get('tag', $per_page, $offset); //Resultados por página
+            $query = $this->db->get('tags', $per_page, $offset); //Resultados por página
         }
         
         return $query;

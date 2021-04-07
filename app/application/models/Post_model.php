@@ -3,7 +3,7 @@ class Post_model extends CI_Model{
 
     function basic($post_id)
     {
-        $row = $this->Db_model->row_id('post', $post_id);
+        $row = $this->Db_model->row_id('posts', $post_id);
 
         $data['post_id'] = $post_id;
         $data['row'] = $row;
@@ -29,7 +29,7 @@ class Post_model extends CI_Model{
         $data = array('status' => 0);
         
         //Insert in table
-            $this->db->insert('post', $arr_row);
+            $this->db->insert('posts', $arr_row);
             $data['saved_id'] = $this->db->insert_id();
 
         if ( $data['saved_id'] > 0 ) { $data['status'] = 1; }
@@ -47,7 +47,7 @@ class Post_model extends CI_Model{
 
         //Guardar
             $arr_row = $this->Db_model->arr_row($post_id);
-            $saved_id = $this->Db_model->save('post', "id = {$post_id}", $arr_row);
+            $saved_id = $this->Db_model->save('posts', "id = {$post_id}", $arr_row);
 
         //Actualizar resultado
             if ( $saved_id > 0 ){ $data = array('status' => 1); }
@@ -77,7 +77,7 @@ class Post_model extends CI_Model{
             
             //Tabla principal
                 $this->db->where('id', $post_id);
-                $this->db->delete('post');
+                $this->db->delete('posts');
 
             $quan_deleted = $this->db->affected_rows();
         }
@@ -183,9 +183,9 @@ class Post_model extends CI_Model{
         //Obtener resultados
         if ( is_null($per_page) )
         {
-            $query = $this->db->get('post'); //Resultados totales
+            $query = $this->db->get('posts'); //Resultados totales
         } else {
-            $query = $this->db->get('post', $per_page, $offset); //Resultados por página
+            $query = $this->db->get('posts', $per_page, $offset); //Resultados por página
         }
         
         return $query;
@@ -257,7 +257,7 @@ class Post_model extends CI_Model{
         
         if ( $process == 'insert' )
         {
-            $arr_row['slug'] = $this->Db_model->unique_slug($arr_row['post_name'], 'post');
+            $arr_row['slug'] = $this->Db_model->unique_slug($arr_row['post_name'], 'posts');
             $arr_row['creator_id'] = $this->session->userdata('user_id');
         }
         
@@ -276,7 +276,7 @@ class Post_model extends CI_Model{
         $like_status = 0;
         if ( $this->session->userdata('user_id') )
         {
-            $like_status = $this->Db_model->num_rows('post_meta', "post_id = {$post_id} AND type_id = 10 AND related_1 = {$this->session->userdata('user_id')}");
+            $like_status = $this->Db_model->num_rows('posts_meta', "post_id = {$post_id} AND type_id = 10 AND related_1 = {$this->session->userdata('user_id')}");
         }
 
         return $like_status;

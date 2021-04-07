@@ -51,7 +51,7 @@ class Pictures extends CI_Controller{
 
         //Identificar al usuario propietario de la imagen
         $data['user'] = NULL;
-        if ( $data['row']->table_id == 1000 ) $data['user'] = $this->Db_model->row_id('user', $data['row']->related_1);
+        if ( $data['row']->table_id == 1000 ) $data['user'] = $this->Db_model->row_id('users', $data['row']->related_1);
 
         //Tags de la imagen
         $data['tags'] = $this->Picture_model->tags($file_id);
@@ -91,7 +91,7 @@ class Pictures extends CI_Controller{
         //Carrusel
         $carousel_id = $this->Db_model->field_id('sis_option', 104, 'option_value');
         $this->db->select('url, title, subtitle, external_link');
-        $data['carousel_images'] = $this->db->get_where('file', "table_id = 2000 AND related_1 = {$carousel_id}");
+        $data['carousel_images'] = $this->db->get_where('files', "table_id = 2000 AND related_1 = {$carousel_id}");
 
         $data['view_a'] = 'info/home_v';
         $this->App_model->view(TPL_ADMIN, $data);

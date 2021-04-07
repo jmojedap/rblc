@@ -237,7 +237,7 @@ class Sync_model extends CI_Model{
         $username = $this->input->post('username');
         $condition = "id = {$user_id} AND username = '{$username}'";
 
-        $role = $this->Db_model->field('user', $condition, 'role');
+        $role = $this->Db_model->field('users', $condition, 'role');
 
         return $role;
         

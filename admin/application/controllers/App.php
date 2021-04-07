@@ -86,7 +86,7 @@ class App extends CI_Controller {
 
     function corpo($format = 'creator')
     {
-        $data['row'] = $this->Db_model->row_id('post', '13541');
+        $data['row'] = $this->Db_model->row_id('posts', '13541');
         $data['view_a'] = ( $format == 'creator') ? 'app/corpo_creator' : 'app/corpo' ;
         $data['head_title'] = 'CorpoTest';
         $this->App_model->view(TPL_ADMIN, $data);

@@ -32,7 +32,7 @@
         $att_img = $this->App_model->att_img_user($row);
         $att_img['class'] = 'card-img-top';
 
-    $qty_login = $this->Db_model->num_rows('event', "user_id = {$row->id} AND type_id = 101");
+    $qty_login = $this->Db_model->num_rows('events', "user_id = {$row->id} AND type_id = 101");
 ?>
 
 <div class="row">

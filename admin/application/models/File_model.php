@@ -6,7 +6,7 @@ class File_model extends CI_Model{
 
     function basic($file_id)
     {
-        $row = $this->Db_model->row_id('file', $file_id);
+        $row = $this->Db_model->row_id('files', $file_id);
 
         $data['file_id'] = $file_id;
         $data['row'] = $row;
@@ -113,9 +113,9 @@ class File_model extends CI_Model{
         //Obtener resultados
         if ( is_null($per_page) )
         {
-            $query = $this->db->get('file'); //Resultados totales
+            $query = $this->db->get('files'); //Resultados totales
         } else {
-            $query = $this->db->get('file', $per_page, $offset); //Resultados por página
+            $query = $this->db->get('files', $per_page, $offset); //Resultados por página
         }
         
         return $query;
@@ -139,11 +139,11 @@ class File_model extends CI_Model{
     {
         
         $role = $this->session->userdata('role');
-        $condition = 'id > 0';  //Valor por defecto, ningún user, se obtendrían cero user.
+        $condition = 'id > 0';  //Valor por defecto, ningún user, se obtendrían cero users.
         
         if ( $role <= 2 ) 
         {   //Desarrollador, todos los user
-            $condition = 'file.id > 0';
+            $condition = 'files.id > 0';
         }
         
         return $condition;
@@ -230,7 +230,7 @@ class File_model extends CI_Model{
      */
     function editable($file_id)
     {
-        $row = $this->Db_model->row_id('file', $file_id);
+        $row = $this->Db_model->row_id('files', $file_id);
 
         $editable = FALSE;
 
@@ -257,7 +257,7 @@ class File_model extends CI_Model{
             $this->change($file_id, $upload_data);  //Cambiar el archivo y modificar el registro
         }
 
-        $row = $this->Db_model->row_id('file', $file_id);
+        $row = $this->Db_model->row_id('files', $file_id);
 
         return $row;
     }
@@ -293,7 +293,7 @@ class File_model extends CI_Model{
             $arr_row = array_merge($arr_row, $arr_dimensions);
             
         //Insertar
-            $this->db->insert('file', $arr_row);
+            $this->db->insert('files', $arr_row);
 
         return $this->db->insert_id();
     }
@@ -319,12 +319,12 @@ class File_model extends CI_Model{
      */
     function update_dimensions($file_id)
     {
-        $row = $this->Db_model->row_id('file', $file_id);
+        $row = $this->Db_model->row_id('files', $file_id);
 
         $arr_row = $this->arr_dimensions(PATH_UPLOADS . $row->folder . $row->file_name);
 
         $this->db->where('id', $file_id);
-        $this->db->update('file', $arr_row);
+        $this->db->update('files', $arr_row);
         
         return $this->db->affected_rows();
     }
@@ -463,7 +463,7 @@ class File_model extends CI_Model{
     function update($file_id, $arr_row)
     {
         $this->db->where('id', $file_id);
-        $this->db->update('file', $arr_row);
+        $this->db->update('files', $arr_row);
         
         $data = array('status' => 1);
 
@@ -471,7 +471,7 @@ class File_model extends CI_Model{
     }
 
     /**
-     * Edita el registro del file, tabla file. El file en el servidor
+     * Edita el registro del file, tabla files. El file en el servidor
      * es cambiado, y el registro en la tabla registro es actualizado.
      */
     function change($file_id, $upload_data)
@@ -488,9 +488,9 @@ class File_model extends CI_Model{
             
         //Actualizar
             $this->db->where('id', $file_id);
-            $this->db->update('file', $arr_row);
+            $this->db->update('files', $arr_row);
 
-        $row_file = $this->Db_model->row_id('file', $file_id);
+        $row_file = $this->Db_model->row_id('files', $file_id);
             
         return $row_file;
     }
@@ -506,7 +506,7 @@ class File_model extends CI_Model{
         if ( $this->session->userdata('role') <= 2 ){
             $deleteable = true; 
         } else {
-            $row = $this->Db_model->row_id('file', $file_id);
+            $row = $this->Db_model->row_id('files', $file_id);
             if ( ! is_null($row) )
             {
                 //Si es el usuario creador
@@ -520,7 +520,7 @@ class File_model extends CI_Model{
     
     /**
      * Elimina file del servidor y sus miniaturas y el el registro en la 
-     * tabla file.
+     * tabla files.
      */
     function delete($file_id)
     {   
@@ -529,7 +529,7 @@ class File_model extends CI_Model{
         if ( $this->deleteable($file_id) )
         {
             //Eliminar files del servidor
-                $row_file = $this->Db_model->row_id('file', $file_id);
+                $row_file = $this->Db_model->row_id('files', $file_id);
                 if ( ! is_null($row_file) ) 
                 {
                     $this->unlink($row_file->folder, $row_file->file_name);
@@ -557,7 +557,7 @@ class File_model extends CI_Model{
             if ( $file_id > 0 )
             {
                 $this->db->where('id', $file_id);
-                $this->db->delete('file');
+                $this->db->delete('files');
 
                 $qty_deleted = $this->db->affected_rows();
             }
@@ -577,18 +577,18 @@ class File_model extends CI_Model{
             $arr_row['url_image'] = '';
             $arr_row['url_thumbnail'] = '';
             $this->db->where('image_id', $file_id);
-            $this->db->update('user', $arr_row);
+            $this->db->update('users', $arr_row);
 
         //Imagen de post
             $arr_row_post['image_id'] = 0;
             $arr_row_post['url_image'] = '';
             $arr_row_post['url_thumbnail'] = '';
             $this->db->where('image_id', $file_id);
-            $this->db->update('post', $arr_row_post);
+            $this->db->update('posts', $arr_row_post);
 
         //Otras Aplicación
-            $this->db->query("DELETE FROM post_meta WHERE type_id = 1 AND related_1 = {$file_id}"); //Imágen de post
-            $this->db->query("DELETE FROM user_meta WHERE type_id = 1 AND related_1 = {$file_id}"); //Imágen de usuario
+            $this->db->query("DELETE FROM posts_meta WHERE type_id = 1 AND related_1 = {$file_id}"); //Imágen de post
+            $this->db->query("DELETE FROM users_meta WHERE type_id = 1 AND related_1 = {$file_id}"); //Imágen de usuario
     }
 
     /**
@@ -629,7 +629,7 @@ class File_model extends CI_Model{
             'onerror' => "this.src='" . URL_IMG . 'app/' . $prefix . 'nd_square.png' . "'"
         );
         
-        $row_file = $this->Db_model->row_id('file', $file_id);
+        $row_file = $this->Db_model->row_id('files', $file_id);
 
         if ( ! is_null($row_file) )
         {
@@ -652,7 +652,7 @@ class File_model extends CI_Model{
     {
         $src = URL_IMG . 'app/sm_nd_square.png';
 
-        $row_file = $this->Db_model->row_id('file', $file_id);
+        $row_file = $this->Db_model->row_id('files', $file_id);
 
         if ( ! is_null($row_file))
         {
@@ -678,7 +678,7 @@ class File_model extends CI_Model{
         
         $this->db->select($select);
         $this->db->where('id', $file_id);
-        $query = $this->db->get('file');
+        $query = $this->db->get('files');
         
         if ( $query->num_rows() > 0 ) { $row_img = $query->row(); }
         
@@ -710,7 +710,7 @@ class File_model extends CI_Model{
     {
         
         //Valores iniciales
-            $row = $this->Db_model->row_id('file', $file_id);
+            $row = $this->Db_model->row_id('files', $file_id);
             $data = array('status' => 0, 'message' => 'Imagen NO recortada');
         
         //Configuración de recorte
@@ -789,14 +789,14 @@ class File_model extends CI_Model{
         
         $this->db->where('folder', $folder);
         $this->db->where('file_name', $file_name);
-        $query = $this->db->get('file');
+        $query = $this->db->get('files');
         
         if ( $query->num_rows() > 0 ) { $has_row = 1; }
         
         return $has_row;
     }
 
-// METADATOS tabla file_meta
+// METADATOS tabla files_meta
 //-----------------------------------------------------------------------------
 
     /**
@@ -805,10 +805,10 @@ class File_model extends CI_Model{
      */
     function metadata_flat($file_id, $type_id)
     {
-        $this->db->select('file_meta.id AS meta_id, file_meta.related_1');
+        $this->db->select('files_meta.id AS meta_id, files_meta.related_1');
         $this->db->where('type_id', $type_id);
         $this->db->where('file_id', $file_id);
-        $elements = $this->db->get('file_meta');
+        $elements = $this->db->get('files_meta');
 
         return $elements;
     }
@@ -818,30 +818,30 @@ class File_model extends CI_Model{
      */
     function metadata($file_id, $type_id)
     {
-        $this->db->select('file_meta.id AS meta_id, item_name AS title, file_meta.related_1');
-        $this->db->where('file_meta.type_id', $type_id);
-        $this->db->where('item.category_id', $type_id);
-        $this->db->where('file_meta.file_id', $file_id);
-        $this->db->join('file_meta', 'item.cod = post_meta.related_1');
-        $elements = $this->db->get('item');
+        $this->db->select('files_meta.id AS meta_id, item_name AS title, files_meta.related_1');
+        $this->db->where('files_meta.type_id', $type_id);
+        $this->db->where('items.category_id', $type_id);
+        $this->db->where('files_meta.file_id', $file_id);
+        $this->db->join('files_meta', 'items.cod = posts_meta.related_1');
+        $elements = $this->db->get('items');
 
         return $elements;
     }
 
     /**
-     * Query, tags de un file, tomados de la tabla file_meta
+     * Query, tags de un file, tomados de la tabla files_meta
      */
     function tags($file_id)
     {
         $this->db->select('id, name, slug');
-        $this->db->where("id IN (SELECT related_1 FROM file_meta WHERE file_id = {$file_id} AND type_id = 27)");
-        $tags = $this->db->get('tag');
+        $this->db->where("id IN (SELECT related_1 FROM files_meta WHERE file_id = {$file_id} AND type_id = 27)");
+        $tags = $this->db->get('tags');
 
         return $tags;
     }
 
     /**
-     * Guarda un registro en la tabla file_meta
+     * Guarda un registro en la tabla files_meta
      * 2020-07-16
      */
     function save_meta($arr_row, $fields = array('related_1'))
@@ -853,20 +853,20 @@ class File_model extends CI_Model{
             $condition .= " AND {$field} = '{$arr_row[$field]}'";
         }
 
-        $meta_id = $this->Db_model->save('file_meta', $condition, $arr_row);
+        $meta_id = $this->Db_model->save('files_meta', $condition, $arr_row);
         
         return $meta_id;
     }
 
     /**
-     * Elimina registro de la tabla file_meta, requiere post y meta id, para confirmar
+     * Elimina registro de la tabla files_meta, requiere post y meta id, para confirmar
      * 2020-07-03
      */
     function delete_meta($file_id, $meta_id)
     {
         $this->db->where('id', $meta_id);
         $this->db->where('file_id', $file_id);
-        $this->db->delete('file_meta');
+        $this->db->delete('files_meta');
         
         $data['qty_deleted'] = $this->db->affected_rows();
 
@@ -874,7 +874,7 @@ class File_model extends CI_Model{
     }
 
     /**
-     * Guarda múltiples registros en la tabla file_meta, con un array,
+     * Guarda múltiples registros en la tabla files_meta, con un array,
      * y elimina los que no estén en el array enviado por post ($new_metas)
      * 2020-08-10
      */
@@ -919,7 +919,7 @@ class File_model extends CI_Model{
 //-----------------------------------------------------------------------------
 
     /**
-     * Proceso alternado, like or unlike una imagen, registro type 10 en la tabla file_meta
+     * Proceso alternado, like or unlike una imagen, registro type 10 en la tabla files_meta
      * 2020-07-09
      */
     function alt_like($file_id)
@@ -927,7 +927,7 @@ class File_model extends CI_Model{
         //Condición
         $condition = "file_id = {$file_id} AND type_id = 10 AND related_1 = {$this->session->userdata('user_id')}";
 
-        $row_meta = $this->Db_model->row('file_meta', $condition);
+        $row_meta = $this->Db_model->row('files_meta', $condition);
 
         $data = array('status' => 0);
 
@@ -940,7 +940,7 @@ class File_model extends CI_Model{
             $arr_row['updater_id'] = $this->session->userdata('user_id');
             $arr_row['creator_id'] = $this->session->userdata('user_id');
 
-            $this->db->insert('file_meta', $arr_row);
+            $this->db->insert('files_meta', $arr_row);
             
             $data['saved_id'] = $this->db->insert_id();
             $data['status'] = 1;
@@ -948,7 +948,7 @@ class File_model extends CI_Model{
         } else {
             //Existe, eliminar (Unlike)
             $this->db->where('id', $row_meta->id);
-            $this->db->delete('file_meta');
+            $this->db->delete('files_meta');
             
             $data['qty_deleted'] = $this->db->affected_rows();
             $data['status'] = 2;
@@ -967,17 +967,17 @@ class File_model extends CI_Model{
         $like_status = 0;
         if ( $this->session->userdata('user_id') )
         {
-            $like_status = $this->Db_model->num_rows('post_meta', "post_id = {$post_id} AND type_id = 10 AND related_1 = {$this->session->userdata('user_id')}");
+            $like_status = $this->Db_model->num_rows('posts_meta', "post_id = {$post_id} AND type_id = 10 AND related_1 = {$this->session->userdata('user_id')}");
         }
 
         return $like_status;
     }
 
-// CAMPO file.searcher
+// CAMPO files.searcher
 //-----------------------------------------------------------------------------
 
     /**
-     * Actualiza el campo file.searcher de cada registro con ID mayor o igual a $min_id
+     * Actualiza el campo files.searcher de cada registro con ID mayor o igual a $min_id
      * 2020-07-28
      */
     function update_searcher_multi($min_id)
@@ -987,7 +987,7 @@ class File_model extends CI_Model{
 
         //Seleccionar archivos
         $this->db->where('id >=', $min_id);
-        $files = $this->db->get('file');
+        $files = $this->db->get('files');
 
         foreach ($files->result() as $row)
         {
@@ -998,7 +998,7 @@ class File_model extends CI_Model{
     }
 
     /**
-     * Actualiza el campo file.searcher, para un registro específico
+     * Actualiza el campo files.searcher, para un registro específico
      * 2020-07-28
      */
     function update_searcher($file_id)
@@ -1006,13 +1006,13 @@ class File_model extends CI_Model{
         $arr_row['searcher'] = $this->searcher_value($file_id);
 
         //Actualizar
-        $this->db->where('id', $file_id)->update('file', $arr_row);
+        $this->db->where('id', $file_id)->update('files', $arr_row);
 
         return $this->db->affected_rows();
     }
 
     /**
-     * String para llenar el campo file.searcher
+     * String para llenar el campo files.searcher
      * 2020-07-28
      */
     function searcher_value($file_id)
@@ -1029,11 +1029,11 @@ class File_model extends CI_Model{
         return $searcher;
     }
 
-// CAMPO file.priority
+// CAMPO files.priority
 //-----------------------------------------------------------------------------
 
     /**
-     * Actualiza el campo file.priority de cada registro con ID mayor o igual a $min_id
+     * Actualiza el campo files.priority de cada registro con ID mayor o igual a $min_id
      * 2020-07-28
      */
     function update_priority_multi($min_id)
@@ -1043,7 +1043,7 @@ class File_model extends CI_Model{
 
         //Seleccionar archivos
         $this->db->where('id >=', $min_id);
-        $files = $this->db->get('file');
+        $files = $this->db->get('files');
 
         foreach ($files->result() as $row)
         {
@@ -1054,7 +1054,7 @@ class File_model extends CI_Model{
     }
 
     /**
-     * Actualiza el campo file.searcher, para un registro específico
+     * Actualiza el campo files.searcher, para un registro específico
      * 2020-07-28
      */
     function update_priority($file_id)
@@ -1062,13 +1062,13 @@ class File_model extends CI_Model{
         $arr_row['priority'] = $this->priority_value($file_id);
 
         //Actualizar
-        $this->db->where('id', $file_id)->update('file', $arr_row);
+        $this->db->where('id', $file_id)->update('files', $arr_row);
 
         return $this->db->affected_rows();
     }
 
     /**
-     * Valor calculado para actualizar el campo file.priority
+     * Valor calculado para actualizar el campo files.priority
      * 2020-07-28
      */
     function priority_value($file_id)

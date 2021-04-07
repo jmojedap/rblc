@@ -3,7 +3,7 @@
 <?php
     $email = '';
     if ( $this->session->userdata('logged') ) {
-        $email = $this->Db_model->field_id('user', $this->session->userdata('user_id'), 'email');
+        $email = $this->Db_model->field_id('users', $this->session->userdata('user_id'), 'email');
     }
 ?>
 

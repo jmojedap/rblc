@@ -102,7 +102,7 @@ class Accounts extends CI_Controller {
     {   
         //Solicitar vista
         $data['head_title'] = 'Account created';
-        $data['row'] = $this->Db_model->row_id('user', $user_id);
+        $data['row'] = $this->Db_model->row_id('users', $user_id);
         $data['view_a'] = 'accounts/registered_v';
         $this->load->view(TPL_FRONT, $data);
     }
@@ -159,7 +159,7 @@ class Accounts extends CI_Controller {
     function change_password()
     {
         $conditions = 0;
-        $row_user = $this->Db_model->row_id('user', $this->session->userdata('user_id'));
+        $row_user = $this->Db_model->row_id('users', $this->session->userdata('user_id'));
         
         //Valores iniciales para el resultado del proceso
             $data = array('status' => 0, 'message' => 'La contraseña no fue modificada. ');

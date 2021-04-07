@@ -38,7 +38,7 @@ class Search_model extends CI_Model{
             'status',   //Status
             'u',        //User ID
             'gender',   //Gender ID
-            'plc',      //place.id
+            'plc',      //places.id
             'role',     //User role
             'e',        //edited at
             'num_min',  //Valor numérico mínimo
@@ -54,7 +54,10 @@ class Search_model extends CI_Model{
             'fe3',      //Filtro especial 3
             'cat_1',    //Category 1
             'o',        //Order by
-            'ot'        //Order type
+            'ot',        //Order type
+            'descriptor',  //Especial colibri
+            'style',  //Especial colibri
+            'feeling',  //Especial colibri
         );
         
         return $search_indexes;

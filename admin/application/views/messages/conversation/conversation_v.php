@@ -23,7 +23,7 @@
                                 class="list-group-item"
                                 v-for="(conversation, key) in conversations"
                                 v-on:click="set_current(key)"
-                                v-bind:class="{active: conversation.id == conversation_id}"
+                                v-bind:class="{active: conversations.id == conversation_id}"
                                 >
                                 <div class="media">
                                     <div class="pr-20">
@@ -35,7 +35,7 @@
                                         </a>
                                     </div>
                                     <div class="media-body">
-                                        <h5 class="mt-0 mb-5">{{ conversation.title }}</h5>
+                                        <h5 class="mt-0 mb-5">{{ conversations.title }}</h5>
                                         <span class="media-time">15 sec ago</span>
                                     </div>
                                     <div class="pl-20">

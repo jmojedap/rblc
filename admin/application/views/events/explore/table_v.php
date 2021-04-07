@@ -1,65 +1,60 @@
-<?php
-    //Clases columnas
-        $col_classes['type_id'] = 'd-none d-md-table-cell d-lg-table-cell';
-        $col_classes['element_id'] = 'd-none d-md-table-cell d-lg-table-cell';
-        $col_classes['user'] = 'd-none d-md-table-cell d-lg-table-cell';
-?>
+<div class="text-center mb-2" v-show="loading">
+    <i class="fa fa-spin fa-spinner fa-3x text-muted"></i>
+</div>
 
-<table class="table bg-white" cellspacing="0">
-    <thead>
-            <tr class="">
-                <th width="10px">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="check_all" name="check_all">
-                        <label class="custom-control-label" for="check_all">
-                            <span class="text-hide">-</span>
-                        </label>
-                    </div>
-                </th>
-                <th width="50px;">ID</th>
-                <th>Inicio</th>
-                <th>Hace</th>
-                
-                <th class="<?= $col_classes['type_id'] ?>">Tipo</th>
-                <th class="<?= $col_classes['element_id'] ?>">Elemento</th>
-                <th class="<?= $col_classes['user'] ?>">Usuario</th>
-            </tr>
+<div class="table-responsive" v-show="!loading">
+    <table class="table bg-white">
+        <thead>
+            <th width="10px"><input type="checkbox" @change="select_all" v-model="all_selected"></th>
+            <th width="10px">ID</th>
+            
+            <th width="200px">Tipo</th>
+            <th>ID Usuario</th>
+            <th>Usuario</th>
+            <th>ID Elemento</th>
+            <th>Relacionado 1</th>
+            <th>Creado</th>
+            <th>Hace</th>
+            
+            <th width="50px"></th>
         </thead>
-    <tbody>
-        <?php foreach ($elements->result() as $row_element){ ?>
-
-            <tr id="row_<?= $row_element->id ?>">
-                <td>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input check_row" data-id="<?= $row_element->id ?>" id="check_<?= $row_element->id ?>">
-                        <label class="custom-control-label" for="check_<?= $row_element->id ?>">
-                            <span class="text-hide">-</span>
-                        </label>
-                    </div>
-                </td>
-                
-                <td><?= $row_element->id ?></td>
+        <tbody>
+            <tr v-for="(element, key) in list" v-bind:id="`row_` + element.id" v-bind:class="{'table-warning': selected.includes(element.id) }">
+                <td><input type="checkbox" v-bind:id="`check_` + element.id" v-model="selected" v-bind:value="element.id"></td>
+                <td class="text-muted">{{ element.id }}</td>
                 
                 <td>
-                    <?= $this->pml->date_format($row_element->start) ?>
+                    <a v-bind:href="`<?= base_url("events/explore/1/?type=") ?>` + element.type_id">{{ element.type_id | type_name }}</a>
                 </td>
 
                 <td>
-                    <?= $this->pml->ago($row_element->start, FALSE);  ?>
+                    <a v-bind:href="`<?= base_url("events/explore/1/?u=") ?>` + element.user_id">{{ element.user_id }}</a>
                 </td>
-                
-                <td class="<?= $col_classes['type_id'] ?>">
-                    <?= $arr_types[$row_element->type_id] ?>
-                </td>
-                <td class="<?= $col_classes['element_id'] ?>">
-                    <?= $row_element->element_id ?>
-                </td>
-                <td class="<?= $col_classes['user'] ?>">
-                    <a href="<?= base_url("events/explore/1/?u={$row_element->user_id}") ?>">
-                        <?= $row_element->display_name ?>
+                <td>
+                    <a v-bind:href="`<?= base_url("users/profile/") ?>` + element.user_id">
+                        {{ element.user_display_name }}
                     </a>
                 </td>
+                <td>
+                    <a v-bind:href="`<?= base_url("events/explore/1/?fe3=") ?>` + element.element_id">{{ element.element_id }}</a>
+                </td>
+                <td>
+                    <a v-bind:href="`<?= base_url("events/explore/1/?fe1=") ?>` + element.related_1">{{ element.related_1 }}</a>
+                </td>
+
+                <td class="only-lg">
+                    <span v-bind:title="`Creado en ` + element.created_at"> {{ element.created_at }}</span>
+                </td>
+                <td class="only-lg">
+                    <span class="text-muted" v-bind:title="`Creado en ` + element.created_at"> {{ element.created_at | ago }}</span>
+                </td>
+                
+                <td>
+                    <button class="a4" data-toggle="modal" data-target="#detail_modal" @click="set_current(key)">
+                        <i class="fa fa-info"></i>
+                    </button>
+                </td>
             </tr>
-        <?php } //foreach ?>
-    </tbody>
-</table>  
+        </tbody>
+    </table>
+</div>

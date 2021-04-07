@@ -30,6 +30,9 @@ class Projects extends CI_Controller{
         
         //Opciones de filtros de búsqueda
             $data['options_type'] = $this->Item_model->options('category_id = 33', 'Todos');
+            $data['options_descriptor'] = $this->Item_model->options('category_id = 710', 'All descriptors');
+            $data['options_style'] = $this->Item_model->options('category_id = 712', 'All styles');
+            $data['options_feeling'] = $this->Item_model->options('category_id = 714', 'All feelings');
             
         //Arrays con valores para contenido en lista
             $data['arr_types'] = $this->Item_model->arr_cod('category_id = 33');
@@ -152,7 +155,7 @@ class Projects extends CI_Controller{
     }
 
     /**
-     * Listado de projects marcados por el usuario en sesión como favoritos, like, post_meta.type_id = 10
+     * Listado de projects marcados por el usuario en sesión como favoritos, like, posts_meta.type_id = 10
      * 2020-07-17
      */
     function favorites()

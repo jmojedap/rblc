@@ -1,46 +1,80 @@
-<?php    
-    //Clases filters
-        foreach ( $adv_filters as $filter )
-        {
-            $adv_filters_cl[$filter] = 'not_filtered';
-            //if ( strlen($filters[$filter]) > 0 ) { $adv_filters_cl[$filter] = ''; }
-        }
+<?php
+    $filters_style = ( strlen($str_filters) > 0 ) ? '' : 'display: none;' ;
 ?>
 
-<form accept-charset="utf-8" id="search_form" method="POST">
-    <div class="form-horizontal">
-        <div class="form-group row">
-            <div class="col-md-9">
-                <div class="input-group">
-                    <input
-                        type="text"
-                        name="q"
-                        class="form-control"
-                        placeholder="Buscar evento"
-                        autofocus
-                        title="Buscar evento"
-                        value="<?= $filters['q'] ?>"
+<form accept-charset="utf-8" method="POST" id="search_form" @submit.prevent="get_list">
+    <div class="form-group row">
+        <div class="col-md-9">
+            <div class="input-group mb-2">
+                <input
+                    type="text" name="q" class="form-control"
+                    placeholder="Buscar" title="Buscar"
+                    autofocus
+                    v-model="filters.q" v-on:change="get_list"
+                    >
+                <div class="input-group-append" title="Buscar">
+                    <button type="button" class="btn" title="Mostrar filtros para búsqueda avanzada"
+                        v-on:click="toggle_filters"
+                        v-bind:class="{'btn-primary': display_filters, 'btn-light': !display_filters }"
                         >
-                    <div class="input-group-append" title="Buscar">
-                        <button type="button" class="btn btn-secondary btn-block" id="alternar_avanzada" title="Búsqueda avanzada">
-                            <i class="fa fa-chevron-down"></i>
-                        </button>
-                    </div>
+                        <i class="fas fa-chevron-down" v-show="!display_filters"></i>
+                        <i class="fas fa-chevron-up" v-show="display_filters"></i>
+                    </button>
                 </div>
             </div>
-            <div class="col-md-3">
-                <button class="btn btn-primary btn-block">
-                    <i class="fa fa-search"></i>
-                    Buscar
-                </button>
+        </div>
+    </div>
+    <div id="adv_filters" style="<?= $filters_style ?>" class="mb-2">
+        <div class="form-group row">
+            <div class="col-md-9">
+                <select name="type" v-model="filters.type" class="form-control" title="Filtrar por tipo de evento">
+                    <option v-for="(option_type, key_type) in options_type" v-bind:value="key_type">{{ option_type }}</option>
+                </select>
             </div>
+            <label for="type" class="col-md-3 col-form-label">Tipo</label>
         </div>
 
-        <div class="form-group row <?= $adv_filters_cl['type'] ?>">
+        <div class="form-group row">
             <div class="col-md-9">
-                <?= form_dropdown('type', $options_type, $filters['type'], 'class="form-control" title="Filtrar por tipo de evento"'); ?>
+                <input name="u" type="text" class="form-control" title="ID Usuario" v-model="filters.u">
             </div>
-            <label for="type" class="col-md-3 control-label">Tipo</label>
+            <label for="user_id" class="col-md-3 col-form-label">ID Usuario</label>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md-9">
+                <input name="fe3" type="text" class="form-control" title="ID Elemento" v-model="filters.fe3">
+            </div>
+            <label for="fe3" class="col-md-3 col-form-label">ID Elemento</label>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md-9">
+                <input name="fe1" type="text" class="form-control" title="ID Relacionado 1" v-model="filters.fe1">
+            </div>
+            <label for="fe1" class="col-md-3 col-form-label">ID Relacionado 1</label>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md-9">
+                <input name="d1" type="date" class="form-control" v-model="filters.d1">
+            </div>
+            <label for="d1" class="col-md-3 col-form-label">Creado desde</label>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md-9">
+                <input name="d2" type="date" class="form-control" v-model="filters.d2">
+            </div>
+            <label for="d2" class="col-md-3 col-form-label">Creado hasta</label>
+        </div>
+
+        <!-- Botón ejecutar y limpiar filtros -->
+        <div class="form-group row">
+            <div class="col-md-9 text-right">
+                <button class="btn btn-light w120p" v-on:click="remove_filters" type="button" v-show="active_filters">Todos</button>
+                <button class="btn btn-primary w120p" type="submit">Buscar</button>
+            </div>
         </div>
     </div>
 </form>

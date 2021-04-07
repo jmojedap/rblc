@@ -84,7 +84,7 @@ class Tags extends CI_Controller{
         //Datos básicos
         $data = $this->Tag_model->basic($tag_id);
 
-        $data['qty_files'] = $this->Db_model->num_rows('file_meta', "type_id = 27 AND related_1 = {$tag_id}");
+        $data['qty_files'] = $this->Db_model->num_rows('files_meta', "type_id = 27 AND related_1 = {$tag_id}");
 
         $data['view_a'] = 'tags/info_v';
         $this->App_model->view(TPL_ADMIN, $data);
