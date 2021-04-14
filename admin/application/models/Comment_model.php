@@ -245,7 +245,7 @@ class Comment_model extends CI_Model{
         $this->db->where('parent_id', $parent_id);
         $this->db->order_by('created_at', 'DESC');
         $this->db->join('users', 'users.id = comments.creator_id');
-        $comments = $this->db->get('comment', $per_page, $offset);
+        $comments = $this->db->get('comments', $per_page, $offset);
 
         return $comments;
     }

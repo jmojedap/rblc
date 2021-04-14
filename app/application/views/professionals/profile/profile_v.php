@@ -19,7 +19,7 @@
             <div><?= $row->about ?></div>
         </div>
         <div class="col-md-4">
-            <img src="<?= $row->url_thumbnail ?>" alt="User profile image" onerror="this.src='<?php echo URL_IMG ?>users/user.png'" class="w100pc mb-2">
+            <img src="<?= $row->url_thumbnail ?>" alt="User profile image" onerror="this.src='<?= URL_IMG ?>users/user.png'" class="w100pc mb-2">
 
             <div class="mb-4">
                 <div class="d-flex">
@@ -59,17 +59,58 @@
                     <a href="<?= base_url("accounts/login") ?>" class="btn btn-white btn-block">Message</a>
                 <?php } ?>
             <?php } ?>
-
-
         </div>
     </div>
-    <div class="gallery-3">
-        <div class="image-container" v-for="(image, image_key) in images">
-            <a v-bind:href="`<?php echo base_url("pictures/details/") ?>` + image.id">
-                <img class="picture" v-bind:alt="image.title" v-bind:src="image.url_thumbnail" data-toggle="modal_no" data-target="#picture_modal" v-on:click="set_key(image_key)">
-            </a>
+
+    <hr>
+
+    <!-- MENÚ SECCIONES -->
+    <ul class="nav nav-tabs justify-content-center" id="profile_content">
+        <li class="nav-item">
+            <a class="nav-link" href="#profile_content" v-bind:class="{'active': section == 'images' }" v-on:click="set_section('images')">Images</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#profile_content" v-bind:class="{'active': section == 'projects' }" v-on:click="set_section('projects')">Projects</a>
+        </li>
+    </ul>
+
+    <!-- IMÁGENES DEL PROFESIONAL -->
+    <div v-show="section == 'images'">
+        <div class="gallery-profile" >
+            <?php if ( $this->session->userdata('user_id') == $row->id ) : ?>
+                <div class="image-container">
+                    <img class="w100pc pointer" src="<?= URL_IMG ?>front/add.png" alt="Add image" title="Add image" data-toggle="modal" data-target="#modal_upload_file">
+                </div>
+            <?php endif; ?>
+            <div class="image-container" v-for="(image, image_key) in images">
+                <img class="picture" v-bind:alt="image.title" v-bind:src="image.url_thumbnail" data-toggle="modal" data-target="#picture_modal" v-on:click="set_key(image_key)">
+                <!-- <a v-bind:href="`<?= base_url("pictures/details/") ?>` + image.id"></a> -->
+            </div>
+        </div>
+    </div>
+
+    <!-- PROYECTOS DEL PROFESSIONAL -->
+    <div v-show="section == 'projects'" class="users">
+        <div class="user" v-for="(project, project_key) in projects">
+            <div class="row">
+                <div class="col-md-9 pt-2">
+                    <a v-bind:href="`<?= base_url("projects/info/") ?>` + project.id" class="title_list">
+                        <h2>{{ project.name }}</h2>
+                        <p>{{ project.description }}</p>
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a v-bind:href="`<?= base_url("projects/info/") ?>` + project.id" class="title_list">
+                        <img class="w100pc" v-bind:src="project.url_thumbnail" onerror="this.src='<?= URL_IMG ?>app/nd.png'">
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
     <?php $this->load->view('professionals/profile/picture_modal_v') ?>
 </div>
 <?php $this->load->view('professionals/profile/vue_v') ?>
+
+<?php if ( $row->id == $this->session->userdata('user_id') ) : ?>
+    <?php $this->load->view('professionals/profile/modal_upload_file_v') ?>
+<?php endif; ?>

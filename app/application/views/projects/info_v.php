@@ -118,7 +118,7 @@
             ideabooks: <?= json_encode($my_ideabooks->result()) ?>,
             new_ideabook_name: '',
             like_status: <?= $like_status ?>,
-            su_id: su_id
+            app_uid: app_uid
         },
         methods: {
             set_current_image: function(image_key){

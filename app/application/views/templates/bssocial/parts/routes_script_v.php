@@ -2,9 +2,9 @@
     
     const app_r = '<?= $this->session->userdata('role_abbr') ?>';
     const app_rid = '<?= $this->session->userdata('role') ?>';
+    const app_uid = '<?= $this->session->userdata('user_id') ?>';
     var app_cf = '<?= $this->uri->segment(1) . '/' . $this->uri->segment(2); ?>';
     var app_q = '<?= $this->input->get('q'); ?>';
-    var su_id = '<?= $this->session->userdata('user_id') ?>';
 
     //Set New CF (Controller Function), and load sections
     function load_cf(new_cf)

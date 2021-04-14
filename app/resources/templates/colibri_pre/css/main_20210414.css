@@ -318,7 +318,7 @@ a.title_list:hover {
 /*-----------------------------------------------------------------------------*/
 
 .users .user {
-    border-top: 1px solid #333;
+    border-top: 1px solid #999;
     margin-bottom: 3em;
 }
 
@@ -342,15 +342,34 @@ a.title_list:hover {
 
 .nav-tabs {
     border: 0px;
+    margin-bottom: 0.5em;
 }
 
-.nav-tabs .nav-link.active {
-    border-color: #FF6529;
+.nav-tabs .nav-link{
+    cursor: pointer;
+    color: #666;
+    text-transform: uppercase;
+    font-size: 0.8em;
+    font-weight: bold;
+    border: #FFF;
+    border-bottom: 2px solid #FFF;
+}
+
+.nav-tabs .nav-link:hover{
+    border: #FFF;
+    border-bottom: 2px solid #FF6529;
+}
+
+.nav-tabs .nav-link.active {    
+    border: #FFF;
+    border-bottom: 2px solid #FF6529;
+    color: #FF6529;
 }
 
 #nav_2 {
     display: block;
     text-align: center;
+    margin-top: 0.5em;
 }
 
 .nav-fill .nav-item {
@@ -363,11 +382,11 @@ a.title_list:hover {
 
 #nav_2 .nav-link {
     color: #666;
-    border-radius: 28px;
+    border-radius: 0px;
 }
 
 #nav_2 .nav-link:hover {
-    background-color: #DDD;
+    background-color: #FAFAFA;
 }
 
 #nav_2 .nav-link.active {
@@ -389,6 +408,13 @@ a.title_list:hover {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1em;
+}
+
+.gallery-profile {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5em;
 }
 
 @media (max-width: 730px) {

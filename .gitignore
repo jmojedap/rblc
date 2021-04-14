@@ -40,7 +40,7 @@ app/application/logs/*
 !app/application/*/.htaccess
 
 app/vendor
-app/resources/assets/*
+app/resources/assets/
 app/application/config
 app/application/config_server
 app/application/config_local

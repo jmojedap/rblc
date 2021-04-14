@@ -41,12 +41,12 @@
             this.get_list();
         },
         data: {
-            user_id: su_id,
+            user_id: app_uid,
             list: []
         },
         methods: {
             get_list: function(){
-                axios.get(url_api + 'users/following/' + su_id)
+                axios.get(url_api + 'users/following/' + app_uid)
                 .then(response => {
                     this.list = response.data.list
                 })

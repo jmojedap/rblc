@@ -20,7 +20,7 @@
                 comment_text: '',
                 parent_id: 0
             },
-            su_id: su_id
+            app_uid: app_uid
         },
         methods: {
             get_comments: function(){

@@ -174,7 +174,7 @@ class Professional_model extends CI_Model{
 
     /**
      * Imágenes asociadas al usuario, mediante la tabla users_meta, tipo 1
-     * 2020-05-15
+     * 2021-04-14
      */
     function images($user_id)
     {
@@ -182,6 +182,7 @@ class Professional_model extends CI_Model{
         $this->db->where('table_id', 1000); //Tabla usuario
         $this->db->where('related_1', $user_id);
         $this->db->where('album_id', 10);   //Colección general de imágenes de un usuario
+        $this->db->order_by('updated_at', 'desc');
 
         $images = $this->db->get('files');
 

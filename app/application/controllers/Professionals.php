@@ -48,6 +48,7 @@ class Professionals extends CI_Controller{
         $data = $this->Professional_model->basic($user_id);
 
         //Variables específicas
+        $data['options_cat_1'] = $this->Item_model->options('category_id = 718', 'Select category');
         $data['follow_status'] = $this->Professional_model->follow_status($user_id);
 
         //Vista

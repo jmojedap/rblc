@@ -24,11 +24,11 @@
             element: [],
             element_key: 0,
             filters: [],
-            su_id: su_id
+            app_uid: app_uid
         },
         methods: {
             get_list: function(){
-                axios.post(url_api + this.controller + '/get/' + this.num_page + '/?u=' + this.su_id, $('#search_form').serialize())
+                axios.post(url_api + this.controller + '/get/' + this.num_page + '/?u=' + this.app_uid, $('#search_form').serialize())
                 .then(response => {
                     this.list = response.data.list;
                     this.max_page = response.data.max_page;

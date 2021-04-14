@@ -132,7 +132,7 @@ class Project_model extends CI_Model{
     /**
      * Conjunto de variables de una búsqueda, incluido el listado de resultados
      */
-    function get($filters, $num_page, $per_page = 8)
+    function get($filters, $num_page, $per_page = 9)
     {
         //Referencia
             $offset = ($num_page - 1) * $per_page;      //Número de la página de datos que se está consultado
@@ -157,7 +157,7 @@ class Project_model extends CI_Model{
     function search($filters, $per_page = NULL, $offset = NULL)
     {
         //Construir consulta
-            $this->db->select('id, post_name AS name, related_1 AS professional_id, integer_1 AS price, related_2, slug, url_image, url_image, url_thumbnail');
+            $this->db->select('id, post_name AS name, excerpt AS description, related_1 AS professional_id, integer_1 AS price, related_2, slug, url_image, url_image, url_thumbnail');
             
         //Orden
             if ( $filters['o'] != '' )
