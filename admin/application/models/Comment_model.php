@@ -328,11 +328,11 @@ class Comment_model extends CI_Model{
     function update_qty_answers($comment_id, $qty_sum = 1)
     {
         if ( ! is_null($qty_sum) ) {
-            $sql = "UPDATE comment SET qty_comments = qty_comments + ({$qty_sum}) WHERE id = {$comment_id}";
+            $sql = "UPDATE comments SET qty_comments = qty_comments + ({$qty_sum}) WHERE id = {$comment_id}";
             $this->db->query($sql);
         } else {
             //Si $qty_sum es NULL, Se calcula el valor total desde la tabla comments
-            $arr_row['qty_comments'] = $this->Db_model->num_rows('comment', "parent_id = {$comment_id}");
+            $arr_row['qty_comments'] = $this->Db_model->num_rows('comments', "parent_id = {$comment_id}");
     
             $this->db->where('id', $comment_id);
             $this->db->update('comments', $arr_row);

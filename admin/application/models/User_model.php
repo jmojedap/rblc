@@ -713,7 +713,7 @@ class User_model extends CI_Model{
 
     /**
      * Proceso alternado, seguir o dejar de seguir un usuario de la plataforma
-     * 2020-06-01
+     * 2021-07-27
      */
     function alt_follow($user_id)
     {
@@ -733,10 +733,14 @@ class User_model extends CI_Model{
             $arr_row['updater_id'] = $this->session->userdata('user_id');
             $arr_row['creator_id'] = $this->session->userdata('user_id');
 
-            $this->db->insert('users_meta', $arr_row);
+            $this->db->insert('users_meta', $arr_row);  //Guardar en tabla users_meta
+            $meta_id = $this->db->insert_id();
             
-            $data['saved_id'] = $this->db->insert_id();
+            $data['saved_id'] = $meta_id;
             $data['status'] = 1;
+
+            $this->load->model('Notification_model');
+            $this->Notification_model->email_new_follower($user_id, $meta_id);
         } else {
             //Existe, eliminar (Dejar de seguir)
             $this->db->where('id', $row_meta->id);

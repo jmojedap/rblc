@@ -160,6 +160,20 @@ class Accounts extends CI_Controller {
     }
 
     /**
+     * Vista previa de mensajes de email, notificaciones
+     * 2021-07-27
+     */
+    function test_notification_message($type = 'new_follower', $param_1 = 0, $param_2 = 0)
+    {
+        $this->load->model('Notification_model');
+        if ( $type == 'new_follower' ) {
+            echo $this->Notification_model->new_follower_message($param_1, $param_2);
+        } else if ( $type == 'new_message' ) {
+            echo $this->Notification_model->new_message_message($param_1, $param_2);
+        }
+    }
+
+    /**
      * AJAX JSON
      * Validation of form signup user data
      */

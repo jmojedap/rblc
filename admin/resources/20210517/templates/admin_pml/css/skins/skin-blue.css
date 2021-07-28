@@ -3,7 +3,8 @@
  * ----------
  */
 .skin-blue .main-header .navbar {
-  background-color: #FEFEFE;
+  background-color: #FFFFFF;
+  color: #999;
   padding: 0px;
 }
 .skin-blue .main-header .navbar .nav > li > a {
@@ -29,7 +30,7 @@
   background: rgba(0, 0, 0, 0.1);
 }
 .skin-blue .main-header .navbar .sidebar-toggle {
-  color: #666;
+  color: #2f5d72;
 }
 .skin-blue .main-header .navbar .sidebar-toggle:hover {
   background-color: #f1f1f1;
@@ -68,7 +69,7 @@
 .skin-blue .sidebar-menu > li.active > a {
   color: #ffffff;
   background: #1e282c;
-  border-left-color: #ff4845;
+  border-left-color: #FF5c42;
 }
 
 .skin-blue .sidebar-menu > li > .treeview-menu {
@@ -97,7 +98,7 @@
   color: #ffffff;
 }
 .skin-blue .treeview-menu li.active {
-  border-left: 4px solid #ffc107;
+  border-left: 4px solid #3e8ef7;
 }
 .skin-blue .sidebar-form {
   border-radius: 3px;
@@ -146,4 +147,26 @@
 }
 .skin-blue.layout-top-nav .main-header > .logo:hover {
   background: #3b8ab8;
+}
+
+/* Dropdown */
+/*-----------------------------------------------------------------------------*/
+
+.dropdown-item.active, .dropdown-item:active{
+  background: #3E8EF7;
+}
+
+
+/* Pantalla de Inicio, START */
+/*-----------------------------------------------------------------------------*/
+.start_body{
+  background-color: #3e8ef7;
+}
+
+/* Pantalla de Inicio, START MOBILE */
+/*-----------------------------------------------------------------------------*/
+@media (max-width: 730px) {
+  .start_body {
+    background-color: #FAFAFA;
+  }
 }

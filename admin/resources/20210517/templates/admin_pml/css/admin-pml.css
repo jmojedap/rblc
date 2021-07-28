@@ -11,7 +11,8 @@
  */
 html,
 body {
-  min-height: 100%;
+  height: 100vh;
+  background-color: #f1f4f5;
 }
 .layout-boxed html,
 .layout-boxed body {
@@ -27,7 +28,7 @@ body {
 }
 /* Layout */
 .wrapper {
-  min-height: 100%;
+  /*min-height: 100%;*/
   position: static;
   overflow: hidden;
 }
@@ -96,12 +97,24 @@ body {
   z-index: 800;
   margin-top: 45px;
 }
+
 .main-footer {
-  background: #fff;
-  padding: 15px;
+  background: #222D32;
+  padding: 0.2em 0px;
   color: #444;
   border-top: 1px solid #d2d6de;
 }
+
+.main-footer a{
+  text-align: center;
+  display: block;
+  color:white;
+  width: 100%;
+  background-color: transparent;
+  border: 0px solid transparent;
+  font-size: 1.5em;
+}
+
 /* Fixed layout */
 .fixed .main-header,
 .fixed .main-sidebar,
@@ -289,11 +302,11 @@ a:focus {
   display: block;
   float: left;
   height: 50px;
-  font-size: 20px;
+  font-size: 24px;
   line-height: 50px;
   text-align: center;
   width: 230px;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Rubik", Helvetica, Arial, sans-serif;
   padding: 0 15px;
   font-weight: 300;
   overflow: hidden;
@@ -1149,11 +1162,10 @@ a:focus {
 }
 .navbar-nav > .user-menu .user-image {
   float: left;
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
-  margin-right: 10px;
-  margin-top: -2px;
+  margin-top: -5px;
   border: 2px solid #f1f1f1;
 }
 
@@ -1165,7 +1177,7 @@ a:focus {
   .navbar-nav > .user-menu .user-image {
     float: none;
     margin-right: 0;
-    margin-top: -8px;
+    margin-top: -5px;
     line-height: 10px;
   }
 }
@@ -1572,40 +1584,86 @@ a:focus {
 }
 
 /*AGREGADOS POR PML*/
-/** --------------------------------------------------- **/
-
-#page_titles{
-  max-height: 50px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: inline-block;
-  max-width: 300px;
-  white-space: nowrap;
-  margin-top: 0.5em;
-}
+/** ------------------------------------------------------------------------------------------------------ **/
 
 #head_title{
+  margin-top: 0.3em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   font-family: 'Rubik', sans-serif;
-  display: inline-block;
-  font-size: 1.5em;
-  color: #3e8ef7;
+  font-size: 1.8em;
+  color: #2f5d72;
 }
 
-@media (max-width: 730px) {
-  #head_title {
-      max-width: 200px;
-      text-overflow: ellipsis;
+.navbar-link{
+  height: 42px;
+  width: 42px;
+  border-radius: 21px;
+  color: #2f5d72; 
+  background-image: none;
+  display: grid;
+  margin-right: 0.2em;
+  align-items: center;
+  text-align: center;
+}
+
+.navbar-link:hover{
+  color: #2f5d72;
+  background-color: #f1F1F1;
+}
+
+.navbar-user-image{
+  width: 38px;
+  height: 38px;
+  margin-right: 10px;
+  border-radius: 50%;
+  border: 2px solid #f1f1f1;
+}
+
+/* Nav2 */
+/*-----------------------------------------------------------------------------*/
+
+  .nav_2_title {
+    font-size: 1.8em;
+    color: #777;
   }
+
+  .btn-circle{
+    border: transparent;
+    height: 32px;
+    width: 32px;
+    text-align: center;
+    background-color: transparent;
+    display: grid;
+    align-items: center;
+    color: #555;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .btn-circle:hover,
+  .btn-circle:active
+  {
+    color: #444;
+    background-color: #DDD;
+  }
+
+/* Footer */
+/*-----------------------------------------------------------------------------*/
+
+.navigation-footer {
+  background: #222D32;
+  padding: 0.2em 0px;
+  color: white;
 }
 
-#head_subtitle{
-  display: inline-block;
-  color: #777;
-  font-size: 1.2em;
-  max-width: 200px;
-  padding-left: 0.5em;
-  margin-left: 0.5em;
-  border-left: 2px solid #DDD;
+.navigation-footer button{
+  color: white;
+  width: 100%;
+  background-color: transparent;
+  border: 0px solid transparent;
+  font-size: 1.5em;
 }
 
 /* Table */
@@ -1666,18 +1724,4 @@ table.table-hover tr:hover{
 .btn_google:hover{
   background-color: #f1f1f1;
   border: 1px solid #AAAAAA;
-}
-
-/* Pantalla de Inicio, START MOBILE */
-/*-----------------------------------------------------------------------------*/
-@media (max-width: 730px) {
-  .start_container {
-    background-color: transparent;
-    border: transparent;
-    margin-top: 0px;
-  }
-
-  .start_footer{
-    color: #666;
-  }
 }

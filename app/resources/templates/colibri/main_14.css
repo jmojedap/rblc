@@ -27,13 +27,6 @@ footer .decco-column {
     border-right: 4px solid #FF6529;
 }
 
-@media only screen and (max-width: 768px) {
-    footer .decco-column {
-        border-right: none;
-        margin-bottom: 64px;
-    }
-}
-
 
 #field-subscription {
     color: white;
@@ -417,16 +410,6 @@ a.title_list:hover {
     gap: 0.5em;
 }
 
-@media (max-width: 730px) {
-    .gallery-3 {
-        grid-template-columns: 1fr;
-    }
-
-    .gallery-2 {
-        grid-template-columns: 1fr;
-    }
-}
-
 .image-container {
     position: relative;
 }
@@ -483,8 +466,27 @@ a.title_list:hover {
     font-size: 1.2em;
 }
 
-/* MESSAGES */
+/* CHAT Y MENSAJERÍA */
 /*-----------------------------------------------------------------------------*/
+
+.conversations{
+    list-style-type: none; /* Remove bullets */
+    padding: 0; /* Remove padding */
+    margin: 0; /* Remove margins */
+}
+
+.conversations li{
+    padding: 0.5em;
+    cursor: pointer;
+}
+
+.conversations li:hover{
+    background-color: #f5f5f5;
+}
+
+.conversations li.active {
+    background-color: #ebebeb;
+}
 
 .conversations .user_img {
     width: 35px;
@@ -498,9 +500,12 @@ a.title_list:hover {
     max-height: 400px;
 }
 
-.list-group-item.active {
-    background-color: #FF6529;
-    border-color: #FF6529;
+.messages{
+    background-color: #fafafa;
+}
+
+.messages .message {
+    padding: 0.5em;
 }
 
 .message-active {
@@ -515,13 +520,16 @@ a.title_list:hover {
     width: 35px;
 }
 
-.messages .message {
-    border-top: 1px solid #FAFAFA;
-    padding: 0.5em;
+.message .globe {
+    background-color: #ebebeb;
+    padding: 0.2em 0.5em 0.5em 0.5em;
+    border-radius: 0.5em;
+    display: inline-block;
+    max-width: calc(100% - 45px);
 }
 
-.message .globe {
-    padding: 0.1em 0.5em 0.5em 0.5em;
+.message-right .globe{
+    background-color: #ffece6;
 }
 
 /* NEW SLIDER */

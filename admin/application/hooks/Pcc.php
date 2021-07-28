@@ -16,7 +16,7 @@ class Pcc {
         //Verificar allow
             if ( $allow_cf )
             {
-                //$this->no_leidos();     //Actualizar variable de sesión, cant mensajes no leídos
+                $this->qty_unread_messages();     //Actualizar variable de sesión, cant mensajes no leídos
             } else {
                 //No tiene allow
                 //header('HTTP/1.0 403 Forbidden');
@@ -66,21 +66,24 @@ class Pcc {
      * Antes de cada acceso, actualiza la variable de sesión de cantidad de mensajes 
      * sin leer
      */
-    function no_leidos()
+    function qty_unread_messages()
     {
         $this->CI = &get_instance();
-        
-        //Consulta
-            $this->CI->db->where('estado', 0);  //No leído
-            $this->CI->db->where('usuario_id', $this->CI->session->userdata('usuario_id'));  //No leído
-            $mensajes = $this->CI->db->get('mensaje_usuario');
             
-        //Establecer valor
-            $no_leidos = 0;
-            if ( $mensajes->num_rows() > 0 ) { $no_leidos = $mensajes->num_rows(); }
+        //Identificar usuario
+            $user_id = $this->CI->session->userdata('user_id');
+
+        //Identificar mensajes sin leer
+            $this->CI->db->select('message_user.id');
+            $this->CI->db->join('messages', 'messages.id = message_user.message_id');
+            $this->CI->db->where('message_user.user_id', $user_id);
+            $this->CI->db->where('message_user.status', 0); //Enviado, sin leer
+            $messages = $this->CI->db->get('message_user');
+    
+            $qty_unread_messages =  $messages->num_rows();
         
         //Actualizar variable de sesión
-            $this->CI->session->set_userdata('no_leidos', $no_leidos);
+            $this->CI->session->set_userdata('qty_unread_messages', $qty_unread_messages);
     }
     
 }

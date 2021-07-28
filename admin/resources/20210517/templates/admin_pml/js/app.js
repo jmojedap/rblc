@@ -287,7 +287,6 @@ $.AdminLTE.pushMenu = function (toggleBtn) {
       $("body").removeClass('sidebar-open');
     }
   });
-
 };
 
 /* Tree()

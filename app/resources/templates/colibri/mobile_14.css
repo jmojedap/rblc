@@ -1,0 +1,14 @@
+@media only screen and (max-width: 767px) {
+    footer .decco-column {
+        border-right: none;
+        margin-bottom: 64px;
+    }
+
+    .gallery-3 {
+        grid-template-columns: 1fr;
+    }
+
+    .gallery-2 {
+        grid-template-columns: 1fr;
+    }
+}

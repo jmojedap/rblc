@@ -62,7 +62,6 @@ class Message_model extends CI_Model{
     function conversations($num_page, $q)
     {
         $this->db->select('conversations.id, conversations.updated_at, users_meta.related_2 AS element_id, users.display_name AS title, users.url_image');
-        //$this->db->select('conversations.id');
         $this->db->join('users_meta', 'conversations.id = users_meta.related_1');
         $this->db->join('users', 'users.id = users_meta.related_2');
         $this->db->where('users_meta.user_id', $this->session->userdata('user_id'));
@@ -96,6 +95,8 @@ class Message_model extends CI_Model{
         $conversation_meta['title'] = $row_user->display_name;
         $conversation_meta['url_image'] = $row_user->url_image;*/
         $conversation_meta['qty_unread'] = $this->qty_unread($this->session->userdata('user_id'), $row_conversation['id']);
+        $conversation_meta['last_id'] = 0;   //ID de mensaje más reciente
+        $conversation_meta['messages'] = array();
 
         return $conversation_meta;
     }
@@ -120,7 +121,7 @@ class Message_model extends CI_Model{
 //-----------------------------------------------------------------------------
 
     /**
-     * Guarda el mensaje en la tabla message, y luego lo envía a los usuarios participantes
+     * Guarda el mensaje en la tabla message, y luego lo "envía" a los usuarios participantes
      * en la conversación.
      * 2019-09-24
      */

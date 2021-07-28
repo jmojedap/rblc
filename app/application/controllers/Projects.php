@@ -39,6 +39,7 @@ class Projects extends CI_Controller{
             
         //Cargar vista
             $this->App_model->view(TPL_ADMIN, $data);
+            $this->output->enable_profiler(TRUE);
     }
     
 // CRUD

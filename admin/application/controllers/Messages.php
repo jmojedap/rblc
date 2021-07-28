@@ -32,6 +32,19 @@ class Messages extends CI_Controller{
 //-----------------------------------------------------------------------------
 
     /**
+     * Entero, cantidad de mensajes no leídos por el usuario en sesión
+     * 2021-06-10
+     */
+    function qty_unread()
+    {
+        $user_id = $this->session->userdata('user_id');
+        $qty_unread = $this->Message_model->qty_unread($user_id);
+
+        //Salida JSON
+        $this->output->set_content_type('application/json')->set_output($qty_unread);
+    }
+
+    /**
      * AJAX JSON
      * Listado de conversaciones en las que participa el usuario en sesión
      */

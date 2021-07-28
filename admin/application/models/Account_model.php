@@ -135,7 +135,6 @@ class Account_model extends CI_Model{
                 'role_abbr'    => $this->Db_model->field('items', "category_id = 58 AND cod = {$row_user->role}", 'abbreviation'),
                 'last_login'    => $row_user->last_login,
                 'src_img'    => $this->App_model->src_img_user($row_user, 'sm_'),
-                'acl' => $this->acl($row_user)   //Listado de permisos
             );
                 
         //Datos específicos para la aplicación
@@ -406,7 +405,6 @@ class Account_model extends CI_Model{
             $this->email->initialize($config);
             $this->email->from('accounts@' . APP_DOMAIN, APP_NAME);
             $this->email->to($row_user->email);
-            $this->email->bcc('jmojedap@gmail.com');
             $this->email->message($this->activation_message($user_id, $activation_type));
             $this->email->subject($subject);
             

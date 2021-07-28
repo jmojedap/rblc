@@ -1,5 +1,5 @@
 <footer class="py-3 mt-3">
-    <div class="container">
+    <div class="container only-lg">
         <div class="row">
             <div class="col-md-3 decco-column">
                 <img src="<?= URL_IMG ?>app/footer_logo.png" alt="Colibro Logo" class="footer-logo">

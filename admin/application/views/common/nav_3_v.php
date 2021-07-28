@@ -16,10 +16,10 @@
     </div>
 
     <div class="dropdown only-sm">
-        <button class="btn btn-secondary btn-block " type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button class="btn btn-light btn-block " type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             {{ current.text }}
             <span class="float-right">
-                <i class="fa fa-ellipsis-v"></i>
+                <i class="fa fa-chevron-down"></i>
             </span>
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenu2" style="width: 100%">
@@ -37,34 +37,39 @@
 </div>
 
 <script>
-    new Vue({
-        el: '#nav_3_vue',
-        created: function(){
-            this.set_current();
+var nav_3_vue = new Vue({
+    el: '#nav_3_vue',
+    created: function(){
+        this.set_current();
+    },
+    data: {
+        nav_3: nav_3,  //Elementos contenido del menú
+        current: { text: 'Menú' }
+    },
+    methods: {
+        activate_menu: function (key) {
+            this.current = this.nav_3[key];
+            for ( i in this.nav_3 ) this.nav_3[i].class = ''
+            
+            this.nav_3[key].class = 'active'   //Elemento actual
+            if ( this.nav_3[key].anchor ) {
+                window.location = url_app + this.nav_3[key].cf
+            } else {
+                this.load_view_a(key)
+            }
         },
-        data: {
-            nav_3: nav_3  //Elementos contenido del menú
+        load_view_a: function(key){
+            app_cf = this.nav_3[key].cf
+            //console.log(app_cf);
+            load_sections('nav_3') //Función global
         },
-        methods: {
-            activate_menu: function (key) {
-                for ( i in this.nav_3 ){
-                    this.nav_3[i].class = '';
-                }
-                this.nav_3[key].class = 'active';   //Elemento actual
-                this.load_view_a(key);
-            },
-            load_view_a: function(key){
-                app_cf = this.nav_3[key].cf;
-                //console.log(app_cf);
-                load_sections('nav_3'); //Función global
-            },
-            set_current: function(){
-                for ( i in this.nav_3 ){
-                    if ( this.nav_3[i].class == 'active' ) {
-                        this.current = this.nav_3[i];
-                    }
+        set_current: function(){
+            for ( i in this.nav_3 ){
+                if ( this.nav_3[i].class == 'active' ) {
+                    this.current = this.nav_3[i]
                 }
             }
         }
-    });
+    }
+});
 </script>

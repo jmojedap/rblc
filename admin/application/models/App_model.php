@@ -66,7 +66,7 @@ class App_model extends CI_Model{
 
         //Cantidad de mensajes sin leer
         $this->load->model('Message_model');
-        $data['qty_unread'] = $this->Message_model->qty_unread($row_user->id);
+        $data['qty_unread_messages'] = $this->Message_model->qty_unread($row_user->id);
 
         /*$data = array();*/
 

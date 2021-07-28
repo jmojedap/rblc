@@ -1,6 +1,6 @@
-<title>Colibri.House <?php echo $head_title ?></title>
+<title>Colibri.House <?= $head_title ?></title>
         
-        <link rel="shortcut icon" href="<?php echo URL_IMG ?>app/favicon.png"> 
+        <link rel="shortcut icon" href="<?= URL_IMG ?>app/favicon.png"> 
         
         <!-- Required meta tags -->
         <meta charset="utf-8">
@@ -8,19 +8,19 @@
 
         <?php $this->load->view('assets/bootstrap'); ?>
         
-        <link rel="stylesheet" href="<?php echo base_url('resources/templates/colibri_pre/css/main_20210414.css') ?>">
-        <link rel="stylesheet" href="<?php echo base_url('resources/css/ideabook_colors.css') ?>">
 
         <!-- Google Analytics -->
         <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-177846858-1"></script>
-        <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
+        <?php if ( ENV == 'production' ) : ?>
+                <script async src="https://www.googletagmanager.com/gtag/js?id=UA-177846858-1"></script>
+                <script>
+                        window.dataLayer = window.dataLayer || [];
+                        function gtag(){dataLayer.push(arguments);}
+                        gtag('js', new Date());
 
-        gtag('config', 'UA-177846858-1');
-        </script>
+                        gtag('config', 'UA-177846858-1');
+                </script>
+        <?php endif; ?>
 
 
         <!-- Moment.js -->
@@ -37,11 +37,14 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"/>
 
         <!-- PML Tools -->
-        <link rel="stylesheet" href="<?php echo base_url('resources/css/style_pml.css') ?>">
-        <script src="<?php echo base_url('resources/js/pcrn.js') ?>"></script>
+        <link rel="stylesheet" href="<?= base_url('resources/css/style_pml.css') ?>">
+        <script src="<?= base_url('resources/js/pcrn.js') ?>"></script>
         <script>
-                const url_app = '<?php echo URL_APP ?>'; const url_api = '<?php echo URL_API ?>'; const app_url = '<?php echo URL_APP ?>';
+                const url_app = '<?= URL_APP ?>'; const url_api = '<?= URL_API ?>'; const app_url = '<?= URL_APP ?>';
         </script>
 
         <!-- Alertas y notificaciones -->
         <?php $this->load->view('assets/toastr') ?>
+
+        <link rel="stylesheet" href="<?= base_url('resources/templates/colibri/main_14.css') ?>">
+        <link rel="stylesheet" href="<?= base_url('resources/templates/colibri/ideabook_colors.css') ?>">
