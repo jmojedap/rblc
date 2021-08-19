@@ -2,11 +2,11 @@
     $app_cf_index = $this->uri->segment(1) . '_' . $this->uri->segment(2);
     
     $cl_nav_2['files_explore'] = '';
-    $cl_nav_2['files_import'] = '';
+    $cl_nav_2['files_check'] = '';
     $cl_nav_2['files_add'] = '';
     
     $cl_nav_2[$app_cf_index] = 'active';
-    if ( $app_cf_index == 'files_import_e' ) { $cl_nav_2['files_import'] = 'active'; }
+    //if ( $app_cf_index == 'files_check_e' ) { $cl_nav_2['files_check'] = 'active'; }
 ?>
 
 <script>
@@ -21,12 +21,12 @@
         cf: 'files/explore'
     };
 
-    /*sections.import = {
+    sections.check = {
         icon: 'fa fa-upload',
-        text: 'Import',
-        class: '<?php //echo $cl_nav_2['files_import'] ?>',
-        cf: 'files/import'
-    };*/
+        text: 'Check',
+        class: '<?= $cl_nav_2['files_check'] ?>',
+        cf: 'files/check'
+    };
 
     sections.add = {
         icon: 'fa fa-plus',
@@ -36,9 +36,9 @@
     };
     
     //Secciones para cada rol
-    sections_role[0] = ['explore', 'add'];
-    sections_role[1] = ['explore', 'add'];
-    sections_role[2] = ['explore', 'add'];
+    sections_role[0] = ['explore', 'add', 'check'];
+    sections_role[1] = ['explore', 'add', 'check'];
+    sections_role[2] = ['explore', 'add', 'check'];
     
     //Recorrer el sections del rol actual y cargarlos en el menú
     for ( key_section in sections_role[app_rid]) 

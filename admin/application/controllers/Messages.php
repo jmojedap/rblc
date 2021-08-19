@@ -75,6 +75,7 @@ class Messages extends CI_Controller{
      */
     function send_message($conversation_id)
     {
+        $this->load->model('Notification_model');
         $data = $this->Message_model->send_message($conversation_id);
 
         $this->output->set_content_type('application/json')->set_output(json_encode($data));

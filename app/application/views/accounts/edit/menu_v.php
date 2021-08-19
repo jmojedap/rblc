@@ -6,6 +6,7 @@
     $cl_nav_2['image'] = '';
     $cl_nav_2['images'] = '';
     $cl_nav_2['password'] = '';
+    $cl_nav_2['settings'] = '';
     $cl_nav_2['business_profile'] = '';
 
     $app_cf_index = $this->uri->segment(3);
@@ -80,12 +81,20 @@
         cf: 'professionals/categories',
         anchor: true
     };
+
+    sections.settings = {
+        icon: 'fa fa-cog',
+        text: 'Settings',
+        class: '<?php echo $cl_nav_2['settings'] ?>',
+        cf: 'accounts/edit/settings',
+        anchor: true
+    };
     
     //Secciones para cada rol
-    sections_role.dvlp = ['basic', 'social_links', 'image', 'password'];
-    sections_role.admn = ['basic', 'social_links', 'image', 'password'];
-    sections_role.prof = ['preview', 'business_profile', 'categories', 'social_links', 'image', 'images', 'password'];
-    sections_role.hown = ['basic', 'social_links', 'image', 'password'];
+    sections_role.dvlp = ['basic', 'social_links', 'image', 'settings', 'password'];
+    sections_role.admn = ['basic', 'social_links', 'image', 'settings', 'password'];
+    sections_role.prof = ['preview', 'business_profile', 'categories', 'social_links', 'image', 'images', 'settings', 'password'];
+    sections_role.hown = ['basic', 'social_links', 'image', 'settings', 'password'];
     
     //Recorrer el sections del rol actual y cargarlos en el menú
     for ( key_section in sections_role[app_r]) 

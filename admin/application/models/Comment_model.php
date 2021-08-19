@@ -195,14 +195,21 @@ class Comment_model extends CI_Model{
             $arr_row['creator_id'] = $this->session->userdata('user_id');
 
             //Insertar en la tabla
-                $this->db->insert('comments', $arr_row);
-                $data['saved_id'] = $this->db->insert_id();
+            $this->db->insert('comments', $arr_row);
+            $data['saved_id'] = $this->db->insert_id();
 
-                //Actualizar los contadores
-                $this->update_qty_comments($table_id, $element_id, 1);
+            //Actualizar los contadores
+            $this->update_qty_comments($table_id, $element_id, 1);
 
-                //Si es una respuesta, tiene padre, actualizar contadores
-                if ( $arr_row['parent_id'] > 0 ) { $this->update_qty_answers($arr_row['parent_id'], 1); }
+            //Si es una respuesta, tiene padre, actualizar contadores
+            if ( $arr_row['parent_id'] > 0 ) { $this->update_qty_answers($arr_row['parent_id'], 1); }
+
+            //Notificar por email y alerta
+            if ( $data['saved_id'] > 0 ) {
+                $this->load->model('Notification_model');
+                $this->Notification_model->email_new_comment($data['saved_id']);
+                $this->Notification_model->save_new_comment_alert($data['saved_id']);
+            }
         }
         
         return $data;

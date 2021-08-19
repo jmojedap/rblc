@@ -127,7 +127,7 @@ class Message_model extends CI_Model{
      */
     function send_message($conversation_id)
     {
-        //Crear registro
+        //Crear registro tabla message
             $arr_row['conversation_id'] = $conversation_id;
             $arr_row['text'] = $this->input->post('text');
             $arr_row['user_id'] = $this->session->userdata('user_id');
@@ -151,7 +151,8 @@ class Message_model extends CI_Model{
     /**
      * Envía los mensajes a los usuarios participantes en una conversación.
      * Devuelve el número de registros creados en la tabla message_user
-     * 2019-09-24
+     * Envía notificación por e-mail, de nuevo mensaje interno, si es necesario
+     * 2021-07-29
      */
     function assign_users($conversation_id, $message_id)
     {
@@ -163,11 +164,20 @@ class Message_model extends CI_Model{
         {
             $arr_row['user_id'] = $row_user->user_id;
             $arr_row['status'] = ( $row_user->user_id == $this->session->userdata('user_id') ) ? 1 : 0; //Leído si es el mismo que lo envía
+            $arr_row['updated_at'] = date('Y-m-d H:i:s');
 
             $condition = "user_id = {$arr_row['user_id']} AND message_id = {$arr_row['message_id']}";
             $sent_id = $this->Db_model->save('message_user', $condition, $arr_row);
 
             $qty_sent += ( $sent_id > 0 ) ? 1 : 0;
+
+            //Si quien recibe es diferente a quien crea el mensaje, se envía notificación
+            if ( $row_user->user_id != $this->session->userdata('user_id') ) {
+                //Alerta de notificación
+                $this->Notification_model->save_recent_message_alert($row_user->user_id, $message_id);
+                //Email de notificación
+                $this->Notification_model->email_new_message($row_user->user_id, $message_id);
+            }
         }
 
         return $qty_sent;

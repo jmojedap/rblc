@@ -84,14 +84,6 @@ class App extends CI_Controller {
         $this->App_model->view(TPL_ADMIN, $data);
     }
 
-    function corpo($format = 'creator')
-    {
-        $data['row'] = $this->Db_model->row_id('posts', '13541');
-        $data['view_a'] = ( $format == 'creator') ? 'app/corpo_creator' : 'app/corpo' ;
-        $data['head_title'] = 'CorpoTest';
-        $this->App_model->view(TPL_ADMIN, $data);
-    }
-
     /**
      * Guardar email para suscripción a newsletter
      * 2020-07-22
@@ -110,6 +102,34 @@ class App extends CI_Controller {
             $data['recaptcha_score'] = $recaptcha->score;
         }
 
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
+
+// Notificaciones
+//-----------------------------------------------------------------------------
+
+    /**
+     * Cantidad de alertas de notificaciones sin leer por parte del usuario
+     * 2021-08-12
+     */
+    function qty_unread_notifications(){
+        $this->load->model('Notification_model');
+        $data['qty_unread_notifications'] = $this->Notification_model->qty_unread_notifications();
+
+        //Salida JSON
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
+
+    /**
+     * Lista de notificaciones para el usuario
+     * 2021-08-12
+     */
+    function get_notifications(){
+        $this->load->model('Notification_model');
+        $notifications = $this->Notification_model->notifications();
+        $data['notifications'] = $notifications->result();
+
+        //Salida JSON
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 

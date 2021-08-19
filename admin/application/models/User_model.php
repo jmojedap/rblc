@@ -692,6 +692,56 @@ class User_model extends CI_Model{
         return $data;
     }
 
+// Ajustes de cuenta de usuario
+//-----------------------------------------------------------------------------
+
+    /**
+     * Array, ajustes preferencias de cuenta de usuario
+     * 2021-07-30
+     */
+    function settings($user_id)
+    {
+        $user = $this->Db_model->row_id('users', $user_id);
+
+        //Ajustes por defecto
+        $settings = $this->default_settings();
+
+        //Verificar si usuario tiene ajustes ya definidos
+        if ( strlen($user->settings) > 0 ) {
+            $settings = json_decode($user->settings);
+        }
+
+        return $settings;
+    }
+
+    /**
+     * Array, ajustes preferencias de cuenta de usuario por defecto
+     * 2021-07-30
+     */
+    function default_settings()
+    {
+        $arr_settings = array(
+            'notify_new_follower' => 1,
+            'notify_new_message' => 1,
+            'notify_new_comment' => 1,
+        );
+
+        return $arr_settings;
+    }
+
+    /**
+     * Actualiza las configuraciones de la cuenta de usuario, campo users.settings.
+     * 2021-07-30
+     */
+    function save_settings($user_id, $settings)
+    {
+        $arr_row['settings'] = json_encode($settings);
+        
+        $data['saved_id'] = $this->Db_model->save('users', "id = {$user_id}", $arr_row);
+
+        return $data;
+    }
+
 // DATOS Y FUNCIONES ESPECIALES
 //-----------------------------------------------------------------------------
 
@@ -740,7 +790,8 @@ class User_model extends CI_Model{
             $data['status'] = 1;
 
             $this->load->model('Notification_model');
-            $this->Notification_model->email_new_follower($user_id, $meta_id);
+            $this->Notification_model->email_new_follower($user_id, $meta_id);  //Enviar email de notificación
+            $this->Notification_model->save_new_follower_alert($user_id, $meta_id);   //Guardar alerta notificacion en events
         } else {
             //Existe, eliminar (Dejar de seguir)
             $this->db->where('id', $row_meta->id);

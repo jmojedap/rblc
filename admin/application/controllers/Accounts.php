@@ -169,7 +169,18 @@ class Accounts extends CI_Controller {
         if ( $type == 'new_follower' ) {
             echo $this->Notification_model->new_follower_message($param_1, $param_2);
         } else if ( $type == 'new_message' ) {
-            echo $this->Notification_model->new_message_message($param_1, $param_2);
+            $row_user = $this->Db_model->row_id('users', $param_1);
+            $row_message = $this->Db_model->row_id('messages', $param_2);
+            $qty_recent_messages = $this->Notification_model->qty_recent_messages($param_1, $row_message);
+
+            echo 'Mensajes recientes:' . $qty_recent_messages;
+            echo '<br>';
+            echo $this->Notification_model->new_message_message($row_user, $row_message);
+        } else if ( $type == 'new_comment' ) {
+            //Variables
+            $row_comment = $this->Db_model->row_id('comments', $param_1);
+
+            echo $this->Notification_model->new_comment_message($row_comment);
         }
     }
 
@@ -436,6 +447,37 @@ class Accounts extends CI_Controller {
     function save_social_links()
     {
         $data = $this->User_model->save_social_links($this->session->userdata('user_id'));
+
+        //Salida JSON
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
+
+// Ajustes preferencias de usuario
+//-----------------------------------------------------------------------------
+
+    /**
+     * JSON
+     * Array con settings de preferencias de cuenta de usuario
+     * 2021-07-30
+     */
+    function get_settings()
+    {
+        $user_id = $this->session->userdata('user_id');
+        $data['settings'] = $this->User_model->settings($user_id);
+
+        //Salida JSON
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
+
+    /**
+     * Actualiza las configuraciones de la cuenta de usuario, campo users.settings.
+     * 2021-07-30
+     */
+    function save_settings()
+    {
+        $user_id = $this->session->userdata('user_id');
+        $settings = $this->input->post();
+        $data = $this->User_model->save_settings($user_id, $settings);
 
         //Salida JSON
         $this->output->set_content_type('application/json')->set_output(json_encode($data));

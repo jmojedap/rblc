@@ -144,17 +144,6 @@ class Account_model extends CI_Model{
         //Devolver array
             return $data;
     }
-    
-    //Array con los ID de las funciones permitidas para el usuario
-    function acl($row_user)
-    {
-        $this->db->where("roles LIKE  '%-{$row_user->role}-%'");
-        $query = $this->db->get('sis_acl');
-        
-        $allowed_functions = $this->pml->query_to_array($query, 'id', NULL);
-        
-        return $allowed_functions;
-    }
 
 // REGISTER VALIDATION
 //-----------------------------------------------------------------------------

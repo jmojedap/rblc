@@ -2,9 +2,24 @@
 
 <?php
     $current_tags = $this->pml->query_to_array($tags, 'id');
+    $pct_checked = $this->pml->percent($qty_checked, $qty_files);
 ?>
 
-<div id="picture_app">
+<div id="picture_app" class="">
+    <div class="d-flex justify-content-around">
+        <a href="<?= base_url("files/check_previous/{$row->id}") ?>" class="btn btn-light w120p">Anterior</a>
+        <div>
+            Revisados <strong><?= $qty_checked ?></strong> / <?= $qty_files ?>
+        </div>
+        <div>
+            
+        </div>
+        <a href="<?= base_url("files/check_next/") ?>" class="btn btn-light w120p">Siguiente</a>
+    </div>
+    <div class="progress my-2">
+        <div class="progress-bar" role="progressbar" style="width: <?= $pct_checked ?>%;" aria-valuenow="<?= $pct_checked ?>" aria-valuemin="0" aria-valuemax="100"><?= $pct_checked ?>%</div>
+    </div>
+    <hr>
     <div class="row mt-2">
         <div class="col-md-6">
             <img class="w100pc" src="<?= $row->url ?>" alt="Picture">
@@ -69,14 +84,28 @@
                     </form>
                 </div>
             </div>
+            <div class="mt-2">
+                <p>
+                    <span class="text-muted">Creator:</span>
+                    <a href="<?= URL_FRONT . "professionals/profile/{$row->creator_id}" ?>" target="_blank">
+                        <?= $this->App_model->name_user($row->creator_id) ?>
+                    </a>
+                </p>
+            </div>
+            <div class="mt-2">
+                <button class="btn btn-warning" data-toggle="modal" data-target="#delete_modal">
+                    <i class="fa fa-trash"></i>
+                    Delete
+                </button>
+            </div>
         </div>
     </div>
+    <?php $this->load->view('common/modal_single_delete_v') ?>
 </div>
 
 <script>
 var picture_app = new Vue({
     el: '#picture_app',
-    
     data: {
         file_id: <?= $row->id ?>,
         form_values: {
@@ -89,12 +118,28 @@ var picture_app = new Vue({
             axios.post(url_api + 'files/update_full/' + this.file_id, $('#picture_form').serialize())
             .then(response => {
                 if ( response.data.status == 1 ) {
-                    toastr['success']('Saved');
+                    toastr['success']('Guardado, abriendo siguiente imagen')
+                    this.go_to_next()
                 }
             })
-            .catch(function (error) {
-                console.log(error);
-            });  
+            .catch(function (error) { console.log(error) })
+        },
+        delete_element: function(){
+            axios.get(url_api + 'files/delete/' + this.file_id)
+            .then(response => {
+                if ( response.data.qty_deleted > 0 ) {
+                    toastr['info']('Imagen eliminada')
+                    this.go_to_next()
+                } else{
+                    toastr['info']('La imagen no se eliminó')
+                }
+            })
+            .catch(function(error) { console.log(error) })
+        },
+        go_to_next: function(){
+            setTimeout(() => {
+                window.location = url_app + 'files/check_next'
+            }, 1000)
         },
     }
 });

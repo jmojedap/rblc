@@ -250,6 +250,81 @@ class Files extends CI_Controller{
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 
+// REVISIÓN DETALLADA DE ARCHIVOS Y ACTUALIZACIÓN - ESPECÍFICA COLIBRI
+//-----------------------------------------------------------------------------
+
+    /**
+     * Herramienta para revisión y actualización secuencial de archivos uno a uno
+     * 2021-08-04
+     */
+    function check($file_id = NULL)
+    {
+        if ( is_null($file_id) ) {
+            $this->db->order_by('id', 'DESC');
+            $this->db->where('checked_at IS NULL');
+            $files = $this->db->get('files');
+
+            if ( $files->num_rows() > 0 ) $file_id = $files->row()->id;
+        }
+
+        $data = $this->File_model->basic($file_id);
+
+        //Opciones para agregar
+        $data['options_tag'] = $this->App_model->options_tag('category_id = 1');
+        $data['options_cat_1'] = $this->Item_model->options('category_id = 718');
+
+        //Datos sobre revisión
+        $data['qty_files'] = $this->Db_model->num_rows('files', 'id > 0');
+        $data['qty_checked'] = $this->Db_model->num_rows('files', 'checked_at IS NOT NULL');
+
+        //Datos actuales
+        $data['tags'] = $this->File_model->tags($file_id);
+
+        $data['nav_2'] = 'files/explore/menu_v';
+        $data['view_a'] = 'files/check/check_v';
+        $this->App_model->view(TPL_ADMIN, $data);
+    }
+
+    /**
+     * Temporal
+     * Redirect, ir a edición y revisión de imagen
+     * 2021-08-04
+     */
+    function check_next()
+    {
+        $file_id = 0;
+
+        $this->db->order_by('id', 'DESC');
+        $this->db->where('checked_at IS NULL');
+        $files = $this->db->get('files');
+
+        if ( $files->num_rows() > 0 ) {
+            $index = rand(0, $files->num_rows() - 1);
+            $file_id = $files->row($index)->id;
+        }
+
+        redirect("files/check/{$file_id}");
+    }
+
+    /**
+     * Temporal Redirect
+     * Ir a imagen anterior, revisión
+     * 2021-08-04
+     */
+    function check_previous($current_file_id)
+    {
+        $file_id = 0;
+
+        $this->db->order_by('checked_at', 'DESC');
+        $this->db->where('checked_at IS NOT NULL');
+        $this->db->where("id <> {$current_file_id}");
+        $files = $this->db->get('files');
+
+        if ( $files->num_rows() > 0 ) $file_id = $files->row()->id;
+
+        redirect("files/check/{$file_id}");
+    }
+
 // PROCESOS MASIVOS
 //-----------------------------------------------------------------------------
 
@@ -285,7 +360,7 @@ class Files extends CI_Controller{
 
     /**
      * Actualiza datos descriptivos de la tabla file, y metadatos (tags) para files_meta
-     * 2021-03-03
+     * 2021-08-04 (checked_at)
      */
     function update_full($file_id)
     {
@@ -295,6 +370,7 @@ class Files extends CI_Controller{
             $arr_row['cat_1'] = $this->input->post('cat_1');
             $arr_row['keywords'] = $this->input->post('keywords');
             $arr_row['updater_id'] = $this->session->userdata('user_id');
+            $arr_row['checked_at'] = date('Y-m-d H:i:s');   //Agregado para revisión 2021-08-04
 
             $data['saved_id'] = $this->Db_model->save('files', "id = {$file_id}", $arr_row);
 
