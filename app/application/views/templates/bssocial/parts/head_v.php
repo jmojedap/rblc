@@ -46,5 +46,6 @@
         <!-- Alertas y notificaciones -->
         <?php $this->load->view('assets/toastr') ?>
 
-        <link rel="stylesheet" href="<?= base_url('resources/templates/colibri/main_14.css') ?>">
+        <link rel="stylesheet" href="<?= base_url('resources/templates/colibri/main_15.css') ?>">
+        <link rel="stylesheet" href="<?= base_url('resources/templates/colibri/mobile_15.css') ?>">
         <link rel="stylesheet" href="<?= base_url('resources/templates/colibri/ideabook_colors.css') ?>">

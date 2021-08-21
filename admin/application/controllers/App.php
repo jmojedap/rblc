@@ -133,6 +133,18 @@ class App extends CI_Controller {
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 
+    /**
+     * Marca una notificación como leída y retorna link de la notificación
+     */
+    function open_notification($event_id)
+    {
+        $this->load->model('Notification_model');
+        $data = $this->Notification_model->open($event_id);
+
+        //Salida JSON
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
+
 // HELP
 //-----------------------------------------------------------------------------
 

@@ -12,6 +12,26 @@ class Notification_model extends CI_Model{
 
         return $styles;
     }
+
+    function select($format = 'general')
+    {
+        $arr_select['general'] = 'id, title, content, status, created_at, related_3 AS alert_type, element_id, related_1, related_2';
+
+        return $arr_select[$format];
+    }
+
+    function row($event_id)
+    {
+        $row = NULL;
+
+        $this->db->select($this->select());
+        $this->db->where('id', $event_id);
+        $notifications = $this->db->get('events');
+
+        if ( $notifications->num_rows() ) $row = $notifications->row();
+
+        return $row;
+    }
     
 // Notificación following
 //-----------------------------------------------------------------------------
@@ -60,18 +80,23 @@ class Notification_model extends CI_Model{
         return $message;
     }
 
-// Notificación new message
+// Notificación new message reciente
 //-----------------------------------------------------------------------------
 
     /**
-     * Contar número de mensajes recibidos por el usuario en esta misma conversación
+     * Contar número de mensajes recibidos por el usuario en cuestion, por parte de otro usuario
+     * en las últimas 2 horas y diferentes al mensaje en cuestión.
      * 2021-07-29
      */
     function qty_recent_messages($user_id, $row_message)
     {   
-        $mktime = strtotime(date('Y-m-d H:i:s') . ' -24 hours');    //Mensajes enviados en las últimas 24 horas
-        $min_date = date('Y-m-d H:i:s', $mktime);           //Fecha y hora hace 24 horas
-        $condition = "user_id = {$user_id} AND conversation_id = {$row_message->conversation_id} AND sent_at >= '{$min_date}'";
+        $mktime = strtotime(date('Y-m-d H:i:s') . ' -2 hours');    //Mensajes enviados en las últimas 2 horas
+        $min_date = date('Y-m-d H:i:s', $mktime);                  //Fecha y hora hace 2 horas
+
+        $condition = "user_id <> {$user_id}";    //Quien recibe el mensaje
+        $condition .= " AND conversation_id = {$row_message->conversation_id}";
+        $condition .= " AND sent_at >= '{$min_date}'";
+        $condition .= " AND id <> {$row_message->id}";   //Diferente al mensaje en cuestión.
 
         $qty_recent_messages = $this->Db_model->num_rows('messages', $condition);
 
@@ -176,7 +201,7 @@ class Notification_model extends CI_Model{
         return $message;
     }
 
-// Notificaciones alerta
+// Alerta de notificaciones
 //-----------------------------------------------------------------------------
 
     /**
@@ -278,8 +303,11 @@ class Notification_model extends CI_Model{
      * 2021-08-12
      */
     function qty_unread_notifications(){
-        $notifications = $this->notifications();
-        return $notifications->num_rows();
+
+        //Notificaciones (111) no leídas (2) por el usuario
+        $condition = "type_id = 111 AND status = 2 AND user_id = {$this->session->userdata('user_id')}";
+        $qty_unread_notifications = $this->Db_model->num_rows('events', $condition);
+        return $qty_unread_notifications;
     }
 
     /**
@@ -288,14 +316,45 @@ class Notification_model extends CI_Model{
      */
     function notifications()
     {
-        $this->db->select('id, title, content, created_at, related_3 AS alert_type, element_id, related_1, related_2');
+        $this->db->select('id, title, content, status, created_at, related_3 AS alert_type, element_id, related_1, related_2');
         $this->db->where('user_id', $this->session->userdata('user_id'));
         $this->db->where('type_id', 111);
         $this->db->order_by('id', 'DESC');
-        $this->db->limit(20);
+        $this->db->limit(12);
         $events = $this->db->get('events');
 
         return $events;
+    }
+
+    /**
+     * Marca una alerta de notificación como leída y retorna url para redirigir al usuario
+     * 2021-08-21
+     */
+    function open($event_id)
+    {
+        $data['url_destination'] = URL_FRONT;   //Valor por defecto
+        $notification = $this->row($event_id);
+
+        //Marcar como leída
+        $this->db->query("UPDATE events SET status = 1 WHERE id = {$event_id}");
+
+        if ( $notification->alert_type == 10 ) {
+            //Nuevo seguidor
+            $data['url_destination'] = URL_FRONT . "professionals/profile/{$notification->element_id}";
+        } elseif( $notification->alert_type == 20 ){
+            //Mensaje reciente
+            $data['url_destination'] = URL_FRONT . "messages/conversation/";
+        } elseif( $notification->alert_type == 30 ){
+            //Elemento comentado es una magen
+            $data['url_destination'] = URL_FRONT . "pictures/details/{$notification->related_2}";
+
+            //Elemento comentado es un project, (2000 tabla posts)
+            if ( $notification->related_1 == 2000 ) {
+                $data['url_destination'] = URL_FRONT . "projects/info/{$notification->related_2}";
+            }
+        }
+
+        return $data;
     }
 
 }

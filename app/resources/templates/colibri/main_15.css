@@ -387,6 +387,24 @@ a.title_list:hover {
     background-color: #FF6529;
 }
 
+.qty_notifications {
+    display: inline-block;
+    padding: 0.1em 0.5em;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    font-size: 0.7em;
+    color: white;
+    background-color: #236CA4;
+    position: absolute;
+    top: 5px;
+    right: 1px;
+}
+
+.unread_notification{
+    background-color: #ffe1d7;
+}
+
 /* Exploración de imágenes */
 /*-----------------------------------------------------------------------------*/
 .gallery-3 {

@@ -1,19 +1,3 @@
-<style>
-    .qty_notifications {
-        display: inline-block;
-        padding: 0.1em 0.5em;
-        width: 18px;
-        height: 18px;
-        border-radius: 50%;
-        font-size: 0.7em;
-        color: white;
-        background-color: #236CA4;
-        position: absolute;
-        top: 5px;
-        right: 1px;
-    }
-</style>
-
 <?php
     $cf = $this->uri->segment(1) . '/' .  $this->uri->segment(2);   //Controller / Function
 
@@ -97,10 +81,14 @@
                             <span class="qty_notifications" v-show="qty_unread_notifications > 0">{{ qty_unread_notifications }}</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item disable" v-show="notifications.length == 0">No notifications</a>
                             <!-- LISTADO DE NOTIFICACIONES -->
-                            <a class="dropdown-item" v-for="(notification, notification_key) in notifications" v-bind:href="alert_link(notification)">
-                                <div class="d-flex">
-                                    <div class="mr-2">
+                            <a class="dropdown-item" href="#"
+                                v-for="(notification, notification_key) in notifications"
+                                v-bind:class="{'unread_notification': notification.status == 2 }"
+                                >
+                                <div class="d-flex" v-on:click="open_notification(notification.id)">
+                                    <div class="mr-3 pt-2">
                                         <i v-bind:class="alert_icon_class(notification)"></i>
                                     </div>
                                     <div>
@@ -199,8 +187,18 @@ var navbar_app = new Vue({
             })
             .catch(function(error) { console.log(error) })
         },
+        open_notification: function(notification_id){
+            axios.get(url_api + 'app/open_notification/' + notification_id)
+            .then(response => {
+                console.log(response.data)
+                if ( response.data.url_destination ) {
+                    window.location = response.data.url_destination
+                }
+            })
+            .catch(function(error) { console.log(error) })
+        },
         //String, link al que debe dirigirse al hacer clic en la alerta de notificación
-        alert_link: function(notification){
+        /*alert_link: function(notification){
             var alert_link = '#'
             if ( notification.alert_type == 10 ) {
                 alert_link = url_app + 'professionals/profile/' + notification.element_id;
@@ -215,7 +213,7 @@ var navbar_app = new Vue({
                 }
             }
             return alert_link;
-        },
+        },*/
         //String, clase de FowtAwesome para icono de notificación
         alert_icon_class: function(notification){
             var alert_icon_class = 'far fa-user'
