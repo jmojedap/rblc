@@ -40,11 +40,20 @@ var user_profile = new Vue({
         get_details: function(){
             axios.get(url_api + 'pictures/get_details/' + this.images[this.key].id)
             .then(response => {
-                this.picture = response.data;
+                //Cargar datos en VueApp: #picture_app
+                picture_app.picture.id = response.data.id
+                picture_app.picture.url = response.data.url
+                picture_app.picture.title = response.data.title
+                picture_app.picture.description = response.data.description
+                picture_app.picture.qty_likes = parseInt(response.data.qty_likes)
+
+                picture_app.tags = response.data.tags
+                picture_app.like_status = response.data.like_status
+                picture_app.user = response.data.user
+
+                picture_app.get_comments()
             })
-            .catch(function (error) {
-                console.log(error);
-            });  
+            .catch(function (error) { console.log(error) })
         },
         get_social_links: function(){
             axios.get(url_api + 'users/get_social_links/' + this.user_id)

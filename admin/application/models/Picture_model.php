@@ -17,7 +17,7 @@ class Picture_model extends CI_Model{
     {
         $row = NULL;
         //$this->db->select('id, file_name, title, description, creator_id, updater_id');
-        $this->db->select('id, file_name, title, description, related_1, album_id, url, url_thumbnail');
+        $this->db->select('id, file_name, title, description, related_1, album_id, url, url_thumbnail, creator_id, qty_likes');
         $query = $this->db->get_where('files', $condition);
 
         if ( $query->num_rows() > 0 ) $row = $query->row();
@@ -226,6 +226,21 @@ class Picture_model extends CI_Model{
         $tags = $this->db->get('tags');
 
         return $tags;
+    }
+
+    /**
+     * Devuelve 0 o 1, dependiendo si el usuario en sesión like o no un archivo
+     * 2021-02-15
+     */
+    function like_status($file_id)
+    {
+        $like_status = 0;
+        if ( $this->session->userdata('user_id') )
+        {
+            $like_status = $this->Db_model->num_rows('files_meta', "file_id = {$file_id} AND type_id = 10 AND related_1 = {$this->session->userdata('user_id')}");
+        }
+
+        return $like_status;
     }
 
     /**

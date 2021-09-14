@@ -94,9 +94,16 @@ class Pictures extends CI_Controller{
     function get_details($file_id)
     {
         $picture = $this->Picture_model->row("id = {$file_id}");
+        $user = $this->Db_model->row_id('users', $picture->creator_id);
 
         $tags = $this->Picture_model->tags($file_id);
         $picture->tags = $tags->result();
+        $picture->like_status = $this->Picture_model->like_status($file_id);
+
+        $picture->user['id'] = $user->id;
+        $picture->user['display_name'] = $user->display_name;
+        $picture->user['url_thumbnail'] = $user->url_thumbnail;
+
         $data = $picture;
 
         //Salida JSON

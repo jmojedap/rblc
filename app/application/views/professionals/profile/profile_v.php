@@ -107,9 +107,11 @@
             </div>
         </div>
     </div>
-    <?php $this->load->view('professionals/profile/picture_modal_v') ?>
+    <?php //$this->load->view('professionals/profile/picture_modal_v') ?>
 </div>
 <?php $this->load->view('professionals/profile/vue_v') ?>
+
+<?php $this->load->view('professionals/profile/picture_modal_v') ?>
 
 <?php if ( $row->id == $this->session->userdata('user_id') ) : ?>
     <?php $this->load->view('professionals/profile/modal_upload_file_v') ?>

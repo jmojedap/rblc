@@ -96,6 +96,4 @@ class Pictures extends CI_Controller{
         $data['view_a'] = 'info/home_v';
         $this->App_model->view(TPL_ADMIN, $data);
     }
-
-
 }

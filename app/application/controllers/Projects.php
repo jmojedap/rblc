@@ -81,6 +81,10 @@ class Projects extends CI_Controller{
         $this->load->model('User_model');
         $data['my_ideabooks'] = $this->User_model->ideabooks($this->session->userdata('user_id'));
 
+        //Variables para comentarios
+        $data['table_id'] = 2000;   //posts
+        $data['element_id'] = $project_id;  //Post ID
+
         $data['view_a'] = 'projects/info_v';
         $this->App_model->view(TPL_FRONT, $data);
     }

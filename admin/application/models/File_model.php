@@ -920,7 +920,7 @@ class File_model extends CI_Model{
 
     /**
      * Proceso alternado, like or unlike una imagen, registro type 10 en la tabla files_meta
-     * 2020-07-09
+     * 2021-09-13
      */
     function alt_like($file_id)
     {
@@ -943,7 +943,7 @@ class File_model extends CI_Model{
             $this->db->insert('files_meta', $arr_row);
             
             $data['saved_id'] = $this->db->insert_id();
-            $data['status'] = 1;
+            $data['qty_sum'] = 1;
             $data['like_status'] = 1;
         } else {
             //Existe, eliminar (Unlike)
@@ -951,9 +951,12 @@ class File_model extends CI_Model{
             $this->db->delete('files_meta');
             
             $data['qty_deleted'] = $this->db->affected_rows();
-            $data['status'] = 2;
+            $data['qty_sum'] = -1;
             $data['like_status'] = 0;
         }
+
+        //Actualizar contador en registro tabla files
+        $this->db->query("UPDATE files SET qty_likes = (qty_likes + ({$data['qty_sum']})) WHERE id = {$file_id}");
 
         return $data;
     }

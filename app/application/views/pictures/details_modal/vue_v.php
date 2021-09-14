@@ -6,34 +6,56 @@ Vue.filter('ago', function (date) {
     return moment(date, "YYYY-MM-DD HH:mm:ss").fromNow();
 });
 
-// Vue App
+// VueApp
 //-----------------------------------------------------------------------------
-var post_comments_app = new Vue({
-    el: '#post_comments_app',
+var picture_app = new Vue({
+    el: '#picture_app',
     created: function(){
         this.get_comments();
     },
     data: {
-        table_id: '<?= $table_id ?>',
-        element_id: '<?= $element_id ?>',
+        picture: {id: '0', qty_likes: 0},
+        user: {
+            id: 0,
+            display_name: '',
+            url_thumbnail: ''
+        },
+        tags: [],
+        like_status: 0,
         comments: [],
-        current: {id: 0},
+        current: {},
         current_key: 0,
         answers: [],
         answer_key: 0,
-        form_values: { comment_text: '', parent_id: 0 },
+        form_values: {
+            comment_text: '',
+            parent_id: 0
+        },
         app_uid: app_uid
     },
     methods: {
+        alt_like: function(){
+            axios.get(url_api + 'files/alt_like/' + this.picture.id)
+            .then(response => {
+                this.like_status = response.data.like_status;
+                if ( this.like_status == 1 ) {
+                    this.picture.qty_likes++;
+                } else {
+                    this.picture.qty_likes--;
+                }
+            })
+            .catch(function (error) { console.log(error) })
+        },
+        //Gestión de comentarios
         get_comments: function(){
-            axios.get(url_api + 'comments/element_comments/' + this.table_id + '/' + this.element_id)
+            axios.get(url_api + 'comments/element_comments/1020/' + this.picture.id)
             .then(response => {
                 this.comments = response.data.comments;
             })
             .catch(function (error) { console.log(error) })
         },
         send_form: function(){
-            axios.post(url_api + 'comments/save/' + this.table_id + '/' + this.element_id, $('#comment_form').serialize())
+            axios.post(url_api + 'comments/save/1020/' + this.picture.id, $('#comment_form').serialize())
             .then(response => {
                 if ( response.data.saved_id > 0 )
                 {
@@ -54,7 +76,7 @@ var post_comments_app = new Vue({
             this.current = this.comments[key];
         },
         delete_comment: function(){
-            axios.get(url_api + 'comments/delete/' + this.current.id + '/' + this.element_id)
+            axios.get(url_api + 'comments/delete/' + this.current.id + '/' + this.picture.id)
             .then(response => {
                 if ( response.data.qty_deleted > 0 ) {
                     this.get_comments();
@@ -63,9 +85,8 @@ var post_comments_app = new Vue({
             .catch(function (error) { console.log(error) })
         },
         clean_form: function(){
-            this.current = {id: 0}
-            this.form_values.comment_text = ''
-            this.form_values.parent_id = 0
+            this.form_values.comment_text = '';
+            this.form_values.parent_id = 0;
         },
         set_parent: function(key){
             this.form_values.parent_id = this.comments[key].id;
@@ -79,7 +100,7 @@ var post_comments_app = new Vue({
         get_answers: function(key){
             this.set_current(key);
             var parent_id = this.current.id;
-            axios.get(url_api + 'comments/element_comments/' + this.table_id + '/' + this.element_id + '/' + parent_id )
+            axios.get(url_api + 'comments/element_comments/1020/' + this.picture.id + '/' + parent_id )
             .then(response => {
                 this.answers = response.data.comments;
                 this.comments[key].answers = response.data.comments;
@@ -93,7 +114,7 @@ var post_comments_app = new Vue({
         },
         delete_answer: function(){
             var answer_id = this.current.answers[this.current_answer_key].id;
-            axios.get(url_api + 'comments/delete/' + answer_id + '/' + this.element_id)
+            axios.get(url_api + 'comments/delete/' + answer_id + '/' + this.picture.id)
             .then(response => {
                 if ( response.data.qty_deleted > 0 ) {
                     this.get_answers(this.current_key);

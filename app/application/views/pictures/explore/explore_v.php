@@ -15,8 +15,10 @@
 
     <div id="elements_table">
         <?php $this->load->view($views_folder . 'list_v'); ?>
-        <?php $this->load->view($views_folder . 'detail_v'); ?>
     </div>
 </div>
 
+<?php $this->load->view($views_folder . 'detail_v'); ?>
+
 <?php $this->load->view($views_folder . 'vue_v') ?>
+

@@ -28,9 +28,7 @@
                 .then(response => {
                     this.comments = response.data.comments;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                .catch(function (error) { console.log(error) })
             },
             send_form: function(){
                 axios.post(url_api + 'comments/save/1020/' + this.picture_id, $('#comment_form').serialize())
@@ -47,9 +45,7 @@
                         this.clean_form();
                     }
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });  
+                .catch(function (error) { console.log(error) })
             },
             set_current: function(key){
                 this.current_key = key;
@@ -62,9 +58,7 @@
                         this.get_comments();
                     }
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                .catch(function (error) { console.log(error) })
             },
             clean_form: function(){
                 this.form_values.comment_text = '';
@@ -88,9 +82,7 @@
                     this.comments[key].answers = response.data.comments;
                     console.log(this.comments[key].answers);
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                .catch(function (error) { console.log(error) })
             },
             set_current_answer: function(key, answer_key){
                 this.set_current(key);
@@ -104,9 +96,7 @@
                         this.get_answers(this.current_key);
                     }
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                .catch(function (error) { console.log(error) })
             },
         }
     });

@@ -1,9 +1,4 @@
 
-    <div class="full_width_title">
-        <h3 class="only-lg">Comments about this image</h3>
-        <h4 class="only-sm">Comments</h3>
-    </div>
-    
     <?php if ( $this->session->userdata('logged') ) { ?>
         <div class="mb-2">
             <button class="btn btn-main" data-toggle="modal" data-target="#modal_form" v-on:click="clean_form">
@@ -27,9 +22,7 @@
                         <i class="far fa-comment"></i> {{ comment.qty_comments }}
                     </button>
                     <?php if ( $this->session->userdata('logged') ) { ?>
-                        <button class="btn btn-sm" v-on:click="reply_comment(key)" title="Answer">
-                            Answer
-                        </button>
+                        <button class="btn btn-sm" v-on:click="reply_comment(key)" title="Answer">Reply</button>
                         <button class="btn btn-sm" data-toggle="modal" data-target="#delete_comment_modal" v-on:click="set_current(key)" v-if="app_uid == comment.creator_id">
                             Delete
                         </button>

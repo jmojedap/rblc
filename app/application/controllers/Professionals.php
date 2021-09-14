@@ -40,7 +40,7 @@ class Professionals extends CI_Controller{
 //-----------------------------------------------------------------------------
     
     /**
-     * Información general del usuario
+     * Información general del professional
      */
     function profile($user_id)
     {        

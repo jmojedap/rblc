@@ -16,8 +16,7 @@
         <div v-for="(comment, key) in comments" class="comment">
             <div>
                 <div class="float-right">
-                    {{ comment.created_at | ago }}
-                    
+                    <small>{{ comment.created_at | ago }}</small>
                 </div>
                 <b>{{ comment.display_name }}</b> &middot; {{ comment.username }} says:
                 <br>
@@ -28,7 +27,7 @@
                     </button>
                     <?php if ( $this->session->userdata('logged') ) { ?>
                         <button class="btn btn-sm" v-on:click="reply_comment(key)" title="Answer">
-                            Answer
+                            Reply
                         </button>
                         <button class="btn btn-sm" data-toggle="modal" data-target="#delete_comment_modal" v-on:click="set_current(key)" v-if="app_uid == comment.creator_id">
                             Delete
@@ -40,7 +39,7 @@
             <!-- Respuestas al comentario -->
             <div v-for="(answer, answer_key) in comment.answers" class="answer">
                 <div class="float-right">
-                    {{ answer.created_at | ago }}
+                    <small>{{ answer.created_at | ago }}</small>
                 </div>
 
                 <b>{{ answer.display_name }}</b> &middot; {{ answer.username }}
