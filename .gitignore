@@ -1,5 +1,3 @@
-# General
-# ------------------------------
 */config/development
 */logs/log-*.php
 !*/logs/index.html
@@ -7,50 +5,20 @@
 !*/cache/index.html
 !*/cache/.htaccess
 
-system/
-system/sessions/
-content/
-.vscode/
+user_guide_src/build/*
+user_guide_src/cilexer/build/*
+user_guide_src/cilexer/dist/*
+user_guide_src/cilexer/pycilexer.egg-info/*
 
-# Admin Application
-# ------------------------------
-admin/application/cache/*
-!admin/application/cache/index.html
+#codeigniter 3
+application/logs/*
+!application/logs/index.html
+!application/logs/.htaccess
+/vendor/
 
-admin/application/logs/*
-!admin/application/logs/index.html
-
-!admin/application/*/.htaccess
-admin/vendor/
-
-admin/resources/*/assets/
-
-admin/application/config
-admin/application/config_local
-admin/application/config_server
-
-# App Application :P
-# ------------------------------
-app/application/cache/*
-!app/application/cache/index.html
-
-app/application/logs/*
-!app/application/logs/index.html
-
-!app/application/*/.htaccess
-
-app/vendor
-app/resources/assets/
-app/application/config
-app/application/config_server
-app/application/config_local
-
-# operating system related files
-# ------------------------------
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
+#pml
+/application/config/
+/application/config_server/
+/content/
+/system/
+/resources/*/assets/
