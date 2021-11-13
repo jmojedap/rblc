@@ -49,7 +49,7 @@ class App_model extends CI_Model{
      */
     function option_value($option_id)
     {
-        $option_value = $this->Db_model->field_id('sis_option', $option_id, 'value');
+        $option_value = $this->Db_model->field_id('sis_option', $option_id, 'option_value');
         return $option_value;
     }
 

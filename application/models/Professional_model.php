@@ -220,7 +220,7 @@ class Professional_model extends CI_Model{
 //-----------------------------------------------------------------------------
 
     /**
-     * Imágenes asociadas al usuario, mediante la tabla users_meta, tipo 1
+     * Imágenes asociadas al usuario, tabla file
      * 2021-04-14
      */
     function images($user_id)

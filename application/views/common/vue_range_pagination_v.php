@@ -2,7 +2,7 @@
 
 <div class="d-flex">
     <div class="mr-2 text-right" style="width: 75%;">
-        <b class="text-primary">{{ search_num_rows }} </b> resultados |
+        <b class="text-primary">{{ search_num_rows }} </b> resultados &middot;
         Pág <b class="text-primary">{{ num_page }}</b>/{{ max_page }}
     </div>
     <div class="" style="width: 25%;">

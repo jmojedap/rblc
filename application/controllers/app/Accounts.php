@@ -234,6 +234,10 @@ public $url_controller = URL_APP . 'accounts/';
             $data['url_image'] = $data['row']->url_image;
             $data['back_destination'] = "app/accounts/edit/image";
         }
+        if ( $section == 'images' )
+        {
+            $view_a = 'app/professionals/images/images_v';
+        }
 
         //Options form
             $data['options_gender'] = $this->Item_model->options('category_id = 59 AND cod <= 2', 'Gender');

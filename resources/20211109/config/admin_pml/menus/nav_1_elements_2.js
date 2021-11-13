@@ -5,7 +5,7 @@ var nav_1_elements = [
         icon: 'fa fa-user',
         cf: 'users/explore',
         subelements: [],
-        sections: ['users/explore', 'users/profile', 'users/import', 'users/add', 'users/notes']
+        sections: ['users/explore', 'users/profile', 'users/import', 'users/add', 'users/notes', 'users/invitations']
     },
     {
         text: 'Projects / Products',
@@ -32,34 +32,20 @@ var nav_1_elements = [
         sections: ['tags/explore', 'tags/info', 'tags/edit']
     },
     {
-        text: 'Data',
+        text: 'Files',
         active: false,
-        icon: 'fa fa-table',
-        cf: '',
-        subelements: [
-            {
-                text: 'Posts',
-                active: false,
-                icon: 'fa fa-newspaper',
-                cf: 'posts/explore',
-                sections: ['posts/explore', 'posts/add', 'posts/info', 'posts/edit', 'posts/import', 'posts/comments', 'posts/image']
-            },
-            {
-                text: 'Files',
-                active: false,
-                icon: 'fa fa-file',
-                cf: 'files/explore',
-                sections: ['files/explore', 'files/add', 'files/edit', 'files/tags', 'files/cropping', 'files/check']
-            },
-            {
-                text: 'Events',
-                active: false,
-                icon: 'fa fa-calendar',
-                cf: 'events/explore',
-                sections: ['events/explore']
-            }
-        ],
-        sections: []
+        icon: 'far fa-file',
+        cf: 'files/explore',
+        subelements: [],
+        sections: ['files/explore', 'files/check']
+    },
+    {
+        text: 'Posts',
+        active: false,
+        icon: 'far fa-file',
+        cf: 'posts/explore',
+        subelements: [],
+        sections: ['posts/explore']
     },
     {
         text: 'Settings',
@@ -71,7 +57,7 @@ var nav_1_elements = [
                 text: 'General',
                 active: false,
                 icon: 'fa fa-sliders-h',
-                cf: 'config/colors',
+                cf: 'config/options',
                 sections: ['config/acl', 'config/options', 'config/colors', 'config/processes']
             },
             {
@@ -80,13 +66,6 @@ var nav_1_elements = [
                 icon: 'fa fa-bars',
                 cf: 'items/manage',
                 sections: ['items/manage', 'items/import', 'items/import_e']
-            },
-            {
-                text: 'Database',
-                active: false,
-                icon: 'fa fa-database',
-                cf: 'sync/panel',
-                sections: ['sync/panel']
             }
         ],
         sections: []

@@ -2,7 +2,7 @@
     <img src="<?= URL_IMG ?>gifs/colibri.gif" alt="colibri animation">
 </p>
 <div class="gallery-3" v-show="gallery_visible">
-    <div class="image-container" v-for="(image, image_key) in list">
+    <div class="image-container" v-for="(image, image_key) in list" v-bind:id="`picture_` + image.id">
         <img
             class="picture" data-toggle="modal" data-target="#detail_modal"
             v-bind:alt="image.title" v-bind:src="image.url_thumbnail" v-on:click="set_current(image_key)"

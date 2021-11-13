@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-body text-center">
-                <?php $this->load->view('professionals/images/upload_file_form_v') ?>
+                <?php $this->load->view('app/professionals/images/upload_file_form_v') ?>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light w100p" data-dismiss="modal">Cancel</button>

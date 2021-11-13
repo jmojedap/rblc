@@ -24,39 +24,39 @@ class File_model extends CI_Model{
     /**
      * Array con los datos para la vista de exploración
      */
-    function explore_data($num_page)
+    function explore_data($filters, $num_page, $per_page = 10)
     {
         //Data inicial, de la tabla
-            $data = $this->get($num_page);
+            $data = $this->get($filters, $num_page, $per_page);
         
         //Elemento de exploración
             $data['controller'] = 'files';                      //Nombre del controlador
             $data['cf'] = 'files/explore/';                      //Nombre del controlador
-            $data['views_folder'] = $this->views_folder . 'explore/';           //Carpeta donde están las vistas de exploración
+            $data['views_folder'] = 'admin/files/explore/';           //Carpeta donde están las vistas de exploración
+            $data['num_page'] = $num_page;                      //Número de la página
             
         //Vistas
-            $data['head_title'] = 'Files';
+            $data['head_title'] = 'Archivos';
             $data['view_a'] = $data['views_folder'] . 'explore_v';
             $data['nav_2'] = $data['views_folder'] . 'menu_v';
         
         return $data;
     }
 
-    function get($num_page)
+    function get($filters, $num_page, $per_page = 10)
     {
-        //Referencia
-            $per_page = 50;                             //Cantidad de registros por página
-            $offset = ($num_page - 1) * $per_page;      //Número de la página de datos que se está consultado
+        //Load
+            $this->load->model('Search_model');
 
         //Búsqueda y Resultados
-            $this->load->model('Search_model');
-            $data['filters'] = $this->Search_model->filters();
-            $elements = $this->search($data['filters'], $per_page, $offset);    //Resultados para página
+            $data['filters'] = $filters;
+            $offset = ($num_page - 1) * $per_page;      //Número de la página de datos que se está consultado
+            $elements = $this->search($filters, $per_page, $offset);    //Resultados para página
         
         //Cargar datos
             $data['list'] = $elements->result();
-            $data['str_filters'] = $this->Search_model->str_filters();
-            $data['search_num_rows'] = $this->search_num_rows($data['filters']);
+            $data['str_filters'] = $this->Search_model->str_filters($filters);
+            $data['search_num_rows'] = $this->search_num_rows($filters);
             $data['max_page'] = ceil($this->pml->if_zero($data['search_num_rows'],1) / $per_page);   //Cantidad de páginas
 
         return $data;
@@ -64,13 +64,24 @@ class File_model extends CI_Model{
     
     /**
      * String con condición WHERE SQL para filtrar user
+     * 2021-11-12
      */
     function search_condition($filters)
     {
         $condition = NULL;
         
-        //Rol de user
-        //if ( $filters['role'] != '' ) { $condition .= "role = {$filters['role']} AND "; }
+        //Estado de revisión
+        if ( $filters['fe1'] == '01' ) { $condition .= "checked_at IS NOT NULL AND "; }
+        if ( $filters['fe1'] == '02' ) { $condition .= "checked_at IS NULL AND "; }
+
+        //Fecha de revisión
+        if ( $filters['d1'] != '' ) { $condition .= "checked_at >= '{$filters['d1']} 00:00:00' AND "; }
+        if ( $filters['d2'] != '' ) { $condition .= "checked_at <= '{$filters['d2']} 23:59:59' AND "; }
+
+        //Por ID
+        if ( $filters['fe2'] != '' ) { $condition .= "id = '{$filters['fe2']}' AND "; }
+        //Por Categoria
+        if ( $filters['cat_1'] != '' ) { $condition .= "cat_1 = '{$filters['cat_1']}' AND "; }
         
         if ( strlen($condition) > 0 )
         {
@@ -89,7 +100,7 @@ class File_model extends CI_Model{
             $this->db->select('*');
         
         //Crear array con términos de búsqueda
-            $words_condition = $this->Search_model->words_condition($filters['q'], array('file_name', 'title', 'folder', 'description', 'keywords'));
+            $words_condition = $this->Search_model->words_condition($filters['q'], array('id', 'file_name', 'title', 'folder', 'description', 'keywords'));
             if ( $words_condition )
             {
                 $this->db->where($words_condition);
@@ -497,6 +508,10 @@ class File_model extends CI_Model{
 // ELIMINACIÓN
 //-----------------------------------------------------------------------------
 
+    /**
+     * Verifica si un usuario puede o no eliminar un archivo
+     * 2021-11-13
+     */
     function deleteable($file_id)
     {
         $deleteable = false;

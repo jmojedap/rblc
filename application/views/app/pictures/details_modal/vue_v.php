@@ -46,6 +46,21 @@ var picture_app = new Vue({
             })
             .catch(function (error) { console.log(error) })
         },
+        delete_element: function(){            
+            axios.get(url_api + 'files/delete/' + this.picture.id)
+            .then(response => {
+                this.hide_deleted_picture()
+                this.selected = []
+                if ( response.data.qty_deleted > 0 )
+                {
+                    toastr['info']('Imagen eliminada')
+                }
+            })
+            .catch(function (error) { console.log(error) })
+        },
+        hide_deleted_picture: function(){
+            $('#picture_' + this.picture.id).hide('slow');
+        },
         //Gestión de comentarios
         get_comments: function(){
             axios.get(url_api + 'comments/element_comments/1020/' + this.picture.id)
@@ -121,7 +136,7 @@ var picture_app = new Vue({
                 }
             })
             .catch(function (error) { console.log(error) })
-        },
+        }
     }
 });
 </script>

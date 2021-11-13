@@ -78,8 +78,8 @@ public $url_controller = URL_APP . 'professionals/';
 
         $data['options_cat_1'] = $this->Item_model->options('category_id = 718', 'Select category');
 
-        $data['view_a'] = 'professionals/images/images_v';
-        $data['nav_2'] = 'accounts/edit/menu_v';
+        $data['view_a'] = 'app/professionals/images/images_v';
+        $data['nav_2'] = 'app/accounts/edit/menu_v';
         $data['subtitle_head'] = 'images';
         $this->App_model->view(TPL_FRONT, $data);
     }
@@ -133,8 +133,8 @@ public $url_controller = URL_APP . 'professionals/';
         $data['services'] = $this->Professional_model->metadata($user_id, 716);
         $data['tags'] = $this->Professional_model->tags($user_id);
         
-        $data['nav_2'] = 'accounts/edit/menu_v';
-        $data['view_a'] = 'users/edit/categories_v';
+        $data['nav_2'] = 'app/accounts/edit/menu_v';
+        $data['view_a'] = 'app/accounts/edit/categories_v';
         
         $this->App_model->view(TPL_FRONT, $data);
     }

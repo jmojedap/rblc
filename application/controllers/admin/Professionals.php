@@ -205,9 +205,8 @@ class Professionals extends CI_Controller{
 
         $data['images'] = $this->Professional_model->images($user_id);
 
-        $data['view_a'] = 'users/images/images_v';
-        $data['nav_2'] = 'users/menus/professional_v';
-        $data['subtitle_head'] = 'images';
+        $data['view_a'] = 'admin/users/images/images_v';
+        $data['nav_2'] = 'admin/users/menus/professional_v';
         $this->App_model->view(TPL_ADMIN, $data);
     }
 

@@ -10,10 +10,8 @@
                     <h2>{{ user.display_name }}</h2>
                 </a>
                 <p class="text-muted"><i class="fas fa-map-marker-alt"></i> {{ user.city }}, {{ user.state_province }}</p>
-                <div class="overflow-hidden" v-html="user.about" style="max-height: 100px;"></div>
-                <p>
-                    <small><a v-bind:href="`<?= URL_FRONT . 'professionals/profile/' ?>` + user.id + `/` + user.username">View more +</a></small>
-                </p>
+                <div v-html="user.about" style="max-height: 150px; overflow: hidden;"></div>
+                <small><a v-bind:href="`<?= URL_FRONT . 'professionals/profile/' ?>` + user.id + `/` + user.username">View more +</a></small>
             </div>
             <div class="col-md-3">
                 <a v-bind:href="`<?= URL_FRONT . 'professionals/profile/' ?>` + user.id + `/` + user.username">

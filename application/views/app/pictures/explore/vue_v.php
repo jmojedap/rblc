@@ -18,7 +18,8 @@
         7: {id:'7',slug:'bar-wine',text:'Bar & Wine'},
         8: {id:'8',slug:'outdoor',text:'Outdoor'},
         9: {id:'9',slug:'walkways',text:'Walkways'},
-        10: {id:'10',slug:'other-rooms',text:'Other Rooms'}
+        10: {id:'10',slug:'other-rooms',text:'Other Rooms'},
+        99: {id:'99',slug:'other',text:'Other'}
     };
 
     var cat_1 = <?= $cat_1 ?>;

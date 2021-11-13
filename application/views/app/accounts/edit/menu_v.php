@@ -14,8 +14,8 @@
     
     $cl_nav_2[$app_cf_index] = 'active';
     if ( $app_cf_index == 'crop' ) { $cl_nav_2['image'] = 'active'; }
-    if ( $this->uri->segment(2) == 'categories' ) { $cl_nav_2['categories'] = 'active'; }
-    if ( $this->uri->segment(2) == 'images' ) { $cl_nav_2['images'] = 'active'; }
+    if ( $this->uri->segment(3) == 'categories' ) { $cl_nav_2['categories'] = 'active'; }
+    if ( $this->uri->segment(3) == 'images' ) { $cl_nav_2['images'] = 'active'; }
 ?>
 
 <script>

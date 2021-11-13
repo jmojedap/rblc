@@ -15,7 +15,7 @@
             >
     </div>
 
-    <?php $this->load->view('users/images/modal_image_v.php') ?>
+    <?php $this->load->view('admin/users/images/modal_image_v.php') ?>
     <?php $this->load->view('common/modal_single_delete_v') ?>
 </div>
 

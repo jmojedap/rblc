@@ -7,36 +7,62 @@
         <div class="col-md-9">
             <div class="input-group mb-2">
                 <input
-                    place="text"
-                    name="q"
-                    class="form-control"
-                    placeholder="Buscar"
+                    type="text" name="q" class="form-control"
+                    placeholder="Buscar" title="Buscar"
                     autofocus
-                    title="Buscar"
-                    v-model="filters.q"
-                    v-on:change="get_list"
+                    v-model="filters.q" v-on:change="get_list"
                     >
                 <div class="input-group-append" title="Buscar">
-                    <button type="button" class="btn btn-light btn-block" v-on:click="toggle_filters" title="Búsqueda avanzada">
-                        <i class="fa fa-chevron-up" v-show="showing_filters"></i>
-                        <i class="fa fa-chevron-down" v-show="!showing_filters"></i>
+                    <button type="button" class="btn" title="Mostrar filtros para búsqueda avanzada"
+                        v-on:click="toggle_filters"
+                        v-bind:class="{'btn-primary': display_filters, 'btn-light': !display_filters }"
+                        >
+                        <i class="fas fa-chevron-down" v-show="!display_filters"></i>
+                        <i class="fas fa-chevron-up" v-show="display_filters"></i>
                     </button>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <button class="btn btn-primary btn-block">
-                <i class="fa fa-search"></i>
-                Buscar
-            </button>
-        </div>
     </div>
-    <div id="adv_filters" style="<?= $filters_style ?>" class="d-none">
+    <div id="adv_filters" style="<?= $filters_style ?>" class="mb-2">
         <div class="form-group row">
             <div class="col-md-9">
-                <?= form_dropdown('type', $options_type, $filters['type'], 'class="form-control" title="Filtrar por tipo"'); ?>
+                <input name="fe2" type="text" class="form-control" v-model="filters.fe2">
             </div>
-            <label for="type" class="col-md-3 control-label col-form-label">Tipo</label>
+            <label for="fe2" class="col-md-3 col-form-label">ID File</label>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-9">
+                <select name="cat_1" v-model="filters.cat_1" class="form-control">
+                    <option v-for="(option_cat_1, key_cat_1) in options_cat_1" v-bind:value="key_cat_1">{{ option_cat_1 }}</option>
+                </select>
+            </div>
+            <label for="cat_1" class="col-md-3 col-form-label">Categoría</label>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-9">
+                <select name="fe1" v-model="filters.fe1" class="form-control">
+                    <option v-for="(option_checked, key_checked) in options_checked" v-bind:value="key_checked">{{ option_checked }}</option>
+                </select>
+            </div>
+            <label for="fe1" class="col-md-3 col-form-label">Estado revisión</label>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-5">
+                <input name="d1" type="date" class="form-control" v-model="filters.d1">
+            </div>
+            <div class="col-md-4">
+                <input name="d2" type="date" class="form-control" v-model="filters.d2">
+            </div>
+            <label for="fe1" class="col-md-3 col-form-label">Revisado entre fechas</label>
+        </div>
+
+        <!-- Botón ejecutar y limpiar filtros -->
+        <div class="form-group row">
+            <div class="col-md-9 text-right">
+                <button class="btn btn-warning w120p" v-on:click="remove_filters" type="button" v-show="active_filters">Quitar filtros</button>
+                <button class="btn btn-primary w120p" type="submit">Buscar</button>
+            </div>
         </div>
     </div>
 </form>

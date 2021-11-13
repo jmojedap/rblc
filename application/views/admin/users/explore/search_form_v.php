@@ -7,14 +7,10 @@
         <div class="col-md-9">
             <div class="input-group mb-2">
                 <input
-                    place="text"
-                    name="q"
-                    class="form-control"
-                    placeholder="Search..."
-                    autofocus
+                    type="text" name="q" class="form-control"
+                    placeholder="Buscar..." autofocus
                     title="Search"
-                    v-model="filters.q"
-                    v-on:change="get_list"
+                    v-model="filters.q" v-on:change="get_list"
                     >
                 <div class="input-group-append" title="Search">
                     <button type="button" class="btn btn-light btn-block" v-on:click="toggle_filters" title="Búsqueda avanzada">
@@ -31,9 +27,27 @@
     <div id="adv_filters" style="<?= $filters_style ?>">
         <div class="form-group row">
             <div class="col-md-9">
-                <?= form_dropdown('role', $options_role, $filters['role'], 'class="form-control" title="Filtrar por rol" v-model="filters.role"'); ?>
+                <select name="role" v-model="filters.role" class="form-control" title="Filtrar por rol">
+                    <option v-for="(option_role, key_role) in options_role" v-bind:value="key_role">{{ option_role }}</option>
+                </select>
             </div>
-            <label for="type" class="col-md-3 col-form-label">Role</label>
+            <label for="role" class="col-md-3 col-form-label">Rol</label>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-9">
+                <select name="fe1" v-model="filters.fe1" class="form-control">
+                    <option v-for="(option_invitation, key_invitation) in options_invitation_status" v-bind:value="key_invitation">{{ option_invitation }}</option>
+                </select>
+            </div>
+            <label for="fe1" class="col-md-3 col-form-label">Invitaciones</label>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-9">
+                <select name="status" v-model="filters.status" class="form-control">
+                    <option v-for="(option_status, key_status) in options_status" v-bind:value="key_status">{{ option_status }}</option>
+                </select>
+            </div>
+            <label for="status" class="col-md-3 col-form-label">Estado</label>
         </div>
     </div>
 </form>

@@ -161,7 +161,7 @@ class Projects extends CI_Controller{
         //Opciones de filtros de búsqueda
             $data['controller'] = 'projects';                   //Nombre del controlador
             $data['cf'] = 'projects/my_projects/';              //Controlador/Función
-            $data['views_folder'] = 'projects/my_projects/';    //Carpeta donde están las vistas de exploración
+            $data['views_folder'] = 'app/projects/my_projects/';    //Carpeta donde están las vistas de exploración
             
         //Cargar vista
             $data['head_title'] = 'My projects';

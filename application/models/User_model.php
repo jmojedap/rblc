@@ -109,6 +109,13 @@ class User_model extends CI_Model{
         
         //Otros filtros
         if ( $filters['role'] != '' ) { $condition .= "role = {$filters['role']} AND "; }
+        //Con invitations
+        if ( $filters['fe1'] == '1' ) { $condition .= "id IN (SELECT user_id FROM events WHERE type_id = 121) AND ";}
+        //Sin invitations
+        if ( $filters['fe1'] == '0' ) { $condition .= "id NOT IN (SELECT user_id FROM events WHERE type_id = 121) AND ";}
+        //Estado del usuario
+        if ( $filters['status'] != '' ) { $condition .= "status = {$filters['status']} AND "; }
+        if ( $filters['u'] != '' ) { $condition .= "id = {$filters['u']} AND "; }
         
         //Quitar cadena final de ' AND '
         if ( strlen($condition) > 0 ) { $condition = substr($condition, 0, -5);}
@@ -818,6 +825,28 @@ class User_model extends CI_Model{
         $users = $this->db->get('users');
 
         return $users;
+    }
+
+// Invitations
+//-----------------------------------------------------------------------------
+
+    function invitations_summary()
+    {
+        $data['qty_professionals'] = $this->Db_model->num_rows('users', 'role = 13');
+        $data['qty_invited_users'] = $this->Db_model->num_rows('users', 'id IN (SELECT user_id FROM events WHERE type_id = 121)');
+        $data['qty_actived_professionals'] = $this->Db_model->num_rows('users', 'role = 13 AND status = 1');
+        $data['qty_invitations'] = $this->Db_model->num_rows('events', 'type_id = 121');
+
+        //Por día
+        $sql = 'SELECT element_id AS date, COUNT(id) AS qty_invitations';
+        $sql .= ' FROM events';
+        $sql .= ' WHERE type_id = 121';
+        $sql .= ' GROUP BY element_id';
+
+        $invitations_day = $this->db->query($sql);
+        $data['invitations_day'] = $invitations_day->result();
+    
+        return $data;
     }
 
 }

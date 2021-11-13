@@ -1,7 +1,7 @@
 <div id="user_images" class="mt-2">
     <div class="card center_box_750">
         <div class="card-body">
-            <?php $this->load->view('professionals/images/upload_file_form_v') ?>
+            <?php $this->load->view('app/professionals/images/upload_file_form_v') ?>
         </div>
     </div>
     <hr>
@@ -15,7 +15,7 @@
             >
     </div>
 
-    <?php $this->load->view('professionals/images/modal_image_v.php') ?>
+    <?php $this->load->view('app/professionals/images/modal_image_v.php') ?>
     <?php $this->load->view('common/modal_single_delete_v') ?>
 </div>
 

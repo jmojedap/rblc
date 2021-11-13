@@ -182,7 +182,6 @@ class Notification_model extends CI_Model{
                 
                 $this->email->send();   //Enviar
             }
-
         }
     }
 
@@ -355,6 +354,95 @@ class Notification_model extends CI_Model{
         }
 
         return $data;
+    }
+
+// Invitations
+//-----------------------------------------------------------------------------
+
+    function email_invitation($user_id)
+    {
+        $data = array(
+            'status' => 0,
+            'message' => 'Mensaje no enviado desde instalación local',
+            'event_id' => 0
+        );
+
+        if ( ENV == 'production' )
+        {
+            //Establecer clave de activación
+            $this->load->model('Account_model');
+            //$user_id = $this->input->post('user_id');
+            $this->Account_model->activation_key($user_id);
+
+            //Identificar usuario
+            $user = $this->Db_model->row_id('users', $user_id);
+            
+            if ( ! is_null($user) )
+            {
+                $short_name = $user->display_name;
+                $name_parts = explode(' ', $user->display_name);
+                if ( count($name_parts) > 0 ) $short_name = $name_parts[0];
+
+                //Enviar Email
+                $this->load->library('email');
+                $config['mailtype'] = 'html';
+    
+                $this->email->initialize($config);
+                $this->email->subject($short_name . ', activate your Account in ' . APP_NAME);
+                $this->email->from('info@' . APP_DOMAIN, APP_NAME);
+                //$this->email->to($user->email);
+                $this->email->to('pacarinamedialab@gmail.com');
+                if ( strlen($this->input->post('bcc')) > 0 ) { $this->email->bcc($this->input->post('bcc')); }
+                $this->email->message($this->invitation_message($user));
+                
+                $this->email->send();   //Enviar
+
+                //Guardar evento
+                $data['event_id'] = $this->save_event_invitation($user);
+                $data['status'] = 1;
+                $data['message'] = 'E-mail enviado';
+            }
+
+        }
+
+        return $data;
+    }
+
+    /**
+     * HTML del mensaje para invitar a usuario a activar su cuenta
+     * 2021-11-10
+     */
+    function invitation_message($user)
+    {
+        $data['user'] = $user;
+
+        $this->load->model('Professional_model');
+        $data['images'] = $this->Professional_model->images($user->id);
+        $data['text_message'] = $this->input->post('text_message');
+
+        $message = $this->load->view('admin/notifications/email_invitation_v', $data, TRUE);
+        
+        return $message;
+    }
+
+    function save_event_invitation($user)
+    {
+        //Content
+        $content['email_to'] = $user->email;
+        $content['text_message'] = $this->input->post('text_message');
+
+        //Evento
+        $this->load->model('Event_model');
+        $arr_row['type_id'] = 121;
+        $arr_row['content'] = json_encode($content);
+        $arr_row['start'] = date('Y-m-d H:i:s');
+        $arr_row['end'] = date('Y-m-d H:i:s');
+        $arr_row['element_id'] = date('Ymd');
+        $arr_row['user_id'] = $user->id;
+
+        $event_id = $this->Event_model->save($arr_row, "user_id = {$arr_row['user_id']}");
+
+        return $event_id;
     }
 
 }

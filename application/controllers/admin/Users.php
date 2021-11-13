@@ -53,15 +53,16 @@ public $url_controller = URL_ADMIN . 'users/';
             $this->App_model->view(TPL_ADMIN, $data);
     }
 
+    
     /**
      * JSON
      * Listado de users, según filtros de búsqueda
      */
-    function get($num_page = 1)
+    function get($num_page = 1, $per_page = 10)
     {
         $this->load->model('Search_model');
         $filters = $this->Search_model->filters();
-        $data = $this->User_model->get($filters, $num_page);
+        $data = $this->User_model->get($filters, $num_page, $per_page);
 
         //Salida JSON
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
@@ -223,6 +224,7 @@ public $url_controller = URL_ADMIN . 'users/';
         //Array data espefícicas
             $data['nav_3'] = $this->views_folder . 'edit/menu_v';
             $data['view_a'] = $view_a;
+            $data['back_link'] = $this->url_controller . 'explore/';
         
         $this->App_model->view(TPL_ADMIN, $data);
     }
@@ -508,5 +510,78 @@ public $url_controller = URL_ADMIN . 'users/';
         $this->App_model->view(TPL_ADMIN, $data);
     }
 
+// INVITACIONES A USUARIOS
+//-----------------------------------------------------------------------------
+
+    function invitations($num_page = 1, $per_page = 10)
+    {
+        $data['head_title'] = 'Invitations';
+        $data['view_a'] = $this->views_folder . 'invitations/invitations_v';
+        $data['nav_2'] = $this->views_folder . 'explore/menu_v';
+        $data['bcc'] = $this->App_model->option_value(201);
+        $data['text_message'] = $this->App_model->option_value(202);
+
+        $this->load->model('Search_model');
+        $data['filters'] = $this->Search_model->filters();
+
+        $data['num_page'] = $num_page;
+
+        $this->load->model('Notification_model');
+        $data['styles'] = $this->Notification_model->email_styles();
+
+        $this->App_model->view(TPL_ADMIN, $data);
+    }
+
+    /**
+     * JSON
+     * Listado de users, según filtros de búsqueda
+     */
+    function get_users_invitations($num_page = 1, $per_page = 10)
+    {
+        $this->load->model('Search_model');
+        $filters = $this->Search_model->filters();
+
+        $data = $this->User_model->get($filters, $num_page, $per_page);
+
+        $users = $data['list'];
+        $list = array();
+
+        foreach($users as $user){
+            $condition = "type_id = 121 AND user_id = {$user->id}";
+            $user->qty_invitations = $this->Db_model->num_rows('events', $condition);
+            $list[] = $user;
+        }
+        
+        $data['list'] = $list;
+
+        //Salida JSON
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
+
+    /**
+     * Resumen del estado de invitaciones de activación de cuenta
+     * 2021-11-08
+     */
+    function invitations_summary()
+    {
+        $data = $this->User_model->invitations_summary();
+        //Salida JSON
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
+
+    /**
+     * Enviar mensaje de correo electrónico, invitación a activar y controlar
+     * su cuenta de usuario
+     * 2021-11-08
+     */
+    function send_invitation()
+    {
+        $this->load->model('Notification_model');
+        $user_id = $this->input->post('user_id');
+        $data = $this->Notification_model->email_invitation($user_id);
+
+        //Salida JSON
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
 
 }

@@ -105,6 +105,9 @@
                             <img src="<?= $this->session->userdata('picture') ?>" alt="user image" class="rounded-circle" style="max-width: 40px;" onerror="this.src='<?= URL_IMG ?>users/sm_user.png'">
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <?php if ( $this->session->userdata('role') == 13 ) : ?>
+                                <a class="dropdown-item" href="<?= URL_FRONT . "professionals/profile/{$this->session->userdata('user_id')}" ?>">My profile</a>
+                            <?php endif; ?>
                             <a class="dropdown-item" href="<?= URL_FRONT . 'accounts/edit' ?>">Edit profile</a>
 
                             <?php if ( $this->session->userdata('role') == 13 ) { ?>

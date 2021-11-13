@@ -5,6 +5,7 @@
     $cl_nav_2['users_import'] = '';
     $cl_nav_2['users_add'] = '';
     $cl_nav_2['users_newsletter_subscribers'] = '';
+    $cl_nav_2['users_invitations'] = '';
     
     $cl_nav_2[$app_cf_index] = 'active';
     if ( $app_cf_index == 'users_import_e' ) { $cl_nav_2['users_import'] = 'active'; }
@@ -36,10 +37,18 @@
         cf: 'users/newsletter_subscribers'
     };
     
+    sections.invitations = {
+        icon: 'far fa-envelop-open',
+        text: 'Invitations',
+        class: '<?= $cl_nav_2['users_invitations'] ?>',
+        cf: 'users/invitations/1/?status=00&role=13&fe1=00&',
+        anchor: true
+    };
+    
     //Secciones para cada rol
-    sections_role[1] = ['explore', 'newsletter_subscribers'];
-    sections_role[2] = ['explore', 'newsletter_subscribers'];
-    sections_role[3] = ['explore', 'newsletter_subscribers'];
+    sections_role[1] = ['explore', 'newsletter_subscribers', 'invitations'];
+    sections_role[2] = ['explore', 'newsletter_subscribers', 'invitations'];
+    sections_role[3] = ['explore', 'newsletter_subscribers', 'invitations'];
 
     
     //Recorrer el sections del rol actual y cargarlos en el menú

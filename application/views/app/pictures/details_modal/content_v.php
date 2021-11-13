@@ -23,7 +23,7 @@
                     </a>
                 </div>
             </div>
-            <div class="d-flex">
+            <div class="d-flex justify-content-between">
                 <div class="p-2">
                     <?php if ( $this->session->userdata('logged') ) { ?>
                         <img class="action_icon" src="<?= URL_IMG ?>front/icon_like.png" alt="Icon like" v-on:click="alt_like" v-show="like_status == 0">
@@ -37,7 +37,20 @@
                         <img class="action_icon" src="<?= URL_IMG ?>front/icon_comment.png" alt="Icon comment" data-toggle="modal" data-target="#modal_form" v-on:click="clean_form">
                     <?php } ?>
                 </div>
+                <!-- HERRAMIENTAS PARA EL ADMINISTRADOR -->
+                <?php if ( in_array($this->session->userdata('role'), array(1,2)) ) : ?>
+                    <div class="text-right">
+                        <a v-bind:href="`<?= URL_ADMIN . "files/edit/" ?>` + picture.id" class="btn btn-sm btn-light" target="_blank" title="Editar imagen">
+                            <i class="fa fa-pencil-alt"></i>
+                        </a>
+                        <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#delete_modal" title="Eliminar imagen">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </div>
+                <?php endif; ?>
+                
             </div>
+
             
             <div class="comments">
                 <div v-for="(comment, key) in comments" class="comment">

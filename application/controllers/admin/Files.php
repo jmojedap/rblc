@@ -23,26 +23,39 @@ class Files extends CI_Controller{
 //EXPLORE
 //---------------------------------------------------------------------------------------------------
                 
-    function explore()
+    /**
+     * Vista exploración de archivos
+     * 2021-11-12
+     */
+    function explore($num_page = 1)
     {        
+        //Identificar filtros de búsqueda
+        $this->load->model('Search_model');
+        $filters = $this->Search_model->filters();
+
         //Datos básicos de la exploración
-        $data = $this->File_model->explore_data(1);
+            $data = $this->File_model->explore_data($filters, $num_page, 10);
         
         //Opciones de filtros de búsqueda
-            $data['options_type'] = $this->Item_model->options('category_id = 33', 'Todos');
+            //$data['options_type'] = $this->Item_model->options('category_id = 33', 'Todos');
+            $data['options_cat_1'] = $this->Item_model->options('category_id = 718', 'Todos');
             
         //Arrays con valores para contenido en lista
-            $data['arr_types'] = $this->Item_model->arr_cod('category_id = 33');
+            //$data['arr_types'] = $this->Item_model->arr_cod('category_id = 33');
             
         //Cargar vista
             $this->App_model->view(TPL_ADMIN, $data);
     }
 
-    function get($num_page = 1)
+    /**
+     * Listado de Posts, filtrados por búsqueda, JSON
+     */
+    function get($num_page = 1, $per_page = 10)
     {
-        $data = $this->File_model->get($num_page);
+        $this->load->model('Search_model');
+        $filters = $this->Search_model->filters();
 
-        //Salida JSON
+        $data = $this->File_model->get($filters, $num_page, $per_page);
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 
@@ -79,6 +92,21 @@ class Files extends CI_Controller{
 
 // CRUD
 //-----------------------------------------------------------------------------
+
+    /**
+     * Información detallada del file desde la perspectiva de base de datos
+     * 2020-08-18
+     */
+    function details($post_id)
+    {        
+        //Datos básicos
+        $data = $this->File_model->basic($post_id);
+        $data['back_link'] = $this->url_controller . 'explore';
+        $data['nav_2'] = $this->views_folder . 'menu_v';
+        $data['view_a'] = 'common/row_details_v';
+
+        $this->App_model->view(TPL_ADMIN, $data);
+    }
 
     function info($file_id)
     {
