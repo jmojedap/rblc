@@ -32,6 +32,55 @@ class Notification_model extends CI_Model{
 
         return $row;
     }
+
+// Account activation
+//-----------------------------------------------------------------------------
+
+    /**
+     * Envía e-mail notificando a un usuario activó su cuenta
+     * 2021-11-18
+     */
+    function email_password_updated($user_id)
+    {
+        if ( ENV == 'production' )
+        {
+            
+        //Variables
+            $user = $this->Db_model->row_id('users', $user_id);
+        
+        //Enviar Email
+            $this->load->library('email');
+            $config['mailtype'] = 'html';
+
+            $this->email->initialize($config);
+            $this->email->subject('Your password was successfully updated');
+            $this->email->from('info@' . APP_DOMAIN, APP_NAME);
+            $this->email->to($user->email);
+            $this->email->message($this->password_updated_message($user_id));
+            
+            $this->email->send();   //Enviar
+        }
+    }
+
+    /**
+     * Devuelve la vista con el mensaje de email para notificar que usuario
+     * activó la cuenta
+     * 2021-11-17
+     */
+    function password_updated_message($user_id)
+    {
+        $user = $this->Db_model->row_id('users', $user_id);
+
+        //Usuarios relacionados
+        $data['user'] = $user;
+
+        $data['styles'] = $this->Notification_model->email_styles();
+        $data['view_a'] = 'admin/notifications/email_password_updated_v';
+        
+        $message = $this->load->view('templates/email/main', $data, TRUE);
+        
+        return $message;
+    }
     
 // Notificación following
 //-----------------------------------------------------------------------------
@@ -64,7 +113,7 @@ class Notification_model extends CI_Model{
 
     /**
      * Devuelve la vista con el mensaje de email para notificar nuevo seguidor
-     * 2021-07-27
+     * 2021-11-17
      */
     function new_follower_message($user_id, $meta_id)
     {
@@ -74,8 +123,11 @@ class Notification_model extends CI_Model{
         //Usuarios relacionados
         $data['user'] = $user;
         $data['follower'] = $this->Db_model->row_id('users', $following->related_1);
+
+        $data['styles'] = $this->Notification_model->email_styles();
+        $data['view_a'] = 'admin/notifications/email_new_follower_v';
         
-        $message = $this->load->view('admin/notifications/email_new_follower_v', $data, TRUE);
+        $message = $this->load->view('templates/email/main', $data, TRUE);
         
         return $message;
     }
@@ -137,7 +189,7 @@ class Notification_model extends CI_Model{
 
     /**
      * Devuelve la vista con el mensaje de email para notificar nuevo mensaje interno
-     * 2021-07-27
+     * 2021-11-17
      */
     function new_message_message($row_user, $row_message)
     {
@@ -145,8 +197,11 @@ class Notification_model extends CI_Model{
         $data['user'] = $row_user;
         $data['sender'] = $this->Db_model->row_id('users', $row_message->user_id);
         $data['row_message'] = $row_message;
+
+        $data['styles'] = $this->Notification_model->email_styles();
+        $data['view_a'] = 'admin/notifications/email_new_message_v';
         
-        $message = $this->load->view('admin/notifications/email_new_message_v', $data, TRUE);
+        $message = $this->load->view('templates/email/main', $data, TRUE);
         
         return $message;
     }
@@ -194,8 +249,10 @@ class Notification_model extends CI_Model{
         //Variables para vista
         $data['comment'] = $row_comment;
         $data['creator'] = $this->Db_model->row_id('users', $row_comment->creator_id);
+        $data['styles'] = $this->Notification_model->email_styles();
+        $data['view_a'] = 'admin/notifications/email_new_comment_v';
         
-        $message = $this->load->view('admin/notifications/email_new_comment_v', $data, TRUE);
+        $message = $this->load->view('templates/email/main', $data, TRUE);
         
         return $message;
     }
@@ -410,7 +467,7 @@ class Notification_model extends CI_Model{
 
     /**
      * HTML del mensaje para invitar a usuario a activar su cuenta
-     * 2021-11-10
+     * 2021-11-17
      */
     function invitation_message($user)
     {
@@ -420,7 +477,10 @@ class Notification_model extends CI_Model{
         $data['images'] = $this->Professional_model->images($user->id);
         $data['text_message'] = $this->input->post('text_message');
 
-        $message = $this->load->view('admin/notifications/email_invitation_v', $data, TRUE);
+        $data['styles'] = $this->Notification_model->email_styles();
+        $data['view_a'] = 'admin/notifications/email_invitation_v';
+        
+        $message = $this->load->view('templates/email/main', $data, TRUE);
         
         return $message;
     }

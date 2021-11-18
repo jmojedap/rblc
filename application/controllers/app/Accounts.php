@@ -128,7 +128,7 @@ public $url_controller = URL_APP . 'accounts/';
     {
         $data['head_title'] = 'Account activation';
         $data['activation_key'] = $activation_key;
-        $data['view_a'] = 'accounts/activation_v';
+        $data['view_a'] = 'app/accounts/activation_v';
 
         $this->App_model->view('templates/colibri/start', $data);
     }

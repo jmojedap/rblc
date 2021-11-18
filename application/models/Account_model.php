@@ -408,8 +408,12 @@ class Account_model extends CI_Model{
         $row_user = $this->Db_model->row_id('users', $user_id);
         $data['row_user'] = $row_user ;
         $data['activation_type'] = $activation_type;
+        $data['view_a'] = 'admin/accounts/email_activation_v';
+
+        $this->load->model('Notification_model');
+        $data['styles'] = $this->Notification_model->email_styles();
         
-        $message = $this->load->view('accounts/email_activation_v', $data, TRUE);
+        $message = $this->load->view('templates/email/main', $data, TRUE);
         
         return $message;
     }

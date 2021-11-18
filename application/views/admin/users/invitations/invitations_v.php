@@ -1,3 +1,7 @@
+<?php
+    $data_message_view['view_a'] = 'admin/users/invitations/message_v';
+?>
+
 <div id="invitations_app">
     <div class="row">
         <div class="col-md-5">
@@ -67,7 +71,7 @@
                         <p>
                             <span class="text-muted">Para:</span> <strong>{{ current.email }}</strong>
                         </p>
-                        <?php $this->load->view('admin/users/invitations/message_v') ?>
+                        <?php $this->load->view('templates/email/main', $data_message_view) ?>
                     </div>
                 </div>
             </div>

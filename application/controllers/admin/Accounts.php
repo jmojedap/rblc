@@ -151,7 +151,7 @@ class Accounts extends CI_Controller {
 
     /**
      * Vista previa del mensaje de email, para activación o restauración de cuenta de usuario
-     * 2020-07-20
+     * 2021-11-17
      */
     function test_message($user_id, $activation_type = 'activation')
     {
@@ -181,6 +181,16 @@ class Accounts extends CI_Controller {
             $row_comment = $this->Db_model->row_id('comments', $param_1);
 
             echo $this->Notification_model->new_comment_message($row_comment);
+        } else if ( $type == 'activation' ) {
+            $user_id = $param_1;
+            $activation_type = 'activation';
+            if ( $param_2 != 0 ) $activation_type = $param_2; 
+            $activation_message = $this->Account_model->activation_message($user_id, $activation_type); 
+            echo $activation_message;
+        } else if ( $type == 'password_updated' ) {
+            $user_id = $param_1;
+            $message = $this->Notification_model->password_updated_message($user_id); 
+            echo $message;
         }
     }
 
@@ -236,7 +246,7 @@ class Accounts extends CI_Controller {
     {
         $data['head_title'] = 'Activación de cuenta';
         $data['activation_key'] = $activation_key;
-        $data['view_a'] = 'accounts/activation_v';
+        $data['view_a'] = 'app/accounts/activation_v';
 
         $this->App_model->view('templates/admin_pml/start', $data);
     }
@@ -351,7 +361,7 @@ class Accounts extends CI_Controller {
         
         //Validar condiciones
         if ( $this->input->post('password') <> $this->input->post('passconf') ) $data['errors'] .= 'Passwords do not match. '; //Contraseñas coinciden
-        if ( is_null($row_user) ) $data['errors'] .= 'Usuario no identificado. ';
+        if ( is_null($row_user) ) $data['errors'] .= 'Unidentified user. ';
         
         if ( strlen($data['errors']) == 0 ) 
         {
@@ -359,7 +369,11 @@ class Accounts extends CI_Controller {
             $this->Account_model->create_session($row_user->username, 1);
             
             $data['status'] = 1;
-            $data['message'] = $this->input->post('password') . '::' . $this->input->post('conf');
+            $data['message'] = '';
+
+            //Enviar confirmación de activación de cuenta por email
+            $this->load->model('Notification_model');
+            $this->Notification_model->email_password_updated($row_user->id);
         }
         
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
