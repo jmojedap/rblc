@@ -5,7 +5,7 @@
         </div>
 
         <div class="col-md-3">
-            <a href="<?= URL_ADMIN . "groups/export/?{$str_filters}" ?>" class="btn btn-light d-none" title="Exportar registros encontrados a Excel">
+            <a href="<?= URL_ADMIN . "{$controller}/export/?{$str_filters}" ?>" class="btn btn-light d-none" title="Exportar registros encontrados a Excel">
                 <i class="fa fa-download"></i>
             </a>
             <button class="btn btn-light"

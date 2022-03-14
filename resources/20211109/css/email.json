@@ -12,6 +12,7 @@
     "bl_thead" : "color: #333; font-weight: bold; padding: 5px; background-color: #bbdefb",
     "bl_td" : "padding: 5px;",
     "button" : "padding: 10px; background-color: #FDD327; color: #333; text-decoration: none; margin-top: 20px; border-radius: 0.25em;",
+    "text_main": "color: #39B44A;",
     "text_success": "color: #28a745;",
     "text_info": "color: #03a9f4;",
     "text_danger": "color: #f44336;",
