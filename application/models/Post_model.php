@@ -388,14 +388,16 @@ class Post_model extends CI_Model{
 
     /**
      * Imágenes asociadas al post, mediante la tabla posts_meta, tipo 1
-     * 2020-09-05
+     * 2022-03-19
      */
     function images($post_id)
     {
-        $this->db->select('files.id, files.title, url, url_thumbnail, files.integer_1 AS main');
+        $this->db->select('files.id, files.title, files.subtitle, description, 
+            external_link, url, url_thumbnail, files.integer_1 AS main, position');
         $this->db->where('is_image', 1);
         $this->db->where('table_id', '2000');       //Tabla post
         $this->db->where('related_1', $post_id);   //Relacionado con el post
+        $this->db->order_by('position', 'ASC');
         $images = $this->db->get('files');
 
         return $images;
@@ -403,7 +405,7 @@ class Post_model extends CI_Model{
 
     /**
      * Establecer una imagen asociada a un post como la imagen principal (tabla file)
-     * 2020-09-05
+     * 2022-03-19
      */
     function set_main_image($post_id, $file_id)
     {
@@ -413,10 +415,10 @@ class Post_model extends CI_Model{
         if ( ! is_null($row_file) )
         {
             //Quitar otro principal
-            $this->db->query("UPDATE file SET integer_1 = 0 WHERE table_id = 2000 AND related_1 = {$post_id} AND integer_1 = 1");
+            $this->db->query("UPDATE files SET integer_1 = 0 WHERE table_id = 2000 AND related_1 = {$post_id} AND integer_1 = 1");
 
             //Poner nuevo principal
-            $this->db->query("UPDATE file SET integer_1 = 1 WHERE id = {$file_id} AND related_1 = {$post_id}");
+            $this->db->query("UPDATE files SET integer_1 = 1 WHERE id = {$file_id} AND related_1 = {$post_id}");
 
             //Actualizar registro en tabla post
             $arr_row['image_id'] = $row_file->id;

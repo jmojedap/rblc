@@ -25,7 +25,7 @@
                             v-bind:src="user.url_thumbnail"
                             class="w100pc"
                             alt="User image"
-                            onerror="this.src='<?= URL_IMG ?>app/sm_coming_soon.jpg'"
+                            onerror="this.src='<?= URL_IMG ?>app/sm_coming_soon.png'"
                         >
                     </a>
                 </div>

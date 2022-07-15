@@ -2,6 +2,9 @@
     $current_styles = $this->pml->query_to_array($styles, 'related_1', 'meta_id');
     $current_descriptors = $this->pml->query_to_array($descriptors, 'related_1', 'meta_id');
     $current_feelings = $this->pml->query_to_array($feelings, 'related_1', 'meta_id');
+
+    $price = ($row->integer_1 > 0) ? $row->integer_1 : '';
+    //$price = $this->pml->if_strlen($row->integer_1, '');
 ?>
 
 <?php $this->load->view('assets/bs4_chosen') ?>
@@ -34,8 +37,7 @@
                         <input
                             name="integer_1" type="text" class="form-control"
                             title="Price"
-                            required
-                            value="<?= $row->integer_1 ?>"
+                            value="<?= $price ?>"
                             >
                     </div>
                 </div>

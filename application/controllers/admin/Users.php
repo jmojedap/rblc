@@ -218,7 +218,8 @@ public $url_controller = URL_ADMIN . 'users/';
         //Opciones formulario
             $data['options_type'] = $this->Item_model->options("category_id = 63", 'Account type');
             $data['options_role'] = $this->Item_model->options("category_id = 58 AND cod >= {$this->session->userdata('role')}");
-            $data['options_cat_1'] = $this->Item_model->options("category_id = 720", 'Professional category');
+            $data['options_cat_1'] = $this->Item_model->options("category_id = 720 AND level = 0", 'Category');
+            $data['items_cat_2'] = $this->Item_model->get_items("category_id = 720 AND level = 1");
             $data['options_country'] = $this->App_model->options_country();
         
         //Array data espefícicas
@@ -513,6 +514,9 @@ public $url_controller = URL_ADMIN . 'users/';
 // INVITACIONES A USUARIOS
 //-----------------------------------------------------------------------------
 
+    /**
+     * 
+     */
     function invitations($num_page = 1, $per_page = 10)
     {
         $data['head_title'] = 'Invitations';

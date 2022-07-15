@@ -213,6 +213,21 @@ class Files extends CI_Controller{
 
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
+
+// Cambio de posición del archivo file.position
+//-----------------------------------------------------------------------------
+
+    /**
+     * Cambio de posición del archivo en el álbum
+     * 2021-02-11
+     */
+    function update_position($file_id, $new_position)
+    {
+        $data = $this->File_model->update_position($file_id, $new_position);
+
+        //Salida JSON
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
     
 // API
 //-----------------------------------------------------------------------------
@@ -380,7 +395,8 @@ class Files extends CI_Controller{
     }
 
     /**
-     * Actualiza el campo file.searcher considerando los datos asociados del registro en tabla file
+     * Actualiza el campo file.searcher considerando los datos asociados del 
+     * registro en tabla file
      * 2020-07-28
      */
     function update_priority($min_id = 0)
@@ -395,11 +411,12 @@ class Files extends CI_Controller{
 
     /**
      * Actualiza datos descriptivos de la tabla file, y metadatos (tags) para files_meta
-     * 2021-08-04 (checked_at)
+     * 2022-03-19 (title)
      */
     function update_full($file_id)
     {
         //Update row
+            $arr_row['title'] = $this->input->post('title');
             $arr_row['file_name'] = $this->input->post('file_name');
             $arr_row['description'] = $this->input->post('description');
             $arr_row['cat_1'] = $this->input->post('cat_1');

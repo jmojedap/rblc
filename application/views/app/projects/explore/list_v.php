@@ -19,7 +19,7 @@
                         v-bind:src="project.url_thumbnail"
                         class="w100pc"
                         alt="Project image"
-                        onerror="this.src='<?= URL_IMG ?>app/sm_coming_soon.jpg'"
+                        onerror="this.src='<?= URL_IMG ?>app/sm_coming_soon.png'"
                     >
                 </a>
             </div>

@@ -24,10 +24,7 @@
                 <div class="form-group row">
                     <label for="integer_1" class="col-md-4 col-form-label text-right">Price (USD)</label>
                     <div class="col-md-8">
-                        <input
-                            name="integer_1" type="text" class="form-control"
-                            required title="Price"
-                            >
+                        <input name="integer_1" type="text" class="form-control" title="Price">
                     </div>
                 </div>
 

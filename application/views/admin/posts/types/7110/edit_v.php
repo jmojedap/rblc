@@ -2,6 +2,7 @@
     <div class="card">
         <div class="card-body">
             <form accept-charset="utf-8" method="POST" id="project_form" @submit.prevent="send_form">
+                <input type="hidden" name="id" value="<?= $row->id ?>">
                 <div class="form-group row">
                     <label for="post_name" class="col-md-4 col-form-label text-right">Project name</label>
                     <div class="col-md-8">
@@ -53,7 +54,7 @@
         },
         methods: {
             send_form: function(){
-                axios.post(url_api + 'posts/update/' + this.row_id, $('#project_form').serialize())
+                axios.post(url_api + 'posts/save/', $('#project_form').serialize())
                 .then(response => {
                     if (response.data.status == 1) {
                         toastr['success']('Saved');

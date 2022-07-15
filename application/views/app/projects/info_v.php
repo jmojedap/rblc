@@ -79,9 +79,11 @@
             </div>
             <div>
                 <h1><?= $row->post_name ?></h1>
-                <p>
-                    Price US: <?= $this->pml->money($row->integer_1) ?>
-                </p>
+                <?php if ( $row->integer_1 > 0 ) : ?>
+                    <p>
+                        Price US: <?= $this->pml->money($row->integer_1) ?>
+                    </p>
+                <?php endif; ?>
                 <div class="mb-2">
                     <button class="btn btn-white btn-block" v-on:click="create_conversation">Message</button>
                 </div>
@@ -91,7 +93,7 @@
             </div>
             <div class="gallery-2 mb-2">
                 <div class="image-container" v-for="(image, image_key) in images" v-on:click="set_current_image(image_key)">
-                    <img class="picture" v-bind:src="image.url_thumbnail" alt="Project image" onerror="this.src='<?= URL_IMG ?>app/sm_coming_soon.jpg'">
+                    <img class="picture" v-bind:src="image.url_thumbnail" alt="Project image" onerror="this.src='<?= URL_IMG ?>app/sm_coming_soon.png'">
                 </div>
             </div>
         </div>

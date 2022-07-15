@@ -1,7 +1,7 @@
 <?php //$this->load->view('assets/lightbox2') ?>
 
 <div id="inspiration_app">
-    <ul id="nav_2" class="nav nav-pills nav-fill mb-4">
+    <ul id="nav_2" class="nav_2 nav nav-pills nav-fill mb-4">
         <li class="nav-item" v-for="(menu, menu_key) in menu_elements">
             <a class="nav-link" href="#" v-on:click="set_tag(menu_key)" v-bind:class="{'active': menu.slug == tag.slug }">
                 {{ menu.text }}
@@ -15,7 +15,7 @@
                 v-bind:src="image.url_thumbnail"
                 v-on:click="alt_like(image_key)"
                 class="w100pc mb-2"
-                onerror="this.src='<?= URL_IMG ?>app/sm_coming_soon.jpg'"
+                onerror="this.src='<?= URL_IMG ?>app/sm_coming_soon.png'"
                 >
         </div>
     </div>

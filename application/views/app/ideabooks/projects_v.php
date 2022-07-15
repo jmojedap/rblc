@@ -11,7 +11,7 @@
                     v-bind:src="project.url_thumbnail"
                     class="rounded w75p"
                     alt="Project image"
-                    onerror="this.src='<?= URL_IMG ?>app/sm_coming_soon.jpg'"
+                    onerror="this.src='<?= URL_IMG ?>app/sm_coming_soon.png'"
                 ></th>
                 <td>{{ project.title }}</td>
                 <td>

@@ -256,30 +256,64 @@ class User_model extends CI_Model{
         return $data;
     }
     
-    function deletable()
+// ELIMINAR
+//-----------------------------------------------------------------------------
+    
+    /**
+     * Determina si un usuario puede ser eliminado o no de la base de datos
+     * 2022-07-14
+     */
+    function deleteable($user_id, $process = '')
     {
-        $deletable = 0;
-        if ( $this->session->userdata('role') <= 2 ) { $deletable = 1; }
+        $deleteable = 0;
+        if ( in_array($this->session->userdata('role'), array(1,2)) ) { $deleteable = 1; }
 
-        return $deletable;
+        if ( $process == 'self_delete' ) { $deleteable = 1; }
+
+        return $deleteable;
     }
 
     /**
-     * Eliminar un usuario de la base de datos, se elimina también de
-     * las tablas relacionadas
+     * Eliminar un usuario de la base de datos, se elimina también de las tablas relacionadas
+     * 2021-07-14
      */
-    function delete($user_id)
+    function delete($user_id, $process = '')
     {
-        $quan_deleted = 0;
+        $qty_deleted = 0;   //Valor inicial
 
-        if ( $this->deletable($user_id) ) 
+        if ( $this->deleteable($user_id, $process) ) 
         {
-            $this->db->where('id', $user_id);
-            $this->db->delete('users');
-            $quan_deleted = $this->db->affected_rows();
+            //Tablas relacionadas
+                $this->db->where('user_id', $user_id)->delete('users_meta');
+            
+            //Tabla principal
+                $this->db->where('id', $user_id)->delete('users');
+
+            //Resultado
+            $qty_deleted = $this->db->affected_rows();
+
+            //Eliminar archivos relacionados
+            if ( $qty_deleted > 0 ) $this->delete_files($user_id);
         }
 
-        return $quan_deleted;
+        return $qty_deleted;
+    }
+
+    /**
+     * Eliminar los archivos relacionados con el usuario eliminado
+     * 2021-02-20
+     */
+    function delete_files($user_id)
+    {
+        //Identificar archivos
+        $this->db->select('id');
+        $this->db->where("creator_id = {$user_id} OR (table_id = 1000 AND related_1 = {$user_id})");
+        $files = $this->db->get('files');
+        
+        //Eliminar archivos
+        $this->load->model('File_model');
+        $session_data = $this->session->userdata();
+        foreach ( $files->result() as $file ) $this->File_model->delete($file->id, $session_data);
     }
 
     /**

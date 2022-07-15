@@ -109,7 +109,7 @@ class Accounts extends CI_Controller {
      * Recibe los datos POST del form en accounts/signup. Si se validan los 
      * datos, se registra elusuario.  Se devuelve $data, con resultados de registro
      * o de validación (si falló).
-     * 2019-11-27
+     * 2022-07-01
      */
     function register($role_type = 'homeowner')
     {
@@ -125,6 +125,8 @@ class Accounts extends CI_Controller {
                 $arr_row['last_name'] = $this->input->post('last_name');
                 $arr_row['display_name'] = $this->input->post('first_name') . ' ' . $this->input->post('last_name');
                 $arr_row['email'] = $this->input->post('email');
+                $arr_row['cat_1'] = $this->input->post('cat_1');
+                $arr_row['cat_2'] = $this->input->post('cat_2');
                 $arr_row['username'] = explode('@', $this->input->post('email'))[0] . rand(10,99);
                 $arr_row['password'] = $this->Account_model->crypt_pw($this->input->post('new_password'));
                 $arr_row['status'] = 2;     //Registrado sin confirmar email
@@ -296,7 +298,7 @@ class Accounts extends CI_Controller {
     /**
      * Recibe email por post, y si encuentra usuario, envía mensaje
      * para restaurar contraseña
-     * 2020-08-06
+     * 2022-06-29
      */
     function recovery_email()
     {
@@ -311,7 +313,6 @@ class Accounts extends CI_Controller {
         if ( ! is_null($row) && $recaptcha->score > 0.5 ) 
         {
             //Usuario existe, se envía email para restaurar constraseña
-            $this->Account_model->activation_key($row->id);
             if ( ENV == 'production') $this->Account_model->email_activation($row->id, 'recovery');
             $data = ['status' => 1, 'recaptcha_valid' => TRUE];
         }
@@ -580,6 +581,41 @@ class Accounts extends CI_Controller {
 
         $this->load->model('User_model');
         $data = $this->User_model->remove_image($user_id);
+        
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
+
+// ELIMINACIÓN DE CUENTA
+//-----------------------------------------------------------------------------
+
+    function delete_account()
+    {
+        $data = array('status' => 0, 'errors' => '');
+        $activation_key = $this->input->post('activation_key');
+        $user_id = $this->input->post('user_id');
+        $row_user = $this->Db_model->row('users', "id = {$user_id} AND activation_key = '{$activation_key}'");        
+        
+        //Validar condiciones
+        if ( is_null($row_user) ) $data['errors'] .= 'Unidentified user. ';
+        
+        if ( strlen($data['errors']) == 0 ) 
+        {
+            //Cerrar sesión de usuario
+            $this->Account_model->logout();
+
+            $qty_deleted = $this->User_model->delete($row_user->id, 'self_delete');
+
+            if ( $qty_deleted > 0 ) {
+                $data['status'] = 1;
+                $data['message'] = 'Your account was successfully deleted';
+
+                $data['info_post_id'] = $this->Account_model->save_cancel_account_info($row_user);
+            }
+
+            //Enviar confirmación de activación de cuenta por email
+            //$this->load->model('Notification_model');
+            //$this->Notification_model->email_password_updated($row_user->id);
+        }
         
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }

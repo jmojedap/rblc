@@ -1,6 +1,6 @@
 <div id="settings_app">
     <div class="center_box_450">
-        <div class="card">
+        <div class="card mb-2">
             <div class="card-body">
                 <h3 class="card-title">Email notifications</h3>
                 <form accept-charset="utf-8" method="POST" id="settings_form" @submit.prevent="send_form">
@@ -34,6 +34,20 @@
                         </div>
                     <fieldset>
                 </form>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title">Delete my user account</h3>
+                <p>
+                    Click on the button to continue...
+                </p>
+                <p>
+                    <a href="<?= URL_APP . "accounts/delete/{$row->activation_key}" ?>" class="btn btn-primary w120p">
+                        Continue...
+                    </a>
+                </p>
+
             </div>
         </div>
     </div>

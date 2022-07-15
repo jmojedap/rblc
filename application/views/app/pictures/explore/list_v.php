@@ -6,7 +6,7 @@
         <img
             class="picture" data-toggle="modal" data-target="#detail_modal"
             v-bind:alt="image.title" v-bind:src="image.url_thumbnail" v-on:click="set_current(image_key)"
-            onerror="this.src='<?= URL_IMG ?>app/sm_coming_soon.jpg'"
+            onerror="this.src='<?= URL_IMG ?>app/sm_coming_soon.png'"
             >
         <?php if ( $this->session->userdata('logged') ) { ?>
             <img

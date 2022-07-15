@@ -35,10 +35,10 @@
     function update_post(){
         $.ajax({        
             type: 'POST',
-            url: url_app + 'posts/update/' + post_id,
+            url: url_app + 'posts/save/',
             data: $('#post_form').serialize(),
             success: function(response){
-                if ( response.status == 1 )
+                if ( response.saved_id > 0 )
                 {
                     toastr['success']('Guardado');
                 }
@@ -50,6 +50,7 @@
 
 <div id="edit_post">
     <form accept-charset="utf-8" method="POST" id="post_form">
+        <input type="hidden" name="id" value="<?= $row->id ?>">
         <div class="row">
             <div class="col-md-7">
                 <div class="form-group">

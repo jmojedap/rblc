@@ -23,7 +23,7 @@
     
     function before_send_load_sections(menu_type)
     {
-        $('#view_a').html('Cargando...');
+        $('#view_a').html('Loading...');
         $('#view_b').html('');
         
         if ( menu_type === 'nav_1' ) { $('#nav_2').html(''); }

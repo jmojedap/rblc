@@ -401,7 +401,8 @@ class Account_model extends CI_Model{
     }
 
     /**
-     * Devuelve texto de la vista que se envía por email a un usuario para activación o restauración de su cuenta
+     * Devuelve texto de la vista que se envía por email a un usuario para 
+     * activación o restauración de su cuenta
      */
     function activation_message($user_id, $activation_type = 'activation')
     {
@@ -416,6 +417,32 @@ class Account_model extends CI_Model{
         $message = $this->load->view('templates/email/main', $data, TRUE);
         
         return $message;
+    }
+
+// ESPECIAL APP
+//-----------------------------------------------------------------------------
+
+    /**
+     * Guardar información de cuando un usuario cierra su cuenta.
+     * 2022-07-14
+     */
+    function save_cancel_account_info($row_user)
+    {
+        $arr_row['type_id'] = 15;
+        $arr_row['post_name'] = 'Delete Info: ' . $row_user->display_name;
+        $arr_row['content'] = $this->input->post('description');
+        $arr_row['content_json'] = json_encode($row_user);
+        $arr_row['related_1'] = $row_user->id;
+        $arr_row['text_1'] = $this->input->post('delete_reason');
+        $arr_row['text_2'] = $this->input->post('activation_key');
+        $arr_row['created_at'] = date('Y-m-d H:i:s');
+        $arr_row['updated_at'] = date('Y-m-d H:i:s');
+        $arr_row['updater_id'] = 200001;
+        $arr_row['creator_id'] = 200001;
+        
+        $saved_id = $this->Db_model->save_id('posts', $arr_row);
+    
+        return $saved_id;
     }
     
 // LOGIN AND REGISTRATION WITH GOOGLE ACCOUNT

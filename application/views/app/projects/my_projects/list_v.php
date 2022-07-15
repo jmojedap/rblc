@@ -13,7 +13,7 @@
                             v-bind:src="element.url_thumbnail"
                             class="rounded w50p"
                             alt="Project main image"
-                            onerror="this.src='<?= URL_IMG ?>app/sm_coming_soon.jpg'"
+                            onerror="this.src='<?= URL_IMG ?>app/sm_coming_soon.png'"
                         >
                     </a>
                 </td>

@@ -79,9 +79,11 @@ class Picture_model extends CI_Model{
     function search($filters, $per_page = NULL, $offset = NULL)
     {
         //Construir consulta
-            $this->db->select('files.id, title, files.url, files.url_thumbnail, users.display_name AS user_display_name, users.id AS user_id, users.url_thumbnail AS user_url_thumbnail');
-            $this->db->join('users_meta', 'users_meta.related_1 = files.id', 'left');  
-            $this->db->join('users', 'users.id = users_meta.user_id', 'left');
+            $this->db->select('files.id, title, files.url, files.url_thumbnail, 
+                users.display_name AS user_display_name, users.id AS user_id, 
+                users.url_thumbnail AS user_url_thumbnail');
+            //$this->db->join('users_meta', 'users_meta.related_1 = files.id', 'left');  
+            $this->db->join('users', 'users.id = files.related_1', 'left');
             
         //Orden
             if ( $filters['o'] != '' )
@@ -93,6 +95,7 @@ class Picture_model extends CI_Model{
             }
             
         //Filtros
+            $this->db->where('files.table_id', 1000);
             $search_condition = $this->search_condition($filters);
             if ( $search_condition ) { $this->db->where($search_condition);}
             

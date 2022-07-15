@@ -1,6 +1,10 @@
 <?php
 
 class Item_model extends CI_Model{
+
+/**
+ * Versión 2022-06-23
+ */
     
     function __construct(){
         parent::__construct();
@@ -87,6 +91,18 @@ class Item_model extends CI_Model{
 // DATOS
 //-----------------------------------------------------------------------------
     
+    /**
+     * Listado de items con una condición específica
+     * 2022-02-18
+     */
+    function get_items($condition)
+    {
+        $this->db->order_by('cod', 'ASC');
+        $items = $this->db->get_where('items', $condition);
+        
+        return $items;
+    }
+
     function items($category_id)
     {
         $this->db->order_by('ancestry', 'ASC');
@@ -99,10 +115,6 @@ class Item_model extends CI_Model{
     /**
      * Devuelve el name de un item con el formato correspondiente.
      * 
-     * @param type $category_id
-     * @param type $cod
-     * @param type $field
-     * @return type
      */
     function name($category_id, $cod, $field = 'item_name')
     {
@@ -125,8 +137,9 @@ class Item_model extends CI_Model{
      * Devuelve el name de un item con el formato correspondiente, a partir
      * del items.id
      * 
-     * @param type $item_id
-     * @return type
+     * @param int $item_id
+     * @param string $field
+     * @return string $name
      */
     function name_id($item_id, $field = 'item')
     {
@@ -143,7 +156,6 @@ class Item_model extends CI_Model{
         
         return $name;
     }
-    
     
 // Arrays
 //-----------------------------------------------------------------------------
@@ -175,6 +187,9 @@ class Item_model extends CI_Model{
      * field items. La variable $empty_value se pone al principio del array
      * cuando el field select está vacío, sin ninguna opción seleccionada.
      * 
+     * @param string $condition
+     * @param string $empty_value
+     * @return array $options
      */
     function options($condition, $empty_value = NULL)
     {
@@ -205,6 +220,10 @@ class Item_model extends CI_Model{
      * En el array el índice corresponde al id y el value del array al
      * field items. La variable $empty_value se pone al principio del array
      * cuando el field select está vacío, sin ninguna opción seleccionada.
+     * 
+     * @param string $condition
+     * @param string $empty_value
+     * @return array $options
      */
     function options_id($condition, $empty_value = NULL)
     {
@@ -230,7 +249,7 @@ class Item_model extends CI_Model{
     /**
      * Devuelve array con valuees predeterminados para utilizar en la función
      * Item_model->arr_item
-     * 
+     * 2022-06-03
      */
     function arr_config_item($format = 'cod')
     {
@@ -262,6 +281,13 @@ class Item_model extends CI_Model{
                 $arr_config['field_index'] = 'cod';
                 $arr_config['field_value'] = 'abbreviation';
                 $arr_config['order_by'] = 'abbreviation';
+                $arr_config['str'] = TRUE;
+                break;
+            case 'abr_name':
+                //cod, abreviatura, string
+                $arr_config['field_index'] = 'abbreviation';
+                $arr_config['field_value'] = 'item_name';
+                $arr_config['order_by'] = 'cod';
                 $arr_config['str'] = TRUE;
                 break;
         }
@@ -330,7 +356,7 @@ class Item_model extends CI_Model{
         $data['template_file_name'] = 'f60_items.xlsx';
         $data['sheet_name'] = 'items';
         $data['head_subtitle'] = 'Importar items';
-        $data['destination_form'] = "items/import_e/";
+        $data['destination_form'] = "admin/items/import_e/";
 
         return $data;
     }

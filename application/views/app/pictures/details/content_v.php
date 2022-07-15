@@ -4,7 +4,7 @@
                 class="w100pc"
                 v-bind:src="row.url"
                 alt="Colibri Picture"
-                onerror="this.src='<?= URL_IMG ?>app/sm_coming_soon.jpg'"
+                onerror="this.src='<?= URL_IMG ?>app/sm_coming_soon.png'"
             >
         </div>
         <div class="col-md-4">

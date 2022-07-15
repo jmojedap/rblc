@@ -209,10 +209,20 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="cat_1" class="col-md-4 col-form-label text-right">Professional category</label>
+                        <label for="cat_1" class="col-md-4 col-form-label text-right">Category</label>
                         <div class="col-md-8">
-                            <select name="cat_1" v-model="form_values.cat_1" class="form-control">
+                            <select name="cat_1" v-model="form_values.cat_1" class="form-control" v-on:change="unset_cat_2">
                                 <option v-for="(option_cat_1, key_cat_1) in options_cat_1" v-bind:value="key_cat_1">{{ option_cat_1 }}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="cat_2" class="col-md-4 col-form-label text-right">Subcategory</label>
+                        <div class="col-md-8">
+                            <select name="cat_2" v-model="form_values.cat_2" class="form-control" required>
+                                <option value=""> :: Select Subcategory :: </option>
+                                <option v-for="option_cat_2 in options_cat_2" v-bind:value="`0` + option_cat_2.cod">{{ option_cat_2.item_name }}</option>
                             </select>
                         </div>
                     </div>
@@ -257,91 +267,95 @@
 <script>
 // Variables
 //-----------------------------------------------------------------------------
-    //Loading values in variable
-    var form_values = {
-        role: '0<?= $row->role ?>',
-        display_name: "<?= $row->display_name ?>",
-        country: '<?= $row->country ?>',
-        state_province: '<?= $row->state_province ?>',
-        city: "<?= $row->city ?>",
-        zip_code: '<?= $row->zip_code ?>',
-        address: "<?= $row->address ?>",
-        address_line_2: "<?= $row->address_line_2 ?>",
-        email: '<?= $row->email ?>',
-        username: '<?= $row->username ?>',
-        code: '<?= $row->code ?>',
-        type_id: '0<?= $row->type_id ?>',
-        cat_1: '0<?= $row->cat_1 ?>',
-        score_1: '<?= $row->score_1 ?>',
-        phone_number: '<?= $row->phone_number ?>',
-        about: "<?= $row->about ?>",
-        admin_notes: '<?= $row->admin_notes ?>',
-    };
+//Loading values in variable
+var form_values = {
+    role: '0<?= $row->role ?>',
+    display_name: "<?= $row->display_name ?>",
+    country: '<?= $row->country ?>',
+    state_province: '<?= $row->state_province ?>',
+    city: "<?= $row->city ?>",
+    zip_code: '<?= $row->zip_code ?>',
+    address: "<?= $row->address ?>",
+    address_line_2: "<?= $row->address_line_2 ?>",
+    email: '<?= $row->email ?>',
+    username: '<?= $row->username ?>',
+    code: '<?= $row->code ?>',
+    type_id: '0<?= $row->type_id ?>',
+    cat_1: '0<?= $row->cat_1 ?>',
+    cat_2: '0<?= $row->cat_2 ?>',
+    score_1: '<?= $row->score_1 ?>',
+    phone_number: '<?= $row->phone_number ?>',
+    about: "<?= $row->about ?>",
+    admin_notes: '<?= $row->admin_notes ?>',
+};
+
+var items_cat_2 = <?= json_encode($items_cat_2->result()) ?>;
 
 // VueApp
 //-----------------------------------------------------------------------------
-    var app_edit = new Vue({
+var app_edit = new Vue({
     el: '#app_edit',
-        data: {
-            form_values: form_values,
-            row_id: '<?= $row->id ?>',
-            validation: {
-                id_number_unique: true,
-                username_unique: true,
-                email_unique: true
-            },
-            options_cat_1: <?= json_encode($options_cat_1) ?>
+    data: {
+        form_values: form_values,
+        row_id: '<?= $row->id ?>',
+        validation: {
+            id_number_unique: true,
+            username_unique: true,
+            email_unique: true
         },
-        methods: {
-            validate_form: function() {
-                axios.post(url_app + 'users/validate/' + this.row_id, $('#edit_form').serialize())
-                .then(response => {
-                    //this.formulario_valido = response.data.status;
-                    this.validation = response.data.validation;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            },
-            validate_send: function () {
-                axios.post(url_app + 'users/validate/' + this.row_id, $('#edit_form').serialize())
-                .then(response => {
-                    if (response.data.status == 1) {
-                    this.send_form();
-                    } else {
-                    toastr['error']('Revise las casillas en rojo');
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            },
-            send_form: function() {
-                axios.post(url_app + 'users/update/' + this.row_id, $('#edit_form').serialize())
-                    .then(response => {
-                        console.log('status: ' + response.data.mensaje);
-                        if (response.data.status == 1)
-                        {
-                        toastr['success']('Saved');
-                        }
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                });
-            },
-            generate_username: function() {
-                const params = new URLSearchParams();
-                params.append('display_name', this.form_values.display_name);
-                params.append('last_name', this.form_values.last_name);
-                
-                axios.post(url_app + 'users/username/', params)
-                .then(response => {
-                    this.form_values.username = response.data;
-                })
-                .catch(function (error) {
-                     console.log(error);
-                });
-            }
-        }
-    });
+        options_cat_1: <?= json_encode($options_cat_1) ?>,
+    },
+    methods: {
+        validate_form: function() {
+            axios.post(url_app + 'users/validate/' + this.row_id, $('#edit_form').serialize())
+            .then(response => {
+                this.validation = response.data.validation
+            })
+            .catch(function (error) { console.log(error)} )
+        },
+        validate_send: function () {
+            axios.post(url_app + 'users/validate/' + this.row_id, $('#edit_form').serialize())
+            .then(response => {
+                if (response.data.status == 1) {
+                    this.send_form()
+                } else {
+                    toastr['error']('Revise las casillas en rojo')
+                }
+            })
+            .catch(function (error) { console.log(error) })
+        },
+        send_form: function() {
+            axios.post(url_app + 'users/update/' + this.row_id, $('#edit_form').serialize())
+            .then(response => {
+                console.log('status: ' + response.data.mensaje)
+                if (response.data.status == 1)
+                {
+                    toastr['success']('Saved')
+                }
+            })
+            .catch(function (error) {console.log(error)})
+        },
+        generate_username: function() {
+            const params = new URLSearchParams();
+            params.append('display_name', this.form_values.display_name);
+            params.append('last_name', this.form_values.last_name);
+            
+            axios.post(url_app + 'users/username/', params)
+            .then(response => {
+                this.form_values.username = response.data;
+            })
+            .catch(function (error) { console.log(error) })
+        },
+        unset_cat_2: function(){
+            this.form_values.cat_2 = ""
+        },
+    },
+    computed: {
+        //Establecer opciones dependiendo del valor de cat_1
+        options_cat_2: function(){
+            var cat_1_int = parseInt(this.form_values.cat_1)
+            return items_cat_2.filter(item => item.parent_id == cat_1_int)
+        },
+    },
+});
 </script>

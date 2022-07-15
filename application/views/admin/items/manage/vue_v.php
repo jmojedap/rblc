@@ -161,7 +161,7 @@
             set_slug: function() {
                 const params = new URLSearchParams();
                 params.append('text', this.form_values.item_name);
-                params.append('table', 'item');
+                params.append('table', 'items');
                 params.append('field', 'slug');
                 
                 axios.post(url_app + 'app/unique_slug/', params)

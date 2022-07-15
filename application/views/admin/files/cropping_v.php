@@ -15,13 +15,13 @@
         $("#crop_form").submit(function () {
             $.ajax({
                 type: "POST",
-                url: url_app + 'files/crop/' + image_id,
+                url: url_api + 'files/crop/' + image_id,
                 data: $("#crop_form").serialize(),
                 success: function (response) {
                     after_submit(response);
                 },
                 error: function () {
-                    toastr["error"]('Ocurrió un error al recortar');
+                    toastr["error"]('An error occurred while cropping');
                 }
             });
 
@@ -81,7 +81,7 @@
             
             <button type="submit" class="btn btn-success w120p">Crop</button>
 
-            <a class="btn btn-secondary w120p" href="<?= base_url($back_destination) ?>">
+            <a class="btn btn-secondary w120p" href="<?= URL_APP . $back_destination ?>">
                 <i class="fa fa-arrow-left"></i> Cancel
             </a>
         

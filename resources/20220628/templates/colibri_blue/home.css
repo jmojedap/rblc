@@ -1,0 +1,149 @@
+/* Discover Section */
+/*-----------------------------------------------------------------------------*/
+#home_discover{
+    grid-gap: 2em;
+    height: 313px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+#home_discover .item{
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+#home_discover .item .layer{
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 1;
+}
+
+#home_discover .item .bg-image{
+    z-index: 1;
+    background-size: cover;
+}
+
+#home_discover .item .bg-image img{
+    width: 100%;
+    object-fit: cover;
+}
+
+#home_discover .item .filter{
+    opacity: 0.4;
+    background-color: #2e4b80;
+    z-index: 2;
+}
+
+#home_discover .item .cover{
+    display: grid;
+    color: white;
+    place-items: center;
+    z-index: 3;
+}
+
+#home_discover .item .info{
+    opacity: 0;
+    display: grid;
+    place-items: center;
+    background-color: #2e4b80;
+    color: white;
+    z-index: 4;
+    transition: opacity 0.3s;
+}
+
+#home_discover .item .info:hover{
+    opacity: 1;
+}
+
+/* HOME ROLES */
+/*-----------------------------------------------------------------------------*/
+
+.home-roles{
+    border-top: 1px solid #2e4b80;
+    margin-top: 3em;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.home-roles > div{
+    padding: 2.5em 1.5em 8em 1.5em;
+}
+
+.home-roles div:first-child{
+    border-right: 1px solid #2e4b80;
+}
+
+.home-roles p {
+    font-size: 1.1em;
+    height: 8em;
+}
+
+/* Pantallas pequeñas */
+@media (max-width: 767px) {
+    .home-roles { 
+        grid-template-columns: 1fr;
+        margin-bottom: 1em;
+    }
+
+    .home-roles > div{
+        padding: 0.5em;
+        border-bottom: 1px solid #2e4b80;
+    }
+
+    .home-roles div:first-child{
+        border-right: 0px;
+    }
+
+    #home_discover{
+        grid-template-columns: 1fr;
+    }
+}
+
+/* HOME REGISTER */
+/*-----------------------------------------------------------------------------*/
+
+.home-register-section{
+    display: grid;
+    grid-template-columns: 1fr;
+    position: relative;
+    margin-bottom: 1.5em;
+    height: 405px;
+}
+
+.home-register-section .layer{
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 1;
+}
+
+.home-register-section > img{
+    width: 100%;
+    z-index: 1;
+}
+
+.home-register-section .tools{
+    display: grid;
+    place-items: center;
+    grid-template-rows: 1fr 2fr 4fr;
+    color: #2e4b80;
+    width: 50%;
+    height: inherit;
+    z-index: 2;
+}
+
+.home-register-section .tools p{
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+/* Pantallas pequeñas */
+@media (max-width: 767px) {
+    .home-register-section{
+        background-color: #e28f00;
+    }
+
+    .home-register-section .tools{
+        width: 100%;
+    }
+}

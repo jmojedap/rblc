@@ -37,7 +37,7 @@ class App extends CI_Controller {
     {
         $data['head_title'] = 'Susbcribe';
         $data['view_a'] = 'app/app/susbcribe_v';
-        $this->App_model->view('templates/colibri/start', $data);
+        $this->App_model->view('templates/colibri_blue/start', $data);
     }
 
     function test()

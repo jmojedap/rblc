@@ -1,20 +1,35 @@
 <div id="user_profile" class="user_profile">
     <div class="row mb-3">
         <div class="col-md-8">
-            <h1 class="mt-3"><?= $row->display_name ?></h1>
-            <p class="text-muted">
+            <h1 class="page-title"><?= $row->display_name ?></h1>
+            <p class="text-main lead">
                 <i class="fas fa-map-marker-alt"></i>
-                <?= $row->city ?>, <?= $row->state_province ?>
+                <b><?= $row->city ?>, <?= $row->state_province ?></b>
             </p>
             <div class="d-flex mb-2">
                 <div>
                     <img src="<?= URL_IMG ?>front/icon_colibri.png" alt="Icon professional followers">
                     <span class="counter"><?= $qty_followers ?></span>
                 </div>
-                <div class="ml-3">
-                    <img src="<?= URL_IMG ?>front/icon_like.png" alt="Icon professional likes">
+                <div class="mx-3">
+                    <img src="<?= URL_IMG ?>front/icon_liked.png" alt="Icon professional likes">
                     <span class="counter"><?= $qty_likes ?></span>
                 </div>
+                <!-- No ser el mismo usuario en sesión -->
+                <?php if ( $this->session->userdata('user_id') != $row->id ) { ?>
+                    <div class="ml-3 pt-2">
+                        <?php if ( $this->session->userdata('logged') ) { ?>
+                            <!-- Debe tener sesión activa -->
+                            <button class="w120p btn btn-warning btn-rounded" v-on:click="alt_follow">
+                                <span v-show="follow_status == 2">Follow</span>
+                                <span v-show="follow_status == 1"><i class="fa fa-check"></i> Following</span>
+                            </button>
+                        <?php } else { ?>
+                            <!-- Sin sesión activa -->
+                            <a href="<?= URL_FRONT . "accounts/login" ?>" class="w120p btn btn-primary btn-rounded">Follow</a>
+                        <?php } ?>
+                    </div>
+                <?php } ?>
             </div>
             <div><?= $row->about ?></div>
         </div>
@@ -38,34 +53,31 @@
                 </div>
             </div>
 
-            <div class="mb-2">
-                <a v-for="social_link in social_links" v-bind:href="social_link.url" class="text-muted mr-3" target="_blank">
-                    <i class="fa-2x" v-bind:class="social_link.icon_class"></i>
-                </a>
+            <div class="mb-2 d-flex">
+                <div v-for="social_link in social_links">
+                    <a v-bind:href="social_link.url" class="text-blue mr-3" target="_blank">
+                        <i class="fa-2x" v-bind:class="social_link.icon_class"></i>
+                    </a>
+                </div>
+                <!-- No ser el mismo usuario en sesión -->
+                <?php if ( $this->session->userdata('user_id') != $row->id ) { ?>
+                    <?php if ( $this->session->userdata('logged') ) { ?>
+                        <!-- Debe tener sesión activa -->
+                        <button class="w120p btn btn-primary btn-rounded" v-on:click="create_conversation">Message</button>
+                    <?php } else { ?>
+                        <!-- Sin sesión activa -->
+                        <a href="<?= URL_FRONT . "accounts/login" ?>" class="w120p btn btn-primary btn-rounded">Message</a>
+                    <?php } ?>
+                <?php } ?>
             </div>
 
-            <!-- No ser el mismo usuario en sesión -->
-            <?php if ( $this->session->userdata('user_id') != $row->id ) { ?>
-                <?php if ( $this->session->userdata('logged') ) { ?>
-                    <!-- Debe tener sesión activa -->
-                    <button class="btn btn-block btn-white" v-on:click="alt_follow">
-                        <span v-show="follow_status == 2">Follow</span>
-                        <span v-show="follow_status == 1"><i class="fa fa-check"></i> Following</span>
-                    </button>
-                    <button class="btn btn-white btn-block" v-on:click="create_conversation">Message</button>
-                <?php } else { ?>
-                    <!-- Sin sesión activa -->
-                    <a href="<?= URL_FRONT . "accounts/login" ?>" class="btn btn-white btn-block">Follow</a>
-                    <a href="<?= URL_FRONT . "accounts/login" ?>" class="btn btn-white btn-block">Message</a>
-                <?php } ?>
-            <?php } ?>
         </div>
     </div>
 
     <hr>
 
     <!-- MENÚ SECCIONES -->
-    <ul class="nav nav-tabs justify-content-center" id="profile_content">
+    <ul class="nav_2 nav nav-pills nav-fill mb-4" id="profile_content">
         <li class="nav-item">
             <a class="nav-link" href="#profile_content" v-bind:class="{'active': section == 'images' }" v-on:click="set_section('images')">Images</a>
         </li>

@@ -274,7 +274,7 @@ class File_model extends CI_Model{
     
     /**
      * Crea el registro del file en la tabla file
-     * 2020-03-03, agregar cat_1
+     * 2022-03-19, agregar files.position
      */
     function insert($upload_data)
     {
@@ -292,6 +292,7 @@ class File_model extends CI_Model{
             $arr_row['table_id'] = ( ! is_null($this->input->post('table_id')) ) ? $this->input->post('table_id') : 0;
             $arr_row['related_1'] = ( ! is_null($this->input->post('related_1')) ) ? $this->input->post('related_1') : 0;
             $arr_row['album_id'] = ( ! is_null($this->input->post('album_id')) ) ? $this->input->post('album_id') : 0;
+            $arr_row['position'] = $this->get_position($arr_row);
             $arr_row['cat_1'] = ( ! is_null($this->input->post('cat_1')) ) ? $this->input->post('cat_1') : 0;
             $arr_row['updated_at'] = date('Y-m-d H:i:s');
             $arr_row['updater_id'] = $this->session->userdata('user_id');
@@ -360,7 +361,7 @@ class File_model extends CI_Model{
         $config['source_image'] = $file_path;
         $image_size = getimagesize($config['source_image']);
         
-        $pixels = 800;   //Tamaño máximo 800px
+        $pixels = K_MAXPIXELS;   //Tamaño máximo 800px
         
         //Verificar si se modifica
         $qty_conditions = 0;
@@ -373,7 +374,7 @@ class File_model extends CI_Model{
             $this->load->library('image_lib');
             $config['image_library'] = 'gd2';
             $config['maintain_ratio'] = TRUE;
-            $config['quality'] = 90;
+            $config['quality'] = K_QUALITY;
             //Dimensiones
             if ( $image_size[0] > $image_size[1] )
             {
@@ -503,6 +504,64 @@ class File_model extends CI_Model{
         $row_file = $this->Db_model->row_id('files', $file_id);
             
         return $row_file;
+    }
+
+// Gestión order del archivo en el álbum, campo files.position
+//-----------------------------------------------------------------------------
+
+    /**
+     * Devuelve entero, para campo files.position, en el momento de insertar
+     * el registro en la tabla files cuando se carga un archivo.
+     * 2022-02-11
+     */
+    function get_position($arr_row)
+    {
+        $condition = "table_id = {$arr_row['table_id']} AND related_1 = {$arr_row['related_1']}";
+        $num_rows = $this->Db_model->num_rows('files', $condition);
+
+        $position = $num_rows;
+
+        return $position;
+    }
+
+    /**
+     * Actualizar el campo files.position, para un archivo específico
+     * 2021-02-11
+     */
+    function update_position($file_id, $new_position)
+    {
+        $data['status'] = 0;   //Resultado por defecto
+
+        //Identificar file
+        $file = $this->Db_model->row_id('files', $file_id);
+
+        //Establecer posición máxima, según número de elementos
+        $condition = "table_id = {$file->table_id} AND related_1 = {$file->related_1} AND album_id = {$file->album_id}";
+        $max_position = $this->Db_model->num_rows('files', $condition);
+
+        if ( $new_position >= 0 && $new_position < $max_position ) {
+            if ( $new_position > $file->position ) {
+                //Si la posición aumenta, modificar anteriores
+                $sql = "UPDATE files SET position = (position-1)
+                    WHERE table_id = {$file->table_id} AND related_1 = {$file->related_1}
+                    AND position <= {$new_position} AND position > {$file->position} AND position > 0";
+                $this->db->query($sql);
+
+            } else if ( $new_position < $file->position ) {
+                //Si la posición disminuye, modificar siguientes
+                $sql = "UPDATE files SET position = (position+1)
+                WHERE table_id = {$file->table_id} AND related_1 = {$file->related_1}
+                AND position >= {$new_position} AND position < {$file->position}";
+                $this->db->query($sql);
+            }
+    
+            //Actualizar position, del archivo
+            $this->db->query("UPDATE files SET position = {$new_position} WHERE id = {$file_id}");
+    
+            if ( $this->db->affected_rows() > 0) $data['status'] = 1;
+        }
+
+        return $data;
     }
     
 // ELIMINACIÓN
@@ -1050,7 +1109,8 @@ class File_model extends CI_Model{
 //-----------------------------------------------------------------------------
 
     /**
-     * Actualiza el campo files.priority de cada registro con ID mayor o igual a $min_id
+     * Actualiza el campo files.priority de cada registro con ID mayor o igual
+     * a $min_id
      * 2020-07-28
      */
     function update_priority_multi($min_id)
@@ -1090,7 +1150,7 @@ class File_model extends CI_Model{
      */
     function priority_value($file_id)
     {
-        $priority = rand(100000,999999);
+        $priority = rand(100000,999999) + rand(100000,999999);
         return $priority;
     }
 }

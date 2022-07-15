@@ -137,7 +137,7 @@ class Professionals extends CI_Controller{
      * Formulario edición de categorías y tags de un usuario professional
      * 2020-08-01
      */
-    function categories($user_id)
+    function services($user_id)
     {
         //Datos básicos
         $this->load->model('User_model');
@@ -152,7 +152,7 @@ class Professionals extends CI_Controller{
         $data['tags'] = $this->Professional_model->tags($user_id);
         
         //$data['nav_3'] = 'users/edit/menu_v';
-        $data['view_a'] = 'users/edit/categories_v';
+        $data['view_a'] = 'users/edit/services_v';
         
         $this->App_model->view(TPL_ADMIN, $data);
     }
@@ -161,7 +161,7 @@ class Professionals extends CI_Controller{
      * Guardar cambios en metadatos y categorías
      * 2020-08-03
      */
-    function update_categories($user_id)
+    function update_services($user_id)
     {
         //Save services
         $services = ( is_null($this->input->post('services')) ) ? array() : $this->input->post('services');

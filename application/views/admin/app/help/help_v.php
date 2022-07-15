@@ -19,7 +19,7 @@
                 <a href="#" class="list-group-item list-group-item-action"
                     v-bind:class="{'active': post_key == key }"
                     v-for="(post, post_key) in posts"
-                    v-on:click="get_info(post_key)">
+                    v-on:click="set_key(post_key)">
                     {{ post.post_name }}
                 </a>
             </div>
@@ -42,44 +42,58 @@
 </div>
 
 <script>
-    new Vue({
-        el: '#help_app',
-        created: function(){
-            this.get_list();
+// Variables
+//-----------------------------------------------------------------------------
+var article_id = <?= $article_id ?>;
+
+// VueApp
+//-----------------------------------------------------------------------------
+var help_app = new Vue({
+    el: '#help_app',
+    created: function(){
+        this.get_list();
+    },
+    data: {
+        posts: [],
+        key: -1,
+        article_id: article_id,
+        article: { post_name: 'Loading...', content: ''},
+        form_values: { q: ''}
+    },
+    methods: {
+        get_list: function(){
+            var form_data = new FormData;
+            form_data.append('type', 20);   //Help article post type
+            form_data.append('q', this.form_values.q);
+            form_data.append('o', 'integer_1');
+            form_data.append('ot', 'DESC');
+            
+            axios.post(url_api + 'posts/get/1', form_data)
+            .then(response => {
+                this.posts = response.data.list
+                if ( this.article_id == 0 ) {
+                    this.set_key(0)
+                } else {
+                    this.get_info(article_id)
+                    var is_article = (element) => element.id == article_id
+                    this.key = this.posts.findIndex(is_article)
+                }
+            })
+            .catch(function (error) { console.log(error) })
         },
-        data: {
-            posts: [],
-            key: 0,
-            article: { post_name: 'Hola', content: ''},
-            form_values: { q: ''}
+        set_key: function(key){
+            this.key = key
+            article_id = this.posts[key].id
+            this.get_info(article_id)
         },
-        methods: {
-            get_list: function(){
-                var form_data = new FormData;
-                form_data.append('type', 20);   //Help article post type
-                form_data.append('q', this.form_values.q);
-                form_data.append('o', 'integer_1');
-                form_data.append('ot', 'DESC');
-                
-                axios.post(url_api + 'posts/get/1', form_data)
-                .then(response => {
-                    this.posts = response.data.list;
-                    this.get_info(this.key);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            },
-            get_info: function(key){
-                this.key = key;
-                axios.get(url_api + 'posts/get_info/' + this.posts[key].id)
-                .then(response => {
-                    this.article = response.data.row;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            },
-        }
-    });
+        get_info: function(article_id){
+            axios.get(url_api + 'posts/get_info/' + article_id)
+            .then(response => {
+                this.article = response.data.row;
+                history.pushState(null, null, url_admin + 'app/help/' + article_id);
+            })
+            .catch(function (error) { console.log(error) })
+        },
+    }
+});
 </script>

@@ -17,9 +17,7 @@
                             <label for="title" class="col-md-4 col-form-label text-right">Title</label>
                             <div class="col-md-8">
                                 <input
-                                    name="title" id="field-title" type="text" class="form-control"
-                                    required
-                                    value="<?= $row->title ?>"
+                                    name="title" type="text" class="form-control" required value="<?= $row->title ?>"
                                 >
                             </div>
                         </div>

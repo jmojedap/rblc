@@ -428,7 +428,6 @@ class Notification_model extends CI_Model{
         {
             //Establecer clave de activación
             $this->load->model('Account_model');
-            //$user_id = $this->input->post('user_id');
             $this->Account_model->activation_key($user_id);
 
             //Identificar usuario

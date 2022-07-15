@@ -10,7 +10,7 @@
                 </div>
             </div>
             <img class="w100pc" alt="Colibri Picture"
-                v-bind:src="current.url" onerror="this.src='<?= URL_IMG ?>app/sm_coming_soon.jpg'"
+                v-bind:src="current.url" onerror="this.src='<?= URL_IMG ?>app/sm_coming_soon.png'"
             >
         </div>
     </div>

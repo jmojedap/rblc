@@ -70,6 +70,7 @@ class Professional_model extends CI_Model{
         
         //Rol de user
         if ( $filters['role'] != '' ) { $condition .= "role = {$filters['role']} AND "; }
+        if ( $filters['cat_1'] != '' ) { $condition .= "cat_1 = {$filters['cat_1']} AND "; }
         
         if ( strlen($condition) > 0 )
         {
@@ -236,10 +237,15 @@ class Professional_model extends CI_Model{
         return $images;
     }
 
+    /**
+     * Primera imagen que tiene asignada un professional o una por defecto si
+     * no tiene ninguna
+     * 2022-06-29
+     */
     function first_image($user_id, $format = 'thumbnail')
     {
-        $first_image['url'] = URL_IMG . 'app/sm_coming_soon.jpg';
-        $first_image['url_thumbnail'] = URL_IMG . 'app/sm_coming_soon.jpg';
+        $first_image['url'] = URL_IMG . 'users/user.png';
+        $first_image['url_thumbnail'] = URL_IMG . 'users/md_user.png';
 
         $images = $this->images($user_id);
 
@@ -328,6 +334,67 @@ class Professional_model extends CI_Model{
         $tags = $this->db->get('tags');
 
         return $tags;
+    }
+
+    /**
+     * Guarda un registro en la tabla users_meta
+     * 2020-07-16
+     */
+    function save_meta($arr_row, $fields = array('related_1'))
+    {
+        $condition = "user_id = {$arr_row['user_id']} AND type_id = {$arr_row['type_id']}";
+
+        foreach ($fields as $field)
+        {
+            $condition .= " AND {$field} = '{$arr_row[$field]}'";
+        }
+
+        $meta_id = $this->Db_model->save('users_meta', $condition, $arr_row);
+        
+        return $meta_id;
+    }
+
+    /**
+     * Guarda múltiples registros en la tabla users_meta, con un array,
+     * y elimina los que no estén en el array enviado por post ($new_metas)
+     * 2020-08-01
+     */
+    function save_meta_array($user_id, $type_id, $new_metas)
+    {        
+        $saved = array();                   //Resultado por defecto
+
+        //Eliminar los que ya no están en $new_metas
+            $this->load->model('User_model');   //Para utilizar funcion delete_meta
+            $old_meta = $this->metadata($user_id, $type_id);
+
+            foreach ( $old_meta->result() as $row_meta ) 
+            {
+                if ( ! in_array($row_meta->related_1, $new_metas) )
+                {
+                    $this->User_model->delete_meta($user_id, $row_meta->meta_id);
+                    $saved[] = 'Deleted related_1: ' . $row_meta->related_1;
+                }
+            }
+
+        //Guardar nuevos
+            //Array general
+                $arr_row['user_id'] = $user_id;
+                $arr_row['type_id'] = $type_id;
+                $arr_row['creator_id'] = $this->session->userdata('user_id');
+                $arr_row['updater_id'] = $this->session->userdata('user_id');
+        
+            //Recorrer array nuevo y guardar
+                if ( ! is_null($new_metas) )
+                {
+                    foreach ($new_metas as $related_1)
+                    {
+                        $arr_row['related_1'] = $related_1;
+                        $meta_id = $this->save_meta($arr_row);
+                        $saved[] = 'Saved related_1: ' . $related_1;
+                    }
+                }
+
+        return $saved;
     }
 
 // OTROS

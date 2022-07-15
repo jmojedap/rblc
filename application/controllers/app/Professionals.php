@@ -118,7 +118,7 @@ public $url_controller = URL_APP . 'professionals/';
      * Formulario edición de categorías y tags de un usuario professional
      * 2020-08-01
      */
-    function categories()
+    function services()
     {
         //Datos básicos
         $user_id = $this->session->userdata('user_id');
@@ -134,7 +134,7 @@ public $url_controller = URL_APP . 'professionals/';
         $data['tags'] = $this->Professional_model->tags($user_id);
         
         $data['nav_2'] = 'app/accounts/edit/menu_v';
-        $data['view_a'] = 'app/accounts/edit/categories_v';
+        $data['view_a'] = 'app/accounts/edit/services_v';
         
         $this->App_model->view(TPL_FRONT, $data);
     }

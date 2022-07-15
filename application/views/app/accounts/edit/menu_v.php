@@ -1,7 +1,7 @@
 <?php
     $cl_nav_2['preview'] = '';
     $cl_nav_2['basic'] = '';
-    $cl_nav_2['categories'] = '';
+    $cl_nav_2['services'] = '';
     $cl_nav_2['social_links'] = '';
     $cl_nav_2['image'] = '';
     $cl_nav_2['images'] = '';
@@ -14,7 +14,7 @@
     
     $cl_nav_2[$app_cf_index] = 'active';
     if ( $app_cf_index == 'crop' ) { $cl_nav_2['image'] = 'active'; }
-    if ( $this->uri->segment(3) == 'categories' ) { $cl_nav_2['categories'] = 'active'; }
+    if ( $this->uri->segment(3) == 'services' ) { $cl_nav_2['services'] = 'active'; }
     if ( $this->uri->segment(3) == 'images' ) { $cl_nav_2['images'] = 'active'; }
 ?>
 
@@ -74,11 +74,11 @@
         cf: 'accounts/edit/password'
     };
 
-    sections.categories = {
+    sections.services = {
         icon: 'fa fa-tags',
-        text: 'Categories',
-        class: '<?= $cl_nav_2['categories'] ?>',
-        cf: 'professionals/categories',
+        text: 'Services',
+        class: '<?= $cl_nav_2['services'] ?>',
+        cf: 'professionals/services',
         anchor: true
     };
 
@@ -93,7 +93,7 @@
     //Secciones para cada rol
     sections_role[1] = ['basic', 'social_links', 'image', 'settings', 'password'];
     sections_role[2] = ['basic', 'social_links', 'image', 'settings', 'password'];
-    sections_role[13] = ['preview', 'business_profile', 'categories', 'social_links', 'image', 'images', 'settings', 'password'];
+    sections_role[13] = ['preview', 'business_profile', 'services', 'social_links', 'image', 'images', 'settings', 'password'];
     sections_role[23] = ['basic', 'social_links', 'image', 'settings', 'password'];
     
     //Recorrer el sections del rol actual y cargarlos en el menú

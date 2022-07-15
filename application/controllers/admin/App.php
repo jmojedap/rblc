@@ -129,6 +129,7 @@ class App extends CI_Controller {
     {
         $data['head_title'] = 'Ayuda';
         $data['view_a'] = 'admin/app/help/help_v';
+        $data['article_id'] = $post_id;
         $this->App_model->view(TPL_ADMIN, $data);
     }
 

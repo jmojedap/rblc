@@ -1,0 +1,57 @@
+@media only screen and (max-width: 767px) {
+
+/* Layout */
+/*-----------------------------------------------------------------------------*/
+    .navbar-collapse{
+        padding-left: 1em;
+    }
+
+    .navbar-toggler{
+        margin-right: 0.5em;
+    }
+
+    .navbar-expand-lg .navbar-nav .dropdown-menu{
+        background-color: #FAFAFA;
+    }
+
+
+/* Texto */
+/*-----------------------------------------------------------------------------*/
+    .page-title { 
+        font-size: 28px;
+    }
+
+/* Home Sections */
+/*-----------------------------------------------------------------------------*/
+
+    .section-title{
+        font-size: 20px;
+        margin: 0.5em;
+    }
+
+/* Otras */
+/*-----------------------------------------------------------------------------*/
+
+    footer .decco-column {
+        border-right: none;
+        margin-bottom: 64px;
+    }
+
+    footer .logo-container{
+        border-right: 0px;
+        border-left: 0px;
+        border-top: 1px solid #e28f00;
+        border-bottom: 1px solid #e28f00;
+        margin-top: 1em;
+        margin-bottom: 1em;
+    }
+
+    .gallery-3 {
+        gap: 0.5em;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .gallery-2 {
+        grid-template-columns: 1fr;
+    }
+}

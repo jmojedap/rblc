@@ -90,10 +90,10 @@ class Pictures extends CI_Controller{
 
         //Carrusel
         $carousel_id = $this->Db_model->field_id('sis_option', 104, 'option_value');
-        $this->db->select('url, title, subtitle, external_link');
+        $this->db->select('id, url, title, subtitle, external_link');
         $data['carousel_images'] = $this->db->get_where('files', "table_id = 2000 AND related_1 = {$carousel_id}");
 
         $data['view_a'] = 'app/info/home_v';
-        $this->App_model->view(TPL_FRONT, $data);
+        $this->App_model->view('templates/colibri_blue/full_width', $data);
     }
 }

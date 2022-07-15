@@ -53,9 +53,9 @@ public $url_controller = URL_APP . 'accounts/';
                 redirect('app/accounts/logged');
             } else {
                 $data['head_title'] = APP_NAME;
-                $data['view_a'] = 'templates/colibri/login';
+                $data['view_a'] = 'templates/colibri_blue/login';
                 //$data['g_client'] = $this->Account_model->g_client(); //Para botón login con Google
-                $this->load->view('templates/colibri/start', $data);
+                $this->load->view('templates/colibri_blue/start', $data);
             }
     }
     
@@ -105,7 +105,11 @@ public $url_controller = URL_APP . 'accounts/';
         $data['with_email'] = $with_email;
         //$data['g_client'] = $this->Account_model->g_client(); //Para botón login con Google
         $data['recaptcha_sitekey'] = K_RCSK;    //config/constants.php
-        $this->load->view(TPL_FRONT, $data);
+
+        $data['options_cat_1'] = $this->Item_model->options("category_id = 720 AND level = 0");
+        $data['items_cat_2'] = $this->Item_model->get_items("category_id = 720 AND level = 1");
+
+        $this->load->view(TPL_FRONTD, $data);
     }
 
     /**
@@ -130,7 +134,7 @@ public $url_controller = URL_APP . 'accounts/';
         $data['activation_key'] = $activation_key;
         $data['view_a'] = 'app/accounts/activation_v';
 
-        $this->App_model->view('templates/colibri/start', $data);
+        $this->App_model->view('templates/colibri_blue/start', $data);
     }
 
 // ACTUALIZACIÓN DE DATOS
@@ -166,7 +170,7 @@ public $url_controller = URL_APP . 'accounts/';
         } else {
             $data['head_title'] = 'Accounts recovery';
             $data['view_a'] = 'app/accounts/recovery_v';
-            $this->load->view('templates/colibri/start', $data);
+            $this->load->view('templates/colibri_blue/start', $data);
         }
     }
 
@@ -197,7 +201,7 @@ public $url_controller = URL_APP . 'accounts/';
 
         //Cargar vista
             $data['view_a'] = 'app/accounts/recover_v';
-            $this->load->view('templates/colibri/start', $data);
+            $this->load->view('templates/colibri_blue/start', $data);
     }
 
 // ADMINISTRACIÓN DE CUENTA
@@ -232,7 +236,7 @@ public $url_controller = URL_APP . 'accounts/';
             $view_a = 'admin/files/cropping_v';
             $data['image_id'] = $data['row']->image_id;
             $data['url_image'] = $data['row']->url_image;
-            $data['back_destination'] = "app/accounts/edit/image";
+            $data['back_destination'] = 'accounts/edit/image';
         }
         if ( $section == 'images' )
         {
@@ -241,13 +245,47 @@ public $url_controller = URL_APP . 'accounts/';
 
         //Options form
             $data['options_gender'] = $this->Item_model->options('category_id = 59 AND cod <= 2', 'Gender');
-            $data['options_cat_1'] = $this->Item_model->options("category_id = 720", 'Professional category');
+            $data['options_cat_1'] = $this->Item_model->options("category_id = 720 AND level = 0", 'Category');
+            $data['items_cat_2'] = $this->Item_model->get_items("category_id = 720 AND level = 1");
         
         //Array data espefícicas
             $data['nav_2'] = $this->views_folder. 'edit/menu_v';
             $data['view_a'] = $view_a;
         
         $this->App_model->view(TPL_FRONT, $data);
+    }
+
+// ELIMINACIÓN DE LA CUENTA
+//-----------------------------------------------------------------------------
+
+    /**
+     * Formulario para realizar eliminación de la cuenta de usuario
+     * 2022-07-14
+     */
+    function delete($activation_key)
+    {
+        //Valores por defecto
+            $data['head_title'] = 'Unidentified user';
+            $data['user_id'] = 0;
+    
+        //Variables
+            $row_user = $this->Db_model->row('users', "activation_key = '{$activation_key}'");        
+            $data['activation_key'] = $activation_key;
+            $data['row'] = $row_user;
+        
+        //Verificar que usuario haya sido identificado
+            if ( ! is_null($row_user) ) 
+            {
+                $data['head_title'] = 'Delete account: ' . $row_user->display_name;
+                $data['user_id'] = $row_user->id;
+            }
+
+        //Verificar que no tenga sesión iniciada
+            //if ( $this->session->userdata('logged') ) redirect('app/accounts/logged');
+
+        //Cargar vista
+            $data['view_a'] = 'app/accounts/delete_v';
+            $this->load->view('templates/colibri_blue/start', $data);
     }
     
 // USER LOGIN AND REGISTRATION WITH GOOGLE ACCOUNT
