@@ -568,38 +568,38 @@ class File_model extends CI_Model{
 //-----------------------------------------------------------------------------
 
     /**
-     * Verifica si un usuario puede o no eliminar un archivo
-     * 2021-11-13
+     * Determina si un archivo puede ser o no eliminado por el usuario en sesión
+     * 2021-01-27
      */
-    function deleteable($file_id)
+    function deleteable($file_id, $session_data)
     {
         $deleteable = false;
 
-        //Usuarios internos pueden eliminar
-        if ( $this->session->userdata('role') <= 3 ){
+        //Administradores pueden eliminar
+        if ( in_array($session_data['role'], array(1,2,3)) ){
             $deleteable = true; 
         } else {
             $row = $this->Db_model->row_id('files', $file_id);
-            if ( ! is_null($row) )
-            {
-                //Si es el usuario creador
-                if ( $row->creator_id == $this->session->userdata('user_id') ) { $deleteable = true; }
-                //Si es el usuario asociado
-                if ( $row->table_id == 1000 && $row->related_1 == $this->session->userdata('user_id') ) { $deleteable = true; }
-            }
+
+            //Si es el usuario creador
+            if ( $row->creator_id == $session_data['user_id'] ) { $deleteable = true; }
+
+            //Si es el usuario asociado
+            if ( $row->table_id == 1000 && $row->related_1 == $session_data['user_id'] ) { $deleteable = true; }
         }
+
         return $deleteable;
     }
     
     /**
-     * Elimina file del servidor y sus miniaturas y el el registro en la 
-     * tabla files.
+     * Elimina file del servidor y sus miniaturas y el el registro en la tabla files
+     * 2021-02-20
      */
-    function delete($file_id)
+    function delete($file_id, $session_data)
     {   
-        $data = array('status' => 403, 'qty_deleted' => 0);
+        $qty_deleted = 0;
 
-        if ( $this->deleteable($file_id) )
+        if ( $this->deleteable($file_id, $session_data) )
         {
             //Eliminar files del servidor
                 $row_file = $this->Db_model->row_id('files', $file_id);
@@ -609,11 +609,10 @@ class File_model extends CI_Model{
                 }
             
             //Eliminar registros de la base de datos
-                $data['status'] = 1;
-                $data['qty_deleted'] = $this->delete_rows($file_id);
+                $qty_deleted = $this->delete_rows($file_id);
         }
 
-        return $data;
+        return $qty_deleted;
     }
     
     /**

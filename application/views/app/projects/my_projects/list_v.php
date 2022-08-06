@@ -3,7 +3,8 @@
         <thead>
             <th width="50px"></th>
             <th>Project</th>      
-            <th width="35px"></th>      
+            <th width="35px"></th>
+            <th width="35px"></th>
         </thead>
         <tbody>
             <tr v-for="(element, key) in list" v-bind:id="`row_` + element.id">    
@@ -24,6 +25,13 @@
                 </td>
                 <td>
                     <a v-bind:href="`<?= URL_FRONT . "projects/edit/" ?>` + element.id" class="">Edit</a>
+                </td>
+                <td>
+                    <button class="btn btn-warning btn-sm" title="Delete project..." data-toggle="modal" data-target="#delete_modal"
+                        v-on:click="setCurrent(element.id)"
+                        >
+                        <i class="fa fa-trash"></i>
+                    </button>
                 </td>
             </tr>
         </tbody>

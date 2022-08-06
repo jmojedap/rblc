@@ -15,6 +15,7 @@ class Projects extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Project_model');
+        $this->load->model('Post_model');
         date_default_timezone_set("America/Bogota");    //Para definir hora local
     }
     
@@ -182,11 +183,10 @@ class Projects extends CI_Controller{
     {
         $data = $this->Project_model->basic($project_id);
 
-        $data['images'] = $this->Project_model->images($project_id);
+        $data['images'] = $this->Post_model->images($project_id);
 
         $data['view_a'] = $this->views_folder . 'images/images_v';
-        $data['nav_2'] = $this->views_folder . 'menu_v';
-        $data['back_link'] = $this->url_controller . 'explore';
+        $data['back_link'] = $this->url_controller . 'explore/';
         $this->App_model->view(TPL_ADMIN, $data);
     }
 
@@ -197,52 +197,10 @@ class Projects extends CI_Controller{
      */
     function get_images($project_id)
     {
-        $images = $this->Project_model->images($project_id);
+        $images = $this->Post_model->images($project_id);
         $data['images'] = $images->result();
 
         //Salida JSON
-        $this->output->set_content_type('application/json')->set_output(json_encode($data));
-    }
-
-    /**
-     * Asocia una imagen a un proyecto, lo carga en la tabla file, y lo asocia en la tabla
-     * project_meta
-     * 2020-07-06
-     */
-    function add_image($project_id)
-    {
-        //Cargue
-        $this->load->model('File_model');
-        $data_upload = $this->File_model->upload();
-
-        $data = $data_upload;
-        if ( $data_upload['status'] )
-        {
-            $data['meta_id'] = $this->Project_model->add_image($project_id, $data_upload['row']->id);   //Asociar en la tabla project_meta
-        }
-
-        $this->output->set_content_type('application/json')->set_output(json_encode($data));
-    }
-
-    /**
-     * Establecer imagen principal de un proyecto
-     * 2020-07-07
-     */
-    function set_main_image($project_id, $meta_id)
-    {
-        $data = $this->Project_model->set_main_image($project_id, $meta_id);
-        //Salida JSON
-        $this->output->set_content_type('application/json')->set_output(json_encode($data));
-    }
-
-    /**
-     * Elimina una imagen de un proyecto, elimina el registro de la tabla file
-     * y sus archivos relacionados
-     * 2020-07-08
-     */
-    function delete_image($project_id, $meta_id)
-    {
-        $data['qty_deleted'] = $this->Project_model->delete_image($project_id, $meta_id);
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 

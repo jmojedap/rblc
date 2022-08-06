@@ -285,8 +285,8 @@ var form_values = {
     cat_2: '0<?= $row->cat_2 ?>',
     score_1: '<?= $row->score_1 ?>',
     phone_number: '<?= $row->phone_number ?>',
-    about: "<?= $row->about ?>",
-    admin_notes: '<?= $row->admin_notes ?>',
+    about: <?= json_encode($row->about) ?>,
+    admin_notes: <?= json_encode($row->admin_notes) ?>,
 };
 
 var items_cat_2 = <?= json_encode($items_cat_2->result()) ?>;

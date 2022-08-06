@@ -37,7 +37,8 @@
             filters: [],
             showing_filters: false,
             menu_elements: menu_elements,
-            tag: menu_elements[0]
+            tag: menu_elements[0],
+            currentId: 0,
         },
         methods: {
             get_list: function(){
@@ -53,9 +54,7 @@
                     this.all_selected = false;
                     this.selected = [];
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                .catch(function (error) { console.log(error) })
             },
             select_all: function() {
                 this.selected = [];
@@ -82,6 +81,20 @@
                 this.num_page = 1;
                 $('#app_q').val(this.filters.q);
                 this.get_list();  
+            },
+            setCurrent: function(value){
+                this.currentId = value
+                console.log(value)
+            },
+            delete_element: function(){
+                axios.get(url_api + 'posts/delete/' + this.currentId)
+                .then(response => {
+                    if ( response.data.qty_deleted > 0 ) {
+                        toastr['info']('Project deleted')
+                        this.get_list()
+                    }
+                })
+                .catch(function(error) { console.log(error) })
             },
         }
     });

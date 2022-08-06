@@ -15,6 +15,7 @@ class Projects extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Project_model');
+        $this->load->model('Post_model');
         date_default_timezone_set("America/Bogota");    //Para definir hora local
     }
     
@@ -81,7 +82,7 @@ class Projects extends CI_Controller{
         //Datos básicos
         $data = $this->Project_model->basic($project_id);
 
-        $data['images'] = $this->Project_model->images($project_id);
+        $data['images'] = $this->Post_model->images($project_id);
         $data['descriptors'] = $this->Project_model->metadata($project_id, 710);    //710 Descriptors
         $data['styles'] = $this->Project_model->metadata($project_id, 712);         //712 Styles
         $data['feelings'] = $this->Project_model->metadata($project_id, 714);       //714 Feelings
@@ -141,11 +142,10 @@ class Projects extends CI_Controller{
     {
         $data = $this->Project_model->basic($project_id);
 
-        $data['images'] = $this->Project_model->images($project_id);
+        $data['images'] = $this->Post_model->images($project_id);
 
         $data['view_a'] = $this->views_folder . 'images/images_v';
         $data['nav_2'] = $this->views_folder . 'menu_v';
-        $data['subtitle_head'] = 'Images';
         $this->App_model->view(TPL_FRONT, $data);
     }
 

@@ -61,23 +61,22 @@ class Files extends CI_Controller{
 
     /**
      * AJAX JSON
-     * Eliminar un conjunto de archivos seleccionados
+     * Eliminar un conjunto de posts seleccionados
      */
     function delete_selected()
     {
         $selected = explode(',', $this->input->post('selected'));
-        $qty_deleted = 0;
+        $data['qty_deleted'] = 0;
         
         foreach ( $selected as $row_id ) 
         {
-            $data_deleted = $this->File_model->delete($row_id);
-            $qty_deleted += $data_deleted['qty_deleted'];
+            $session_data = $this->session->userdata();
+            $data['qty_deleted'] += $this->File_model->delete($row_id, $session_data);
         }
-        
-        $result['status'] = 1;
-        $result['qty_deleted'] = $qty_deleted;
-        
-        $this->output->set_content_type('application/json')->set_output(json_encode($result));
+
+        //Establecer resultado
+        if ( $data['qty_deleted'] > 0 ) { $data['status'] = 1; }
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 
     /**
@@ -86,7 +85,8 @@ class Files extends CI_Controller{
      */
     function delete($file_id)
     {
-        $data = $this->File_model->delete($file_id);
+        $session_data = $this->session->userdata();
+        $data['qty_deleted'] = $this->File_model->delete($file_id, $session_data);
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 

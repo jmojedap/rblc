@@ -8,7 +8,7 @@
                 <br>
                 <a class="a-white" href="">Help</a>
                 <br>
-                <a class="a-white" href="">info@colibri.house</a>
+                <a class="a-white" href="mailto:info@colibri.house">info@colibri.house</a>
                 <br>
 
                 <div class="mt-2">

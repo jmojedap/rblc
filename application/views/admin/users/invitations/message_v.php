@@ -15,6 +15,10 @@
     business details, past work and even communicate with potential customers.
 </p>
 
+<p class="text-center">
+    <a href="<?= URL_APP ?>info/professionals" style="color: #E28F00; font-size: 1.1em; text-decoration: underline;">Get more info</a>
+</p>
+
 <p>
     <a v-if="images.length > 0">
         <img v-bind:src="images[0].url_thumbnail" style="<?= $styles['thumbnail'] ?>">

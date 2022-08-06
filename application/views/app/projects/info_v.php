@@ -4,7 +4,7 @@
     $editable = false;
 
     if ( $this->session->userdata('user_id') == $row->related_1 ) { $editable = true; }
-    if ( $this->session->userdata('role') <= 2 && $this->session->userdata('logged') ) { $editable = true; }
+    if ( in_array($this->session->userdata('role'), [1,2,3]) ) { $editable = true; }
 ?>
 
 <div id="project_info">
@@ -101,78 +101,86 @@
 </div>
 
 <script>
-    var project_info = new Vue({
-        el: '#project_info',
-        created: function(){
-            this.set_current_image(0);
+var project_info = new Vue({
+    el: '#project_info',
+    created: function(){
+        this.set_current_main();
+    },
+    data: {
+        project: <?= json_encode($row) ?>,
+        user: {
+            id: '<?= $row_user->id ?>',
+            display_name: '<?= $row_user->display_name ?>'
         },
-        data: {
-            project: <?= json_encode($row) ?>,
-            user: {
-                id: '<?= $row_user->id ?>',
-                display_name: '<?= $row_user->display_name ?>'
-            },
-            images: <?= json_encode($images->result()) ?>,
-            current_image: {
-                url: '<?= URL_IMG ?>front/md_coming_soon.png'
-            },
-            descriptors: <?= json_encode($descriptors->result()) ?>,
-            ideabooks: <?= json_encode($my_ideabooks->result()) ?>,
-            new_ideabook_name: '',
-            like_status: <?= $like_status ?>,
-            app_uid: app_uid
+        images: <?= json_encode($images->result()) ?>,
+        current_image: {
+            url: '<?= URL_IMG ?>front/md_coming_soon.png'
         },
-        methods: {
-            set_current_image: function(image_key){
-                if ( this.images.length )
+        descriptors: <?= json_encode($descriptors->result()) ?>,
+        ideabooks: <?= json_encode($my_ideabooks->result()) ?>,
+        new_ideabook_name: '',
+        like_status: <?= $like_status ?>,
+        app_uid: app_uid
+    },
+    methods: {
+        set_current_main: function(){
+            var main_image = this.images.find(item => item.main == 1)
+            if ( main_image !== undefined ) {
+                this.current_image = main_image
+            } else {
+                this.set_current_image(0)
+            }
+        },
+        set_current_image: function(image_key){
+            if ( this.images.length )
+            {
+                this.current_image = this.images[image_key];
+            }
+        },
+        add_to_ideabook: function(ideabook_id){
+            axios.post(url_api + 'ideabooks/add_project/' + ideabook_id + '/' + this.project.id, $('#new_ideabook_form').serialize())
+            .then(response => {
+                //console.log(response.data);
+                if ( response.data.saved_id > 1 )
                 {
-                    this.current_image = this.images[image_key];
+                    //this.ideabooks = response.data.ideabooks;
+                    toastr['success']('Added to ideabook');
+                    this.new_ideabook_name = '';
                 }
-            },
-            add_to_ideabook: function(ideabook_id){
-                axios.post(url_api + 'ideabooks/add_project/' + ideabook_id + '/' + this.project.id, $('#new_ideabook_form').serialize())
-                .then(response => {
-                    //console.log(response.data);
-                    if ( response.data.saved_id > 1 )
-                    {
-                        //this.ideabooks = response.data.ideabooks;
-                        toastr['success']('Added to ideabook');
-                        this.new_ideabook_name = '';
-                    }
-                    
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            },
-            alt_like: function(){
-                axios.get(url_api + 'posts/alt_like/' + this.project.id)
-                .then(response => {
-                    this.like_status = response.data.like_status;
-                    if ( this.like_status == 1 ) {
-                        this.project.qty_likes++;
-                    } else {
-                        this.project.qty_likes--;
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });  
-            },
-            create_conversation: function(){
-                axios.get(url_api + 'messages/create_conversation/' + this.user.id)
-                .then(response => {
-                    console.log(response.data);
-                    if ( response.data.conversation_id > 0 ) {
-                        window.location = url_app + 'messages/conversation/' + response.data.conversation_id;
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });  
-            },
-        }
-    });
+                
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        },
+        alt_like: function(){
+            axios.get(url_api + 'posts/alt_like/' + this.project.id)
+            .then(response => {
+                this.like_status = response.data.like_status;
+                if ( this.like_status == 1 ) {
+                    this.project.qty_likes++;
+                } else {
+                    this.project.qty_likes--;
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });  
+        },
+        create_conversation: function(){
+            axios.get(url_api + 'messages/create_conversation/' + this.user.id)
+            .then(response => {
+                console.log(response.data);
+                if ( response.data.conversation_id > 0 ) {
+                    window.location = url_app + 'messages/conversation/' + response.data.conversation_id;
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });  
+        },
+    }
+});
 </script>
 
 <?php $this->load->view('app/projects/comments/comments_v') ?>

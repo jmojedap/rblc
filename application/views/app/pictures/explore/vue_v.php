@@ -142,7 +142,8 @@ var app_explore = new Vue({
         },
         //Detectar el final del documento, scroll
         handle_scroll(e) {
-            if($(window).scrollTop() + $(window).height() == $(document).height()) {
+            var documentHeightZoom = $(document).height() * 0.9
+            if($(window).scrollTop() + $(window).height() > documentHeightZoom) {
                 console.log('Load more page: ' + this.num_page);
                 if ( this.num_page < this.max_page )
                 {

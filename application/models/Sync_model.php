@@ -52,7 +52,7 @@ class Sync_model extends CI_Model{
         $data = array('status' => 0, 'message' => 'Proceso no ejecutado');
 
         //Debe ser desarrollador
-        if ( $this->session->userdata('role') == 0 ) 
+        if ( $this->session->userdata('role') == 1 ) 
         {
             $sql = "TRUNCATE TABLE {$table}";
             $this->db->query($sql);

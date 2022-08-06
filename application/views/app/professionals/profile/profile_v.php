@@ -103,6 +103,11 @@
 
     <!-- PROYECTOS DEL PROFESSIONAL -->
     <div v-show="section == 'projects'" class="users">
+        <div class="mb-2 text-center" v-if="user_id == app_uid">
+            <a href="<?= URL_FRONT . "projects/my_projects/1/?u={$this->session->userdata('user_id')}" ?>">
+                Edit my projects
+            </a>
+        </div>
         <div class="user" v-for="(project, project_key) in projects">
             <div class="row">
                 <div class="col-md-9 pt-2">

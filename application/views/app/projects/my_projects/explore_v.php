@@ -20,6 +20,7 @@
         <?php $this->load->view($views_folder . 'list_v'); ?>
         <?php $this->load->view($views_folder . 'detail_v'); ?>
     </div>
+    <?php $this->load->view('common/modal_single_delete_v') ?>
 </div>
 
 <?php $this->load->view($views_folder . 'vue_v') ?>

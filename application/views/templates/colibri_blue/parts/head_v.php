@@ -36,7 +36,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"/>
 
         <!-- PML Tools -->
-        <link rel="stylesheet" href="<?= URL_RESOURCES . 'css/style_pml.css' ?>">
+        <link rel="stylesheet" href="<?= URL_RESOURCES . 'css/pacarina.css' ?>">
         <script src="<?= URL_RESOURCES . 'js/pcrn.js' ?>"></script>
         <script>
             const url_app = '<?= URL_APP ?>'; const url_admin = '<?= URL_ADMIN ?>'; const url_api = '<?= URL_API ?>'; const url_front = '<?= URL_FRONT ?>';

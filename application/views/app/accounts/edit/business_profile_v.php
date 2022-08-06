@@ -170,7 +170,7 @@
 //-----------------------------------------------------------------------------
 var form_values = {
     display_name: '<?= $row->display_name ?>',
-    about: '<?= $row->about ?>',
+    about: <?= json_encode($row->about) ?>,
     phone_number: '<?= $row->phone_number ?>',
     username: '<?= $row->username ?>',
     email: '<?= $row->email ?>',
@@ -205,9 +205,7 @@ el: '#app_edit',
             .then(response => {
                 this.validation = response.data.validation;
             })
-            .catch(function (error) {
-                console.log(error);
-            });
+            .catch(function (error) { console.log(error) })
         },
         validate_send: function () {
             axios.post(url_api + 'accounts/validate/' + this.row_id, $('#edit_form').serialize())

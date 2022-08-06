@@ -210,7 +210,6 @@ class Posts extends CI_Controller{
 
         $data['view_a'] = 'posts/image/image_v';
         $data['nav_2'] = 'posts/menu_v';
-        $data['subtitle_head'] = 'Imagen asociada';
         $this->App_model->view(TPL_ADMIN, $data);
     }
 
@@ -270,10 +269,6 @@ class Posts extends CI_Controller{
         $data = $this->Post_model->basic($post_id);
 
         $data['images'] = $this->Post_model->images($post_id);
-        
-        //Para formulario file
-        $data['form_table_id'] = 2000;
-        $data['form_related_1'] = $post_id;
 
         $data['view_a'] = $this->views_folder . 'images/images_v';
         $data['back_link'] = $this->url_controller . 'explore/';

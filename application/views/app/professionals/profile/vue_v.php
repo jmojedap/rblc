@@ -10,6 +10,7 @@ var user_profile = new Vue({
         this.get_social_links();
     },
     data: {
+        app_uid: app_uid,
         user_id: '<?= $row->id ?>',
         follow_status: '<?= $follow_status ?>',
         images: [],
