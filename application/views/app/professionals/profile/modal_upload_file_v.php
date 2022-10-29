@@ -20,7 +20,7 @@ var modal_upload_file = new Vue({
     },
     data: {
         form_values: { cat_1: '' },
-        user_id: app_uid,
+        user_id: APP_UID,
         loading: false,
         options_cat_1: <?= json_encode($options_cat_1) ?>
     },
@@ -33,7 +33,7 @@ var modal_upload_file = new Vue({
             form_data.append('album_id', 10);   //Imágenes generales de usuario
             form_data.append('cat_1', this.form_values.cat_1)
 
-            axios.post(url_api + 'files/upload/' + this.user_id, form_data, {headers: {'Content-Type': 'multipart/form-data'}})
+            axios.post(URL_API + 'files/upload/' + this.user_id, form_data, {headers: {'Content-Type': 'multipart/form-data'}})
             .then(response => {
                 //Cargar imágenes
                 if ( response.data.status == 1 ) {

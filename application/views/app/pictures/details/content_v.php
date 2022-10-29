@@ -40,7 +40,7 @@
                             </button>
                             <?php if ( $this->session->userdata('logged') ) { ?>
                                 <button class="btn btn-sm" v-on:click="reply_comment(key)" title="Answer">Reply</button>
-                                <button class="btn btn-sm" data-toggle="modal" data-target="#delete_comment_modal" v-on:click="set_current(key)" v-if="app_uid == comment.creator_id">
+                                <button class="btn btn-sm" data-toggle="modal" data-target="#delete_comment_modal" v-on:click="set_current(key)" v-if="APP_UID == comment.creator_id">
                                     Delete
                                 </button>
                             <?php } ?>
@@ -56,7 +56,7 @@
                         <b>{{ answer.display_name }}</b> &middot; {{ answer.username }}
                         <br>
                         <p>{{ answer.comment_text }}</p>
-                        <p v-if="app_uid == answer.creator_id">
+                        <p v-if="APP_UID == answer.creator_id">
                             <button class="btn btn-sm btn-light" data-toggle="modal" data-target="#delete_answer_modal" v-on:click="set_current_answer(key, answer_key)">
                                 Delete
                             </button>

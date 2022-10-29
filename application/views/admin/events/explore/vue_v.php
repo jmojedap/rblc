@@ -45,14 +45,14 @@ var app_explore = new Vue({
     methods: {
         get_list: function(e, num_page = 1){
             this.loading = true
-            axios.post(url_app + this.controller + '/get/' + num_page, $('#search_form').serialize())
+            axios.post(URL_APP + this.controller + '/get/' + num_page, $('#search_form').serialize())
             .then(response => {
                 this.num_page = num_page
                 this.list = response.data.list
                 this.max_page = response.data.max_page
                 this.search_num_rows = response.data.search_num_rows
                 $('#head_subtitle').html(response.data.search_num_rows)
-                history.pushState(null, null, url_app + this.cf + this.num_page +'/?' + response.data.str_filters)
+                history.pushState(null, null, URL_APP + this.cf + this.num_page +'/?' + response.data.str_filters)
                 this.all_selected = false
                 this.selected = []
                 this.loading = false
@@ -75,7 +75,7 @@ var app_explore = new Vue({
             var params = new FormData()
             params.append('selected', this.selected)
             
-            axios.post(url_app + this.controller + '/delete_selected', params)
+            axios.post(URL_APP + this.controller + '/delete_selected', params)
             .then(response => {
                 this.hide_deleted()
                 this.selected = []

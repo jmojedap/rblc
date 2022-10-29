@@ -18,7 +18,7 @@
     function set_activation_key(){
         $.ajax({        
             type: 'POST',
-            url: url_api + 'users/set_activation_key/' + user_id,
+            url: URL_API + 'users/set_activation_key/' + user_id,
             success: function(response){
                 $('#activation_key').html(url_front + 'accounts/recover/' + response);
                 toastr['success']('Activation link generated');

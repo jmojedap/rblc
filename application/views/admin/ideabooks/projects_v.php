@@ -68,20 +68,20 @@
         },
         methods: {
             add_project: function(){
-                axios.get(url_app + 'ideabooks/add_project/' + this.ideabook_id + '/' + this.project_id)
+                axios.get(URL_APP + 'ideabooks/add_project/' + this.ideabook_id + '/' + this.project_id)
                 .then(response => {
                     console.log(response.data)
-                    window.location = url_app + 'ideabooks/projects/' + this.ideabook_id;
+                    window.location = URL_APP + 'ideabooks/projects/' + this.ideabook_id;
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
             },
             delete_meta: function(meta_id){
-                axios.get(url_app + 'posts/delete_meta/' + this.ideabook_id + '/' + meta_id)
+                axios.get(URL_APP + 'posts/delete_meta/' + this.ideabook_id + '/' + meta_id)
                 .then(response => {
                     console.log(response.data)
-                    window.location = url_app + 'ideabooks/projects/' + this.ideabook_id;
+                    window.location = URL_APP + 'ideabooks/projects/' + this.ideabook_id;
                 })
                 .catch(function (error) {
                     console.log(error);

@@ -93,12 +93,12 @@ var deleteApp = new Vue({
         sendForm: function(){
             this.loading = true
             var formValues = new FormData(document.getElementById('deleteForm'))
-            axios.post(url_api + 'accounts/delete_account/', formValues)
+            axios.post(URL_API + 'accounts/delete_account/', formValues)
             .then(response => {
                 this.errors = response.data.errors;
                 if ( response.data.status == 1 ) {
                     toastr['info']('Your account was successfully deleted');
-                    setTimeout(function(){ window.location = url_app + 'accounts/login'; }, 3000);
+                    setTimeout(function(){ window.location = URL_APP + 'accounts/login'; }, 3000);
                 } else {
                     this.loading = false
                 }

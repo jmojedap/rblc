@@ -128,8 +128,8 @@ class App extends CI_Controller {
     function help($post_id = 0)
     {
         $data['head_title'] = 'Ayuda';
-        $data['view_a'] = 'admin/app/help/help_v';
         $data['article_id'] = $post_id;
+        $data['view_a'] = 'admin/app/help/help_v';
         $this->App_model->view(TPL_ADMIN, $data);
     }
 

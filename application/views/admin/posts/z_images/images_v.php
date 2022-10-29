@@ -42,7 +42,7 @@
         },
         methods: {
             get_list: function(){
-                axios.get(url_api + 'posts/get_images/' + this.post_id)
+                axios.get(URL_API + 'posts/get_images/' + this.post_id)
                 .then(response => {
                     this.images = response.data.images;
                 })
@@ -56,7 +56,7 @@
                 form_data.append('table_id', '2000');
                 form_data.append('related_1', this.post_id);
 
-                axios.post(url_api + 'files/upload/', form_data, {headers: {'Content-Type': 'multipart/form-data'}})
+                axios.post(URL_API + 'files/upload/', form_data, {headers: {'Content-Type': 'multipart/form-data'}})
                 .then(response => {
                     //Cargar imágenes
                     if ( response.data.status == 1 ) { this.get_list(); }
@@ -77,7 +77,7 @@
             },
             delete_element: function(){
                 var file_id = this.curr_image.id;
-                axios.get(url_api + 'files/delete/' + file_id)
+                axios.get(URL_API + 'files/delete/' + file_id)
                 .then(response => {
                     this.get_list();
                 })
@@ -89,7 +89,7 @@
                 this.set_current(key);
                 var file_id = this.curr_image.id;
                 console.log(this.curr_image);
-                axios.get(url_api + 'posts/set_main_image/' + this.post_id + '/' + file_id)
+                axios.get(URL_API + 'posts/set_main_image/' + this.post_id + '/' + file_id)
                 .then(response => {
                     if ( response.data.status == 1 ) {
                         this.get_list();

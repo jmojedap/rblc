@@ -1,178 +1,207 @@
 <script>
-    var app_states = {
-        add: {
-            button_text: 'Agregar',
-            button_class: 'btn-success'
+// Variables
+//-----------------------------------------------------------------------------
+var appStates = {
+    add: {
+        buttonText: 'Agregar',
+        buttonClass: 'btn-success'
+    },
+    edit: {
+        buttonText: 'Actualizar',
+        buttonClass: 'btn-info'
+    },
+    saved: {
+        buttonText: 'Guardado',
+        buttonClass: 'btn-success'
+    },
+    inserted: {
+        buttonText: 'Guardado',
+        buttonClass: 'btn-success'
+    },
+    updated: {
+        buttonText: 'Actualizado',
+        buttonClass: 'btn-success'
+    }
+};
+
+var categories = <?= json_encode($categories->result()) ?>;
+var startCategory = categories.find(category => category.cod == 0)
+
+// VueApp
+//-----------------------------------------------------------------------------
+    
+var manageItemsApp = new Vue({
+    el: '#manageItemsApp',
+    created: function(){
+        this.getItems()
+    },
+    data: {
+        loading: false,
+        filters: {q:''},
+        categories: <?= json_encode($categories->result()) ?>,
+        currCategory: startCategory,
+        rowKey: 0,
+        rowId: 0,
+        items: [],
+        fields: {
+            item_name: '',
+            cod: '',
+            abbreviation: '',
+            filter: '',
+            parent_id: '',
+            slug: '',
+            description: '',
+            long_name: '',
+            short_name: '',
+            item_group: '',
         },
-        edit: {
-            button_text: 'Actualizar',
-            button_class: 'btn-info'
+        formConfig: {
+            title: 'Nuevo elemento',
+            buttonText: 'Agregar',
+            buttonClass: 'btn-primary'
         },
-        saved: {
-            button_text: 'Guardado',
-            button_class: 'btn-success'
+        appState: appStates.add,
+        marginValue: '50'
+    },
+    methods: {
+        getCategories: function(){
+            this.loading = true
+            var formValues = new FormData()
+            formValues.append('q', this.filters.q)
+            formValues.append('cat_1', 0)
+            axios.post(URL_API + 'items/get/', formValues)
+            .then(response => {
+                this.categories = response.data.list
+                this.setFirstCategory()
+                this.loading = false
+            })
+            .catch( function(error) {console.log(error)} )
         },
-        inserted: {
-            button_text: 'Guardado',
-            button_class: 'btn-success'
+        setFirstCategory: function(){
+            if ( this.categories.length > 0 ) {
+                this.currCategory = this.categories[0]
+                this.getItems()
+                this.setMarginValue(0)
+            }
         },
-        updated: {
-            button_text: 'Actualizado',
-            button_class: 'btn-success'
+        getItems: function (){
+            axios.get(URL_API + 'items/get_list/' + this.currCategory.cod)
+            .then(response => {
+                this.items = response.data;
+                history.pushState(null, null, URL_API + 'items/manage/' + this.currCategory.cod);
+                console.log(this.items[0].id);
+            })
+            .catch(function (error) { console.log(error) })
+        },
+        clearFilters: function(){
+            this.filters.q = ''
+            this.getCategories()
+        },
+        //Cargar el formulario con datos de un elemento (key) de la list
+        loadFormValues: function (key){
+            this.appState = appStates.edit
+            this.rowId = this.items[key].id
+            for ( field in this.fields ) { this.fields[field] = this.items[key][field] }
+            this.fields.parent_id = '0' + this.items[key].parent_id
+            this.formConfig.title = this.items[key].item_name
+        },
+        handleSubmit: function(){
+            this.loading = true
+            var formValues = new FormData(document.getElementById('itemForm'))
+            axios.post(URL_API + 'items/save/' + this.rowId, formValues)
+            .then(response => {
+                console.log(response.data.status);
+                
+                if ( response.data.status == 1 ) 
+                {
+                    appState = appStates.saved;
+                    toastr['success']('Registro guardado');
+                    
+                    if ( this.rowId > 0 ) {
+                        this.appState = appStates.updated;
+                    } else {
+                        this.appState = appStates.inserted;
+                        for ( key in this.fields ) { this.fields[key] = '';}
+                    }
+                    
+                    this.getItems();
+                    this.rowId = response.data.saved_id;
+                }
+                this.loading = false
+                
+            })
+            .catch(function (error) { console.log(error) })
+        },
+        //Establece un elemento como el actual
+        setCurrentElement: function(key) {
+            this.rowId = this.items[key].id;
+            this.rowKey = key;
+            console.log(this.rowId);
+        },
+        delete_element: function() {
+            axios.get(URL_API + 'items/delete/' + this.rowId + '/' + this.currCategory.cod)
+            .then(response => {
+                if ( response.data.status == 1 )
+                {
+                    this.items.splice(this.rowKey, 1)
+                    toastr['info']('Elemento eliminado')
+                }
+            })
+            .catch(function (error) { console.log(error) })
+        },
+        clearForm: function() {
+            this.rowId = 0;
+            this.rowKey = 0;
+            for ( key in this.fields ) { this.fields[key] = ''; }
+            this.formConfig.title = 'Nuevo elemento';
+            this.appState = appStates.add;
+            this.$refs.field_cod.focus();
+        },
+        setCategory: function(category_key){
+            this.currCategory = this.categories[category_key]
+            this.getItems()
+            this.clearForm()
+            this.setMarginValue(category_key)
+        },
+        setMarginValue: function(category_key){
+            this.marginValue = 50 + category_key * 34
+        },
+        //COMPLEMENTARY FUNCTIONS
+        autocomplete: function() {
+            console.log(this.fields.item_name);
+            this.setNames();
+            if ( this.fields.abbreviation.length == 0 ) { this.setAbbreviation() }
+            if ( this.fields.slug.length == 0 ) { this.setSlug() }
+        },
+        setAbbreviation: function() {
+            console.log('Completando abreviatura');
+            var abbreviation = '';
+            abbreviation = this.fields.item_name.substr(0,3);
+            abbreviation = abbreviation.toLowerCase();
+            console.log(abbreviation);
+            this.fields.abbreviation = abbreviation;
+        },
+        setNames: function() {
+            if ( this.fields.description.length == 0 ) { 
+                this.fields.description = this.currCategory.item_name + ', ' + this.fields.item_name;
+            }
+            if ( this.fields.long_name.length == 0 ) { this.fields.long_name = this.fields.item_name; }
+            if ( this.fields.short_name.length == 0 ) { this.fields.short_name = this.fields.item_name; }
+        },
+        //Establecer item.slug
+        setSlug: function() {
+            const params = new URLSearchParams();
+            params.append('text', this.fields.item_name);
+            params.append('table', 'items');
+            params.append('field', 'slug');
+            
+            axios.post(url_base + 'tools/unique_slug/', params)
+            .then(response => {
+                console.log(response.data);
+                this.fields.slug = response.data
+            })
+            .catch(function (error) { console.log(error) })
         }
     }
-    
-    new Vue({
-        el: '#items_list',
-        created: function(){
-            this.get_list();
-        },
-        data: {
-            categories: <?= json_encode($arr_categories) ?>,
-            category_id: '<?= $category_id ?>',
-            row_key: 0,
-            row_id: 0,
-            list: [],
-            form_values: {
-                item_name: '',
-                cod: '',
-                abbreviation: '',
-                filters: '',
-                parent_id: '',
-                slug: '',
-                description: '',
-                long_name: '',
-                short_name: '',
-            },
-            config_form: {
-                title: 'Nuevo elemento',
-                button_text: 'Agregar',
-                button_class: 'btn-primary'
-            },
-            app_state: app_states.add
-        },
-        methods: {
-            get_list: function (){
-                axios.get(url_app + 'items/get_list/' + this.category_id)
-                .then(response => {
-                    this.list = response.data;
-                    history.pushState(null, null, url_app + 'items/manage/' + this.category_id);
-                    console.log(this.list[0].id);
-                })
-                .catch(function (error) {
-                     console.log(error);
-                });
-            },
-            //Cargar el formulario con datos de un elemento (key) de la list
-            set_form: function (key){
-                this.app_state = app_states.edit;
-                this.row_id = this.list[key].id;
-                //this.form_values = this.list[key];
-                for ( field in this.form_values ) { this.form_values[field] = this.list[key][field]; }
-                this.form_values.parent_id = '0' + this.list[key].parent_id;
-                this.config_form.title = 'Editar: ' + this.list[key].item_name;
-                console.log('row_id: ' + this.row_id);
-                this.$refs.field_item_name.focus();
-            },
-            set_form_values: function(key){
-                
-            },
-            send_form: function(){
-                axios.post(url_app + 'items/save/' + this.row_id, $('#item_form').serialize())
-                .then(response => {
-                    console.log(response.data.status);
-                    
-                    if ( response.data.status == 1 ) 
-                    {
-                        app_state = app_states.saved;
-                        toastr['success']('Registro guardado');
-                        
-                        if ( this.row_id > 0 ) {
-                            this.app_state = app_states.updated;
-                        } else {
-                            this.app_state = app_states.inserted;
-                            for ( key in this.form_values ) { this.form_values[key] = '';}
-                        }
-                        
-                        this.get_list();
-                        this.row_id = response.data.saved_id;
-                    }
-                    
-                })
-                .catch(function (error) {
-                     console.log(error);
-                });
-            },
-            //Establece un elemento como el actual
-            current_element: function(key) {
-                this.row_id = this.list[key].id;
-                this.row_key = key;
-                console.log(this.row_id);
-            },
-            delete_element: function() {
-                axios.get(url_app + 'items/delete/' + this.row_id + '/' + this.category_id)
-                .then(response => {
-                    console.log(response.data);
-                    if ( response.data.status == 1 )
-                    {
-                        this.list.splice(this.row_key, 1);
-                        toastr['info']('Elemento eliminado');
-                    }
-                })
-                .catch(function (error) {
-                     console.log(error);
-                });
-            },
-            clean_form: function() {
-                this.row_id = 0;
-                this.row_key = 0;
-                for ( key in this.form_values ) { this.form_values[key] = ''; }
-                this.config_form.title = 'Nuevo elemento';
-                this.app_state = app_states.add;
-                this.$refs.field_cod.focus();
-            },
-            set_category: function(category_id){
-                console.log(category_id);
-                this.category_id = category_id;
-                this.get_list();
-                this.clean_form();
-            },
-            //COMPLEMENTARY FUNCTIONS
-            autocomplete: function() {
-                console.log(this.form_values.item_name);
-                this.set_names();
-                if ( this.form_values.abbreviation.length == 0 ) { this.set_abbreviation(); }
-                if ( this.form_values.slug.length == 0 ) { this.set_slug(); }
-            },
-            set_abbreviation: function() {
-                console.log('Completando abreviatura');
-                var abbreviation = '';
-                abbreviation = this.form_values.item_name.substr(0,3);
-                abbreviation = abbreviation.toLowerCase();
-                console.log(abbreviation);
-                this.form_values.abbreviation = abbreviation;
-            },
-            set_names: function() {
-                if ( this.form_values.description.length == 0 ) { this.form_values.description = this.categories[this.category_id] + ', ' + this.form_values.item_name; }
-                if ( this.form_values.long_name.length == 0 ) { this.form_values.long_name = this.form_values.item_name; }
-                if ( this.form_values.short_name.length == 0 ) { this.form_values.short_name = this.form_values.item_name; }
-            },
-            //Establecer item.slug
-            set_slug: function() {
-                const params = new URLSearchParams();
-                params.append('text', this.form_values.item_name);
-                params.append('table', 'items');
-                params.append('field', 'slug');
-                
-                axios.post(url_app + 'app/unique_slug/', params)
-                .then(response => {
-                    console.log(response.data);
-                    this.form_values.slug = response.data;
-                })
-                .catch(function (error) {
-                     console.log(error);
-                });
-            }
-        }
-    });
+});
 </script>

@@ -39,12 +39,12 @@
         },
         methods: {
             get_list: function(){
-                axios.post(url_api + this.controller + '/get/' + this.num_page + '/?like=1', $('#search_form').serialize())
+                axios.post(URL_API + this.controller + '/get/' + this.num_page + '/?like=1', $('#search_form').serialize())
                 .then(response => {
                     this.list = response.data.list;
                     this.max_page = response.data.max_page;
                     this.search_num_rows = response.data.search_num_rows;
-                    history.pushState(null, null, url_app + this.cf + this.num_page +'/?' + response.data.str_filters);
+                    history.pushState(null, null, URL_APP + this.cf + this.num_page +'/?' + response.data.str_filters);
                     this.all_selected = false;
                     this.selected = [];
                 })

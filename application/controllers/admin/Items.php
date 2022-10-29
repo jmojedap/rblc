@@ -5,8 +5,8 @@ class Items extends CI_Controller{
 
 // Variables generales
 //-----------------------------------------------------------------------------
-public $views_folder = 'admin/items/';
-public $url_controller = URL_ADMIN . 'items/';
+    public $views_folder = 'admin/items/';
+    public $url_controller = URL_ADMIN . 'items/';
 
 // Constructor
 //-----------------------------------------------------------------------------
@@ -20,6 +20,23 @@ public $url_controller = URL_ADMIN . 'items/';
         //Para definir hora local
         date_default_timezone_set("America/Bogota");
     }
+
+// EXPLORE
+//-----------------------------------------------------------------------------
+
+    /**
+     * JSON
+     * Listado de ítems, según filtros de búsqueda
+     */
+    function get($num_page = 1, $per_page = 1000)
+    {
+        $this->load->model('Search_model');
+        $filters = $this->Search_model->filters();
+        $data = $this->Item_model->get($filters, $num_page, $per_page);
+
+        //Salida JSON
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
     
 //CRUD
 //---------------------------------------------------------------------------------------------------
@@ -31,12 +48,12 @@ public $url_controller = URL_ADMIN . 'items/';
     {
         //Variables específicas
             $data['category_id'] = $category_id;
-            $data['arr_categories'] = $this->Item_model->arr_item('category_id = 0', 'cod_num');
+            $data['categories'] = $this->Item_model->get_items('category_id = 0');
         
         //Array data generales
             $data['head_title'] = 'Ítems';
-            $data['view_a'] = 'admin/items/manage/manage_v';
-            $data['nav_2'] = 'admin/items/menu_v';
+            $data['view_a'] = $this->views_folder . 'manage/manage_v';
+            $data['nav_2'] = $this->views_folder . 'menu_v';
             
         //Cargar vista
             $this->App_model->view(TPL_ADMIN, $data);
@@ -129,8 +146,8 @@ public $url_controller = URL_ADMIN . 'items/';
         $data['url_file'] = URL_RESOURCES . 'import_templates/' . $data['template_file_name'];
         
 
-        $data['head_title'] = 'Items';
-        $data['nav_2'] = 'admin/items/menu_v';
+        $data['head_title'] = 'Importar ítems';
+        $data['nav_2'] = $this->views_folder . 'menu_v';
         $data['view_a'] = 'common/import_v';
         
         $this->App_model->view(TPL_ADMIN, $data);
@@ -157,8 +174,9 @@ public $url_controller = URL_ADMIN . 'items/';
         
         //Cargar vista
             $data['head_title'] = 'Items';
+            $data['head_subtitle'] = 'Import result';
             $data['view_a'] = 'common/import_result_v';
-            $data['nav_2'] = 'admin/items/menu_v';
+            $data['nav_2'] = $this->views_folder . 'menu_v';
 
         $this->App_model->view(TPL_ADMIN, $data);
     }

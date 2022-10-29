@@ -32,7 +32,7 @@ var app_explore = new Vue({
         this.get_list();
     },
     data: {
-        app_rid: app_rid,
+        APP_RID: APP_RID,
         cf: '<?= $cf; ?>',
         controller: '<?= $controller; ?>',
         num_page: 1,
@@ -57,12 +57,12 @@ var app_explore = new Vue({
             var params = new URLSearchParams();
             params.append('q', app_q);
             params.append('cat_1', this.category.id);
-            axios.post(url_api + this.controller + '/get/' + this.num_page, params)
+            axios.post(URL_API + this.controller + '/get/' + this.num_page, params)
             .then(response => {
                 this.list = response.data.list;
                 this.max_page = response.data.max_page;
                 this.search_num_rows = response.data.search_num_rows;
-                history.pushState(null, null, url_front + this.cf + this.num_page +'/?' + response.data.str_filters);
+                history.pushState(null, null, URL_FRONT + this.cf + this.num_page +'/?' + response.data.str_filters);
                 this.all_selected = false;
                 this.selected = [];
                 this.gallery_visible = true;
@@ -79,7 +79,7 @@ var app_explore = new Vue({
         },
         //Obtener detalles de Picture
         get_details: function(key){
-            axios.get(url_api + 'pictures/get_details/' + this.list[key].id)
+            axios.get(URL_API + 'pictures/get_details/' + this.list[key].id)
             .then(response => {
                 //Cargar datos en VueApp: #picture_app
                 picture_app.picture.id = response.data.id
@@ -110,7 +110,7 @@ var app_explore = new Vue({
         //Like or unlike image
         alt_like: function(image_key){
             var image = this.list[image_key];
-            axios.get(url_api + 'files/alt_like/' + image.id)
+            axios.get(URL_API + 'files/alt_like/' + image.id)
             .then(response => {
                 if ( response.data.status == 1 ) {
                     this.list[image_key].liked = 1;
@@ -128,12 +128,12 @@ var app_explore = new Vue({
             var params = new URLSearchParams();
             params.append('q', app_q);
             params.append('cat_1', this.category.id);
-            axios.post(url_api + this.controller + '/get/' + this.num_page, params)
+            axios.post(URL_API + this.controller + '/get/' + this.num_page, params)
             .then(response => {
                 this.list = this.list.concat(response.data.list);   //Agregar resultados al listado
                 this.max_page = response.data.max_page;
                 this.search_num_rows = response.data.search_num_rows;
-                history.pushState(null, null, url_app + this.cf + this.num_page +'/?' + response.data.str_filters);
+                history.pushState(null, null, URL_APP + this.cf + this.num_page +'/?' + response.data.str_filters);
                 this.all_selected = false;
                 this.selected = [];
                 this.loading_more = false;

@@ -1,7 +1,7 @@
 <header class="main-header">
     <!-- Logo -->
-    <a href="<?= base_url() ?>" class="logo fixed-top" style="background-color: <?= BG_DARK ?>">
-        <?= APP_NAME ?>
+    <a href="<?= URL_FRONT ?>info/inicio/" class="logo fixed-top">
+        <img src="<?= URL_BRAND ?>logo-admin.png" alt="Logo app" style="height: 40px;">
     </a>
     <nav class="navbar fixed-top" role="navigation">
         <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">

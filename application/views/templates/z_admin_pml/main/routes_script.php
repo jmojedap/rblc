@@ -11,7 +11,7 @@
     function load_sections(menu_type)
     {
         $.ajax({
-            url: url_app + app_cf + '/?json=' + menu_type,
+            url: URL_APP + app_cf + '/?json=' + menu_type,
             beforeSend: function(){
                 before_send_load_sections(menu_type);
             },
@@ -36,7 +36,7 @@
     {
         //console.log('CF Respuesta: ' + result.head_title);
         document.title = result.head_title;
-        history.pushState(null, null, url_app + app_cf);
+        history.pushState(null, null, URL_APP + app_cf);
         
         $('#head_title').html(result.head_title);
         $('#head_subtitle').html(result.head_subtitle);

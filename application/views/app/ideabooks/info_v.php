@@ -50,7 +50,7 @@
         },
         methods: {
             get_images: function(){
-                axios.get(url_api + 'ideabooks/get_images/' + this.ideabook_id)
+                axios.get(URL_API + 'ideabooks/get_images/' + this.ideabook_id)
                 .then(response => {
                     this.images = response.data.list;
                 })

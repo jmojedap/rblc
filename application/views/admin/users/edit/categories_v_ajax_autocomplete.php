@@ -134,7 +134,7 @@
         },
         methods: {
             send_form: function(){
-                axios.post(url_api + 'professionals/update_categories/' + this.row_id, $('#user_form').serialize())
+                axios.post(URL_API + 'professionals/update_categories/' + this.row_id, $('#user_form').serialize())
                 .then(response => {
                     if (response.data.status == 1) {
                         toastr['success']('Saved');

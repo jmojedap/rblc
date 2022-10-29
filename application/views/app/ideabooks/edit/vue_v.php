@@ -14,7 +14,7 @@
         },
         methods: {
             send_form: function() {
-                axios.post(url_api + 'ideabooks/update/' + this.ideabook_id, $('#edit_form').serialize())
+                axios.post(URL_API + 'ideabooks/update/' + this.ideabook_id, $('#edit_form').serialize())
                 .then(response => {
                     if ( response.data.status == 1 )
                     {

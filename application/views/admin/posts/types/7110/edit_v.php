@@ -54,7 +54,7 @@
         },
         methods: {
             send_form: function(){
-                axios.post(url_api + 'posts/save/', $('#project_form').serialize())
+                axios.post(URL_API + 'posts/save/', $('#project_form').serialize())
                 .then(response => {
                     if (response.data.status == 1) {
                         toastr['success']('Saved');

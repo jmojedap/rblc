@@ -58,7 +58,7 @@
         },
         methods: {
             get_list: function(){
-                axios.post(url_app + 'notes/get/' + this.num_page, $('#search_form').serialize())
+                axios.post(URL_APP + 'notes/get/' + this.num_page, $('#search_form').serialize())
                 .then(response => {
                     this.list = response.data.list;
                     this.max_page = response.data.max_page;
@@ -90,7 +90,7 @@
                 document.getElementById("field_post_name").focus();
             },
             send_form: function(){
-                axios.post(url_app + 'notes/save/' + this.row_id, $('#note_form').serialize())
+                axios.post(URL_APP + 'notes/save/' + this.row_id, $('#note_form').serialize())
                 .then(response => {
                     console.log(response.data);
                     
@@ -114,7 +114,7 @@
                 this.row_key = key;
             },
             delete_element: function() {
-                axios.get(url_app + 'notes/delete/' + this.row_id)
+                axios.get(URL_APP + 'notes/delete/' + this.row_id)
                 .then(response => {
                     console.log(response.data);
                     if ( response.data.status == 1 )

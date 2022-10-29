@@ -65,7 +65,7 @@
         },
         methods: {
             get_list: function(){
-                axios.get(url_app + 'users/get_social_links/' + this.user_id)
+                axios.get(URL_APP + 'users/get_social_links/' + this.user_id)
                 .then(response => {
                     this.list = response.data.list;
                 })
@@ -74,7 +74,7 @@
                 });  
             },
             send_form: function(){
-                axios.post(url_app + 'users/save_social_link/' + this.user_id, $('#social_form').serialize())
+                axios.post(URL_APP + 'users/save_social_link/' + this.user_id, $('#social_form').serialize())
                 .then(response => {
                     if ( response.data.saved_id > 0 ) {
                         toastr["success"]('Guardado');
@@ -98,7 +98,7 @@
                 this.form_values.url = '';
             },
             delete_element: function(){
-                axios.get(url_app + 'users/delete_meta/' + this.user_id + '/' + this.form_values.id)
+                axios.get(URL_APP + 'users/delete_meta/' + this.user_id + '/' + this.form_values.id)
                 .then(response => {
                     this.get_list();
                     this.clean_form();

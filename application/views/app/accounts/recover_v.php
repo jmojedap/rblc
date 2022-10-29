@@ -60,12 +60,12 @@ var recover_app = new Vue({
     },
     methods: {
         send_form: function(){
-            axios.post(url_api + 'accounts/reset_password/' + this.activation_key, $('#recover_form').serialize())
+            axios.post(URL_API + 'accounts/reset_password/' + this.activation_key, $('#recover_form').serialize())
             .then(response => {
                 this.errors = response.data.errors;
                 if ( response.data.status == 1 ) {
                     toastr['success']('Your password was successfully updated');
-                    setTimeout(function(){ window.location = url_app + 'accounts/logged'; }, 3000);
+                    setTimeout(function(){ window.location = URL_APP + 'accounts/logged'; }, 3000);
                 }
             })
             .catch(function (error) { console.log(error) })

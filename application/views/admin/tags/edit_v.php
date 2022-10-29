@@ -32,7 +32,7 @@
         },
         methods: {
             send_form: function(){
-                axios.post(url_app + 'tags/update/' + this.row_id, $('#tag_form').serialize())
+                axios.post(URL_APP + 'tags/update/' + this.row_id, $('#tag_form').serialize())
                 .then(response => {
                     if (response.data.status == 1) {
                         toastr['success']('Saved');

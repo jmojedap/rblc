@@ -35,7 +35,7 @@
         },
         methods: {
             get_list: function(){
-                axios.get(url_api + 'professionals/get_images/' + this.user_id)
+                axios.get(URL_API + 'professionals/get_images/' + this.user_id)
                 .then(response => {
                     this.images = response.data.images;
                     if ( this.images.lenght > 0 )
@@ -55,7 +55,7 @@
                 form_data.append('album_id', 10);   //Imágenes generales de usuario
                 form_data.append('cat_1', this.form_values.cat_1)
 
-                axios.post(url_api + 'files/upload/' + this.user_id, form_data, {headers: {'Content-Type': 'multipart/form-data'}})
+                axios.post(URL_API + 'files/upload/' + this.user_id, form_data, {headers: {'Content-Type': 'multipart/form-data'}})
                 .then(response => {
                     //Cargar imágenes
                     if ( response.data.status == 1 ) { this.get_list(); }
@@ -75,7 +75,7 @@
                 this.current = this.images[key];
             },
             delete_element: function(){
-                axios.get(url_api + 'files/delete/' + this.current.id)
+                axios.get(URL_API + 'files/delete/' + this.current.id)
                 .then(response => {
                     $('#detail_modal').modal('hide');
                     toastr['info']('Image deleted');

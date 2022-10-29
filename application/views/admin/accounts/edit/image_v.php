@@ -41,14 +41,14 @@
                 let form_data = new FormData();
                 form_data.append('file_field', this.file);
 
-                axios.post(url_api + 'accounts/set_image/', form_data, {headers: {'Content-Type': 'multipart/form-data'}})
+                axios.post(URL_API + 'accounts/set_image/', form_data, {headers: {'Content-Type': 'multipart/form-data'}})
                 .then(response => {
                     //Cargar imagen
                     if ( response.data.status == 1 )
                     { 
                         this.user.image_id = response.data.image_id;
                         this.user.url_image = response.data.url_image;
-                        window.location = url_app + 'accounts/edit/crop';
+                        window.location = URL_APP + 'accounts/edit/crop';
                     }
                     //Mostrar respuesta html, si existe
                     if ( response.data.html ) { $('#upload_response').html(response.data.html); }
@@ -63,7 +63,7 @@
                 this.file = this.$refs.file_field.files[0];
             },
             remove_image: function(){
-                axios.get(url_api + 'accounts/remove_image/')
+                axios.get(URL_API + 'accounts/remove_image/')
                 .then(response => {
                     if ( response.data.status == 1 ) {
                         this.user.image_id = 0;

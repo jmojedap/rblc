@@ -90,7 +90,7 @@
     function change_password(){
         $.ajax({        
             type: 'POST',
-            url: url_api + 'accounts/change_password',
+            url: URL_API + 'accounts/change_password',
             data: $('#password_form').serialize(),
             success: function(response){
                 if ( response.status == 1 ) {

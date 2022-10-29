@@ -137,7 +137,7 @@ var home_app = new Vue({
     },
     methods: {
         get_list: function(){
-            axios.get(url_api + 'pictures/get_random/')
+            axios.get(URL_API + 'pictures/get_home_pictures/')
             .then(response => {
                 this.list = response.data.list;
             })
@@ -145,7 +145,7 @@ var home_app = new Vue({
         },
         //Obtener detalles de Picture
         get_details: function(key){
-            axios.get(url_api + 'pictures/get_details/' + this.list[key].id)
+            axios.get(URL_API + 'pictures/get_details/' + this.list[key].id)
             .then(response => {
                 //Cargar datos en VueApp: #picture_app
                 picture_app.picture.id = response.data.id

@@ -54,12 +54,12 @@
         formData.append("last_name", fbUserData.last_name);
         formData.append("account_id", fbUserData.last_name);
 
-        axios.post(url_api + 'accounts/validate_facebook_login/', formData)
+        axios.post(URL_API + 'accounts/validate_facebook_login/', formData)
         .then(response => {
           console.log(response.data);
           if ( response.data.status == 1 )
           {
-            window.location = url_app + 'accounts/logged';
+            window.location = URL_APP + 'accounts/logged';
           }
         })
         .catch(function (error) {

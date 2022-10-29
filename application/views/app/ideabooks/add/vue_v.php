@@ -14,7 +14,7 @@
         },
         methods: {
             send_form: function() {
-                axios.post(url_api + 'ideabooks/insert/', $('#add_form').serialize())
+                axios.post(URL_API + 'ideabooks/insert/', $('#add_form').serialize())
                 .then(response => {
                     console.log('status: ' + response.data);
                     if ( response.data.status == 1 )
@@ -34,7 +34,7 @@
                 }
             },
             go_created: function() {
-                window.location = url_app + 'ideabooks/info/' + this.row_id;
+                window.location = URL_APP + 'ideabooks/info/' + this.row_id;
             },
             //Seleccionar clase fondo y código fondo
             select_background: function(bg_number){

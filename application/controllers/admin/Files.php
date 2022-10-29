@@ -41,7 +41,7 @@ class Files extends CI_Controller{
             $data['options_cat_1'] = $this->Item_model->options('category_id = 718', 'Todos');
             
         //Arrays con valores para contenido en lista
-            //$data['arr_types'] = $this->Item_model->arr_cod('category_id = 33');
+            //$data['arrGroup1'] = $this->Item_model->arr_options('category_id = 33');
             
         //Cargar vista
             $this->App_model->view(TPL_ADMIN, $data);
@@ -411,7 +411,7 @@ class Files extends CI_Controller{
 
     /**
      * Actualiza datos descriptivos de la tabla file, y metadatos (tags) para files_meta
-     * 2022-03-19 (title)
+     * 2022-10-29 (group_1)
      */
     function update_full($file_id)
     {
@@ -420,6 +420,7 @@ class Files extends CI_Controller{
             $arr_row['file_name'] = $this->input->post('file_name');
             $arr_row['description'] = $this->input->post('description');
             $arr_row['cat_1'] = $this->input->post('cat_1');
+            $arr_row['group_1'] = $this->input->post('group_1'); //Agregado 2022-10-29
             $arr_row['keywords'] = $this->input->post('keywords');
             $arr_row['updater_id'] = $this->session->userdata('user_id');
             $arr_row['checked_at'] = date('Y-m-d H:i:s');   //Agregado para revisión 2021-08-04

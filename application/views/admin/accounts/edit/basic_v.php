@@ -188,7 +188,7 @@
         },
         methods: {
             validate_form: function() {
-                axios.post(url_api + 'accounts/validate/', $('#edit_form').serialize())
+                axios.post(URL_API + 'accounts/validate/', $('#edit_form').serialize())
                 .then(response => {
                     this.validation = response.data.validation;
                 })
@@ -197,7 +197,7 @@
                 });
             },
             validate_send: function () {
-                axios.post(url_api + 'accounts/validate/' + this.row_id, $('#edit_form').serialize())
+                axios.post(URL_API + 'accounts/validate/' + this.row_id, $('#edit_form').serialize())
                 .then(response => {
                     if (response.data.status == 1) {
                         this.send_form();
@@ -210,7 +210,7 @@
                 });
             },
             send_form: function() {
-                axios.post(url_api + 'accounts/update/', $('#edit_form').serialize())
+                axios.post(URL_API + 'accounts/update/', $('#edit_form').serialize())
                     .then(response => {
                         console.log('status: ' + response.data.message);
                         if (response.data.status == 1)
@@ -227,7 +227,7 @@
                 params.append('first_name', this.form_values.first_name);
                 params.append('last_name', this.form_values.last_name);
                 
-                axios.post(url_app + 'users/username/', params)
+                axios.post(URL_APP + 'users/username/', params)
                 .then(response => {
                     this.form_values.username = response.data;
                 })

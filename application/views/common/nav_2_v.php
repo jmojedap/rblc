@@ -70,14 +70,15 @@
                 }
                 this.nav_2[key].class = 'active';   //Elemento actual
                 if ( this.nav_2[key].anchor ) {
-                    window.location = url_app + this.nav_2[key].cf;
+                    window.location = URL_APP + this.nav_2[key].cf;
                 } else {
                     this.load_view_a(key);
                 }
             },
             load_view_a: function(key){
                 app_cf = this.nav_2[key].cf;
-                load_sections('nav_2'); //Función global
+                //console.log(app_cf);
+                getSections('nav_2'); //Función global
             },
             set_current: function(){
                 for ( i in this.nav_2 ){

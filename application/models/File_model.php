@@ -82,6 +82,9 @@ class File_model extends CI_Model{
         if ( $filters['fe2'] != '' ) { $condition .= "id = '{$filters['fe2']}' AND "; }
         //Por Categoria
         if ( $filters['cat_1'] != '' ) { $condition .= "cat_1 = '{$filters['cat_1']}' AND "; }
+        //Por grupo
+        if ( $filters['fe3'] == '2' ) { $condition .= "group_1 = 0 AND "; }
+        if ( $filters['fe3'] == '1' ) { $condition .= "group_1 > 0 AND "; }
         
         if ( strlen($condition) > 0 )
         {

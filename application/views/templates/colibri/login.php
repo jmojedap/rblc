@@ -78,11 +78,11 @@
         },
         methods: {
             validate_login: function(){                
-                axios.post(url_api + 'accounts/validate_login', $('#login_form').serialize())
+                axios.post(URL_API + 'accounts/validate_login', $('#login_form').serialize())
                    .then(response => {
                         if ( response.data.status == 1 )
                         {
-                           window.location = url_app + 'accounts/logged';
+                           window.location = URL_APP + 'accounts/logged';
                         } else {
                             this.messages = response.data.messages;
                             this.status = response.data.status;

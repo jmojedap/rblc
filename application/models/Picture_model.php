@@ -269,4 +269,26 @@ class Picture_model extends CI_Model{
 
         return $data;
     }
+
+    /**
+     * Listado de imágenes para mostrar en cuadrícula del home. Se seleccionan
+     * según el listado en la tabla sis_options.value, para id=203
+     * 2022-10-29
+     */
+    function get_home_pictures($qty_rows)
+    {
+        
+        //Consulta
+        $this->db->select('files.id, title, files.url, files.url_thumbnail, users.display_name AS user_display_name, users.id AS user_id, users.url_thumbnail AS user_url_thumbnail');
+        $this->db->join('users_meta', 'users_meta.related_1 = files.id', 'left');  
+        $this->db->join('users', 'users.id = users_meta.user_id', 'left');
+        $this->db->where("files.group_1 > 0");
+        $this->db->order_by("files.group_1",'ASC');
+        $query = $this->db->get('files', $qty_rows);
+
+        $data['qty_rows'] = $qty_rows;
+        $data['list'] = $query->result();
+
+        return $data;
+    }
 }

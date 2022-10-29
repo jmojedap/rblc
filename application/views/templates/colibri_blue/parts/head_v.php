@@ -39,21 +39,21 @@
         <link rel="stylesheet" href="<?= URL_RESOURCES . 'css/pacarina.css' ?>">
         <script src="<?= URL_RESOURCES . 'js/pcrn.js' ?>"></script>
         <script>
-            const url_app = '<?= URL_APP ?>'; const url_admin = '<?= URL_ADMIN ?>'; const url_api = '<?= URL_API ?>'; const url_front = '<?= URL_FRONT ?>';
-            const url_base = '<?= base_url() ?>';
+            const URL_APP = '<?= URL_APP ?>'; const URL_ADMIN = '<?= URL_ADMIN ?>'; const URL_API = '<?= URL_API ?>'; const URL_FRONT = '<?= URL_FRONT ?>';
+            const URL_BASE = '<?= base_url() ?>';
             var app_cf = '<?= $this->uri->segment(2) . '/' . $this->uri->segment(3); ?>';
         </script>
 
         <!-- Usuario con sesión iniciada -->
         <?php if ( $this->session->userdata('logged') ) : ?>
             <script>
-                const app_rid = <?= $this->session->userdata('role') ?>;
-                const app_uid = <?= $this->session->userdata('user_id') ?>;
+                const APP_RID = <?= $this->session->userdata('role') ?>;
+                const APP_UID = <?= $this->session->userdata('user_id') ?>;
             </script>
         <?php else: ?>
             <script>
-                const app_rid = null;
-                const app_uid = 0;
+                const APP_RID = null;
+                const APP_UID = 0;
             </script>
         <?php endif; ?>
 
@@ -63,3 +63,4 @@
         <link rel="stylesheet" href="<?= URL_RESOURCES . 'templates/colibri_blue/main.css' ?>">
         <link rel="stylesheet" href="<?= URL_RESOURCES . 'templates/colibri_blue/mobile.css' ?>">
         <link rel="stylesheet" href="<?= URL_RESOURCES . 'templates/colibri_blue/ideabook_colors.css' ?>">
+        <script src="<?= URL_RESOURCES ?>templates/colibri_blue/routing.js"></script>

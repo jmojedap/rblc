@@ -125,7 +125,7 @@
         },
         methods: {
             send_form: function(){
-                axios.post(url_api + 'projects/update_full/' + this.row.id, $('#project_form').serialize())
+                axios.post(URL_API + 'projects/update_full/' + this.row.id, $('#project_form').serialize())
                 .then(response => {
                     if (response.data.status == 1) {
                         toastr['success']('Saved')

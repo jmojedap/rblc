@@ -52,7 +52,7 @@
         },
         methods: {
             send_form: function(){
-                axios.post(url_app + 'ideabooks/update/' + this.row_id, $('#ideabook_form').serialize())
+                axios.post(URL_APP + 'ideabooks/update/' + this.row_id, $('#ideabook_form').serialize())
                 .then(response => {
                     if (response.data.status == 1) {
                         toastr['success']('Saved');

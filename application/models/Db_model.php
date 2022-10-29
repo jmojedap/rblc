@@ -1,9 +1,9 @@
 <?php
 class Db_model extends CI_Model{
     
-    /* Db, is abbreviation for Database
-     * Functions that complement database operations with CodeIgniter
-     * Actualizada 2021-07-26
+    /* Db, abreviatura de Data Base
+     * Funciones complementarias para operación con base de datos
+     * Actualizada 2022-07-12
      */
       
     /**
@@ -186,7 +186,7 @@ class Db_model extends CI_Model{
         
         if ( $row_id == 0 ) 
         {
-            //No exists, insert
+            //No existe, insertar
             $this->db->insert($table, $row);
             $row_id = $this->db->insert_id();
         }

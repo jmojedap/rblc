@@ -12,7 +12,7 @@ var project_images = new Vue({
     },
     methods: {
         get_list: function(){
-            axios.get(url_api + 'projects/get_images/' + this.project_id)
+            axios.get(URL_API + 'projects/get_images/' + this.project_id)
             .then(response => {
                 this.images = response.data.images;
             })
@@ -24,7 +24,7 @@ var project_images = new Vue({
             form_data.append('table_id', '2000')
             form_data.append('related_1', this.project_id)
 
-            axios.post(url_api + 'files/upload/', form_data, {headers: {'Content-Type': 'multipart/form-data'}})
+            axios.post(URL_API + 'files/upload/', form_data, {headers: {'Content-Type': 'multipart/form-data'}})
             .then(response => {
                 //Cargar imágenes
                 if ( response.data.status == 1 ) { this.get_list(); }
@@ -43,7 +43,7 @@ var project_images = new Vue({
         },
         delete_element: function(){
             var file_id = this.curr_image.id
-            axios.get(url_api + 'files/delete/' + file_id)
+            axios.get(URL_API + 'files/delete/' + file_id)
             .then(response => {
                 if (response.data.qty_deleted > 0) {
                     this.get_list()
@@ -58,14 +58,14 @@ var project_images = new Vue({
             this.set_current(key)
             var file_id = this.curr_image.id
             console.log(this.curr_image)
-            axios.get(url_api + 'posts/set_main_image/' + this.project_id + '/' + file_id)
+            axios.get(URL_API + 'posts/set_main_image/' + this.project_id + '/' + file_id)
             .then(response => {
                 if ( response.data.status == 1 ) this.get_list()
             })
             .catch(function (error) { console.log(error) })
         },
         update_position: function(file_id, new_position){
-            axios.get(url_api + 'files/update_position/' + file_id + '/' + new_position)
+            axios.get(URL_API + 'files/update_position/' + file_id + '/' + new_position)
             .then(response => {
                 if ( response.data.status == 1 ) {
                     this.get_list()

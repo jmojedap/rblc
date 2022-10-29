@@ -24,16 +24,16 @@
             element: [],
             element_key: 0,
             filters: [],
-            app_uid: app_uid
+            APP_UID: APP_UID
         },
         methods: {
             get_list: function(){
-                axios.post(url_api + this.controller + '/get/' + this.num_page + '/?u=' + this.app_uid, $('#search_form').serialize())
+                axios.post(URL_API + this.controller + '/get/' + this.num_page + '/?u=' + this.APP_UID, $('#search_form').serialize())
                 .then(response => {
                     this.list = response.data.list;
                     this.max_page = response.data.max_page;
                     this.search_num_rows = response.data.search_num_rows;
-                    history.pushState(null, null, url_app + this.cf + this.num_page +'/?' + response.data.str_filters);
+                    history.pushState(null, null, URL_APP + this.cf + this.num_page +'/?' + response.data.str_filters);
                     this.all_selected = false;
                     this.selected = [];
                 })
@@ -56,7 +56,7 @@
                 this.get_list();  
             },
             delete_element: function(){
-                axios.get(url_api + 'posts/delete/' + this.element.id)
+                axios.get(URL_API + 'posts/delete/' + this.element.id)
                 .then(response => {
                     console.log(response.data);
                     if ( response.data.qty_deleted >= 0 )

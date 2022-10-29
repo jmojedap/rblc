@@ -8,7 +8,7 @@
     <head>
         <?php $this->load->view('templates/admin_pml/main/head') ?>
     </head>
-    <body class="skin-blue">
+    <body class="skin-colibri">
         <div class="wrapper">
             <?php $this->load->view('templates/admin_pml/main/header'); ?>
             <?php $this->load->view('templates/admin_pml/main/sidebar'); ?>
@@ -25,6 +25,12 @@
                         <?php if ( ! is_null($nav_3) ) { ?>
                             <?php $this->load->view($nav_3); ?>
                         <?php } ?>
+                    </div>
+                    
+                    <div class="text-center my-3" id="loading_indicator" style="display: none;">
+                        <div class="spinner-border text-secondary" role="status">
+                            <span class="sr-only">Cargando...</span>
+                        </div>
                     </div>
                     <div id="view_a">
                         <?php $this->load->view($view_a); ?>

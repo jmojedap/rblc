@@ -24,14 +24,13 @@
         },
         data: {
             status: -1,
-            url_api: '<?= URL_API ?>',
             user_id: -1,
             display_name: '',
             activation_key: '<?= $activation_key ?>'
         },
         methods: {
             activate: function(){
-                axios.get(this.url_api + 'accounts/activate/' + this.activation_key)
+                axios.get(URL_API + 'accounts/activate/' + this.activation_key)
                 .then(response => {
                     this.status = response.data.status;
                     if ( response.data.status == 1 ) {

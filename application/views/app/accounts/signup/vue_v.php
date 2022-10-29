@@ -28,11 +28,11 @@ var signup_app = new Vue({
             if ( this.validated ) {
                 this.loading = true
                 var form_data = new FormData(document.getElementById('signup_form'))
-                axios.post(url_api + 'accounts/register/' + this.role_type, form_data)
+                axios.post(URL_API + 'accounts/register/' + this.role_type, form_data)
                 .then(response => {
                     console.log(response.data.message);
                     if ( response.data.status == 1 ) {
-                        window.location = url_app + 'accounts/registered/' + response.data.saved_id;
+                        window.location = URL_APP + 'accounts/registered/' + response.data.saved_id;
                     } else {
                         this.recaptcha_message = response.data.recaptcha_message;
                     }
@@ -46,7 +46,7 @@ var signup_app = new Vue({
         check_email: function(){                
             this.loading = true
             var form_data = new FormData(document.getElementById('email_form'))
-            axios.post(url_api + 'accounts/check_email/', form_data)
+            axios.post(URL_API + 'accounts/check_email/', form_data)
             .then(response => {
                 if ( response.data.status == 1 )
                 {

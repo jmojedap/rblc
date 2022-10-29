@@ -61,7 +61,7 @@ var editServices = new Vue({
         send_form: function(){
             this.loading = true
             var formValues = new FormData(document.getElementById('servicesForm'))
-            axios.post(url_api + 'professionals/update_services/' + this.row_id, formValues)
+            axios.post(URL_API + 'professionals/update_services/' + this.row_id, formValues)
             .then(response => {
                 if (response.data.status == 1) {
                     toastr['success']('Saved');

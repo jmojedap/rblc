@@ -47,7 +47,7 @@ public $url_controller = URL_ADMIN . 'users/';
             
         //Arrays con valores para contenido en lista
             $data['arr_roles'] = $this->Item_model->arr_cod('category_id = 58');
-            $data['arr_id_number_types'] = $this->Item_model->arr_item('category_id = 53', 'cod_abr');
+            $data['arr_id_number_types'] = $this->Item_model->arr_options('category_id = 53');
             
         //Cargar vista
             $this->App_model->view(TPL_ADMIN, $data);

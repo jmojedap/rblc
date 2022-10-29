@@ -18,7 +18,7 @@
     function set_activation_key(){
         $.ajax({        
             type: 'POST',
-            url: url_app + 'users/set_activation_key/' + user_id,
+            url: URL_APP + 'users/set_activation_key/' + user_id,
             success: function(response){
                 $('#activation_key').html(url_front + 'accounts/recover/' + response);
                 toastr['success']('Se actualizó la clave de activación');

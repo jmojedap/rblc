@@ -56,6 +56,15 @@
             </div>
             <label for="fe1" class="col-md-3 col-form-label">Revisado entre fechas</label>
         </div>
+        <div class="mb-3 row">
+            <div class="col-md-9">
+                <select name="fe3" v-model="filters.fe3 " class="form-control">
+                    <option value="">[ Todos ]</option>
+                    <option v-for="optionGroup1 in arrGroup1" v-bind:value="optionGroup1.value">{{ optionGroup1.name }}</option>
+                </select>
+            </div>
+            <label for="fe3" class="col-md-3 col-form-label">Seleccionada para Home</label>
+        </div>
 
         <!-- Botón ejecutar y limpiar filtros -->
         <div class="form-group row">

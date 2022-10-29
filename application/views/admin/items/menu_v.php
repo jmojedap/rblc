@@ -1,43 +1,27 @@
-<?php
-    $app_cf_index = $this->uri->segment(2) . '_' . $this->uri->segment(3);
-    
-    $cl_nav_2['items_manage'] = '';
-    $cl_nav_2['items_import'] = '';
-    
-    $cl_nav_2[$app_cf_index] = 'active';
-    if ( $app_cf_index == 'items_import_e' ) { $cl_nav_2['items_import'] = 'active'; }
-?>
-
 <script>
-    var sections = [];
-    var nav_2 = [];
-    var sections_role = [];
-    
-    sections.manage = {
-        icon: 'fa fa-list',
-        text: 'List',
-        class: '<?= $cl_nav_2['items_manage'] ?>',
-        cf: 'items/manage'
-    };
-
-    sections.import = {
-        icon: 'fa fa-upload',
-        text: 'Import',
-        class: '<?= $cl_nav_2['items_import'] ?>',
-        cf: 'items/import'
-    };
-    
-    //Secciones para cada rol
-    sections_role[1] = ['manage', 'import'];
-    sections_role[2] = ['manage'];
-    
-    //Recorrer el sections del rol actual y cargarlos en el menú
-    for ( key_section in sections_role[app_rid]) 
+var sectionId = '<?= $this->uri->segment(2) . '_' . $this->uri->segment(3) ?>'
+var sections = [
     {
-        //console.log(sections_role[rol][key_section]);
-        var key = sections_role[app_rid][key_section];   //Identificar elemento
-        nav_2.push(sections[key]);    //Agregar el elemento correspondiente
-    }
+        id: 'items_manage',
+        text: 'Lista',
+        cf: 'items/manage',
+        roles: [1,2]
+    },
+    {
+        id: 'items_import',
+        text: 'Importar',
+        cf: 'items/import',
+        roles: [1,2]
+    },
+]
+//Filter role sections
+var nav_2 = sections.filter(section => section.roles.includes(parseInt(APP_RID)))
+
+//Set active class
+nav_2.forEach((section,i) => {
+    nav_2[i].class = ''
+    if ( section.id == sectionId ) nav_2[i].class = 'active'
+})
 </script>
 
 <?php

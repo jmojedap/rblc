@@ -107,13 +107,11 @@ new Vue({
     },
     methods: {
         get_list: function() {
-            axios.get(url_app + 'config/get_options/')
+            axios.get(URL_APP + 'config/get_options/')
                 .then(response => {
-                    this.list = response.data.options;
+                    this.list = response.data.options
                 })
-                .catch(function(error) {
-                    console.log(error);
-                });
+                .catch(function(error) { console.log(error) })
         },
         new_option: function() {
             this.option_key = -1;
@@ -127,7 +125,7 @@ new Vue({
             this.form_values = this.list[key];
         },
         save_option: function() {
-            axios.post(url_app + 'config/save_option/' + this.option_id, $('#option_form').serialize())
+            axios.post(URL_APP + 'config/save_option/' + this.option_id, $('#option_form').serialize())
                 .then(response => {
                     toastr["success"](response.data.message);
                     this.get_list();
@@ -138,7 +136,7 @@ new Vue({
                 });
         },
         delete_element: function() {
-            axios.get(url_app + 'config/delete_option/' + this.option_id)
+            axios.get(URL_APP + 'config/delete_option/' + this.option_id)
                 .then(response => {
                     toastr['info'](response.data.message);
                     this.get_list();

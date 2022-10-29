@@ -65,7 +65,7 @@ var settings_app = new Vue({
     },
     methods: {
         get_settings: function(){
-            axios.get(url_api + 'accounts/get_settings/')
+            axios.get(URL_API + 'accounts/get_settings/')
             .then(response => {
                 this.settings = response.data.settings
             })
@@ -74,7 +74,7 @@ var settings_app = new Vue({
         send_form: function(){
             this.loading = true
             var form_data = new FormData(document.getElementById('settings_form'))
-            axios.post(url_api + 'accounts/save_settings/', form_data)
+            axios.post(URL_API + 'accounts/save_settings/', form_data)
             .then(response => {
                 if ( response.data.saved_id > 0 ) {
                     toastr['success']('Saved')

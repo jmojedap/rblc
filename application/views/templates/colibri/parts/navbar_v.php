@@ -177,21 +177,21 @@ var navbar_app = new Vue({
     },
     methods: {
         get_qty_unread_notifications: function(){
-            axios.get(url_api + 'app/qty_unread_notifications/')
+            axios.get(URL_API + 'app/qty_unread_notifications/')
             .then(response => {
                 this.qty_unread_notifications = response.data.qty_unread_notifications
             })
             .catch(function(error) { console.log(error) })
         },
         get_notifications: function(){
-            axios.get(url_api + 'app/get_notifications/')
+            axios.get(URL_API + 'app/get_notifications/')
             .then(response => {
                 this.notifications = response.data.notifications
             })
             .catch(function(error) { console.log(error) })
         },
         open_notification: function(notification_id){
-            axios.get(url_api + 'app/open_notification/' + notification_id)
+            axios.get(URL_API + 'app/open_notification/' + notification_id)
             .then(response => {
                 console.log(response.data)
                 if ( response.data.url_destination ) {
@@ -204,15 +204,15 @@ var navbar_app = new Vue({
         /*alert_link: function(notification){
             var alert_link = '#'
             if ( notification.alert_type == 10 ) {
-                alert_link = url_app + 'professionals/profile/' + notification.element_id;
+                alert_link = URL_APP + 'professionals/profile/' + notification.element_id;
             } else if ( notification.alert_type == 20 ) {
-                alert_link = url_app + 'messages/conversation/';
+                alert_link = URL_APP + 'messages/conversation/';
             } else if ( notification.alert_type == 30 ) {
                 //events.related_2 => ID elemento comentado
-                alert_link = url_app + 'pictures/details/' + notification.related_2;
+                alert_link = URL_APP + 'pictures/details/' + notification.related_2;
                 //Verificar tabla_id (events.related_1), tabla posts (2000)
                 if ( notification.related_1 == 2000 ) {
-                    alert_link = url_app + 'projects/info/' + notification.related_2;
+                    alert_link = URL_APP + 'projects/info/' + notification.related_2;
                 }
             }
             return alert_link;

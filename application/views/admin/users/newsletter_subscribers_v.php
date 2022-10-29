@@ -45,10 +45,10 @@
                 this.curr_subscriber = this.subscribers[subscriber_key];
             },
             delete_element: function(){
-                axios.get(url_app + 'posts/delete/' + this.curr_subscriber.id)
+                axios.get(URL_APP + 'posts/delete/' + this.curr_subscriber.id)
                 .then(response => {
                     if ( response.data.status == 1 ) {
-                        window.location = url_app + 'users/newsletter_subscribers';
+                        window.location = URL_APP + 'users/newsletter_subscribers';
                     }
                 })
                 .catch(function (error) {

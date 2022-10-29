@@ -23,7 +23,7 @@
         },
         methods: {
             get_comments: function(){
-                axios.get(url_app + 'comments/element_comments/2000/' + this.post_id)
+                axios.get(URL_APP + 'comments/element_comments/2000/' + this.post_id)
                 .then(response => {
                     this.comments = response.data.comments;
                 })
@@ -32,7 +32,7 @@
                 });
             },
             send_form: function(){
-                axios.post(url_app + 'comments/save/2000/' + this.post_id, $('#comment_form').serialize())
+                axios.post(URL_APP + 'comments/save/2000/' + this.post_id, $('#comment_form').serialize())
                 .then(response => {
                     if ( response.data.saved_id > 0 )
                     {
@@ -55,7 +55,7 @@
                 this.current = this.comments[key];
             },
             delete_comment: function(){
-                axios.get(url_app + 'comments/delete/' + this.current.id + '/' + this.post_id)
+                axios.get(URL_APP + 'comments/delete/' + this.current.id + '/' + this.post_id)
                 .then(response => {
                     if ( response.data.qty_deleted > 0 ) {
                         this.get_comments();
@@ -82,7 +82,7 @@
             get_answers: function(key){
                 this.set_current(key);
                 var parent_id = this.current.id;
-                axios.get(url_app + 'comments/element_comments/2000/' + this.post_id + '/' + parent_id )
+                axios.get(URL_APP + 'comments/element_comments/2000/' + this.post_id + '/' + parent_id )
                 .then(response => {
                     this.comments[key].answers = response.data.comments;
                     this.answers = response.data.comments;
@@ -97,7 +97,7 @@
             },
             delete_answer: function(){
                 var answer_id = this.current.answers[this.current_answer_key].id;
-                axios.get(url_app + 'comments/delete/' + answer_id + '/' + this.post_id)
+                axios.get(URL_APP + 'comments/delete/' + answer_id + '/' + this.post_id)
                 .then(response => {
                     if ( response.data.qty_deleted > 0 ) {
                         this.get_answers(this.current_key);

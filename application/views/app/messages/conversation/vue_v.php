@@ -33,7 +33,7 @@
         },
         methods: {
             update_qty_unread: function(){
-                axios.get(url_api + 'messages/qty_unread/')
+                axios.get(URL_API + 'messages/qty_unread/')
                 .then(response => {
                     this.qty_unread = response.data
                     if ( this.qty_unread > 0 ) this.get_conversations()
@@ -42,7 +42,7 @@
             },
             //Cargar listado de conversaciones en las que participa el usuario
             get_conversations: function(){
-                axios.post(url_api + 'messages/conversations/', $('#conversations_form').serialize())
+                axios.post(URL_API + 'messages/conversations/', $('#conversations_form').serialize())
                 .then(response => {
                     this.conversations = response.data.conversations
                     this.get_messages(this.con_key)
@@ -74,7 +74,7 @@
                 var key = this.con_key
                 var new_id = Math.floor((Math.random() * 10000000) + 1)
                 this.display_message(key, new_id)
-                axios.post(url_api + 'messages/send_message/' + this.conversation_id, $('#message_form').serialize())
+                axios.post(URL_API + 'messages/send_message/' + this.conversation_id, $('#message_form').serialize())
                 .then(response => {
                     this.conversations[key].last_id = response.data.message_id
                     console.log(response.data.message_id)
@@ -95,7 +95,7 @@
             //Requerir y cargar mensajes de la conversación key
             get_messages: function(key){
                 var last_id = this.conversations[key].last_id
-                axios.get(url_api + 'messages/get/' + this.conversation_id + '/' + last_id)
+                axios.get(URL_API + 'messages/get/' + this.conversation_id + '/' + last_id)
                 .then(response => {
                     //Cargar mensajes en la conversación
                     response.data.messages.forEach(element => {
@@ -139,7 +139,7 @@
             //Eliminar un mensaje
             delete_element: function(){
                 var key = this.con_key
-                axios.get(url_api + 'messages/delete/' + this.current_message.id)
+                axios.get(URL_API + 'messages/delete/' + this.current_message.id)
                 .then(response => {
                     console.log(response.data.status)
                     if ( response.data.status )

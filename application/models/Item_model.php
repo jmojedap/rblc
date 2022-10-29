@@ -3,12 +3,208 @@
 class Item_model extends CI_Model{
 
 /**
- * Versión 2022-06-23
+ * Versión 2022-08-17
  */
     
     function __construct(){
         parent::__construct();
         
+    }
+
+// EXPLORE FUNCTIONS - items/explore
+//-----------------------------------------------------------------------------
+    
+    /**
+     * Array con los datos para la vista de exploración
+     */
+    function explore_data($filters, $num_page, $per_page = 10)
+    {
+        //Data inicial, de la tabla
+            $data = $this->get($filters, $num_page, $per_page);
+        
+        //Elemento de exploración
+            $data['controller'] = 'items';                      //Nombre del controlador
+            $data['cf'] = 'items/explore/';                     //Nombre del controlador
+            $data['views_folder'] = 'admin/items/explore/';           //Carpeta donde están las vistas de exploración
+            $data['num_page'] = $num_page;                      //Número de la página
+            
+        //Vistas
+            $data['head_title'] = 'Usuarios';
+            $data['view_a'] = $data['views_folder'] . 'explore_v';
+            $data['nav_2'] = $data['views_folder'] . 'menu_v';
+        
+        return $data;
+    }
+
+    /**
+     * Array con listado de items, filtrados por búsqueda y num página, más datos adicionales sobre
+     * la búsqueda, filtros aplicados, total resultados, página máxima.
+     * 2020-08-01
+     */
+    function get($filters, $num_page, $per_page)
+    {
+        //Referencia
+            $offset = ($num_page - 1) * $per_page;      //Número de la página de datos que se está consultado
+
+        //Búsqueda y Resultados
+            $elements = $this->search($filters, $per_page, $offset);    //Resultados para página
+        
+        //Cargar datos
+            $data['filters'] = $filters;
+            $data['list'] = $this->search($filters, $per_page, $offset)->result();    //Resultados para página
+            $data['str_filters'] = $this->Search_model->str_filters();      //String con filtros en formato GET de URL
+            $data['search_num_rows'] = $this->search_num_rows($data['filters']);
+            $data['max_page'] = ceil($this->pml->if_zero($data['search_num_rows'],1) / $per_page);   //Cantidad de páginas
+
+        return $data;
+    }
+
+    /**
+     * Segmento Select SQL, con diferentes formatos, consulta de items
+     * 2021-08-14
+     */
+    function select($format = 'general')
+    {
+        $arr_select['general'] = 'items.*';
+        $arr_select['export'] = 'items.*';
+
+        return $arr_select[$format];
+    }
+    
+    /**
+     * Query de items, filtrados según búsqueda, limitados por página
+     * 2020-08-01
+     */
+    function search($filters, $per_page = NULL, $offset = NULL)
+    {
+        //Construir consulta
+            $this->db->select($this->select());
+            
+        //Orden
+            if ( $filters['o'] != '' )
+            {
+                $order_type = $this->pml->if_strlen($filters['ot'], 'ASC');
+                $this->db->order_by($filters['o'], $order_type);
+            } else {
+                $this->db->order_by('cod', 'ASC');
+            }
+            
+        //Filtros
+            $search_condition = $this->search_condition($filters);
+            if ( $search_condition ) { $this->db->where($search_condition);}
+            
+        //Obtener resultados
+            $query = $this->db->get('items', $per_page, $offset); //Resultados por página
+        
+        return $query;
+    }
+
+    /**
+     * String con condición WHERE SQL para filtrar items
+     * 2022-08-05
+     */
+    function search_condition($filters)
+    {
+        $condition = NULL;
+
+        $condition .= $this->role_filter() . ' AND ';
+
+        //q words condition
+        $q_search_fields = ['item_name', 'description',];
+        $words_condition = $this->Search_model->words_condition($filters['q'], $q_search_fields);
+        if ( $words_condition )
+        {
+            $condition .= $words_condition . ' AND ';
+        }
+        
+        //Otros filtros
+        if ( $filters['cat_1'] != '' ) { $condition .= "category_id = {$filters['cat_1']} AND "; }
+        if ( $filters['fe1'] != '' ) { $condition .= "item_group = {$filters['fe1']} AND "; }
+        if ( $filters['fe2'] != '' ) { $condition .= "filters LIKE '%-{$filters['fe2']}-%' AND "; }
+        
+        //Quitar cadena final de ' AND '
+        if ( strlen($condition) > 0 ) { $condition = substr($condition, 0, -5);}
+        
+        return $condition;
+    }
+
+    /**
+     * Array Listado elemento resultado de la búsqueda (filtros).
+     * 2020-06-19
+     */
+    function list($filters, $per_page = NULL, $offset = NULL)
+    {
+        $query = $this->search($filters, $per_page, $offset);
+        $list = array();
+
+        foreach ($query->result() as $row)
+        {
+            $list[] = $row;
+        }
+
+        return $list;
+    }
+    
+    /**
+     * Devuelve la cantidad de registros encontrados en la tabla con los filtros
+     * establecidos en la búsqueda
+     */
+    function search_num_rows($filters)
+    {
+        $this->db->select('id');
+        $search_condition = $this->search_condition($filters);
+        if ( $search_condition ) { $this->db->where($search_condition);}
+        $query = $this->db->get('items'); //Para calcular el total de resultados
+
+        return $query->num_rows();
+    }
+    
+    /**
+     * Devuelve segmento SQL, para filtrar listado de usuarios según el rol del usuario en sesión
+     * 2020-08-01
+     */
+    function role_filter()
+    {
+        $role = $this->session->userdata('role');
+        $condition = 'items.item_group >= 10';  //Valor por defecto, categorías públicas
+        
+        if ( $role <= 2 ) 
+        {   //Desarrollador, todos los ITEMS
+            $condition = 'items.id > 0';
+        }
+        
+        return $condition;
+    }
+    
+    /**
+     * Array con options para ordenar el listado de user en la vista de
+     * exploración
+     * 
+     */
+    function order_options()
+    {
+        $order_options = array(
+            '' => '[ Ordenar por ]',
+            'id' => 'ID Item',
+            'cod' => 'Código',
+            'item_name' => 'Nombre',
+        );
+        
+        return $order_options;
+    }
+
+    /**
+     * Query para exportar
+     * 2021-09-27
+     */
+    function query_export($filters)
+    {
+        $this->db->select($this->select('export'));
+        $search_condition = $this->search_condition($filters);
+        if ( $search_condition ) { $this->db->where($search_condition);}
+        $query = $this->db->get('items', 10000);  //Hasta 10.000 registros
+
+        return $query;
     }
     
 // CRUD ITEM
@@ -105,7 +301,7 @@ class Item_model extends CI_Model{
 
     function items($category_id)
     {
-        $this->db->order_by('ancestry', 'ASC');
+        //$this->db->order_by('ancestry', 'ASC');
         $this->db->order_by('cod', 'ASC');
         $items = $this->db->get_where('items', "category_id = {$category_id}");
         
@@ -123,30 +319,6 @@ class Item_model extends CI_Model{
         $this->db->select("{$field} as field");
         $this->db->where('cod', $cod);
         $this->db->where('category_id', $category_id);
-        $query = $this->db->get('items');
-        
-        if ( $query->num_rows() > 0 ) 
-        {
-            $name = $query->row()->field;
-        }
-        
-        return $name;
-    }
-    
-    /**
-     * Devuelve el name de un item con el formato correspondiente, a partir
-     * del items.id
-     * 
-     * @param int $item_id
-     * @param string $field
-     * @return string $name
-     */
-    function name_id($item_id, $field = 'item')
-    {
-        $name = 'ND';
-        
-        $this->db->select("{$field} as field");
-        $this->db->where('id', $item_id);
         $query = $this->db->get('items');
         
         if ( $query->num_rows() > 0 ) 
@@ -178,6 +350,28 @@ class Item_model extends CI_Model{
         $arr_item = $this->pml->query_to_array($query, 'item_name', 'cod');
         
         return $arr_item;
+    }
+
+    /**
+     * Array con items, especificando código y nombre. Filtrados por condición
+     * 2022-08-17
+     * 
+     * @param string $condition
+     * @return array $options
+     */
+    function arr_options($condition)
+    {
+        $select = 'CONCAT("0", (cod)) AS str_cod, cod, item_name AS name, short_name,
+            abbreviation, slug';
+
+        $query = $this->db->select($select)
+            ->where($condition)
+            ->order_by('cod', 'ASC')
+            ->get('items');
+        
+        $options = $query->result_array();
+        
+        return $options;
     }
     
     /**
@@ -212,134 +406,6 @@ class Item_model extends CI_Model{
         }
         
         return $options;
-    }
-    
-    /**
-     * Array con options de item, para elementos select de formularios.
-     * La variable $condition es una condición WHERE de SQL para filtrar los items.
-     * En el array el índice corresponde al id y el value del array al
-     * field items. La variable $empty_value se pone al principio del array
-     * cuando el field select está vacío, sin ninguna opción seleccionada.
-     * 
-     * @param string $condition
-     * @param string $empty_value
-     * @return array $options
-     */
-    function options_id($condition, $empty_value = NULL)
-    {
-        $select = 'CONCAT("0", (id)) AS field_index_str, item_name AS field_value';
-        
-        $this->db->select($select);
-        $this->db->where($condition);
-        $this->db->order_by('position', 'ASC');
-        $this->db->order_by('cod', 'ASC');
-        $query = $this->db->get('items');
-        
-        $options_pre = $this->pml->query_to_array($query, 'field_value', 'field_index_str');
-        
-        if ( ! is_null($empty_value) ) {
-            $options = array_merge(array('' => '[ ' . $empty_value . ' ]'), $options_pre);
-        } else {
-            $options = $options_pre;
-        }
-        
-        return $options;
-    }
-    
-    /**
-     * Devuelve array con valuees predeterminados para utilizar en la función
-     * Item_model->arr_item
-     * 2022-06-03
-     */
-    function arr_config_item($format = 'cod')
-    {
-        $arr_config['order_type'] = 'ASC';
-        $arr_config['field_value'] = 'item_name';
-        
-        switch ($format) 
-        {
-            case 'id':
-                //id, ordenado alfabéticamente
-                $arr_config['field_index'] = 'id';
-                $arr_config['order_by'] = 'item_name';
-                $arr_config['str'] = TRUE;
-                break;
-            case 'cod':
-                //cod, ordenado por cod
-                $arr_config['field_index'] = 'cod';
-                $arr_config['order_by'] = 'cod';
-                $arr_config['str'] = TRUE;
-                break;
-            case 'cod_num':
-                //cod, ordenado por cod, numérico
-                $arr_config['field_index'] = 'cod';
-                $arr_config['order_by'] = 'cod';
-                $arr_config['str'] = FALSE;
-                break;
-            case 'cod_abr':
-                //cod, abreviatura, string
-                $arr_config['field_index'] = 'cod';
-                $arr_config['field_value'] = 'abbreviation';
-                $arr_config['order_by'] = 'abbreviation';
-                $arr_config['str'] = TRUE;
-                break;
-            case 'abr_name':
-                //cod, abreviatura, string
-                $arr_config['field_index'] = 'abbreviation';
-                $arr_config['field_value'] = 'item_name';
-                $arr_config['order_by'] = 'cod';
-                $arr_config['str'] = TRUE;
-                break;
-        }
-        
-        return $arr_config;
-    }
-    
-    /**
-     * Devuelve un array con índice y value para una categoría específica de items
-     * Dadas unas características definidas en el array $config
-     * 
-     * @param type $format
-     * @return type
-     */
-    function arr_item($condition, $format = 'cod')
-    {
-        
-        $config = $this->arr_config_item($format);
-        
-        $select = $config['field_index'] . ' AS field_index, CONCAT("0", (' . $config['field_index'] . ')) AS field_index_str, ' . $config['field_value'] .' AS field_value';
-        
-        $indice = 'field_index_str';
-        if ( ! $config['str'] ) { $indice = 'field_index'; }
-        
-        $this->db->select($select);
-        $this->db->where($condition);
-        $this->db->order_by($config['order_by'], $config['order_type']);
-        $query = $this->db->get('items');
-        
-        $arr_item = $this->pml->query_to_array($query, 'field_value', $indice);
-        
-        return $arr_item;
-    }
-    
-    function arr_field($category_id, $field)
-    {
-        $config = $this->arr_config_item($format);
-        
-        $select = $config['field_index'] . ' AS field_index, CONCAT("0", (cod)) AS field_index_str, ' . $field .' AS field_value';
-        
-        $indice = 'field_index_str';
-        if ( ! $config['str'] ) { $indice = 'field_index'; }
-        
-        $this->db->select($select);
-        if ( $category_id > 0 ) { $this->db->where('category_id', $category_id); }
-        $this->db->where($config['condition']);
-        $this->db->order_by($config['order_by'], $config['order_type']);
-        $query = $this->db->get('items');
-        
-        $arr_item = $this->pml->query_to_array($query, 'field_value', $indice);
-        
-        return $arr_item;
     }
 
 // IMPORTAR

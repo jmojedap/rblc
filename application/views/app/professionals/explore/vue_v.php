@@ -45,12 +45,12 @@ var app_explore = new Vue({
             var params = new URLSearchParams();
             params.append('q', app_q);
             params.append('cat_1', this.category.id);
-            axios.post(url_api + this.controller + '/get/' + this.num_page, params)
+            axios.post(URL_API + this.controller + '/get/' + this.num_page, params)
             .then(response => {
                 this.list = response.data.list;
                 this.max_page = response.data.max_page;
                 this.search_num_rows = response.data.search_num_rows;
-                history.pushState(null, null, url_front + this.cf + this.num_page +'/?' + response.data.str_filters);
+                history.pushState(null, null, URL_FRONT + this.cf + this.num_page +'/?' + response.data.str_filters);
                 this.loading = false
             })
             .catch(function (error) {
@@ -58,12 +58,12 @@ var app_explore = new Vue({
             });
         },
         search: function(){
-            axios.post(url_api + this.controller + '/get/' + this.num_page, $('#search_form').serialize())
+            axios.post(URL_API + this.controller + '/get/' + this.num_page, $('#search_form').serialize())
             .then(response => {
                 this.list = response.data.list;
                 this.max_page = response.data.max_page;
                 $('#head_subtitle').html(response.data.search_num_rows);
-                history.pushState(null, null, url_app + this.cf + this.num_page +'/?' + response.data.str_filters);
+                history.pushState(null, null, URL_APP + this.cf + this.num_page +'/?' + response.data.str_filters);
                 this.all_selected = false;
                 this.selected = [];
             })

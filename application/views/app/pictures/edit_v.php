@@ -90,7 +90,7 @@
         },
         methods: {
             send_form: function(){
-                axios.post(url_api + 'files/update_full/' + this.file_id, $('#picture_form').serialize())
+                axios.post(URL_API + 'files/update_full/' + this.file_id, $('#picture_form').serialize())
                 .then(response => {
                     if ( response.data.status == 1 ) {
                         toastr['success']('Saved');

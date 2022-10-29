@@ -35,6 +35,18 @@
                                 <textarea name="description" id="field-description" class="form-control" required rows="3" maxlength="280"><?= $row->description ?></textarea>
                             </div>
                         </div>
+                        <div class="mb-3 row">
+                            <label for="group_1" class="col-md-4 col-form-label text-right">Position in Home</label>
+                            <div class="col-md-8">
+                                <input
+                                    name="group_1" type="number" class="form-control"
+                                    required
+                                    title="Position in Home"
+                                    v-model="form_values.group_1"
+                                >
+                                <small class="form-text text-muted">Escriba un número mayor a 0 para que esta imagen aparezca en el HOME.</small>
+                            </div>
+                        </div>
                         <div class="form-group row">
                             <label for="keywords" class="col-md-4 col-form-label text-right">Keywords</label>
                             <div class="col-md-8">
@@ -78,21 +90,21 @@ var picture_app = new Vue({
     data: {
         file_id: <?= $row->id ?>,
         form_values: {
-            cat_1: '0<?= $row->cat_1 ?>'
+            cat_1: '0<?= $row->cat_1 ?>',
+            group_1: <?= $row->group_1 ?>
         },
         options_cat_1: <?= json_encode($options_cat_1) ?>
     },
     methods: {
         send_form: function(){
-            axios.post(url_api + 'files/update_full/' + this.file_id, $('#picture_form').serialize())
+            axios.post(URL_API + 'files/update_full/' + this.file_id, $('#picture_form').serialize())
             .then(response => {
                 if ( response.data.status == 1 ) {
                     toastr['success']('Saved');
                 }
             })
             .catch(function (error) {
-                console.log(error);
-            });  
+                console.log(error) })
         },
     }
 });

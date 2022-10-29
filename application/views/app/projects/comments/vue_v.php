@@ -22,18 +22,18 @@ var post_comments_app = new Vue({
         answers: [],
         answer_key: 0,
         form_values: { comment_text: '', parent_id: 0 },
-        app_uid: app_uid
+        APP_UID: APP_UID
     },
     methods: {
         get_comments: function(){
-            axios.get(url_api + 'comments/element_comments/' + this.table_id + '/' + this.element_id)
+            axios.get(URL_API + 'comments/element_comments/' + this.table_id + '/' + this.element_id)
             .then(response => {
                 this.comments = response.data.comments;
             })
             .catch(function (error) { console.log(error) })
         },
         send_form: function(){
-            axios.post(url_api + 'comments/save/' + this.table_id + '/' + this.element_id, $('#comment_form').serialize())
+            axios.post(URL_API + 'comments/save/' + this.table_id + '/' + this.element_id, $('#comment_form').serialize())
             .then(response => {
                 if ( response.data.saved_id > 0 )
                 {
@@ -54,7 +54,7 @@ var post_comments_app = new Vue({
             this.current = this.comments[key];
         },
         delete_comment: function(){
-            axios.get(url_api + 'comments/delete/' + this.current.id + '/' + this.element_id)
+            axios.get(URL_API + 'comments/delete/' + this.current.id + '/' + this.element_id)
             .then(response => {
                 if ( response.data.qty_deleted > 0 ) {
                     this.get_comments();
@@ -79,7 +79,7 @@ var post_comments_app = new Vue({
         get_answers: function(key){
             this.set_current(key);
             var parent_id = this.current.id;
-            axios.get(url_api + 'comments/element_comments/' + this.table_id + '/' + this.element_id + '/' + parent_id )
+            axios.get(URL_API + 'comments/element_comments/' + this.table_id + '/' + this.element_id + '/' + parent_id )
             .then(response => {
                 this.answers = response.data.comments;
                 this.comments[key].answers = response.data.comments;
@@ -93,7 +93,7 @@ var post_comments_app = new Vue({
         },
         delete_answer: function(){
             var answer_id = this.current.answers[this.current_answer_key].id;
-            axios.get(url_api + 'comments/delete/' + answer_id + '/' + this.element_id)
+            axios.get(URL_API + 'comments/delete/' + answer_id + '/' + this.element_id)
             .then(response => {
                 if ( response.data.qty_deleted > 0 ) {
                     this.get_answers(this.current_key);

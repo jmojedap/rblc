@@ -11,14 +11,14 @@
 
     <body class="start_body">
         <div class="start_container">
-            <a href="<?= base_url() ?>"><img src="<?= URL_BRAND ?>logo-start.png" alt="Logo aplicación"></a>
+            <a href="<?= URL_APP ?>"><img class="w240p mb-2" src="<?= URL_BRAND ?>logo-start.png" alt="Logo aplicación"></a>
             <?php $this->load->view($view_a); ?>
-            <a href="<?= base_url() ?>" class="btn btn-light w120p">
+            <a href="<?= base_url('start') ?>" class="btn btn-light w120p">
                 <i class="fa fa-home"></i> Inicio
             </a>
         </div>
         <footer class="fixed-bottom start_footer">
-            © 2021 &middot; Mi Internet Comunicaciones &middot; Colombia
+            © 2022 &middot; jmojedap &middot; Colombia
         </footer>    
     </body>
 </html>

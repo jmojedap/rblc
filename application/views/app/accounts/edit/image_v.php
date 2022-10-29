@@ -45,7 +45,7 @@ var user_image_app = new Vue({
             let formValues = new FormData();
             formValues.append('file_field', this.file);
 
-            axios.post(url_api + 'accounts/set_image/', formValues, {headers: {'Content-Type': 'multipart/form-data'}})
+            axios.post(URL_API + 'accounts/set_image/', formValues, {headers: {'Content-Type': 'multipart/form-data'}})
             .then(response => {
                 this.loading = false
                 //Cargar imagen
@@ -53,7 +53,7 @@ var user_image_app = new Vue({
                 { 
                     this.user.image_id = response.data.image_id;
                     this.user.url_image = response.data.url_image;
-                    window.location = url_app + 'accounts/edit/cropping';
+                    window.location = URL_APP + 'accounts/edit/cropping';
                 }
                 //Mostrar respuesta html, si existe
                 if ( response.data.html ) { $('#upload_response').html(response.data.html); }
@@ -66,7 +66,7 @@ var user_image_app = new Vue({
             this.file = this.$refs.file_field.files[0];
         },
         delete_element: function(){
-            axios.get(url_api + 'accounts/remove_image/')
+            axios.get(URL_API + 'accounts/remove_image/')
             .then(response => {
                 if ( response.data.status == 1 ) {
                     this.user.image_id = 0;

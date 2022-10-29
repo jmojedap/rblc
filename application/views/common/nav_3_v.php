@@ -53,7 +53,7 @@ var nav_3_vue = new Vue({
             
             this.nav_3[key].class = 'active'   //Elemento actual
             if ( this.nav_3[key].anchor ) {
-                window.location = url_app + this.nav_3[key].cf
+                window.location = URL_APP + this.nav_3[key].cf
             } else {
                 this.load_view_a(key)
             }
@@ -61,7 +61,7 @@ var nav_3_vue = new Vue({
         load_view_a: function(key){
             app_cf = this.nav_3[key].cf
             //console.log(app_cf);
-            load_sections('nav_3') //Función global
+            getSections('nav_3') //Función global
         },
         set_current: function(){
             for ( i in this.nav_3 ){

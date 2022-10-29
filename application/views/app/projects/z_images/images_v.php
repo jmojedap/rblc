@@ -39,7 +39,7 @@
         },
         methods: {
             get_list: function(){
-                axios.get(url_api + 'projects/get_images/' + this.project_id)
+                axios.get(URL_API + 'projects/get_images/' + this.project_id)
                 .then(response => {
                     this.images = response.data.images;
                 })
@@ -51,7 +51,7 @@
                 let form_data = new FormData();
                 form_data.append('file_field', this.file);
 
-                axios.post(url_api + 'projects/add_image/' + this.project_id, form_data, {headers: {'Content-Type': 'multipart/form-data'}})
+                axios.post(URL_API + 'projects/add_image/' + this.project_id, form_data, {headers: {'Content-Type': 'multipart/form-data'}})
                 .then(response => {
                     //Cargar imágenes
                     if ( response.data.status == 1 ) { this.get_list(); }
@@ -72,7 +72,7 @@
             },
             delete_element: function(){
                 var meta_id = this.curr_image.meta_id;
-                axios.get(url_api + 'projects/delete_image/' + this.project_id + '/' + meta_id)
+                axios.get(URL_API + 'projects/delete_image/' + this.project_id + '/' + meta_id)
                 .then(response => {
                     this.get_list();
                 })
@@ -84,7 +84,7 @@
                 this.set_current(key);
                 var meta_id = this.curr_image.meta_id;
                 console.log(this.curr_image);
-                axios.get(url_api + 'projects/set_main_image/' + this.project_id + '/' + meta_id)
+                axios.get(URL_API + 'projects/set_main_image/' + this.project_id + '/' + meta_id)
                 .then(response => {
                     if ( response.data.status == 1 ) {
                         this.get_list();

@@ -22,7 +22,7 @@
             processData: false,  // Important!
             contentType: false,
             cache: false,
-            url: url_api + 'files/upload/',
+            url: URL_API + 'files/upload/',
             data: form_data,
             beforeSend: function(){
                 $('#status_text').html('Enviando archivo');
@@ -30,7 +30,7 @@
             success: function(response){
                 if ( response.status == 1 )
                 {
-                    window.location = url_app + 'files/cropping/' + response.row.id;
+                    window.location = URL_APP + 'files/cropping/' + response.row.id;
                 }
             }
         });

@@ -88,7 +88,7 @@
             get_images: function(){
                 var params = new URLSearchParams();
                 params.append('q', app_q);
-                axios.post(url_api + 'professionals/inspiration_images/' + this.tag.slug + '/1', params)
+                axios.post(URL_API + 'professionals/inspiration_images/' + this.tag.slug + '/1', params)
                 .then(response => {
                     this.images = response.data.images;
                 })
@@ -99,11 +99,11 @@
             set_tag: function(menu_key){
                 this.tag = this.menu_elements[menu_key];
                 this.get_images();
-                history.pushState(null, null, url_app + 'professionals/inspiration/' + this.tag.slug + '/' + this.num_page);
+                history.pushState(null, null, URL_APP + 'professionals/inspiration/' + this.tag.slug + '/' + this.num_page);
             },
             alt_like: function(image_key){
                 var image = this.images[image_key];
-                axios.get(url_api + 'files/alt_like/' + image.id)
+                axios.get(URL_API + 'files/alt_like/' + image.id)
                 .then(response => {
                     /*if ( response.data.status == 1 ) {
                         

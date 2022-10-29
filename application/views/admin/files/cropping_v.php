@@ -15,7 +15,7 @@
         $("#crop_form").submit(function () {
             $.ajax({
                 type: "POST",
-                url: url_api + 'files/crop/' + image_id,
+                url: URL_API + 'files/crop/' + image_id,
                 data: $("#crop_form").serialize(),
                 success: function (response) {
                     after_submit(response);
@@ -37,7 +37,7 @@
     {
         if ( response.status == 1 )
         {
-            window.location = url_app + back_destination;
+            window.location = URL_APP + back_destination;
         } else {
             toastr['error'](response.message);
         }

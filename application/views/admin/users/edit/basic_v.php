@@ -307,14 +307,14 @@ var app_edit = new Vue({
     },
     methods: {
         validate_form: function() {
-            axios.post(url_app + 'users/validate/' + this.row_id, $('#edit_form').serialize())
+            axios.post(URL_APP + 'users/validate/' + this.row_id, $('#edit_form').serialize())
             .then(response => {
                 this.validation = response.data.validation
             })
             .catch(function (error) { console.log(error)} )
         },
         validate_send: function () {
-            axios.post(url_app + 'users/validate/' + this.row_id, $('#edit_form').serialize())
+            axios.post(URL_APP + 'users/validate/' + this.row_id, $('#edit_form').serialize())
             .then(response => {
                 if (response.data.status == 1) {
                     this.send_form()
@@ -325,7 +325,7 @@ var app_edit = new Vue({
             .catch(function (error) { console.log(error) })
         },
         send_form: function() {
-            axios.post(url_app + 'users/update/' + this.row_id, $('#edit_form').serialize())
+            axios.post(URL_APP + 'users/update/' + this.row_id, $('#edit_form').serialize())
             .then(response => {
                 console.log('status: ' + response.data.mensaje)
                 if (response.data.status == 1)
@@ -340,7 +340,7 @@ var app_edit = new Vue({
             params.append('display_name', this.form_values.display_name);
             params.append('last_name', this.form_values.last_name);
             
-            axios.post(url_app + 'users/username/', params)
+            axios.post(URL_APP + 'users/username/', params)
             .then(response => {
                 this.form_values.username = response.data;
             })

@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
     <script>
-      const url_api = '<?= URL_API ?>';
-      const url_app = '<?= URL_APP ?>';
+      const URL_API = '<?= URL_API ?>';
+      const URL_APP = '<?= URL_APP ?>';
     </script>
   </head>
   <body>

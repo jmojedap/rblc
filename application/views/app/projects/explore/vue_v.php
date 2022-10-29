@@ -56,12 +56,12 @@
                 params.append('style', this.filters.style);
                 params.append('feeling', this.filters.feeling);
                 
-                axios.post(url_api + this.controller + '/get/' + this.num_page, params)
+                axios.post(URL_API + this.controller + '/get/' + this.num_page, params)
                 .then(response => {
                     this.list = response.data.list;
                     this.max_page = response.data.max_page;
                     this.search_num_rows = response.data.search_num_rows;
-                    history.pushState(null, null, url_front + this.cf + this.num_page +'/?' + response.data.str_filters);
+                    history.pushState(null, null, URL_FRONT + this.cf + this.num_page +'/?' + response.data.str_filters);
                     this.all_selected = false
                     this.selected = []
                     this.loading = false

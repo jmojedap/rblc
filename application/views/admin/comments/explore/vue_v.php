@@ -15,7 +15,7 @@
         },
         methods: {
             get_list: function (){
-                axios.post(url_app + 'comments/get/' + this.num_page, $('#search_form').serialize())
+                axios.post(URL_APP + 'comments/get/' + this.num_page, $('#search_form').serialize())
                 .then(response => {
                     this.list = response.data.list;
                     this.search_num_rows = response.data.search_num_rows;
@@ -60,7 +60,7 @@
                 var params = new FormData();
                 params.append('selected', this.selected);
                 
-                axios.post(url_app + 'comments/delete_selected/', params)
+                axios.post(URL_APP + 'comments/delete_selected/', params)
                 .then(response => {
                     for ( key_s in this.selected ) {   //Recorrer selected
                         for ( key_u in this.list ) {       //Recorrer list elementos
@@ -77,7 +77,7 @@
                 });
             },
             delete_row: function(key, row_id, document_id){
-                axios.get(url_api + 'comments/delete/' + row_id + '/' + document_id)
+                axios.get(URL_API + 'comments/delete/' + row_id + '/' + document_id)
                 .then(response => {
                     console.log(response.data.message);
                     this.list.splice(key,1);

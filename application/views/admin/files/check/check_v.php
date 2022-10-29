@@ -120,7 +120,7 @@ var picture_app = new Vue({
     },
     methods: {
         send_form: function(){
-            axios.post(url_api + 'files/update_full/' + this.file_id, $('#picture_form').serialize())
+            axios.post(URL_API + 'files/update_full/' + this.file_id, $('#picture_form').serialize())
             .then(response => {
                 if ( response.data.status == 1 ) {
                     toastr['success']('Guardado, abriendo siguiente imagen')
@@ -130,7 +130,7 @@ var picture_app = new Vue({
             .catch(function (error) { console.log(error) })
         },
         delete_element: function(){
-            axios.get(url_api + 'files/delete/' + this.file_id)
+            axios.get(URL_API + 'files/delete/' + this.file_id)
             .then(response => {
                 if ( response.data.qty_deleted > 0 ) {
                     toastr['info']('Imagen eliminada')
@@ -143,7 +143,7 @@ var picture_app = new Vue({
         },
         go_to_next: function(){
             setTimeout(() => {
-                window.location = url_app + 'files/check_next'
+                window.location = URL_APP + 'files/check_next'
             }, 1000)
         },
     }

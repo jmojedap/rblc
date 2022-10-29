@@ -120,7 +120,7 @@ var project_info = new Vue({
         ideabooks: <?= json_encode($my_ideabooks->result()) ?>,
         new_ideabook_name: '',
         like_status: <?= $like_status ?>,
-        app_uid: app_uid
+        APP_UID: APP_UID
     },
     methods: {
         set_current_main: function(){
@@ -138,7 +138,7 @@ var project_info = new Vue({
             }
         },
         add_to_ideabook: function(ideabook_id){
-            axios.post(url_api + 'ideabooks/add_project/' + ideabook_id + '/' + this.project.id, $('#new_ideabook_form').serialize())
+            axios.post(URL_API + 'ideabooks/add_project/' + ideabook_id + '/' + this.project.id, $('#new_ideabook_form').serialize())
             .then(response => {
                 //console.log(response.data);
                 if ( response.data.saved_id > 1 )
@@ -154,7 +154,7 @@ var project_info = new Vue({
             });
         },
         alt_like: function(){
-            axios.get(url_api + 'posts/alt_like/' + this.project.id)
+            axios.get(URL_API + 'posts/alt_like/' + this.project.id)
             .then(response => {
                 this.like_status = response.data.like_status;
                 if ( this.like_status == 1 ) {
@@ -168,11 +168,11 @@ var project_info = new Vue({
             });  
         },
         create_conversation: function(){
-            axios.get(url_api + 'messages/create_conversation/' + this.user.id)
+            axios.get(URL_API + 'messages/create_conversation/' + this.user.id)
             .then(response => {
                 console.log(response.data);
                 if ( response.data.conversation_id > 0 ) {
-                    window.location = url_app + 'messages/conversation/' + response.data.conversation_id;
+                    window.location = URL_APP + 'messages/conversation/' + response.data.conversation_id;
                 }
             })
             .catch(function (error) {

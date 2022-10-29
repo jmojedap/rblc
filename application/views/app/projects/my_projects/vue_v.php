@@ -44,13 +44,13 @@
             get_list: function(){
                 var form_data = new FormData;
                 form_data.append('u', '<?= $this->session->userdata('user_id') ?>');
-                axios.post(url_api + this.controller + '/get/' + this.num_page, form_data)
+                axios.post(URL_API + this.controller + '/get/' + this.num_page, form_data)
                 .then(response => {
                     console.log('cargando');
                     this.list = response.data.list;
                     this.max_page = response.data.max_page;
                     this.search_num_rows = response.data.search_num_rows;
-                    history.pushState(null, null, url_app + this.cf + this.num_page +'/?' + response.data.str_filters);
+                    history.pushState(null, null, URL_APP + this.cf + this.num_page +'/?' + response.data.str_filters);
                     this.all_selected = false;
                     this.selected = [];
                 })
@@ -87,7 +87,7 @@
                 console.log(value)
             },
             delete_element: function(){
-                axios.get(url_api + 'posts/delete/' + this.currentId)
+                axios.get(URL_API + 'posts/delete/' + this.currentId)
                 .then(response => {
                     if ( response.data.qty_deleted > 0 ) {
                         toastr['info']('Project deleted')

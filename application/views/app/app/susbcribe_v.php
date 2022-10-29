@@ -65,7 +65,7 @@
         methods: {
             save_subscription: function(){
                 this.status = 5;    //En proceso
-                axios.post(url_api + 'app/save_subscription/', $('#subscription_form').serialize())
+                axios.post(URL_API + 'app/save_subscription/', $('#subscription_form').serialize())
                 .then(response => {
                     this.status = response.data.status;
                 })

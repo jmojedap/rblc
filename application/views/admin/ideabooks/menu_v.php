@@ -51,9 +51,9 @@
     sections_role[2] = ['info', 'projects', 'edit'];
     
     //Recorrer el sections del rol actual y cargarlos en el menú
-    for ( key_section in sections_role[app_rid]) 
+    for ( key_section in sections_role[APP_RID]) 
     {
-        var key = sections_role[app_rid][key_section];   //Identificar elemento
+        var key = sections_role[APP_RID][key_section];   //Identificar elemento
         nav_2.push(sections[key]);    //Agregar el elemento correspondiente
     }
     

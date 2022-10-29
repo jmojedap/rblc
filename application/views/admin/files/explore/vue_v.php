@@ -35,20 +35,25 @@ var app_explore = new Vue({
         active_filters: false,
         options_checked: {'':'[ Todos ]','01':'Revisados','02':'Sin revisión'},
         options_cat_1: <?= json_encode($options_cat_1) ?>,
+        arrGroup1: [
+            {value:1,'name':'Sí'},
+            {value:2,'name':'No'},
+        ],
     },
     methods: {
         get_list: function(e, num_page = 1){
             this.loading = true
-            axios.post(url_app + this.controller + '/get/' + num_page, $('#search_form').serialize())
+            axios.post(URL_APP + this.controller + '/get/' + num_page, $('#search_form').serialize())
             .then(response => {
                 this.num_page = num_page
                 this.list = response.data.list
                 this.max_page = response.data.max_page
                 this.search_num_rows = response.data.search_num_rows
                 $('#head_subtitle').html(response.data.search_num_rows)
-                history.pushState(null, null, url_app + this.cf + this.num_page +'/?' + response.data.str_filters)
+                history.pushState(null, null, URL_APP + this.cf + this.num_page +'/?' + response.data.str_filters)
                 this.all_selected = false
                 this.selected = []
+                console.log('Vamos a poner falso')
                 this.loading = false
 
                 this.calculate_active_filters()
@@ -69,7 +74,7 @@ var app_explore = new Vue({
             var params = new FormData()
             params.append('selected', this.selected)
             
-            axios.post(url_app + this.controller + '/delete_selected', params)
+            axios.post(URL_APP + this.controller + '/delete_selected', params)
             .then(response => {
                 this.hide_deleted()
                 this.selected = []
@@ -100,6 +105,7 @@ var app_explore = new Vue({
             this.filters.q = ''
             this.filters.fe1 = ''
             this.filters.fe2 = ''
+            this.filters.fe3 = ''
             this.filters.cat_1 = ''
             this.filters.d1 = ''
             this.filters.d2 = ''
@@ -111,6 +117,7 @@ var app_explore = new Vue({
             if ( this.filters.q ) calculated_active_filters = true
             if ( this.filters.fe1 ) calculated_active_filters = true
             if ( this.filters.fe2 ) calculated_active_filters = true
+            if ( this.filters.fe3 ) calculated_active_filters = true
             if ( this.filters.cat_1 ) calculated_active_filters = true
             if ( this.filters.d1 ) calculated_active_filters = true
             if ( this.filters.d2 ) calculated_active_filters = true

@@ -13,7 +13,7 @@
         },
         methods: {
             send_form: function() {
-                axios.post(url_api + 'projects/insert/', $('#add_form').serialize())
+                axios.post(URL_API + 'projects/insert/', $('#add_form').serialize())
                 .then(response => {
                     console.log('status: ' + response.data);
                     if ( response.data.status == 1 )
@@ -33,7 +33,7 @@
                 }
             },
             go_created: function() {
-                window.location = url_app + 'projects/edit/' + this.row_id;
+                window.location = URL_APP + 'projects/edit/' + this.row_id;
             }
         }
     });

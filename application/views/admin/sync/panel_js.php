@@ -1,4 +1,4 @@
-<script src="<?php //echo url_app('js/Math.uuid.js') ?>"></script>
+<script src="<?php //echo URL_APP('js/Math.uuid.js') ?>"></script>
 
 <script>
 //Variables 
@@ -84,7 +84,7 @@
     {
         $.ajax({
             type: 'POST',
-            url: url_app + 'sync/save_server_status/',
+            url: URL_APP + 'sync/save_server_status/',
             data: {
                 json_tables_status : json_tables_status
             },
@@ -93,7 +93,7 @@
             },
             success: function(response){
                 console.log(response);
-                window.location = url_app + 'sync/panel/';
+                window.location = URL_APP + 'sync/panel/';
                 
             }
         });
@@ -109,7 +109,7 @@
 
         $.ajax({       
             type: 'POST',
-            url: url_app + 'sync/start_sync/' + table,
+            url: URL_APP + 'sync/start_sync/' + table,
             success: function(response){
                 console.log(response.message);
             }
@@ -123,7 +123,7 @@
     function clean_table(){
         $.ajax({        
             type: 'POST',
-            url: url_app + 'sync/clean_table/' + table,
+            url: URL_APP + 'sync/clean_table/' + table,
             beforeSend : function(){
                 $('#status_' + table).html('Limpiando tabla local...');
             },
@@ -203,7 +203,7 @@
     {
         $.ajax({
             type: 'POST',
-            url: url_app + 'sync/insert_rows/' + table,
+            url: URL_APP + 'sync/insert_rows/' + table,
             data: {
                 json_download : JSON.stringify(json_download)
             },
@@ -226,7 +226,7 @@
     {
         $.ajax({
             type: 'POST',
-            url: url_app + 'sync/update_sync_data/' + table,
+            url: URL_APP + 'sync/update_sync_data/' + table,
             data: {
                 quan_rows : quan_rows
             },

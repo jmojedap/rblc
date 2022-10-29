@@ -57,7 +57,7 @@
         },
         methods: {
             get_social_links: function(){
-                axios.get(url_api + 'users/get_social_links/' + this.user_id)
+                axios.get(URL_API + 'users/get_social_links/' + this.user_id)
                 .then(response => {
                     this.social_links = response.data.list;
                     this.social_links.forEach(element => {
@@ -69,7 +69,7 @@
                 });
             },
             send_form: function(){
-                axios.post(url_api + 'accounts/save_social_links/', $('#social_links_form').serialize())
+                axios.post(URL_API + 'accounts/save_social_links/', $('#social_links_form').serialize())
                 .then(response => {
                     if ( response.data.qty_saved > 0 ) {
                         toastr['success']('Saved');

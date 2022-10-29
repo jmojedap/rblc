@@ -68,7 +68,7 @@ var help_app = new Vue({
             form_data.append('o', 'integer_1');
             form_data.append('ot', 'DESC');
             
-            axios.post(url_api + 'posts/get/1', form_data)
+            axios.post(URL_API + 'posts/get/1', form_data)
             .then(response => {
                 this.posts = response.data.list
                 if ( this.article_id == 0 ) {
@@ -87,10 +87,10 @@ var help_app = new Vue({
             this.get_info(article_id)
         },
         get_info: function(article_id){
-            axios.get(url_api + 'posts/get_info/' + article_id)
+            axios.get(URL_API + 'posts/get_info/' + article_id)
             .then(response => {
                 this.article = response.data.row;
-                history.pushState(null, null, url_admin + 'app/help/' + article_id);
+                history.pushState(null, null, URL_ADMIN + 'app/help/' + article_id);
             })
             .catch(function (error) { console.log(error) })
         },

@@ -35,7 +35,7 @@
             processData: false,  // Important!
             contentType: false,
             cache: false,
-            url: url_app + 'posts/set_image/' + post_id,
+            url: URL_APP + 'posts/set_image/' + post_id,
             data: form_data,
             beforeSend: function(){
                 $('#status_text').html('Enviando archivo');
@@ -59,7 +59,7 @@
     {
        $.ajax({
             type: 'POST',
-            url: url_app + 'posts/remove_image/' + post_id,
+            url: URL_APP + 'posts/remove_image/' + post_id,
             success: function (response) {
                 if ( response.status == 1 )
                 {

@@ -39,7 +39,7 @@
         },
         methods: {
             get_list: function(){
-                axios.get(url_api + 'ideabooks/get_projects/' + this.ideabook_id)
+                axios.get(URL_API + 'ideabooks/get_projects/' + this.ideabook_id)
                 .then(response => {
                     this.list = response.data.list;
                 })
@@ -53,7 +53,7 @@
             },
             delete_element: function(){
                 //this.list.splice(this.key,1);
-                axios.get(url_api + 'posts/delete_meta/' + this.ideabook_id + '/' + this.current.meta_id)
+                axios.get(URL_API + 'posts/delete_meta/' + this.ideabook_id + '/' + this.current.meta_id)
                 .then(response => {
                     this.list.splice(this.key,1);
                 })

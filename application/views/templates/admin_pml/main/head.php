@@ -4,7 +4,9 @@
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
         <!--Icons font-->
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+        <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css" integrity="sha512-BnbUDfEUfV0Slx6TunuB042k9tuKe3xrD6q4mg5Ed72LTgzDIcLPxg6yI2gcMFRyomt+yJJxE+zJwNmxki6/RA==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
+        <!-- Font Awesome -->
+        <script src="https://kit.fontawesome.com/f45fca298e.js" crossorigin="anonymous"></script>
 
         <!--JQuery-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -30,14 +32,17 @@
         <!-- Tema AdminPML -->
         <link href="<?= URL_RESOURCES ?>templates/admin_pml/css/admin-pml.css" rel="stylesheet" type="text/css" />
         <link href="<?= URL_RESOURCES ?>templates/admin_pml/css/mobile.css" rel="stylesheet" type="text/css" />
-        <link href="<?= URL_RESOURCES ?>templates/admin_pml/css/skins/skin-blue.css" rel="stylesheet" type="text/css" />
+        <link href="<?= URL_RESOURCES ?>templates/admin_pml/css/skins/skin-colibri.css" rel="stylesheet" type="text/css" />
         <script src="<?= URL_RESOURCES ?>templates/admin_pml/js/app.js"></script>
+        <script src="<?= URL_RESOURCES ?>templates/admin_pml/js/routing.js"></script>
 
         <!-- Recursos PML -->
         <link type="text/css" rel="stylesheet" href="<?= URL_RESOURCES ?>css/pacarina.css">
+        <!-- <link type="text/css" rel="stylesheet" href="<?= URL_RESOURCES ?>css/app_grafinar.css"> -->
         <script src="<?= URL_RESOURCES . 'js/pcrn.js' ?>"></script>
         <script>
-            const url_app = '<?= URL_ADMIN ?>'; const url_admin = '<?= URL_ADMIN ?>'; const url_api = '<?= URL_API ?>'; const url_front = '<?= URL_FRONT ?>';
+            const URL_APP = '<?= URL_ADMIN ?>'; const URL_ADMIN = '<?= URL_ADMIN ?>'; const URL_API = '<?= URL_API ?>'; const URL_FRONT = '<?= URL_FRONT ?>';
+            const URL_BASE = '<?= base_url() ?>';
             var app_cf = '<?= $this->uri->segment(2) . '/' . $this->uri->segment(3); ?>';
         </script>
 
@@ -45,10 +50,9 @@
         <?php if ( $this->session->userdata('logged') ) : ?>
             <!-- Elementos del menú -->
             <script src="<?= URL_RESOURCES ?>config/admin_pml/menus/nav_1_elements_<?= $this->session->userdata('role') ?>.js"></script>
+
             <script>
-                const app_rid = <?= $this->session->userdata('role') ?>;
+                const APP_RID = <?= $this->session->userdata('role') ?>;
+                const APP_UID = <?= $this->session->userdata('user_id') ?>;
             </script>
         <?php endif; ?>
-
-        <!-- Gestión de rutas -->
-        <script src="<?= URL_RESOURCES ?>js/pml_routing.js"></script>

@@ -18,11 +18,11 @@
             register: function(){
                 if ( this.validated ) {
                     
-                    axios.post(url_api + 'accounts/register/', $('#signup_form').serialize())
+                    axios.post(URL_API + 'accounts/register/', $('#signup_form').serialize())
                     .then(response => {
                         console.log(response.data.message);
                         if ( response.data.status == 1 ) {
-                            window.location = url_app + 'accounts/registered/' + response.data.user_id;
+                            window.location = URL_APP + 'accounts/registered/' + response.data.user_id;
                         } else {
                             this.recaptcha_message = response.data.recaptcha_message;
                         }
@@ -35,7 +35,7 @@
             validate_form: function(){
                 var form_data = $('#signup_form').serialize();
                 
-                axios.post(url_api + 'accounts/validate_signup', form_data)
+                axios.post(URL_API + 'accounts/validate_signup', form_data)
                 .then(response => {
                     this.validated = response.data.status;
                     this.validation = response.data.validation;

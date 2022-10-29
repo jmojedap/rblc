@@ -41,7 +41,7 @@
         },
         methods: {
             validate_send: function () {
-                axios.post(url_app + 'accounts/validate_signup/', $('#add_form').serialize())
+                axios.post(URL_APP + 'accounts/validate_signup/', $('#add_form').serialize())
                 .then(response => {
                     if ( response.data.status == 1 ) {
                         this.send_form();
@@ -54,7 +54,7 @@
                 });
             },
             send_form: function() {
-                axios.post(url_app + 'users/insert/', $('#add_form').serialize())
+                axios.post(URL_APP + 'users/insert/', $('#add_form').serialize())
                 .then(response => {
                     console.log('status: ' + response.data.message);
                     if ( response.data.status == 1 )
@@ -73,7 +73,7 @@
                 params.append('first_name', this.form_values.first_name);
                 params.append('last_name', this.form_values.last_name);
                 
-                axios.post(url_app + 'users/username/', params)
+                axios.post(URL_APP + 'users/username/', params)
                 .then(response => {
                     this.form_values.username = response.data;
                 })
@@ -82,7 +82,7 @@
                 });
             },
             validate_form: function() {
-                axios.post(url_app + 'accounts/validate_signup/', $('#add_form').serialize())
+                axios.post(URL_APP + 'accounts/validate_signup/', $('#add_form').serialize())
                 .then(response => {
                     //this.form_valido = response.data.status;
                     this.validation = response.data.validation;
@@ -97,7 +97,7 @@
                 }
             },
             go_created: function() {
-                window.location = url_app + 'users/profile/' + this.row_id;
+                window.location = URL_APP + 'users/profile/' + this.row_id;
             }
         }
     });

@@ -18,7 +18,7 @@
         },
         methods: {
             send_form: function() {
-                axios.post(url_app + 'comments/insert/', $('#add_form').serialize())
+                axios.post(URL_APP + 'comments/insert/', $('#add_form').serialize())
                 .then(response => {
                     console.log('Resultado: ' + response.data.message);
                     if ( response.data.status == 1 )
@@ -38,7 +38,7 @@
                 }
             },
             goto_created: function() {
-                window.location = url_app + 'comments/info/' + this.row_id;
+                window.location = URL_APP + 'comments/info/' + this.row_id;
             }
         }
     });

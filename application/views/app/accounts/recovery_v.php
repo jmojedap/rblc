@@ -60,7 +60,7 @@
         },
         methods: {
             send_form: function(){
-                axios.post(url_api + 'accounts/recovery_email/', $('#app_form').serialize())
+                axios.post(URL_API + 'accounts/recovery_email/', $('#app_form').serialize())
                 .then(response => {
                     console.log(response.data.status);
                     if ( response.data.status == 1 ) {

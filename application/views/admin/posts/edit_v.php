@@ -35,7 +35,7 @@
     function update_post(){
         $.ajax({        
             type: 'POST',
-            url: url_app + 'posts/save/',
+            url: URL_APP + 'posts/save/',
             data: $('#post_form').serialize(),
             success: function(response){
                 if ( response.saved_id > 0 )

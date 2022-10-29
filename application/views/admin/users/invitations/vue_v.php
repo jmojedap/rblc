@@ -32,12 +32,12 @@ var invitations_app = new Vue({
             if ( this.filters.fe1 != null ) form_data.append('fe1', this.filters.fe1)
             if ( this.filters.status != null ) form_data.append('status', this.filters.status)
 
-            axios.post(url_api + 'users/get_users_invitations/' + this.num_page + '/10', form_data)
+            axios.post(URL_API + 'users/get_users_invitations/' + this.num_page + '/10', form_data)
             .then(response => {
                 this.list = response.data.list
                 this.max_page = response.data.max_page
                 this.search_num_rows = response.data.search_num_rows
-                history.pushState(null, null, url_app + 'users/invitations/' + this.num_page +'/?' + response.data.str_filters);
+                history.pushState(null, null, URL_APP + 'users/invitations/' + this.num_page +'/?' + response.data.str_filters);
                 this.loading = false
                 if (this.list.length > 0 && this.current.id == 0 ) {
                     this.set_user(0)
@@ -50,7 +50,7 @@ var invitations_app = new Vue({
             this.get_images();
         },
         get_images: function(){
-            axios.get(url_api + 'professionals/get_images/' + this.current.id)
+            axios.get(URL_API + 'professionals/get_images/' + this.current.id)
             .then(response => {
                 this.images = response.data.images
             })
@@ -63,7 +63,7 @@ var invitations_app = new Vue({
             form_data.append('user_id', this.current.id)
             form_data.append('bcc', this.form_values.bcc)
             form_data.append('text_message', this.form_values.text_message)
-            axios.post(url_api + 'users/send_invitation/', form_data)
+            axios.post(URL_API + 'users/send_invitation/', form_data)
             .then(response => {
                 if ( response.data.status == 1 ) {
                     toastr['success'](response.data.message)
@@ -76,7 +76,7 @@ var invitations_app = new Vue({
             .catch( function(error) {console.log(error)} )
         },
         get_summary: function(){
-            axios.get(url_api + 'users/invitations_summary/')
+            axios.get(URL_API + 'users/invitations_summary/')
             .then(response => {
                 this.summary = response.data
             })
