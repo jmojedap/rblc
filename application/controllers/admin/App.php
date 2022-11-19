@@ -18,7 +18,7 @@ class App extends CI_Controller {
     {
         if ( $this->session->userdata('logged') )
         {
-            $this->logged();
+            //$this->logged();
         } else {
             redirect('accounts/login');
         }    

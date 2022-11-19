@@ -16,7 +16,7 @@ var picture_app = new Vue({
     data: {
         row: <?= json_encode($row) ?>,
         user: {
-            id: <?= $user->id ?>,
+            id: '<?= $user->id ?>',
             display_name: '<?= $user->display_name ?>',
             url_thumbnail: '<?= $user->url_thumbnail ?>'
         },

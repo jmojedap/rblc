@@ -291,7 +291,7 @@ class Post_model extends CI_Model{
      */
     function type_folder($type_id)
     {
-        $special_types = array(7110);
+        $special_types = [15,20,7110];
         $type_folder = $this->views_folder;
 
         if ( in_array($type_id, $special_types) ) { $type_folder = "{$this->views_folder}/types/{$type_id}/"; }

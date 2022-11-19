@@ -238,8 +238,9 @@ class File_model extends CI_Model{
 //-----------------------------------------------------------------------------
 
     /**
-     * Determina si un archivo puede ser editado o no por parte de un usuario en sesión
-     * 2019-05-21
+     * Determina si un archivo puede ser editado o no por parte de un usuario
+     * en sesión
+     * 2022-11-19
      */
     function editable($file_id)
     {
@@ -252,6 +253,12 @@ class File_model extends CI_Model{
 
         //Es el creador, puede editarlo
         if ( $row->creator_id == $this->session->userdata('user_id') )
+        {
+            $editable = TRUE;
+        }
+
+        //Es el usuario relacionado, puede editarlo
+        if ( $row->table_id == 1000 && $row->related_1 == $this->session->userdata('user_id') )
         {
             $editable = TRUE;
         }

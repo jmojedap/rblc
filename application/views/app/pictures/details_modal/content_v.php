@@ -51,6 +51,10 @@
                 
             </div>
 
+            <div class="mb-2">
+                <strong>{{ picture.title }}</strong> &middot; {{ picture.description }}
+            </div>
+
             
             <div class="comments">
                 <div v-for="(comment, key) in comments" class="comment">
